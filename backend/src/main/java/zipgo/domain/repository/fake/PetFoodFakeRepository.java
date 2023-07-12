@@ -16,7 +16,9 @@ public class PetFoodFakeRepository implements PetFoodRepository {
 
     @Override
     public List<PetFood> findByKeyword(Keyword keyword) {
-        return null;
+        return petFoods.stream()
+                .filter(petFood -> keyword.equals(petFood.getKeyword()))
+                .toList();
     }
 
     @Override
