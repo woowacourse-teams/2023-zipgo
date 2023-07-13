@@ -1,10 +1,8 @@
 package zipgo.domain.repository;
 
-import static org.assertj.core.api.Assertions.*;
-import static org.junit.jupiter.api.Assertions.*;
+import static org.assertj.core.api.Assertions.assertThat;
 
 import java.util.Optional;
-import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
 import zipgo.domain.Keyword;
 import zipgo.domain.repository.fake.KeywordFakeRepository;

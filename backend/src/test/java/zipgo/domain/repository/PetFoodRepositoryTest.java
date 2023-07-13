@@ -1,15 +1,15 @@
 package zipgo.domain.repository;
 
+import static org.assertj.core.api.Assertions.assertThat;
+import static zipgo.domain.fixture.PetFoodFixture.다이어트_키워드_반려동물_식품;
+import static zipgo.domain.fixture.PetFoodFixture.반려동물_식품_1;
+import static zipgo.domain.fixture.PetFoodFixture.반려동물_식품_2;
+import static zipgo.domain.fixture.PetFoodFixture.키워드가_없는_반려동물_식품;
+
+import java.util.List;
 import org.junit.jupiter.api.Test;
 import zipgo.domain.PetFood;
 import zipgo.domain.repository.fake.PetFoodFakeRepository;
-
-import java.util.List;
-
-import static org.assertj.core.api.Assertions.*;
-import static zipgo.domain.fixture.PetFoodFixture.*;
-import static zipgo.domain.fixture.PetFoodFixture.반려동물_식품_1;
-import static zipgo.domain.fixture.PetFoodFixture.반려동물_식품_2;
 
 class PetFoodRepositoryTest {
 

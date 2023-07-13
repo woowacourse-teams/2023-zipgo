@@ -1,21 +1,20 @@
 package zipgo.service;
 
-import java.security.Key;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
+import static org.junit.jupiter.api.Assertions.assertAll;
+import static zipgo.domain.fixture.PetFoodFixture.다이어트_키워드_반려동물_식품;
+import static zipgo.domain.fixture.PetFoodFixture.반려동물_식품_1;
+import static zipgo.domain.fixture.PetFoodFixture.반려동물_식품_2;
+import static zipgo.domain.fixture.PetFoodFixture.키워드가_없는_반려동물_식품;
+
 import java.util.List;
-import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import zipgo.domain.Keyword;
 import zipgo.domain.PetFood;
-import zipgo.domain.fixture.PetFoodFixture;
 import zipgo.domain.repository.PetFoodRepository;
-
-import static org.assertj.core.api.Assertions.*;
-import static org.junit.jupiter.api.Assertions.*;
-import static zipgo.domain.fixture.PetFoodFixture.*;
-import static zipgo.domain.fixture.PetFoodFixture.반려동물_식품_1;
-import static zipgo.domain.fixture.PetFoodFixture.반려동물_식품_2;
+import zipgo.exception.KeywordException;
 
 @SpringBootTest
 class PetFoodServiceTest {
@@ -64,7 +63,7 @@ class PetFoodServiceTest {
 
         // when
         // then
-        assertThatThrownBy(() -> petFoodService.getPetFoodHaving(없는_키워드));
-//                .isInstanceOf() // TODO
+        assertThatThrownBy(() -> petFoodService.getPetFoodHaving(없는_키워드))
+                .isInstanceOf(KeywordException.NotFound.class);
     }
 }

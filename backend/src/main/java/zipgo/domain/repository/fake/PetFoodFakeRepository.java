@@ -1,14 +1,12 @@
 package zipgo.domain.repository.fake;
 
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 import org.springframework.stereotype.Repository;
-import zipgo.controller.dto.PetFoodResponse;
 import zipgo.domain.Keyword;
 import zipgo.domain.PetFood;
 import zipgo.domain.repository.PetFoodRepository;
-
-import java.util.ArrayList;
-import java.util.List;
 
 @Repository
 public class PetFoodFakeRepository implements PetFoodRepository {
