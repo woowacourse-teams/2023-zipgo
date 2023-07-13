@@ -1,14 +1,17 @@
 package zipgo.service;
 
+import java.security.Key;
 import java.util.List;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import zipgo.domain.Keyword;
 import zipgo.domain.PetFood;
 import zipgo.domain.fixture.PetFoodFixture;
 import zipgo.domain.repository.PetFoodRepository;
 
+import static org.assertj.core.api.Assertions.*;
 import static org.junit.jupiter.api.Assertions.*;
 import static zipgo.domain.fixture.PetFoodFixture.*;
 import static zipgo.domain.fixture.PetFoodFixture.반려동물_식품_1;
@@ -32,7 +35,36 @@ class PetFoodServiceTest {
         List<PetFood> 조회_결과 = petFoodService.getAllPetFoods();
 
         // then
-        Assertions.assertThat(조회_결과)
-                .contains(반려동물_식품_1, 반려동물_식품_2);
+        assertThat(조회_결과).contains(반려동물_식품_1, 반려동물_식품_2);
+    }
+
+    @Test
+    void 키워드가_다이어트인_식품_목록을_조회한다() {
+        // given
+        petFoodRepository.save(키워드가_없는_반려동물_식품);
+        petFoodRepository.save(다이어트_키워드_반려동물_식품);
+        String 다이어트 = "다이어트";
+
+        // when
+        List<PetFood> 조회_결과 = petFoodService.getPetFoodHaving(다이어트);
+
+        // then
+        assertAll(() -> {
+            assertThat(조회_결과).contains(다이어트_키워드_반려동물_식품);
+            assertThat(조회_결과).doesNotContain(키워드가_없는_반려동물_식품);
+        });
+    }
+
+    @Test
+    void 존재하지_않는_키워드로_조회한다() {
+        // given
+        petFoodRepository.save(키워드가_없는_반려동물_식품);
+        petFoodRepository.save(다이어트_키워드_반려동물_식품);
+        String 없는_키워드 = "없는 키워드";
+
+        // when
+        // then
+        assertThatThrownBy(() -> petFoodService.getPetFoodHaving(없는_키워드));
+//                .isInstanceOf() // TODO
     }
 }
