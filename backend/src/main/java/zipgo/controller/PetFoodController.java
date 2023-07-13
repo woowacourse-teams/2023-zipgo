@@ -6,23 +6,30 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import zipgo.controller.dto.GetPetFoodsResponse;
-import zipgo.controller.dto.PetFoodResponse;
 import zipgo.controller.dto.Response;
+import zipgo.domain.PetFood;
+import zipgo.service.PetFoodService;
 
 @RestController
 @RequestMapping("/pet-foods")
 public class PetFoodController {
 
+    private final PetFoodService petFoodService;
+
+    public PetFoodController(final PetFoodService petFoodService) {
+        this.petFoodService = petFoodService;
+    }
+
     @GetMapping
-    public Response getPetFoods(@RequestParam(required = false) String keyword) {
-        GetPetFoodsResponse getPetFoodsResponse = new GetPetFoodsResponse(
-                List.of(
-                        new PetFoodResponse(1L, "https://avatars.githubusercontent.com/u/73161212?v=4", "갈비맛 모밀",
-                                "https://github.com/parkmuhyeun"),
-                        new PetFoodResponse(2L, "https://avatars.githubusercontent.com/u/94087228?v=4", "돌아온 배배",
-                                "https://github.com/wonyongChoi05")
-                )
-        );
-        return new Response(getPetFoodsResponse);
+    public Response<GetPetFoodsResponse> getPetFoods(@RequestParam(required = false) String keyword) {
+        List<PetFood> petFoods = getPetFoodBy(keyword);
+        return new Response<>(GetPetFoodsResponse.from(petFoods));
+    }
+
+    private List<PetFood> getPetFoodBy(final String keyword) {
+        if (keyword == null) {
+            return petFoodService.getAllPetFoods();
+        }
+        return petFoodService.getPetFoodHaving(keyword);
     }
 }

@@ -43,7 +43,7 @@ class PetFoodServiceTest {
         // given
         petFoodRepository.save(키워드가_없는_반려동물_식품);
         petFoodRepository.save(다이어트_키워드_반려동물_식품);
-        String 다이어트 = "다이어트";
+        String 다이어트 = "diet";
 
         // when
         List<PetFood> 조회_결과 = petFoodService.getPetFoodHaving(다이어트);

@@ -1,6 +1,7 @@
 package zipgo.domain;
 
 public class PetFood {
+    private Long id;
     private String name;
     private String link;
     private String image;
@@ -17,6 +18,10 @@ public class PetFood {
         this.link = link;
         this.image = image;
         this.keyword = keyword;
+    }
+
+    public Long getId() {
+        return id;
     }
 
     public String getName() {

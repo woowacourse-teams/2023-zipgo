@@ -11,9 +11,9 @@ import zipgo.domain.repository.KeywordRepository;
 @Repository
 public class KeywordFakeRepository implements KeywordRepository {
 
-    List<Keyword> keywords = Arrays.asList(
-            new Keyword("다이어트")
-    );
+    List<Keyword> keywords = new ArrayList<>(Arrays.asList(
+            new Keyword("diet")
+    ));
 
     @Override
     public Optional<Keyword> findByName(final String name) {

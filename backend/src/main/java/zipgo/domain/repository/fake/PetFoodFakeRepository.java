@@ -1,6 +1,8 @@
 package zipgo.domain.repository.fake;
 
+import java.util.Arrays;
 import org.springframework.stereotype.Repository;
+import zipgo.controller.dto.PetFoodResponse;
 import zipgo.domain.Keyword;
 import zipgo.domain.PetFood;
 import zipgo.domain.repository.PetFoodRepository;
@@ -10,7 +12,12 @@ import java.util.List;
 
 @Repository
 public class PetFoodFakeRepository implements PetFoodRepository {
-    List<PetFood> petFoods = new ArrayList<>();
+    List<PetFood> petFoods = new ArrayList<>(Arrays.asList(
+            new PetFood("[고집] 돌아온 배배", "https://github.com/woowacourse-teams/2023-zipgo",
+                    "https://avatars.githubusercontent.com/u/94087228?v=4", new Keyword("diet")),
+            new PetFood("[고집] 갈비 맛 모밀", "https://github.com/woowacourse-teams/2023-zipgo",
+                    "https://avatars.githubusercontent.com/u/76938931?v=4")
+    ));
     @Override
     public List<PetFood> findAll() {
         return petFoods;
