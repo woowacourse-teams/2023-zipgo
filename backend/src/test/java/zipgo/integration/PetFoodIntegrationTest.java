@@ -26,4 +26,19 @@ public class PetFoodIntegrationTest extends IntegrationTest {
         Assertions.assertThat(response.statusCode()).isEqualTo(200);
         Assertions.assertThat(data.petFoods()).isNotEmpty();
     }
+
+    @Test
+    void 키워드가_다이어트인_식품_조회_API() {
+        ExtractableResponse<Response> response = given().contentType(ContentType.JSON)
+                .queryParam("keyword", "diet")
+                .log().all()
+                .when().get("/pet-foods")
+                .then().extract();
+
+        GetPetFoodsResponse data = response.body()
+                .jsonPath().getObject("data", GetPetFoodsResponse.class);
+
+        Assertions.assertThat(response.statusCode()).isEqualTo(200);
+        Assertions.assertThat(data.petFoods()).isNotEmpty();
+    }
 }
