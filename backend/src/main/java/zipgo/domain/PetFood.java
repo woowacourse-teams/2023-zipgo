@@ -1,12 +1,14 @@
 package zipgo.domain;
 
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 
 import java.util.Objects;
 
 @Getter
 @Entity
+@AllArgsConstructor
 public class PetFood {
 
     @Id

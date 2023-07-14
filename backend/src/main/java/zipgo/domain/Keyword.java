@@ -23,6 +23,11 @@ public class Keyword {
         this.name = name;
     }
 
+    public Keyword(Long id, String name) {
+        this.id = id;
+        this.name = name;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;

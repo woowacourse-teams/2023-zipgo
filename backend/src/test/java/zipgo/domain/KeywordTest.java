@@ -18,10 +18,10 @@ class KeywordTest {
     }
 
     @Test
-    void 이름이_같으면_동등하다() {
+    void 아이디가_같으면_동등하다() {
         //given
-        Keyword 키워드_1 = new Keyword("다이어트");
-        Keyword 키워드_2 = new Keyword("다이어트");
+        Keyword 키워드_1 = new Keyword(1L, "다이어트");
+        Keyword 키워드_2 = new Keyword(1L, "다이어트");
 
         //when
         boolean 동등함 = 키워드_2.equals(키워드_1);
