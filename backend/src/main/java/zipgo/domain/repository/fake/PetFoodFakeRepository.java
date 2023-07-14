@@ -16,6 +16,7 @@ public class PetFoodFakeRepository implements PetFoodRepository {
             new PetFood("[고집] 갈비 맛 모밀", "https://github.com/woowacourse-teams/2023-zipgo",
                     "https://avatars.githubusercontent.com/u/76938931?v=4")
     ));
+
     @Override
     public List<PetFood> findAll() {
         return petFoods;
