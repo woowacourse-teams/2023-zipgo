@@ -30,6 +30,7 @@ module.exports = {
   rules: {
     'arrow-parens': 'off',
     'no-shadow': 'off',
+    'no-use-before-define': 'off',
 
     'react/jsx-props-no-spreading': 'off',
     'react/react-in-jsx-scope': 'off',
