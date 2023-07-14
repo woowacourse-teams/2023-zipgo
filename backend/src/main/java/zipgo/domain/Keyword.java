@@ -3,6 +3,7 @@ package zipgo.domain;
 import java.util.Objects;
 
 public class Keyword {
+
     private String name;
 
     public Keyword(String name) {
