@@ -20,11 +20,11 @@ public class PetFoodController {
 
     @GetMapping
     public Response<GetPetFoodsResponse> getPetFoods(@RequestParam(required = false) String keyword) {
-        List<PetFood> petFoods = getPetFoodBy(keyword);
+        List<PetFood> petFoods = getPetFoodsBy(keyword);
         return new Response<>(GetPetFoodsResponse.from(petFoods));
     }
 
-    private List<PetFood> getPetFoodBy(final String keyword) {
+    private List<PetFood> getPetFoodsBy(final String keyword) {
         if (keyword == null) {
             return petFoodService.getAllPetFoods();
         }
