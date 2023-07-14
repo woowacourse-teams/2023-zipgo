@@ -13,7 +13,6 @@ public class PetFoodIntegrationTest extends IntegrationTest {
     @Test
     void 모든_식품_조회_API() {
         ExtractableResponse<Response> response = given().contentType(ContentType.JSON)
-                .log().all()
                 .when().get("/pet-foods")
                 .then().extract();
 
@@ -28,7 +27,6 @@ public class PetFoodIntegrationTest extends IntegrationTest {
     void 키워드가_다이어트인_식품_조회_API() {
         ExtractableResponse<Response> response = given().contentType(ContentType.JSON)
                 .queryParam("keyword", "diet")
-                .log().all()
                 .when().get("/pet-foods")
                 .then().extract();
 
@@ -43,7 +41,6 @@ public class PetFoodIntegrationTest extends IntegrationTest {
     void 존재하지_않는_키워드로_식품_조회_API() {
         ExtractableResponse<Response> response = given().contentType(ContentType.JSON)
                 .queryParam("keyword", "존재하지 않는 키워드")
-                .log().all()
                 .when().get("/pet-foods")
                 .then().extract();
 
