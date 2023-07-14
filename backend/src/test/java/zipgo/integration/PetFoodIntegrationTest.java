@@ -16,8 +16,7 @@ public class PetFoodIntegrationTest extends IntegrationTest {
                 .when().get("/pet-foods")
                 .then().extract();
 
-        GetPetFoodsResponse data = response.body()
-                .jsonPath().getObject("data", GetPetFoodsResponse.class);
+        GetPetFoodsResponse data = response.body().as(GetPetFoodsResponse.class);
 
         Assertions.assertThat(response.statusCode()).isEqualTo(200);
         Assertions.assertThat(data.petFoods()).isNotEmpty();
@@ -30,8 +29,7 @@ public class PetFoodIntegrationTest extends IntegrationTest {
                 .when().get("/pet-foods")
                 .then().extract();
 
-        GetPetFoodsResponse data = response.body()
-                .jsonPath().getObject("data", GetPetFoodsResponse.class);
+        GetPetFoodsResponse data = response.body().as(GetPetFoodsResponse.class);
 
         Assertions.assertThat(response.statusCode()).isEqualTo(200);
         Assertions.assertThat(data.petFoods()).isNotEmpty();
