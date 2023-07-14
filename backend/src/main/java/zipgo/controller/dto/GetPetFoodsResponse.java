@@ -1,7 +1,8 @@
 package zipgo.controller.dto;
 
-import java.util.List;
 import zipgo.domain.PetFood;
+
+import java.util.List;
 
 public record GetPetFoodsResponse(List<PetFoodResponse> petFoods) {
     public static GetPetFoodsResponse from(List<PetFood> petFoods) {

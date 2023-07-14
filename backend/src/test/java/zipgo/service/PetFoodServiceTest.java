@@ -1,13 +1,5 @@
 package zipgo.service;
 
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.Assertions.assertThatThrownBy;
-import static org.junit.jupiter.api.Assertions.assertAll;
-import static zipgo.domain.fixture.PetFoodFixture.키워드가_없이_초기화된_식품;
-import static zipgo.domain.fixture.PetFoodFixture.반려동물_식품_2;
-
-import java.util.List;
-
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -16,6 +8,13 @@ import zipgo.domain.PetFood;
 import zipgo.domain.repository.KeywordRepository;
 import zipgo.domain.repository.PetFoodRepository;
 import zipgo.exception.KeywordException;
+
+import java.util.List;
+
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
+import static org.junit.jupiter.api.Assertions.assertAll;
+import static zipgo.domain.fixture.PetFoodFixture.키워드가_없이_초기화된_식품;
 
 @SpringBootTest
 class PetFoodServiceTest {
