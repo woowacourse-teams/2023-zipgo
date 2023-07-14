@@ -6,9 +6,9 @@ public record PetFoodResponse(Long id, String imageUrl, String name, String purc
     public static PetFoodResponse from(PetFood petFood) {
         return new PetFoodResponse(
                 petFood.getId(),
-                petFood.getImage(),
+                petFood.getImageUrl(),
                 petFood.getName(),
-                petFood.getLink()
+                petFood.getPurchaseLink()
         );
     }
 }

@@ -27,7 +27,7 @@ public class PetFoodIntegrationTest extends IntegrationTest {
         ExtractableResponse<Response> response = given().contentType(ContentType.JSON)
                 .queryParam("keyword", "diet")
                 .when().get("/pet-foods")
-                .then().extract();
+                .then().log().all().extract();
 
         GetPetFoodsResponse data = response.body().as(GetPetFoodsResponse.class);
 
