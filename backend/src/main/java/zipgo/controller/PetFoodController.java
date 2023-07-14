@@ -1,6 +1,7 @@
 package zipgo.controller;
 
 import java.util.List;
+import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -12,13 +13,10 @@ import zipgo.service.PetFoodService;
 
 @RestController
 @RequestMapping("/pet-foods")
+@RequiredArgsConstructor
 public class PetFoodController {
 
     private final PetFoodService petFoodService;
-
-    public PetFoodController(final PetFoodService petFoodService) {
-        this.petFoodService = petFoodService;
-    }
 
     @GetMapping
     public Response<GetPetFoodsResponse> getPetFoods(@RequestParam(required = false) String keyword) {
