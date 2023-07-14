@@ -1,5 +1,8 @@
 package zipgo.domain;
 
+import lombok.Getter;
+
+@Getter
 public class PetFood {
     private Long id;
     private String name;
@@ -18,25 +21,5 @@ public class PetFood {
         this.link = link;
         this.image = image;
         this.keyword = keyword;
-    }
-
-    public Long getId() {
-        return id;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public String getLink() {
-        return link;
-    }
-
-    public String getImage() {
-        return image;
-    }
-
-    public Keyword getKeyword() {
-        return keyword;
     }
 }

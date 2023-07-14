@@ -1,17 +1,15 @@
 package zipgo.domain;
 
 import java.util.Objects;
+import lombok.Getter;
 
+@Getter
 public class Keyword {
 
     private String name;
 
     public Keyword(String name) {
         this.name = name;
-    }
-
-    public String getName() {
-        return this.name;
     }
 
     @Override
