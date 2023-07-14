@@ -13,7 +13,7 @@ class KeywordTest {
         // when
         final Keyword keyword = new Keyword(name);
 
-        //given
+        // then
         assertThat(keyword.getName()).isEqualTo("다이어트");
     }
 
