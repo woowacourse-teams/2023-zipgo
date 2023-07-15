@@ -1,6 +1,5 @@
 module.exports = {
   extends: ['stylelint-config-standard', 'stylelint-config-clean-order'],
-  plugins: ['stylelint-order'],
   customSyntax: 'postcss-styled-syntax',
   rules: {
     'declaration-property-unit-allowed-list': {
