@@ -1,4 +1,4 @@
-package zipgo.integration;
+package zipgo.acceptance;
 
 import io.restassured.http.ContentType;
 import io.restassured.response.ExtractableResponse;
@@ -9,7 +9,7 @@ import zipgo.controller.dto.GetPetFoodsResponse;
 
 import static io.restassured.RestAssured.given;
 
-public class PetFoodIntegrationTest extends IntegrationTest {
+public class PetFoodAcceptanceTest extends AcceptanceTest {
     @Test
     void 모든_식품_조회_API() {
         ExtractableResponse<Response> response = given().contentType(ContentType.JSON)
@@ -27,7 +27,7 @@ public class PetFoodIntegrationTest extends IntegrationTest {
         ExtractableResponse<Response> response = given().contentType(ContentType.JSON)
                 .queryParam("keyword", "diet")
                 .when().get("/pet-foods")
-                .then().log().all().extract();
+                .then().extract();
 
         GetPetFoodsResponse data = response.body().as(GetPetFoodsResponse.class);
 
