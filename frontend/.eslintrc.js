@@ -12,13 +12,9 @@ module.exports = {
   ],
   overrides: [
     {
-      env: {
-        node: true,
-      },
+      env: { node: true },
       files: ['.eslintrc.{js,cjs}'],
-      parserOptions: {
-        sourceType: 'script',
-      },
+      parserOptions: { sourceType: 'script' },
     },
   ],
   parser: '@typescript-eslint/parser',
@@ -33,6 +29,20 @@ module.exports = {
     'no-use-before-define': 'off',
     'implicit-arrow-linebreak': 'off',
     'operator-linebreak': 'off',
+    'object-curly-newline': [
+      'error',
+      {
+        ObjectExpression: {
+          multiline: true,
+          minProperties: 2,
+        },
+        ImportDeclaration: 'never',
+        ExportDeclaration: {
+          multiline: true,
+          minProperties: 3,
+        },
+      },
+    ],
 
     'react/jsx-props-no-spreading': 'off',
     'react/react-in-jsx-scope': 'off',
