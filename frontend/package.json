@@ -86,7 +86,6 @@
     "styled-normalize": "^8.0.7"
   },
   "lint-staged": {
-    "*.{ts,tsx}": "eslint --cache --fix",
-    "*.{ts,tsx,css}": "prettier --write"
+    "**/*.{ts,tsx}": "eslint --cache --fix && prettier --write"
   }
 }
