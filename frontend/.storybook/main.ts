@@ -1,6 +1,12 @@
 import type { StorybookConfig } from '@storybook/react-webpack5';
+
+import path from 'path';
+
 const devConfig = require('../config/webpack.dev.js');
 const prodConfig = require('../config/webpack.prod.js');
+
+const wrapForPnp = <T extends string>(packageName: T): T =>
+  path.dirname(require.resolve(path.join(packageName, 'package.json'))) as T;
 
 const config: StorybookConfig = {
   stories: ['../src/**/*.mdx', '../src/**/*.stories.@(js|jsx|ts|tsx)'],
@@ -10,9 +16,10 @@ const config: StorybookConfig = {
     '@storybook/preset-create-react-app',
     '@storybook/addon-interactions',
     '@storybook/addon-actions',
+    wrapForPnp('@storybook/addon-essentials'),
   ],
   framework: {
-    name: '@storybook/react-webpack5',
+    name: wrapForPnp('@storybook/react-webpack5'),
     options: {},
   },
   docs: {
