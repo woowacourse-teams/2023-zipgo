@@ -1,8 +1,10 @@
+import GlobalStyle from '@/components/@common/GlobalStyle';
 import { Button } from '@/components/Button/Button';
 
 const App = (props: unknown) => (
-  <div>
+  <>
+    <GlobalStyle />
     <Button label="hi" />
-  </div>
+  </>
 );
 export default App;
