@@ -1,8 +1,8 @@
 package zipgo.domain;
 
-import org.junit.jupiter.api.Test;
-
 import static org.assertj.core.api.Assertions.assertThat;
+
+import org.junit.jupiter.api.Test;
 
 class KeywordTest {
     @Test
@@ -19,14 +19,11 @@ class KeywordTest {
 
     @Test
     void 아이디가_같으면_동등하다() {
-        //given
+        //when
         Keyword 키워드_1 = new Keyword(1L, "다이어트");
         Keyword 키워드_2 = new Keyword(1L, "다이어트");
 
-        //when
-        boolean 동등함 = 키워드_2.equals(키워드_1);
-
         //then
-        assertThat(동등함).isTrue();
+        assertThat(키워드_2).isEqualTo(키워드_1);
     }
 }
