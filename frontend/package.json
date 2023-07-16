@@ -6,10 +6,10 @@
     "type-check:watch": "yarn type-check --watch",
     "start:dev": "cross-env NODE_ENV=development webpack serve --config config/webpack.dev.js",
     "start:prod": "serve -s dist",
+    "start:sb": "storybook dev -p 6006",
     "build:prod": "cross-env NODE_ENV=production webpack --progress --config config/webpack.prod.js",
     "build:sb": "sb build",
-    "sb": "storybook dev -p 6006",
-    "prepare": "cd .. && husky install frontend/.husky && chmod +x ./.husky/*"
+    "postinstall": "cd .. && husky install frontend/.husky && chmod +x frontend/.husky/*"
   },
   "devDependencies": {
     "@babel/core": "^7.22.9",
