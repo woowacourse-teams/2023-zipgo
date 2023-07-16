@@ -1,10 +1,13 @@
 package zipgo.domain;
 
-import jakarta.persistence.*;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.ManyToOne;
+import java.util.Objects;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
-
-import java.util.Objects;
 
 @Getter
 @Entity
@@ -30,7 +33,7 @@ public class PetFood {
         this.imageUrl = imageUrl;
     }
 
-    public PetFood(final String name, final String purchaseLink, final String imageUrl, final Keyword keyword) {
+    public PetFood(String name, String purchaseLink, String imageUrl, Keyword keyword) {
         this.name = name;
         this.purchaseLink = purchaseLink;
         this.imageUrl = imageUrl;
@@ -39,8 +42,12 @@ public class PetFood {
 
     @Override
     public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
         PetFood petFood = (PetFood) o;
         return Objects.equals(id, petFood.id);
     }
