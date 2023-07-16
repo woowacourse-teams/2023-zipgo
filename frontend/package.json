@@ -6,9 +6,9 @@
     "type-check:watch": "yarn type-check --watch",
     "start:dev": "cross-env NODE_ENV=development webpack serve --config config/webpack.dev.js",
     "start:prod": "serve -s dist",
-    "build": "cross-env NODE_ENV=production webpack --progress --config config/webpack.prod.js",
-    "storybook": "storybook dev -p 6006",
-    "lint:styled": "stylelint './src/**/*.tsx' --fix",
+    "build:prod": "cross-env NODE_ENV=production webpack --progress --config config/webpack.prod.js",
+    "build:sb": "sb build",
+    "sb": "storybook dev -p 6006",
     "prepare": "cd .. && husky install frontend/.husky && chmod +x ./.husky/*"
   },
   "devDependencies": {
