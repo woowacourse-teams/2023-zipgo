@@ -82,7 +82,8 @@
     "axios": "^1.4.0",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
-    "react-router-dom": "^6.14.1"
+    "react-router-dom": "^6.14.1",
+    "styled-normalize": "^8.0.7"
   },
   "lint-staged": {
     "*.{ts,tsx}": "eslint --cache --fix",
