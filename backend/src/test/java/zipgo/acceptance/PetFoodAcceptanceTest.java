@@ -1,13 +1,13 @@
 package zipgo.acceptance;
 
+import static io.restassured.RestAssured.given;
+import static org.assertj.core.api.Assertions.assertThat;
+
 import io.restassured.http.ContentType;
 import io.restassured.response.ExtractableResponse;
 import io.restassured.response.Response;
-import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
 import zipgo.controller.dto.GetPetFoodsResponse;
-
-import static io.restassured.RestAssured.given;
 
 public class PetFoodAcceptanceTest extends AcceptanceTest {
     @Test
@@ -18,8 +18,8 @@ public class PetFoodAcceptanceTest extends AcceptanceTest {
 
         GetPetFoodsResponse data = response.body().as(GetPetFoodsResponse.class);
 
-        Assertions.assertThat(response.statusCode()).isEqualTo(200);
-        Assertions.assertThat(data.petFoods()).isNotEmpty();
+        assertThat(response.statusCode()).isEqualTo(200);
+        assertThat(data.petFoods()).isNotEmpty();
     }
 
     @Test
@@ -31,8 +31,8 @@ public class PetFoodAcceptanceTest extends AcceptanceTest {
 
         GetPetFoodsResponse data = response.body().as(GetPetFoodsResponse.class);
 
-        Assertions.assertThat(response.statusCode()).isEqualTo(200);
-        Assertions.assertThat(data.petFoods()).isNotEmpty();
+        assertThat(response.statusCode()).isEqualTo(200);
+        assertThat(data.petFoods()).isNotEmpty();
     }
 
     @Test
@@ -42,6 +42,6 @@ public class PetFoodAcceptanceTest extends AcceptanceTest {
                 .when().get("/pet-foods")
                 .then().extract();
 
-        Assertions.assertThat(response.statusCode()).isEqualTo(404);
+        assertThat(response.statusCode()).isEqualTo(404);
     }
 }

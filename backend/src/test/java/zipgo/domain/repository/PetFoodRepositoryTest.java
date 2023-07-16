@@ -1,17 +1,16 @@
 package zipgo.domain.repository;
 
+import static org.assertj.core.api.Assertions.assertThat;
+import static zipgo.domain.fixture.PetFoodFixture.반려동물_식품_2;
+import static zipgo.domain.fixture.PetFoodFixture.키워드가_없이_초기화된_식품;
+
+import java.util.List;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import zipgo.domain.Keyword;
 import zipgo.domain.PetFood;
 import zipgo.domain.fixture.PetFoodFixture;
-
-import java.util.List;
-
-import static org.assertj.core.api.Assertions.assertThat;
-import static zipgo.domain.fixture.PetFoodFixture.반려동물_식품_2;
-import static zipgo.domain.fixture.PetFoodFixture.키워드가_없이_초기화된_식품;
 
 @DataJpaTest
 class PetFoodRepositoryTest {
