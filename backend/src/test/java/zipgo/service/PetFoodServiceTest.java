@@ -17,6 +17,7 @@ import zipgo.exception.KeywordException;
 
 @SpringBootTest
 class PetFoodServiceTest {
+
     @Autowired
     private PetFoodRepository petFoodRepository;
 
@@ -61,4 +62,5 @@ class PetFoodServiceTest {
         assertThatThrownBy(() -> petFoodService.getPetFoodHaving(없는_키워드))
                 .isInstanceOf(KeywordException.NotFound.class);
     }
+
 }

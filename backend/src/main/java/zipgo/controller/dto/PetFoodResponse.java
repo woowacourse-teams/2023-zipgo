@@ -3,6 +3,7 @@ package zipgo.controller.dto;
 import zipgo.domain.PetFood;
 
 public record PetFoodResponse(Long id, String imageUrl, String name, String purchaseUrl) {
+
     public static PetFoodResponse from(PetFood petFood) {
         return new PetFoodResponse(
                 petFood.getId(),
@@ -11,4 +12,5 @@ public record PetFoodResponse(Long id, String imageUrl, String name, String purc
                 petFood.getPurchaseLink()
         );
     }
+
 }

@@ -24,4 +24,5 @@ class KeywordRepositoryTest {
         assertThat(조회된_키워드).isNotEmpty();
         assertThat(조회된_키워드.get().getName()).isEqualTo("diet");
     }
+
 }

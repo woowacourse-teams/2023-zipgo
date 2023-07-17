@@ -10,6 +10,7 @@ import org.junit.jupiter.api.Test;
 import zipgo.controller.dto.GetPetFoodsResponse;
 
 public class PetFoodAcceptanceTest extends AcceptanceTest {
+
     @Test
     void 모든_식품_조회_API() {
         ExtractableResponse<Response> response = given().contentType(ContentType.JSON)
@@ -44,4 +45,5 @@ public class PetFoodAcceptanceTest extends AcceptanceTest {
 
         assertThat(response.statusCode()).isEqualTo(404);
     }
+
 }

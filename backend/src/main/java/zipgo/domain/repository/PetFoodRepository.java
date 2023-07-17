@@ -6,7 +6,9 @@ import zipgo.domain.Keyword;
 import zipgo.domain.PetFood;
 
 public interface PetFoodRepository extends JpaRepository<PetFood, Long> {
+
     List<PetFood> findAll();
 
     List<PetFood> findByKeyword(Keyword keyword);
+
 }

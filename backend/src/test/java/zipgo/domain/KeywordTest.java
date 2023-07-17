@@ -5,6 +5,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import org.junit.jupiter.api.Test;
 
 class KeywordTest {
+
     @Test
     void 이름으로_Keyword_를_생성할_수_있다() {
         // given
@@ -26,4 +27,5 @@ class KeywordTest {
         //then
         assertThat(키워드_2).isEqualTo(키워드_1);
     }
+
 }

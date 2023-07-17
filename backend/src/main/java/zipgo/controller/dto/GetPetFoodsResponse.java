@@ -4,6 +4,7 @@ import java.util.List;
 import zipgo.domain.PetFood;
 
 public record GetPetFoodsResponse(List<PetFoodResponse> petFoods) {
+
     public static GetPetFoodsResponse from(List<PetFood> petFoods) {
         List<PetFoodResponse> petFoodResponses = petFoods.stream()
                 .map(petFood -> PetFoodResponse.from(petFood))
@@ -11,4 +12,5 @@ public record GetPetFoodsResponse(List<PetFoodResponse> petFoods) {
 
         return new GetPetFoodsResponse(petFoodResponses);
     }
+
 }

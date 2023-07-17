@@ -17,4 +17,5 @@ public abstract class AcceptanceTest {
     void setUp() {
         RestAssured.port = port;
     }
+
 }

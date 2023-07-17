@@ -12,6 +12,7 @@ import zipgo.exception.KeywordException;
 @Service
 @RequiredArgsConstructor
 public class PetFoodService {
+
     private final PetFoodRepository petFoodRepository;
     private final KeywordRepository keywordRepository;
 
@@ -25,4 +26,5 @@ public class PetFoodService {
 
         return petFoodRepository.findByKeyword(keyword);
     }
+
 }

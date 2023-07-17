@@ -9,8 +9,10 @@ import zipgo.exception.KeywordException;
 
 @RestControllerAdvice
 public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
+
     @ExceptionHandler({KeywordException.NotFound.class})
     public ResponseEntity<String> handleNotFoundException(Exception exception) {
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(exception.getMessage());
     }
+
 }

@@ -52,4 +52,5 @@ class PetFoodRepositoryTest {
                 "https://github.com/woowacourse-teams/2023-zipgo",
                 "https://avatars.githubusercontent.com/u/94087228?v=4", 키워드));
     }
+
 }
