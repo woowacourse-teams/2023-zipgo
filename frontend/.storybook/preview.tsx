@@ -1,4 +1,8 @@
 import type { Preview } from '@storybook/react';
+import GlobalStyle from '../src/components/@common/GlobalStyle';
+import { ThemeProvider } from 'styled-components';
+import theme from '../src/styles/theme';
+import React from 'react';
 
 const preview: Preview = {
   parameters: {
@@ -22,6 +26,15 @@ const preview: Preview = {
     },
     presetColors: [{ color: '#ff4785', title: 'Coral' }, 'rgba(0, 159, 183, 1)', '#fe4a49'],
   },
+
+  decorators: [
+    Story => (
+      <ThemeProvider theme={theme}>
+        <GlobalStyle />
+        <Story />
+      </ThemeProvider>
+    ),
+  ],
 };
 
 export default preview;
