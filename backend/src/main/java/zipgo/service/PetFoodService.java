@@ -1,5 +1,6 @@
 package zipgo.service;
 
+import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import zipgo.domain.Keyword;
@@ -7,8 +8,6 @@ import zipgo.domain.PetFood;
 import zipgo.domain.repository.KeywordRepository;
 import zipgo.domain.repository.PetFoodRepository;
 import zipgo.exception.KeywordException;
-
-import java.util.List;
 
 @Service
 @RequiredArgsConstructor

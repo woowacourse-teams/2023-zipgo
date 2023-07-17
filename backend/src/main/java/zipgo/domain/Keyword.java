@@ -1,9 +1,12 @@
 package zipgo.domain;
 
-import jakarta.persistence.*;
-import lombok.Getter;
-
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
 import java.util.Objects;
+import lombok.Getter;
 
 @Getter
 @Entity
@@ -30,8 +33,12 @@ public class Keyword {
 
     @Override
     public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
         Keyword keyword = (Keyword) o;
         return Objects.equals(id, keyword.id);
     }
