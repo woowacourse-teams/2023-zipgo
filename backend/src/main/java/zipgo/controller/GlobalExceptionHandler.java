@@ -11,8 +11,9 @@ import zipgo.exception.KeywordException;
 public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
 
     @ExceptionHandler({KeywordException.NotFound.class})
-    public ResponseEntity<String> handleNotFoundException(Exception exception) {
-        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(exception.getMessage());
+    public ResponseEntity<ErrorResponse> handleNotFoundException(Exception exception) {
+        return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                .body(ErrorResponse.of(exception));
     }
 
 }
