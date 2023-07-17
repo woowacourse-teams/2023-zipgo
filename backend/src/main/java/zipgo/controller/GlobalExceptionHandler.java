@@ -36,13 +36,16 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
                                                              HttpHeaders headers,
                                                              HttpStatusCode statusCode,
                                                              WebRequest request) {
-        if (request instanceof ServletWebRequest servletWebRequest) {
-            HttpServletResponse response = servletWebRequest.getResponse();
-            if (response != null && response.isCommitted()) {
-                return null;
-            }
+        if (isAlreadyCommitted(request)) {
+            return null;
         }
         return ResponseEntity.status(statusCode).body(ErrorResponse.of(ex));
+    }
+
+    private boolean isAlreadyCommitted(WebRequest request) {
+        ServletWebRequest servletWebRequest = (ServletWebRequest) request;
+        HttpServletResponse response = servletWebRequest.getResponse();
+        return response != null && response.isCommitted();
     }
 
 }
