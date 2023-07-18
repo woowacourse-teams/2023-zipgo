@@ -12,7 +12,7 @@ module.exports = {
   customSyntax: 'postcss-styled-syntax',
   rules: {
     'declaration-property-unit-allowed-list': {
-      '/^border/': ['px'],
+      '/^border/': ['px', '%'],
       '/^padding|^gap|^margin|^font/': ['%', 'rem', 'em'],
     },
     'unit-allowed-list': ['%', 'deg', 'px', 'rem', 'ms'],
