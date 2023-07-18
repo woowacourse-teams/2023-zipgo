@@ -6,8 +6,10 @@ import static org.assertj.core.api.Assertions.assertThat;
 import io.restassured.http.ContentType;
 import io.restassured.response.ExtractableResponse;
 import io.restassured.response.Response;
+import java.util.List;
 import org.junit.jupiter.api.Test;
 import zipgo.controller.dto.GetPetFoodsResponse;
+import zipgo.controller.dto.PetFoodResponse;
 
 public class PetFoodAcceptanceTest extends AcceptanceTest {
 
@@ -21,6 +23,19 @@ public class PetFoodAcceptanceTest extends AcceptanceTest {
 
         assertThat(response.statusCode()).isEqualTo(200);
         assertThat(data.petFoods()).isNotEmpty();
+    }
+
+    @Test
+    void petFoods를_foodList로_직렬화한다() {
+        //given
+        ExtractableResponse<Response> response = given().contentType(ContentType.JSON)
+                .when().get("/pet-foods")
+                .then().extract();
+
+        //when
+        //then
+        List<PetFoodResponse> foodList = response.jsonPath().getList("foodList", PetFoodResponse.class);
+        assertThat(foodList).isNotEmpty();
     }
 
     @Test
