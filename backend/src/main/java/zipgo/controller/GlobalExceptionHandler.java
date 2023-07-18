@@ -39,7 +39,8 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
         if (isAlreadyCommitted(request)) {
             return null;
         }
-        return ResponseEntity.status(statusCode).body(ErrorResponse.of(ex));
+        return ResponseEntity.status(statusCode)
+                .body(ErrorResponse.of(ex));
     }
 
     private boolean isAlreadyCommitted(WebRequest request) {
