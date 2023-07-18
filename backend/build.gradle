@@ -12,6 +12,10 @@ java {
     sourceCompatibility = '17'
 }
 
+jacoco {
+    toolVersion = "0.8.8"
+}
+
 configurations {
     compileOnly {
         extendsFrom annotationProcessor
@@ -42,18 +46,10 @@ tasks.named('test') {
     finalizedBy 'jacocoTestReport'
 }
 
-jacoco {
-    toolVersion = "0.8.7"
-}
-
 jacocoTestReport {
     reports {
-        xml.enabled true
-        csv.enabled true
-        html.enabled true
+        html.required = true
 
-        xml.destination file("${buildDir}/jacoco/index.xml")
-        csv.destination file("${buildDir}/jacoco/index.csv")
         html.destination file("${buildDir}/jacoco/index.html")
     }
 
@@ -88,8 +84,8 @@ jacocoTestCoverageVerification {
             excludes = [
                     '*.*Application',
                     '*.*Exception',
-                    '*.Response.*',
-                    '*.Request.*'
+                    '*.*Response',
+                    '*.*Request'
             ]
         }
     }
