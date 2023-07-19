@@ -1,60 +1,26 @@
-import { ComponentPropsWithoutRef, Dispatch, SetStateAction } from 'react';
-import { CSSProp, styled } from 'styled-components';
+import { ComponentPropsWithoutRef } from 'react';
+import { css, styled } from 'styled-components';
+
+import Checkbox from '../@common/Checkbox/Checkbox';
 
 interface FilterSwitchProps extends ComponentPropsWithoutRef<'input'> {
-  isActive: boolean;
-  setIsActive: Dispatch<SetStateAction<boolean>>;
-  labelText?: string;
-  backgroundColor?: string;
-  filterSize?: 'small' | 'medium' | 'large';
-  css?: CSSProp;
+  backgroundColor: string;
+  filterSize: 'small' | 'medium' | 'large';
 }
 
-const FilterSwitch = (filterSwitchProps: FilterSwitchProps) => {
-  const { isActive, setIsActive, labelText, filterSize = 'medium', ...props } = filterSwitchProps;
-
-  const toggleFilter = () => setIsActive(!isActive);
+const FilterSwitch = (filterSwitchProps: Partial<FilterSwitchProps>) => {
+  const { onChange, ...props } = filterSwitchProps;
 
   return (
-    <Label className={filterSize}>
-      <Checkbox
-        role="switch"
-        type="checkbox"
-        className={filterSize}
-        onChange={toggleFilter}
-        {...props}
-      />
-      <span>{labelText}</span>
-    </Label>
+    <Checkbox asChild onChange={onChange}>
+      <FilterSwitchInput {...props} />
+    </Checkbox>
   );
 };
 
 export default FilterSwitch;
 
-const Label = styled.label`
-  cursor: pointer;
-
-  display: flex;
-  gap: 1rem;
-  align-items: center;
-
-  font-weight: 700;
-  color: #333d4b;
-
-  &.small span {
-    font-size: 1.2rem;
-  }
-
-  &.medium span {
-    font-size: 1.6rem;
-  }
-
-  &.large span {
-    font-size: 1.8rem;
-  }
-`;
-
-const Checkbox = styled.input<Partial<FilterSwitchProps>>`
+const FilterSwitchInput = styled.input<Partial<FilterSwitchProps>>`
   cursor: pointer;
 
   position: relative;
@@ -64,8 +30,6 @@ const Checkbox = styled.input<Partial<FilterSwitchProps>>`
   border: 2px solid gray;
   border-color: #afb8c1;
   border-radius: 16px;
-
-  ${({ css }) => css}
 
   &::before {
     content: '';
@@ -86,38 +50,44 @@ const Checkbox = styled.input<Partial<FilterSwitchProps>>`
     left: 24px;
   }
 
-  &.small {
-    width: 36px;
-    height: 20px;
+  ${({ filterSize }) => {
+    if (filterSize === 'small') {
+      return css`
+        width: 36px;
+        height: 20px;
 
-    &::before {
-      width: 16px;
-      height: 16px;
+        &::before {
+          width: 16px;
+          height: 16px;
+        }
+
+        &:checked::before {
+          left: 16px;
+        }
+      `;
     }
 
-    &:checked::before {
-      left: 16px;
+    if (filterSize === 'large') {
+      return css`
+        width: 60px;
+        height: 28px;
+
+        &::before {
+          width: 24px;
+          height: 24px;
+        }
+
+        &:checked::before {
+          left: 32px;
+        }
+      `;
     }
-  }
 
-  &.medium {
-    width: 48px;
-    height: 24px;
-  }
-
-  &.large {
-    width: 60px;
-    height: 28px;
-
-    &::before {
-      width: 24px;
+    return css`
+      width: 48px;
       height: 24px;
-    }
-
-    &:checked::before {
-      left: 32px;
-    }
-  }
+    `;
+  }}
 
   &:checked {
     background-color: ${({ backgroundColor, theme }) => backgroundColor || theme.color.primary};

@@ -1,5 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/react';
-import React, { useState } from 'react';
+import React from 'react';
+import { styled } from 'styled-components';
 
 import theme from '../../styles/theme';
 import FilterSwitch from './FilterSwitch';
@@ -21,42 +22,57 @@ type Story = StoryObj<typeof meta>;
 
 export const Small: Story = {
   args: {
-    labelText: '다이어트 특화 식품 보기',
     filterSize: 'small',
-    css: {},
   },
 
-  render: args => {
-    const [isActive, setIsActive] = useState(false);
-
-    return <FilterSwitch {...args} isActive={isActive} setIsActive={setIsActive} />;
-  },
+  render: args => (
+    <Label filterSize={args.filterSize}>
+      <FilterSwitch {...args} />
+      다이어트 특화 식품 보기
+    </Label>
+  ),
 };
 
 export const Medium: Story = {
   args: {
-    labelText: '다이어트 특화 식품 보기',
     filterSize: 'medium',
-    css: {},
+    backgroundColor: theme.color.secondary,
   },
 
-  render: args => {
-    const [isActive, setIsActive] = useState(false);
-
-    return <FilterSwitch {...args} isActive={isActive} setIsActive={setIsActive} />;
-  },
+  render: args => (
+    <Label filterSize={args.filterSize}>
+      <FilterSwitch {...args} />
+      다이어트 특화 식품 보기
+    </Label>
+  ),
 };
 
 export const Large: Story = {
   args: {
-    labelText: '다이어트 특화 식품 보기',
     filterSize: 'large',
-    css: {},
+    backgroundColor: theme.color.success,
   },
 
-  render: args => {
-    const [isActive, setIsActive] = useState(false);
-
-    return <FilterSwitch {...args} isActive={isActive} setIsActive={setIsActive} />;
-  },
+  render: args => (
+    <Label filterSize={args.filterSize}>
+      <FilterSwitch {...args} />
+      다이어트 특화 식품 보기
+    </Label>
+  ),
 };
+
+const Label = styled.label<{ filterSize?: 'small' | 'medium' | 'large' }>`
+  cursor: pointer;
+
+  display: flex;
+  gap: 1rem;
+  align-items: center;
+
+  font-size: ${({ filterSize }) => {
+    if (filterSize === 'small') return '1.2rem';
+    if (filterSize === 'large') return '1.8rem';
+    return '1.6rem';
+  }};
+  font-weight: 700;
+  color: ${({ color }) => color || '#333d4b'};
+`;
