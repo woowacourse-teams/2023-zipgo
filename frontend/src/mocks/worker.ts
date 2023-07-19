@@ -6,10 +6,6 @@ export const worker = setupWorker(...handlers);
 
 export const startWorker = () => {
   if (process.env.NODE_ENV === 'development') {
-    worker.start({
-      serviceWorker: {
-        url: './mockServiceWorker.js',
-      },
-    });
+    worker.start({ serviceWorker: { url: './mockServiceWorker.js' } });
   }
 };
