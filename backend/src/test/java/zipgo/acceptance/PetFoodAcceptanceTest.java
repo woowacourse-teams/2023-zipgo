@@ -16,7 +16,7 @@ public class PetFoodAcceptanceTest extends AcceptanceTest {
 
     @Test
     void 모든_식품_조회_API() {
-        ExtractableResponse<Response> response = given().contentType(ContentType.JSON)
+        ExtractableResponse<Response> response = spec.given().contentType(ContentType.JSON)
                 .when().get("/pet-foods")
                 .then().extract();
 
@@ -33,8 +33,7 @@ public class PetFoodAcceptanceTest extends AcceptanceTest {
                 .when().get("/pet-foods")
                 .then().extract();
 
-        //when
-        //then
+        //when, then
         List<PetFoodResponse> foodList = response.jsonPath().getList("foodList", PetFoodResponse.class);
         assertThat(foodList).isNotEmpty();
     }
