@@ -7,7 +7,15 @@ import { startWorker } from './mocks/worker';
 
 startWorker();
 
-const queryClient = new QueryClient({ defaultOptions: { queries: { suspense: true } } });
+const queryClient = new QueryClient({
+  defaultOptions: {
+    queries: {
+      suspense: true,
+      retry: 0,
+      useErrorBoundary: true,
+    },
+  },
+});
 
 const root = ReactDOM.createRoot(document.getElementById('root') as HTMLElement);
 
