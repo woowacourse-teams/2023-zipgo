@@ -59,36 +59,6 @@ dependencies {
     swaggerUI 'org.webjars:swagger-ui:4.11.1'
 }
 
-openapi3 {
-    setServer("http://localhost:8080")
-    title = "집사의고민 API Docs"
-    description = "집사의고민 API 명세서"
-    version = "1.0.0"
-    format = "yaml"
-}
-
-tasks.withType(GenerateSwaggerUI) {
-    dependsOn 'openapi3'
-    doLast {
-        delete file('src/main/resources/static/docs/')
-        copy {
-            from outputDir.toPath()
-            into "src/main/resources/static/docs/"
-        }
-    }
-}
-
-swaggerSources {
-    zipgo {
-        setInputFile(file("src/main/resources/static/docs/openapi3.yaml"))
-    }
-}
-
-tasks.named('test') {
-    useJUnitPlatform()
-    finalizedBy 'jacocoTestReport'
-}
-
 jacocoTestReport {
     reports {
         html.required = true
@@ -132,6 +102,38 @@ jacocoTestCoverageVerification {
             ]
         }
     }
+}
+
+openapi3 {
+    setServer("http://localhost:8080")
+    title = "집사의고민 API Docs"
+    description = "집사의고민 API 명세서"
+    version = "1.0.0"
+    format = "yaml"
+}
+
+swaggerSources {
+    zipgo {
+        setInputFile(file("build/api-spec/openapi3.yaml"))
+    }
+}
+
+tasks.withType(GenerateSwaggerUI) {
+    dependsOn 'openapi3'
+}
+
+generateSwaggerUIZipgo {
+    doLast {
+        copy {
+            from outputDir.toPath()
+            into "src/main/resources/static/docs/"
+        }
+    }
+}
+
+test {
+    useJUnitPlatform()
+    finalizedBy 'jacocoTestReport'
 }
 
 build {
