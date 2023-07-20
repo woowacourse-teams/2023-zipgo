@@ -30,6 +30,7 @@ module.exports = {
     'implicit-arrow-linebreak': 'off',
     'operator-linebreak': 'off',
     'object-curly-newline': 'off',
+    'function-paren-newline': 'off',
 
     'react/jsx-props-no-spreading': 'off',
     'react/react-in-jsx-scope': 'off',

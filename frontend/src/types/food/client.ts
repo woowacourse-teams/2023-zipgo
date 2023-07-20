@@ -1,5 +1,5 @@
 export type Food = {
-  id: string;
+  id: number;
   name: string;
   imageUrl: string;
   purchaseUrl: string;
