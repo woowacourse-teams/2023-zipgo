@@ -137,3 +137,7 @@ jacocoTestCoverageVerification {
 build {
     dependsOn generateSwaggerUI
 }
+
+bootJar {
+    dependsOn generateSwaggerUI
+}
