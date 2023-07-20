@@ -20,6 +20,10 @@ const FoodItem = (foodItemProps: FoodItemProps) => {
 export default FoodItem;
 
 const FoodImage = styled.img`
+  position: absolute;
+  top: 0;
+  left: 0;
+
   width: 100%;
   height: 100%;
 
@@ -46,13 +50,16 @@ const FoodItemWrapper = styled.a`
 `;
 
 const FoodImageWrapper = styled.div`
+  position: relative;
+
   overflow: hidden;
 
   width: 100%;
-  height: 17rem;
+  height: 0;
+  padding-top: 100%;
 
   border: 1px solid ${({ theme }) => theme.color.grey200};
-  border-radius: 20px;
+  border-radius: 14%;
 `;
 
 const FoodName = styled.p`
