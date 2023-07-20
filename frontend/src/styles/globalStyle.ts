@@ -10,6 +10,10 @@ const globalStyle = css`
 
   ${normalize}
 
+  :root {
+    --vh: 100%;
+  }
+
   * {
     box-sizing: border-box;
 
