@@ -5,14 +5,21 @@ import { getComputedStyleOfSC } from '@/utils/styled-components';
 
 import Footer from './Footer/Footer';
 
-interface LayoutProps<T> {
-  header: T;
+interface FixedHeaderLayout<T> {
+  fixedHeader: T;
+  staticHeader?: never;
 }
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-const Template = <T extends React.FC<any>>(props: PropsWithChildren<LayoutProps<T>>) => {
-  const { children, header } = props;
-  const $header = header({});
+interface StaticHeaderLayout<T> {
+  fixedHeader?: never;
+  staticHeader: T;
+}
+
+const Template = <T extends React.FC>(
+  props: PropsWithChildren<FixedHeaderLayout<T> | StaticHeaderLayout<T>>,
+) => {
+  const { children, fixedHeader, staticHeader } = props;
+  const $header = fixedHeader ? fixedHeader({}) : staticHeader!({});
 
   if (!isValidElement($header)) throw new Error('Not valid header');
 
@@ -22,8 +29,8 @@ const Template = <T extends React.FC<any>>(props: PropsWithChildren<LayoutProps<
 
   return (
     <Layout>
-      {createElement(header)}
-      <Container paddingTop={paddingTop}>{children}</Container>
+      {createElement(fixedHeader ?? staticHeader!)}
+      <Container paddingTop={fixedHeader && paddingTop}>{children}</Container>
       <Footer />
     </Layout>
   );
@@ -32,13 +39,14 @@ const Template = <T extends React.FC<any>>(props: PropsWithChildren<LayoutProps<
 export default Template;
 
 const Layout = styled.div`
+  width: 100vw;
   min-height: calc(var(--vh, 1vh) * 100);
 `;
 
 const Container = styled.div<{
   paddingTop?: string;
 }>`
-  width: 100vw;
+  width: 100%;
   min-height: calc(var(--vh, 1vh) * 100);
 
   ${({ paddingTop }) =>
