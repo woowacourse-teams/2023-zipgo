@@ -12,7 +12,7 @@ const color = {
   grey600: '#3E4753',
   grey700: '#333D4B',
   black: '#1C1D20',
-};
+} as const;
 
 // 폰트
 const font = {
@@ -20,7 +20,7 @@ const font = {
     'system-ui, -apple-system, BlinkMacSystemFont, "Open Sans", "Helvetica Neue", sans-serif',
   body: 'system-ui, -apple-system, BlinkMacSystemFont, "Open Sans", "Helvetica Neue", sans-serif',
   // 추가적인 폰트 정의
-};
+} as const;
 
 // 그림자 스타일
 const shadow = {
@@ -28,7 +28,7 @@ const shadow = {
   type2: '0px 8px 20px rgba(0, 0, 0, 0.1)',
 
   top1: '0 -12px 12px -12px rgba(0,0,0,0.16)',
-};
+} as const;
 
 // 컴포넌트 스타일
 const componentStyle = {
@@ -45,7 +45,7 @@ const componentStyle = {
     // 추가적인 인풋 스타일 정의
   },
   // 추가적인 컴포넌트 스타일 정의
-};
+} as const;
 
 // 테마 객체
 const theme = {
