@@ -11,8 +11,12 @@ const Header = () => (
 export default Header;
 
 const HeaderContainer = styled.header`
+  position: fixed;
+  top: 0;
+  left: 0;
+
   width: 100vw;
-  height: 80px;
+  height: 8rem;
   padding: 2rem;
 
   background: white;
