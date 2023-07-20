@@ -69,10 +69,12 @@ openapi3 {
 
 tasks.withType(GenerateSwaggerUI) {
     dependsOn 'openapi3'
-    delete file('src/main/resources/static/docs/')
-    copy {
-        from "build/api-spec/"
-        into "src/main/resources/static/docs/"
+    doFirst {
+        delete file('src/main/resources/static/docs/')
+        copy {
+            from "build/api-spec/"
+            into "src/main/resources/static/docs/"
+        }
     }
 }
 
@@ -133,5 +135,5 @@ jacocoTestCoverageVerification {
 }
 
 build {
-    dependsOn generateSwaggerUIZipgo
+    dependsOn generateSwaggerUI
 }
