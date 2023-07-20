@@ -2,9 +2,9 @@ import { useEffect } from 'react';
 import { ThemeProvider } from 'styled-components';
 
 import GlobalStyle from '@/components/@common/GlobalStyle';
-import { Button } from '@/components/Button/Button';
 import theme from '@/styles/theme';
 
+import Landing from './pages/Landing/Landing';
 import { setScreenSize } from './utils/setScreenSize';
 
 const App = () => {
@@ -27,7 +27,7 @@ const App = () => {
   return (
     <ThemeProvider theme={theme}>
       <GlobalStyle />
-      <Button label="hi" />
+      <Landing />
     </ThemeProvider>
   );
 };
