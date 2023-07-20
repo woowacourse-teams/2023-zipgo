@@ -2,11 +2,16 @@
 const color = {
   primary: '#3E5E8E',
   secondary: '#7DA3C2',
-  background: '#F2F5FA',
-  text: '#333333',
-  success: '#64B967',
-  error: '#E74C3C',
-  // 추가적인 색상 정의
+  warning: '#E73846',
+
+  white: '#FFFFFF',
+  grey200: '#F2F4F6',
+  grey300: '#AFB8C1',
+  grey400: '#8B95A1',
+  grey500: '#4E5968',
+  grey600: '#3E4753',
+  grey700: '#333D4B',
+  black: '#1C1D20',
 };
 
 // 폰트
