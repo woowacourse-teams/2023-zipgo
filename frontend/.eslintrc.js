@@ -16,6 +16,12 @@ module.exports = {
       files: ['.eslintrc.{js,cjs}'],
       parserOptions: { sourceType: 'script' },
     },
+    {
+      files: ['**/*.stories.*'],
+      rules: {
+        'react-hooks/rules-of-hooks': 'off',
+      },
+    },
   ],
   parser: '@typescript-eslint/parser',
   parserOptions: {
