@@ -9,7 +9,7 @@ const meta = {
   tags: ['autodocs'],
   decorators: [
     (Story, { parameters }) => (
-      <div style={{ width: 390, backgroundColor: '#F2F4F6' }}>
+      <div style={{ backgroundColor: '#F2F4F6' }}>
         <Story />
       </div>
     ),
@@ -31,7 +31,7 @@ export const Primary: Story = {
           'https://www.coupang.com/vp/products/6080929259?itemId=12642998513&vendorItemId=4116327396&q=%EB%82%98%EC%9A%B0%ED%94%84%EB%A0%88%EC%8B%9C+%EA%B0%95%EC%95%84%EC%A7%80%EC%9A%A9+%EC%82%AC%EB%A3%8C&itemsCount=36&searchId=2d6ab623c99242e388be97d7302d6cfe&rank=1&isAddedCart=',
       },
       {
-        id: 0,
+        id: 1,
         name: '나우프레시 강아지용 프레시 사료',
         imageUrl:
           'https://thumbnail9.coupangcdn.com/thumbnails/remote/492x492ex/image/retail/images/4274031590551760-70458923-abd8-4338-be50-40a2d00a09b4.jpg',
@@ -39,7 +39,7 @@ export const Primary: Story = {
           'https://www.coupang.com/vp/products/6080929259?itemId=12642998513&vendorItemId=4116327396&q=%EB%82%98%EC%9A%B0%ED%94%84%EB%A0%88%EC%8B%9C+%EA%B0%95%EC%95%84%EC%A7%80%EC%9A%A9+%EC%82%AC%EB%A3%8C&itemsCount=36&searchId=2d6ab623c99242e388be97d7302d6cfe&rank=1&isAddedCart=',
       },
       {
-        id: 0,
+        id: 2,
         name: '나우프레시 강아지용 프레시 사료',
         imageUrl:
           'https://thumbnail9.coupangcdn.com/thumbnails/remote/492x492ex/image/retail/images/4274031590551760-70458923-abd8-4338-be50-40a2d00a09b4.jpg',
@@ -47,7 +47,7 @@ export const Primary: Story = {
           'https://www.coupang.com/vp/products/6080929259?itemId=12642998513&vendorItemId=4116327396&q=%EB%82%98%EC%9A%B0%ED%94%84%EB%A0%88%EC%8B%9C+%EA%B0%95%EC%95%84%EC%A7%80%EC%9A%A9+%EC%82%AC%EB%A3%8C&itemsCount=36&searchId=2d6ab623c99242e388be97d7302d6cfe&rank=1&isAddedCart=',
       },
       {
-        id: 0,
+        id: 3,
         name: '나우프레시 강아지용 프레시 사료',
         imageUrl:
           'https://thumbnail9.coupangcdn.com/thumbnails/remote/492x492ex/image/retail/images/4274031590551760-70458923-abd8-4338-be50-40a2d00a09b4.jpg',
@@ -56,5 +56,4 @@ export const Primary: Story = {
       },
     ],
   },
-  decorators: [Story => <Story />],
 };
