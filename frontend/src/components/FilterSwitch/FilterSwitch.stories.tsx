@@ -50,7 +50,7 @@ export const Medium: Story = {
 export const Large: Story = {
   args: {
     filterSize: 'large',
-    backgroundColor: theme.color.success,
+    backgroundColor: theme.color.grey600,
   },
 
   render: args => (

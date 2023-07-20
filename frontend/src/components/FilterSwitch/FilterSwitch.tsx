@@ -26,9 +26,9 @@ const FilterSwitchInput = styled.input<Partial<FilterSwitchProps>>`
   position: relative;
 
   appearance: none;
-  background-color: #afb8c1;
-  border: 2px solid gray;
-  border-color: #afb8c1;
+  background-color: ${({ theme }) => theme.color.grey300};
+  border: 2px solid ${({ theme }) => theme.color.grey200};
+  border-color: ${({ theme }) => theme.color.grey300};
   border-radius: 16px;
 
   &::before {
@@ -40,7 +40,7 @@ const FilterSwitchInput = styled.input<Partial<FilterSwitchProps>>`
     width: 20px;
     height: 20px;
 
-    background-color: white;
+    background-color: ${({ theme }) => theme.color.white};
     border-radius: 50%;
 
     transition: left 250ms linear;
@@ -98,12 +98,12 @@ const FilterSwitchInput = styled.input<Partial<FilterSwitchProps>>`
     cursor: not-allowed;
 
     opacity: 0.7;
-    background-color: #eaeaea;
-    border-color: #eaeaea;
+    background-color: ${({ theme }) => theme.color.grey400};
+    border-color: ${({ theme }) => theme.color.grey400};
   }
 
   &:disabled::before {
-    background-color: lightgray;
+    background-color: ${({ theme }) => theme.color.grey200};
   }
 
   &:disabled + span {
@@ -113,7 +113,7 @@ const FilterSwitchInput = styled.input<Partial<FilterSwitchProps>>`
   }
 
   &:focus-visible {
-    outline: 2px solid #3e5e8e;
+    outline: 2px solid ${({ theme }) => theme.color.primary};
     outline-offset: 2px;
   }
 
