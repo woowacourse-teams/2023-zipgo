@@ -1,8 +1,15 @@
 package zipgo.acceptance;
 
+import static com.epages.restdocs.apispec.RestAssuredRestDocumentationWrapper.resourceDetails;
 import static io.restassured.RestAssured.given;
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.springframework.restdocs.payload.PayloadDocumentation.fieldWithPath;
+import static org.springframework.restdocs.payload.PayloadDocumentation.responseFields;
+import static org.springframework.restdocs.request.RequestDocumentation.parameterWithName;
+import static org.springframework.restdocs.request.RequestDocumentation.queryParameters;
 
+import com.epages.restdocs.apispec.RestAssuredRestDocumentationWrapper;
+import com.epages.restdocs.apispec.Schema;
 import io.restassured.http.ContentType;
 import io.restassured.response.ExtractableResponse;
 import io.restassured.response.Response;
@@ -16,10 +23,20 @@ public class PetFoodAcceptanceTest extends AcceptanceTest {
 
     @Test
     void 모든_식품_조회_API() {
-        ExtractableResponse<Response> response = spec.given().contentType(ContentType.JSON)
+        ExtractableResponse<Response> response = given(this.spec).contentType(ContentType.JSON)
+                .filter(RestAssuredRestDocumentationWrapper.document("get-pet-foods",
+                        resourceDetails().summary("식품 목록 조회").description("모든 반려동물 식품을 조회합니다.")
+                                .responseSchema(Schema.schema("GetPetFoodResponse")),
+                        queryParameters(parameterWithName("keyword").optional().description("식품 조회 API")),
+                        responseFields(
+                                fieldWithPath("foodList").description("반려동물 식품 리스트"),
+                                fieldWithPath("foodList[].id").description("식품 id"),
+                                fieldWithPath("foodList[].name").description("식품 이름"),
+                                fieldWithPath("foodList[].imageUrl").description("식품 이미지 url"),
+                                fieldWithPath("foodList[].purchaseUrl").description("구매 링크")
+                        )))
                 .when().get("/pet-foods")
                 .then().extract();
-
         GetPetFoodsResponse data = response.body().as(GetPetFoodsResponse.class);
 
         assertThat(response.statusCode()).isEqualTo(200);

@@ -1,9 +1,8 @@
 import org.hidetake.gradle.swagger.generator.GenerateSwaggerUI
-import org.springframework.boot.gradle.tasks.bundling.BootJar
 
 buildscript {
     ext {
-        restdocsApiSpecVersion = '0.16.2'
+        restdocsApiSpecVersion = '0.18.2'
     }
 }
 
@@ -13,7 +12,6 @@ plugins {
     id 'io.spring.dependency-management' version '1.1.0'
     id 'jacoco'
 
-    id 'org.asciidoctor.convert' version '1.5.8'
     id 'com.epages.restdocs-api-spec' version "${restdocsApiSpecVersion}"
     id 'org.hidetake.swagger.generator' version '2.18.2'
 }
@@ -39,24 +37,6 @@ repositories {
     mavenCentral()
 }
 
-swaggerSources {
-    sample {
-        setInputFile(file("${project.buildDir}/api-spec/openapi3.yaml"))
-    }
-}
-
-openapi3 {
-    setServer("http://localhost:8080")
-    title = "restdocs-swagger API Documentation"
-    description = "Spring REST Docs with SwaggerUI."
-    version = "0.0.1"
-    format = "yaml"
-}
-
-ext {
-    set('snippetsDir', file("build/generated-snippets"))
-}
-
 dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
     implementation 'org.springframework.boot:spring-boot-starter-validation'
@@ -73,31 +53,38 @@ dependencies {
 
     testImplementation 'org.springframework.restdocs:spring-restdocs-restassured'
     testImplementation "com.epages:restdocs-api-spec-restassured:${restdocsApiSpecVersion}"
+    testImplementation "com.epages:restdocs-api-spec-mockmvc:${restdocsApiSpecVersion}"
     testImplementation 'io.rest-assured:rest-assured'
 
     swaggerUI 'org.webjars:swagger-ui:4.11.1'
 }
 
-tasks.withType(GenerateSwaggerUI) {
-    dependsOn 'openapi3'
+openapi3 {
+    setServer("http://localhost:8080")
+    title = "집사의고민 API Docs"
+    description = "집사의고민 API 명세서"
+    version = "1.0.0"
+    format = "yaml"
 }
 
-tasks.register('copySwaggerUI', Copy) {
-    dependsOn 'generateSwaggerUISample'
-    def generateSwaggerUISampleTask = tasks.named('generateSwaggerUISample', GenerateSwaggerUI).get()
-    from("${generateSwaggerUISampleTask.outputDir}")
-    into("${project.buildDir}/resources/main/static/docs")
+tasks.withType(GenerateSwaggerUI) {
+    dependsOn 'openapi3'
+    delete file('src/main/resources/static/docs/')
+    copy {
+        from "build/api-spec/"
+        into "src/main/resources/static/docs/"
+    }
+}
+
+swaggerSources {
+    zipgo {
+        setInputFile(file("src/main/resources/static/docs/openapi3.yaml"))
+    }
 }
 
 tasks.named('test') {
     useJUnitPlatform()
     finalizedBy 'jacocoTestReport'
-    outputs.dir snippetsDir
-}
-
-tasks.named('asciidoctor') {
-    inputs.dir snippetsDir
-    dependsOn test
 }
 
 jacocoTestReport {
@@ -143,4 +130,8 @@ jacocoTestCoverageVerification {
             ]
         }
     }
+}
+
+build {
+    dependsOn generateSwaggerUIZipgo
 }
