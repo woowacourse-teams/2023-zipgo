@@ -8,6 +8,30 @@ const getFoodList = (): GetFoodListRes => ({
       imageUrl: 'imageUrl',
       name: '맛난 사료',
     },
+    {
+      id: 2,
+      purchaseUrl: 'purchaseUrl',
+      imageUrl: 'imageUrl',
+      name: '맛난 사료',
+    },
+    {
+      id: 3,
+      purchaseUrl: 'purchaseUrl',
+      imageUrl: 'imageUrl',
+      name: '맛난 사료',
+    },
+    {
+      id: 4,
+      purchaseUrl: 'purchaseUrl',
+      imageUrl: 'imageUrl',
+      name: '맛난 사료',
+    },
+    {
+      id: 5,
+      purchaseUrl: 'purchaseUrl',
+      imageUrl: 'imageUrl',
+      name: '맛난 사료',
+    },
   ],
 });
 
