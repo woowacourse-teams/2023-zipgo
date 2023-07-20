@@ -8,7 +8,7 @@ const CopyPlugin = require('copy-webpack-plugin');
 
 const { DefinePlugin } = require('webpack');
 
-const PUBLIC_PATH = 'http://localhost:3000/';
+const PUBLIC_PATH = '/';
 
 const libListToCopy = ['axios'];
 
