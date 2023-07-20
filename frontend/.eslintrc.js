@@ -48,6 +48,7 @@ module.exports = {
 
     'simple-import-sort/imports': 'error',
     'simple-import-sort/exports': 'error',
+    'import/prefer-default-export': 'off',
     'import/first': 'error',
     'import/newline-after-import': 'error',
     'import/no-duplicates': 'error',
@@ -60,6 +61,7 @@ module.exports = {
         ts: 'never',
         tsx: 'never',
         svg: 'always',
+        png: 'always',
       },
     ],
   },

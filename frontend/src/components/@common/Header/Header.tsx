@@ -1,6 +1,6 @@
 import { styled } from 'styled-components';
 
-import ZipgoLogo from '@/assets/zipgo_logo.svg';
+import ZipgoLogo from '@/assets/svg/zipgo_logo_light.svg';
 
 const Header = () => (
   <HeaderContainer>
@@ -11,10 +11,11 @@ const Header = () => (
 export default Header;
 
 const HeaderContainer = styled.header`
+  z-index: 9999;
+
   width: 100vw;
-  height: 80px;
+  height: 8rem;
   padding: 2rem;
 
-  background: white;
-  box-shadow: 0 2px 16px 0 rgb(0 0 0 / 15%);
+  background: transparent;
 `;

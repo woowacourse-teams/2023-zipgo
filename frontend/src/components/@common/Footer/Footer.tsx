@@ -18,7 +18,7 @@ const FooterContainer = styled.footer`
   justify-content: center;
 
   width: 100vw;
-  height: 127px;
+  height: 12.7rem;
   padding: 3.2rem;
 
   background-color: #333d4b;
