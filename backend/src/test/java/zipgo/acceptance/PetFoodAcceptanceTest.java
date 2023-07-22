@@ -83,16 +83,17 @@ public class PetFoodAcceptanceTest extends AcceptanceTest {
 
         @Test
         void 존재하지_않는_키워드로_요청한다() {
-            var 요청_준비 =
-                    given(spec)
-                            .contentType(ContentType.JSON)
-                            .filter(존재하지_않는_키워드_예외_문서_생성())
-                            .queryParam("keyword", "존재하지 않는 키워드");
+            // given
+            var 요청_준비 = given(spec)
+                    .contentType(ContentType.JSON)
+                    .filter(존재하지_않는_키워드_예외_문서_생성())
+                    .queryParam("keyword", "존재하지 않는 키워드");
 
-            var 응답 = 요청_준비
-                    .when()
+            // when
+            var 응답 = 요청_준비.when()
                     .get("/pet-foods");
 
+            // then
             응답.then()
                     .assertThat().statusCode(HttpStatus.NOT_FOUND.value())
                     .assertThat().body("message", containsString("키워드를 찾을 수 없습니다."));
