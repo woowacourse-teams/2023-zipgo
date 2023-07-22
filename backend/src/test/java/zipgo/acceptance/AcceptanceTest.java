@@ -20,7 +20,6 @@ import org.springframework.test.context.junit.jupiter.SpringExtension;
 @Sql(scripts = {"classpath:truncate.sql", "classpath:data.sql"})
 public abstract class AcceptanceTest {
 
-    protected static final String DEFAULT_RESTDOC_PATH = "{class_name}/{method_name}/";
     protected RequestSpecification spec;
 
     @LocalServerPort

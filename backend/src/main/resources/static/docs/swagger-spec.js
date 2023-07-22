@@ -13,9 +13,9 @@ window.swaggerSpec={
     "/pet-foods" : {
       "get" : {
         "tags" : [ "pet-foods" ],
-        "summary" : "식품 목록 조회",
+        "summary" : "식품 목록 조회 성공",
         "description" : "모든 반려동물 식품을 조회합니다.",
-        "operationId" : "get-pet-foods",
+        "operationId" : "get-pet-foods식품 목록 조회 성공식품 목록 조회 실패",
         "parameters" : [ {
           "name" : "keyword",
           "in" : "query",
@@ -34,8 +34,26 @@ window.swaggerSpec={
                   "$ref" : "#/components/schemas/GetPetFoodResponse"
                 },
                 "examples" : {
+                  "식품 목록 조회 성공" : {
+                    "value" : "{\n  \"foodList\" : [ {\n    \"id\" : 1,\n    \"imageUrl\" : \"https://avatars.githubusercontent.com/u/94087228?v=4\",\n    \"name\" : \"[고집] 돌아온 배배\",\n    \"purchaseUrl\" : \"https://github.com/woowacourse-teams/2023-zipgo\"\n  }, {\n    \"id\" : 2,\n    \"imageUrl\" : \"https://avatars.githubusercontent.com/u/76938931?v=4\",\n    \"name\" : \"[고집] 갈비 맛 모밀\",\n    \"purchaseUrl\" : \"https://github.com/woowacourse-teams/2023-zipgo\"\n  } ]\n}"
+                  },
                   "get-pet-foods" : {
                     "value" : "{\n  \"foodList\" : [ {\n    \"id\" : 1,\n    \"imageUrl\" : \"https://avatars.githubusercontent.com/u/94087228?v=4\",\n    \"name\" : \"[고집] 돌아온 배배\",\n    \"purchaseUrl\" : \"https://github.com/woowacourse-teams/2023-zipgo\"\n  }, {\n    \"id\" : 2,\n    \"imageUrl\" : \"https://avatars.githubusercontent.com/u/76938931?v=4\",\n    \"name\" : \"[고집] 갈비 맛 모밀\",\n    \"purchaseUrl\" : \"https://github.com/woowacourse-teams/2023-zipgo\"\n  } ]\n}"
+                  }
+                }
+              }
+            }
+          },
+          "404" : {
+            "description" : "404",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/pet-foods486549215"
+                },
+                "examples" : {
+                  "식품 목록 조회 실패" : {
+                    "value" : "{\n  \"message\" : \"이름이 존재하지 않는 키워드 인 키워드를 찾을 수 없습니다.\"\n}"
                   }
                 }
               }
@@ -77,6 +95,9 @@ window.swaggerSpec={
             }
           }
         }
+      },
+      "pet-foods486549215" : {
+        "type" : "object"
       }
     }
   }
