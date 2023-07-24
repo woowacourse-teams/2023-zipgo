@@ -3,9 +3,11 @@ import { GetFoodListReq, GetFoodListRes } from '@/types/food/remote';
 import { client } from '.';
 
 export const getFoodList = async ({ keyword }: GetFoodListReq) => {
-  const { data } = await client.get<GetFoodListRes>(
-    `/api/v1/foodList?keyword=${keyword.join(',')}`,
-  );
+  const { data } = await client.get<GetFoodListRes>('/pet-foods', {
+    params: {
+      keyword: keyword.length ? keyword.join(',') : undefined,
+    },
+  });
 
   return data;
 };
