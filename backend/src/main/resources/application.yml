@@ -1,10 +1,5 @@
-spring:
-  datasource:
-    driver-class-name: com.mysql.cj.jdbc.Driver
-
 ---
-
+# application
 spring:
-  config:
-    active:
-      on-profile: rosie
+  profiles:
+    active: dev

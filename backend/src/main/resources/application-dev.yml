@@ -15,16 +15,16 @@ spring:
     database-platform: org.hibernate.dialect.MySQL57Dialect
     generate-ddl: true
     hibernate:
-      ddl-auto: none
+      ddl-auto: create
     properties:
       hibernate:
         format_sql: true
         show_sql: true
     open-in-view: false
+    defer-datasource-initialization: true
+
+  sql:
+    init:
+      mode: never
 
 ---
-# log
-logging:
-  level:
-    org.hibernate.SQL: error
-    org.hibernate.type: error
