@@ -1,8 +1,19 @@
+import org.hidetake.gradle.swagger.generator.GenerateSwaggerUI
+
+buildscript {
+    ext {
+        restdocsApiSpecVersion = '0.18.2'
+    }
+}
+
 plugins {
     id 'java'
     id 'org.springframework.boot' version '3.1.1'
     id 'io.spring.dependency-management' version '1.1.0'
     id 'jacoco'
+
+    id 'com.epages.restdocs-api-spec' version "${restdocsApiSpecVersion}"
+    id 'org.hidetake.swagger.generator' version '2.18.2'
 }
 
 group = 'zipgo'
@@ -39,11 +50,13 @@ dependencies {
 
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
     testImplementation 'io.rest-assured:rest-assured:5.3.1'
-}
 
-tasks.named('test') {
-    useJUnitPlatform()
-    finalizedBy 'jacocoTestReport'
+    testImplementation 'org.springframework.restdocs:spring-restdocs-restassured'
+    testImplementation "com.epages:restdocs-api-spec-restassured:${restdocsApiSpecVersion}"
+    testImplementation "com.epages:restdocs-api-spec-mockmvc:${restdocsApiSpecVersion}"
+    testImplementation 'io.rest-assured:rest-assured'
+
+    swaggerUI 'org.webjars:swagger-ui:4.11.1'
 }
 
 jacocoTestReport {
@@ -89,4 +102,44 @@ jacocoTestCoverageVerification {
             ]
         }
     }
+}
+
+openapi3 {
+    setServer("http://localhost:8080")
+    title = "집사의고민 API Docs"
+    description = "집사의고민 API 명세서"
+    version = "1.0.0"
+    format = "yaml"
+}
+
+swaggerSources {
+    zipgo {
+        setInputFile(file("build/api-spec/openapi3.yaml"))
+    }
+}
+
+tasks.withType(GenerateSwaggerUI) {
+    dependsOn 'openapi3'
+}
+
+generateSwaggerUIZipgo {
+    doLast {
+        copy {
+            from outputDir.toPath()
+            into "src/main/resources/static/docs/"
+        }
+    }
+}
+
+test {
+    useJUnitPlatform()
+    finalizedBy 'jacocoTestReport'
+}
+
+build {
+    dependsOn generateSwaggerUI
+}
+
+bootJar {
+    dependsOn generateSwaggerUI
 }
