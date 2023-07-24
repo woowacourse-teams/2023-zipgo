@@ -5,7 +5,9 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import zipgo.petfood.domain.Keyword;
 import zipgo.petfood.domain.PetFood;
 
-public interface PetFoodRepository extends JpaRepository<PetFood, Long> {
+public interface PetFoodRepository {
+
+    PetFood save(PetFood petFood);
 
     List<PetFood> findAll();
 
