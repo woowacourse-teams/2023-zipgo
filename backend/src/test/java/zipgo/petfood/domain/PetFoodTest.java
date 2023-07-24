@@ -1,4 +1,4 @@
-package zipgo.domain;
+package zipgo.petfood.domain;
 
 import static org.assertj.core.api.Assertions.assertThat;
 

@@ -1,4 +1,4 @@
-package zipgo.petfood.controller;
+package zipgo.petfood.presentation;
 
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.extern.log4j.Log4j2;
@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.context.request.ServletWebRequest;
 import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
-import zipgo.petfood.controller.dto.ErrorResponse;
+import zipgo.petfood.presentation.dto.ErrorResponse;
 import zipgo.petfood.exception.KeywordException.NotFound;
 
 @RestControllerAdvice

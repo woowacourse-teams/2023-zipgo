@@ -1,4 +1,4 @@
-package zipgo.domain.fixture;
+package zipgo.petfood.domain.fixture;
 
 import zipgo.petfood.domain.PetFood;
 

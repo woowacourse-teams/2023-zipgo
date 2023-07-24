@@ -1,4 +1,4 @@
-package zipgo.domain.repository;
+package zipgo.petfood.domain.repository;
 
 import static org.assertj.core.api.Assertions.assertThat;
 

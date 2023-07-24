@@ -1,4 +1,4 @@
-package zipgo.petfood.service;
+package zipgo.petfood.application;
 
 import java.util.List;
 import lombok.RequiredArgsConstructor;
