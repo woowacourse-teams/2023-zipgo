@@ -1,4 +1,4 @@
-package zipgo.controller;
+package zipgo.petfood.controller;
 
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.extern.log4j.Log4j2;
@@ -11,14 +11,14 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.context.request.ServletWebRequest;
 import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
-import zipgo.controller.dto.ErrorResponse;
-import zipgo.exception.KeywordException;
+import zipgo.petfood.controller.dto.ErrorResponse;
+import zipgo.petfood.exception.KeywordException.NotFound;
 
 @RestControllerAdvice
 @Log4j2
 public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
 
-    @ExceptionHandler({KeywordException.NotFound.class})
+    @ExceptionHandler({NotFound.class})
     public ResponseEntity<ErrorResponse> handleNotFoundException(Exception exception) {
         return ResponseEntity.status(HttpStatus.NOT_FOUND)
                 .body(ErrorResponse.of(exception));

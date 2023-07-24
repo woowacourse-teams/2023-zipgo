@@ -9,11 +9,12 @@ import java.util.List;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import zipgo.domain.Keyword;
-import zipgo.domain.PetFood;
-import zipgo.domain.repository.KeywordRepository;
-import zipgo.domain.repository.PetFoodRepository;
-import zipgo.exception.KeywordException;
+import zipgo.petfood.domain.Keyword;
+import zipgo.petfood.domain.PetFood;
+import zipgo.petfood.domain.repository.KeywordRepository;
+import zipgo.petfood.domain.repository.PetFoodRepository;
+import zipgo.petfood.exception.KeywordException;
+import zipgo.petfood.service.PetFoodService;
 
 @SpringBootTest
 class PetFoodServiceTest {

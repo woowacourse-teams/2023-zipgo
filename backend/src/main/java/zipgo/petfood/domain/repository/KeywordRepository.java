@@ -1,8 +1,8 @@
-package zipgo.domain.repository;
+package zipgo.petfood.domain.repository;
 
 import java.util.Optional;
 import org.springframework.data.jpa.repository.JpaRepository;
-import zipgo.domain.Keyword;
+import zipgo.petfood.domain.Keyword;
 
 public interface KeywordRepository extends JpaRepository<Keyword, Long> {
 

@@ -1,4 +1,4 @@
-package zipgo.controller.dto;
+package zipgo.petfood.controller.dto;
 
 public record ErrorResponse(
         String message

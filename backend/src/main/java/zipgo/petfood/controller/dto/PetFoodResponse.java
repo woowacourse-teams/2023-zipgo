@@ -1,6 +1,6 @@
-package zipgo.controller.dto;
+package zipgo.petfood.controller.dto;
 
-import zipgo.domain.PetFood;
+import zipgo.petfood.domain.PetFood;
 
 public record PetFoodResponse(Long id, String imageUrl, String name, String purchaseUrl) {
 

@@ -1,4 +1,4 @@
-package zipgo.domain;
+package zipgo.petfood.domain;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;

@@ -11,7 +11,8 @@ import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.mock.mockito.SpyBean;
 import org.springframework.web.HttpMediaTypeNotSupportedException;
 import zipgo.acceptance.AcceptanceTest;
-import zipgo.controller.dto.ErrorResponse;
+import zipgo.petfood.controller.PetFoodController;
+import zipgo.petfood.controller.dto.ErrorResponse;
 
 class GlobalExceptionHandlerTest extends AcceptanceTest {
 

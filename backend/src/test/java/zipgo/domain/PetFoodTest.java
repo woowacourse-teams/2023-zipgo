@@ -3,6 +3,7 @@ package zipgo.domain;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import org.junit.jupiter.api.Test;
+import zipgo.petfood.domain.PetFood;
 
 class PetFoodTest {
 

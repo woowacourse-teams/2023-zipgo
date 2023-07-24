@@ -1,9 +1,9 @@
-package zipgo.domain.repository;
+package zipgo.petfood.domain.repository;
 
 import java.util.List;
 import org.springframework.data.jpa.repository.JpaRepository;
-import zipgo.domain.Keyword;
-import zipgo.domain.PetFood;
+import zipgo.petfood.domain.Keyword;
+import zipgo.petfood.domain.PetFood;
 
 public interface PetFoodRepository extends JpaRepository<PetFood, Long> {
 

@@ -1,6 +1,6 @@
 package zipgo.domain.fixture;
 
-import zipgo.domain.PetFood;
+import zipgo.petfood.domain.PetFood;
 
 public class PetFoodFixture {
 

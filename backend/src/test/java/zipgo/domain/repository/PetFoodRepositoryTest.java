@@ -7,8 +7,10 @@ import java.util.List;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
-import zipgo.domain.Keyword;
-import zipgo.domain.PetFood;
+import zipgo.petfood.domain.Keyword;
+import zipgo.petfood.domain.PetFood;
+import zipgo.petfood.domain.repository.KeywordRepository;
+import zipgo.petfood.domain.repository.PetFoodRepository;
 
 @DataJpaTest
 class PetFoodRepositoryTest {

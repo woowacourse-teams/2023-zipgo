@@ -1,13 +1,13 @@
-package zipgo.service;
+package zipgo.petfood.service;
 
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-import zipgo.domain.Keyword;
-import zipgo.domain.PetFood;
-import zipgo.domain.repository.KeywordRepository;
-import zipgo.domain.repository.PetFoodRepository;
-import zipgo.exception.KeywordException;
+import zipgo.petfood.domain.Keyword;
+import zipgo.petfood.domain.PetFood;
+import zipgo.petfood.domain.repository.KeywordRepository;
+import zipgo.petfood.domain.repository.PetFoodRepository;
+import zipgo.petfood.exception.KeywordException;
 
 @Service
 @RequiredArgsConstructor

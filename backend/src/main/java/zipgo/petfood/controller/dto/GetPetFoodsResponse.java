@@ -1,8 +1,8 @@
-package zipgo.controller.dto;
+package zipgo.petfood.controller.dto;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
-import zipgo.domain.PetFood;
+import zipgo.petfood.domain.PetFood;
 
 public record GetPetFoodsResponse(@JsonProperty(value = "foodList") List<PetFoodResponse> petFoods) {
 
