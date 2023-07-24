@@ -11,7 +11,6 @@ import static org.springframework.restdocs.payload.PayloadDocumentation.response
 import static org.springframework.restdocs.request.RequestDocumentation.parameterWithName;
 import static org.springframework.restdocs.request.RequestDocumentation.queryParameters;
 
-import com.epages.restdocs.apispec.ResourceSnippetDetails;
 import com.epages.restdocs.apispec.RestAssuredRestDocumentationWrapper;
 import com.epages.restdocs.apispec.Schema;
 import io.restassured.http.ContentType;
@@ -45,8 +44,8 @@ public class PetFoodAcceptanceTest extends AcceptanceTest {
         }
 
         private RestDocumentationFilter 식품_목록_조회_API_문서_생성() {
-            Schema 응답_형식 = Schema.schema("GetPetFoodResponse");
-            ResourceSnippetDetails 문서_정보 = resourceDetails().summary("식품 목록 조회 성공")
+            var 응답_형식 = Schema.schema("GetPetFoodResponse");
+            var 문서_정보 = resourceDetails().summary("식품 목록 조회 성공")
                     .description("모든 반려동물 식품을 조회합니다.")
                     .responseSchema(응답_형식);
 
@@ -101,8 +100,8 @@ public class PetFoodAcceptanceTest extends AcceptanceTest {
         }
 
         private RestDocumentationFilter 존재하지_않는_키워드_예외_문서_생성() {
-            Schema 응답_형식 = Schema.schema("ErrorResponse");
-            ResourceSnippetDetails 문서_정보 = resourceDetails().summary("식품 목록 조회 성공")
+            var 응답_형식 = Schema.schema("ErrorResponse");
+            var 문서_정보 = resourceDetails().summary("식품 목록 조회 성공")
                     .description("모든 반려동물 식품을 조회합니다.")
                     .responseSchema(응답_형식);
 
