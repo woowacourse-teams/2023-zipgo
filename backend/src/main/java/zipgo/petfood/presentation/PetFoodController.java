@@ -7,9 +7,9 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
-import zipgo.petfood.presentation.dto.GetPetFoodsResponse;
-import zipgo.petfood.domain.PetFood;
 import zipgo.petfood.application.PetFoodService;
+import zipgo.petfood.domain.PetFood;
+import zipgo.petfood.presentation.dto.GetPetFoodsResponse;
 
 @RestController
 @RequestMapping("/pet-foods")

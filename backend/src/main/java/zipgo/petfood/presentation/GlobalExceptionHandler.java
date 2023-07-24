@@ -11,8 +11,8 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.context.request.ServletWebRequest;
 import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
-import zipgo.petfood.presentation.dto.ErrorResponse;
 import zipgo.petfood.exception.KeywordException.NotFound;
+import zipgo.petfood.presentation.dto.ErrorResponse;
 
 @RestControllerAdvice
 @Log4j2
