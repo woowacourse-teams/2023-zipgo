@@ -39,7 +39,7 @@ const Landing = () => {
         </BannerSection>
         <ToggleBox>
           <FilterSwitch id="filter" onChange={onToggle} />
-          <ToggleLabel htmlFor="filter">다이어트 특식</ToggleLabel>
+          <ToggleLabel htmlFor="filter">다이어트 특화 식품 보기</ToggleLabel>
         </ToggleBox>
         <ListSection>
           <FoodList foodListData={foodList} />
