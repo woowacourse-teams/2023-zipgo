@@ -5,7 +5,7 @@ import { client } from '.';
 export const getFoodList = async ({ keyword }: GetFoodListReq) => {
   const { data } = await client.get<GetFoodListRes>('/pet-foods', {
     params: {
-      keyword: Boolean(keyword.length) ?? keyword.join(','),
+      keyword: Boolean(keyword.length) ? keyword.join(',') : undefined,
     },
   });
 

@@ -37,6 +37,7 @@ module.exports = {
     'operator-linebreak': 'off',
     'object-curly-newline': 'off',
     'function-paren-newline': 'off',
+    'no-extra-boolean-cast': 'off',
 
     'react/jsx-props-no-spreading': 'off',
     'react/react-in-jsx-scope': 'off',
