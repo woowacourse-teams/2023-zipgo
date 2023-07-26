@@ -5,7 +5,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.junit.jupiter.api.Assertions.assertAll;
 import static org.mockito.Mockito.when;
-import static zipgo.petfood.domain.fixture.PetFoodFixture.키워드_있이_식품_초기화;
+import static zipgo.petfood.domain.fixture.PetFoodFixture.키워드_있는_식품_초기화;
 
 import java.util.List;
 import org.junit.jupiter.api.DisplayNameGeneration;
@@ -40,7 +40,7 @@ class PetFoodServiceTest {
     void 키워드가_다이어트인_식품_목록을_조회한다() {
         // given
         Keyword 키워드 = new Keyword(1L, "diet");
-        PetFood 다이어트_키워드_식품 = 키워드_있이_식품_초기화(키워드);
+        PetFood 다이어트_키워드_식품 = 키워드_있는_식품_초기화(키워드);
 
         when(keywordRepository.findByName("diet")).thenReturn(of(키워드));
         when(petFoodRepository.findByKeyword(키워드)).thenReturn(List.of(다이어트_키워드_식품));
@@ -50,8 +50,8 @@ class PetFoodServiceTest {
 
         // then
         assertAll(
-            () -> assertThat(조회_결과).contains(다이어트_키워드_식품),
-            () -> assertThat(조회_결과).hasSize(1)
+                () -> assertThat(조회_결과).contains(다이어트_키워드_식품),
+                () -> assertThat(조회_결과).hasSize(1)
         );
     }
 

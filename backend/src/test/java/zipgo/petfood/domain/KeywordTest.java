@@ -15,7 +15,9 @@ class KeywordTest {
         String name = "다이어트";
 
         // when
-        Keyword keyword = new Keyword(name);
+        Keyword keyword = Keyword.builder()
+                .name(name)
+                .build();
 
         // then
         assertThat(keyword.getName()).isEqualTo("다이어트");
