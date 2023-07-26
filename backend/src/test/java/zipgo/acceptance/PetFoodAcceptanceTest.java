@@ -15,11 +15,14 @@ import com.epages.restdocs.apispec.RestAssuredRestDocumentationWrapper;
 import com.epages.restdocs.apispec.Schema;
 import io.restassured.http.ContentType;
 import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.DisplayNameGeneration;
+import org.junit.jupiter.api.DisplayNameGenerator.ReplaceUnderscores;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import org.springframework.http.HttpStatus;
 import org.springframework.restdocs.restassured.RestDocumentationFilter;
 
+@DisplayNameGeneration(ReplaceUnderscores.class)
 public class PetFoodAcceptanceTest extends AcceptanceTest {
 
     @Nested
