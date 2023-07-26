@@ -1,56 +1,58 @@
 package zipgo.petfood.service;
 
+import static java.util.Optional.of;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.junit.jupiter.api.Assertions.assertAll;
-import static zipgo.petfood.domain.fixture.PetFoodFixture.키워드_없이_식품_초기화;
+import static org.mockito.Mockito.when;
+import static zipgo.petfood.domain.fixture.PetFoodFixture.키워드_있이_식품_초기화;
 
 import java.util.List;
 import org.junit.jupiter.api.DisplayNameGeneration;
 import org.junit.jupiter.api.DisplayNameGenerator.ReplaceUnderscores;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.junit.jupiter.MockitoExtension;
 import zipgo.petfood.application.PetFoodService;
 import zipgo.petfood.domain.Keyword;
 import zipgo.petfood.domain.PetFood;
 import zipgo.petfood.domain.repository.KeywordRepository;
 import zipgo.petfood.domain.repository.PetFoodRepository;
 import zipgo.petfood.exception.KeywordException;
-import zipgo.petfood.stub.FakeKeywordRepository;
-import zipgo.petfood.stub.FakePetFoodRepository;
 
+@ExtendWith(MockitoExtension.class)
 @DisplayNameGeneration(ReplaceUnderscores.class)
 class PetFoodServiceTest {
 
-    private PetFoodRepository petFoodRepository = new FakePetFoodRepository();
+    @InjectMocks
+    private PetFoodService petFoodService;
 
-    private KeywordRepository keywordRepository = new FakeKeywordRepository();
+    @Mock
+    private PetFoodRepository petFoodRepository;
 
-    private PetFoodService petFoodService = new PetFoodService(petFoodRepository, keywordRepository);
+    @Mock
+    private KeywordRepository keywordRepository;
+
 
     @Test
     void 키워드가_다이어트인_식품_목록을_조회한다() {
         // given
-        PetFood 키워드가_없는_식품 = petFoodRepository.save(키워드_없이_식품_초기화());
-        PetFood 다이어트_키워드_식품 = 다이어트_키워드_식품_저장();
+        Keyword 키워드 = new Keyword(1L, "diet");
+        PetFood 다이어트_키워드_식품 = 키워드_있이_식품_초기화(키워드);
+
+        when(keywordRepository.findByName("diet")).thenReturn(of(키워드));
+        when(petFoodRepository.findByKeyword(키워드)).thenReturn(List.of(다이어트_키워드_식품));
 
         // when
         List<PetFood> 조회_결과 = petFoodService.getPetFoodHaving("diet");
 
         // then
-        assertAll(() -> {
-            assertThat(조회_결과).contains(다이어트_키워드_식품);
-            assertThat(조회_결과).doesNotContain(키워드가_없는_식품);
-        });
-    }
-
-    private PetFood 다이어트_키워드_식품_저장() {
-        Keyword keyword = keywordRepository.save(new Keyword("diet"));
-        PetFood 다이어트_키워드_식품 = petFoodRepository.save(
-                new PetFood("[고집] 돌아온 배배",
-                        "https://github.com/woowacourse-teams/2023-zipgo",
-                        "https://avatars.githubusercontent.com/u/94087228?v=4",
-                        keyword));
-        return 다이어트_키워드_식품;
+        assertAll(
+            () -> assertThat(조회_결과).contains(다이어트_키워드_식품),
+            () -> assertThat(조회_결과).hasSize(1)
+        );
     }
 
     @Test
