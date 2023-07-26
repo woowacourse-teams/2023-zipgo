@@ -11,14 +11,15 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.context.request.ServletWebRequest;
 import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
-import zipgo.petfood.exception.KeywordException.NotFound;
+import zipgo.petfood.exception.KeywordException;
+import zipgo.petfood.exception.PetFoodException;
 import zipgo.petfood.presentation.dto.ErrorResponse;
 
 @RestControllerAdvice
 @Log4j2
 public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
 
-    @ExceptionHandler({NotFound.class})
+    @ExceptionHandler({KeywordException.NotFound.class, PetFoodException.NotFound.class})
     public ResponseEntity<ErrorResponse> handleNotFoundException(Exception exception) {
         return ResponseEntity.status(HttpStatus.NOT_FOUND)
                 .body(ErrorResponse.of(exception));

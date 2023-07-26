@@ -9,6 +9,7 @@ import static org.hamcrest.Matchers.not;
 import static org.springframework.restdocs.payload.PayloadDocumentation.fieldWithPath;
 import static org.springframework.restdocs.payload.PayloadDocumentation.responseFields;
 import static org.springframework.restdocs.request.RequestDocumentation.parameterWithName;
+import static org.springframework.restdocs.request.RequestDocumentation.pathParameters;
 import static org.springframework.restdocs.request.RequestDocumentation.queryParameters;
 
 import com.epages.restdocs.apispec.RestAssuredRestDocumentationWrapper;
@@ -21,6 +22,7 @@ import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import org.springframework.http.HttpStatus;
 import org.springframework.restdocs.restassured.RestDocumentationFilter;
+import org.springframework.test.context.jdbc.Sql;
 
 @DisplayNameGeneration(ReplaceUnderscores.class)
 public class PetFoodAcceptanceTest extends AcceptanceTest {
@@ -105,6 +107,110 @@ public class PetFoodAcceptanceTest extends AcceptanceTest {
         private RestDocumentationFilter 존재하지_않는_키워드_예외_문서_생성() {
             var 응답_형식 = Schema.schema("ErrorResponse");
             var 문서_정보 = resourceDetails().summary("식품 목록 조회 성공")
+                    .description("모든 반려동물 식품을 조회합니다.")
+                    .responseSchema(응답_형식);
+
+            return RestAssuredRestDocumentationWrapper.document("식품 목록 조회 실패", 문서_정보);
+        }
+
+    }
+
+    @Nested
+    @DisplayName("식품 상세 조회 API")
+    class GetPetFood {
+
+        @Test
+        void 올바른_요청() {
+            // given
+            Long 모의_식품_아이디 = 모의_식품_생성();
+
+            var 요청_준비 = given(spec)
+                    .contentType(ContentType.JSON)
+                    .filter(식품_상세_조회_API_문서_생성());
+
+            // when
+            var 응답 = 요청_준비.when()
+                    .pathParam("id", 모의_식품_아이디)
+                    .get("/pet-foods/{id}");
+
+            // then
+            응답.then()
+                    .log().all()
+                    .assertThat().statusCode(HttpStatus.OK.value());
+        }
+
+        @Sql("./insert-pet-food.sql")
+        private Long 모의_식품_생성() {
+            // todo: 데이터베이스 추가
+            return 1L;
+        }
+
+        private RestDocumentationFilter 식품_상세_조회_API_문서_생성() {
+            var 응답_형식 = Schema.schema("GetPetFoodResponse");
+            var 문서_정보 = resourceDetails().summary("식품 상세 정보 조회 성공")
+                    .description("id에 해당하는 식품 상세정보를 조회합니다.")
+                    .responseSchema(응답_형식);
+
+            return RestAssuredRestDocumentationWrapper.document("식품 상세 정보 조회 성공",
+                    문서_정보,
+                    pathParameters(parameterWithName("id").description("조회할 상품 id")),
+                    responseFields(
+                            fieldWithPath("id").description("식품 id"),
+                            fieldWithPath("name").description("식품 이름"),
+                            fieldWithPath("imageUrl").description("식품 이미지 url"),
+                            fieldWithPath("purchaseUrl").description("구매링크"),
+                            fieldWithPath("rating").description("평균 별점"),
+                            fieldWithPath("reviewCount").description("리뷰수"),
+                            fieldWithPath("proteinSource.primary").description("주 단백질원"),
+                            fieldWithPath("proteinSource.secondary").description("기타 단백질원"),
+                            fieldWithPath("hasStandard.us").description("미국 기준 충족 여부"),
+                            fieldWithPath("hasStandard.eu").description("유럽 기준 충족 여부"),
+                            fieldWithPath("functionality").description("기능성"),
+                            fieldWithPath("brand.name").description("브랜드명"),
+                            fieldWithPath("brand.state").description("브랜드 국가"),
+                            fieldWithPath("brand.foundedYear").description("브랜드 설립연도"),
+                            fieldWithPath("brand.hasResearchCenter").description("브랜드 연구 기관 존재 여부"),
+                            fieldWithPath("brand.hasResidentVet").description("상주 수의사 존재 여부")
+                    ));
+        }
+
+        @Test
+        void 존재하지_않는_아이디로_요청한다() { // TODO: 예외처리
+            //given
+            var 요청_준비 = given(spec)
+                    .contentType(ContentType.JSON)
+                    .filter(API_예외응답_문서_생성());
+
+            // when
+            var 응답 = 요청_준비.when()
+                    .pathParam("id", 1000000000000232323L)
+                    .get("/pet-foods/{id}");
+
+            // then
+            응답.then()
+                    .assertThat().statusCode(HttpStatus.NOT_FOUND.value());
+        }
+
+        @Test
+        void 올바르지_않은_형식의_아이디로_요청한다() {
+            //given
+            var 요청_준비 = given(spec)
+                    .contentType(ContentType.JSON)
+                    .filter(API_예외응답_문서_생성());
+
+            // when
+            var 응답 = 요청_준비.when()
+                    .pathParam("id", "아이디")
+                    .get("/pet-foods/{id}");
+
+            // then
+            응답.then()
+                    .assertThat().statusCode(HttpStatus.BAD_REQUEST.value());
+        }
+
+        private RestDocumentationFilter API_예외응답_문서_생성() {
+            var 응답_형식 = Schema.schema("ErrorResponse");
+            var 문서_정보 = resourceDetails().summary("식품 목록 조회 실패")
                     .description("모든 반려동물 식품을 조회합니다.")
                     .responseSchema(응답_형식);
 
