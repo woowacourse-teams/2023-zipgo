@@ -1,6 +1,7 @@
 package zipgo.petfood.domain.repository;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static zipgo.petfood.domain.fixture.PetFoodFixture.*;
 
 import java.util.List;
 import org.junit.jupiter.api.DisplayNameGeneration;
@@ -25,8 +26,8 @@ class PetFoodRepositoryTest {
     @Test
     void 모든_식품을_조회할_수_있다() {
         // given
-        PetFood 반려동물_식품_1 = petFoodRepository.save(PetFoodFixture.키워드_없이_식품_초기화());
-        PetFood 반려동물_식품_2 = petFoodRepository.save(PetFoodFixture.키워드_없이_식품_초기화());
+        PetFood 반려동물_식품_1 = petFoodRepository.save(키워드_없이_식품_초기화());
+        PetFood 반려동물_식품_2 = petFoodRepository.save(키워드_없이_식품_초기화());
 
         // when
         List<PetFood> petFoods = petFoodRepository.findAll();
@@ -38,7 +39,7 @@ class PetFoodRepositoryTest {
     @Test
     void 키워드로_식품을_조회할_수_있다() {
         // given
-        PetFood 키워드가_없는_식품 = petFoodRepository.save(PetFoodFixture.키워드_없이_식품_초기화());
+        PetFood 키워드가_없는_식품 = petFoodRepository.save(키워드_없이_식품_초기화());
         PetFood 키워드가_있는_식품 = 키워드있는_식품_생성하기();
 
         // when
