@@ -34,7 +34,7 @@ public class Brand {
     private String nation;
 
     @Column
-    private Long foundedYear;
+    private Integer foundedYear;
 
     @Column(nullable = false)
     private boolean hasResearchCenter;
