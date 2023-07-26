@@ -1,16 +1,20 @@
-package zipgo.domain.repository;
+package zipgo.petfood.domain.repository;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static zipgo.domain.fixture.PetFoodFixture.키워드_없이_식품_초기화;
+import static zipgo.petfood.domain.fixture.PetFoodFixture.*;
 
 import java.util.List;
+import org.junit.jupiter.api.DisplayNameGeneration;
+import org.junit.jupiter.api.DisplayNameGenerator.ReplaceUnderscores;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
-import zipgo.domain.Keyword;
-import zipgo.domain.PetFood;
+import zipgo.petfood.domain.Keyword;
+import zipgo.petfood.domain.PetFood;
+import zipgo.petfood.domain.fixture.PetFoodFixture;
 
 @DataJpaTest
+@DisplayNameGeneration(ReplaceUnderscores.class)
 class PetFoodRepositoryTest {
 
     @Autowired

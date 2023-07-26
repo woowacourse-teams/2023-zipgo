@@ -7,12 +7,16 @@ import static org.mockito.BDDMockito.given;
 import io.restassured.RestAssured;
 import io.restassured.response.ExtractableResponse;
 import io.restassured.response.Response;
+import org.junit.jupiter.api.DisplayNameGeneration;
+import org.junit.jupiter.api.DisplayNameGenerator.ReplaceUnderscores;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.mock.mockito.SpyBean;
 import org.springframework.web.HttpMediaTypeNotSupportedException;
 import zipgo.acceptance.AcceptanceTest;
-import zipgo.controller.dto.ErrorResponse;
+import zipgo.petfood.presentation.PetFoodController;
+import zipgo.petfood.presentation.dto.ErrorResponse;
 
+@DisplayNameGeneration(ReplaceUnderscores.class)
 class GlobalExceptionHandlerTest extends AcceptanceTest {
 
     @SpyBean(name = "petFoodController")

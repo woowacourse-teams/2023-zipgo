@@ -1,4 +1,6 @@
-package zipgo.domain;
+package zipgo.petfood.domain;
+
+import static lombok.AccessLevel.PROTECTED;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -13,8 +15,8 @@ import lombok.NoArgsConstructor;
 
 @Getter
 @Entity
-@NoArgsConstructor
 @AllArgsConstructor
+@NoArgsConstructor(access = PROTECTED)
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
 public class Keyword {
 

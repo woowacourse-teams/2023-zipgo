@@ -1,4 +1,4 @@
-package zipgo.exception;
+package zipgo.petfood.exception;
 
 public class KeywordException extends RuntimeException {
 
