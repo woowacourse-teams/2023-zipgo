@@ -2,11 +2,13 @@ package zipgo.review.application;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Stream;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
+import org.junit.jupiter.params.provider.ValueSource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.transaction.annotation.Transactional;
@@ -73,5 +75,39 @@ class ReviewServiceTest {
                 .build());
     }
 
+
+    @ParameterizedTest
+    @ValueSource(ints = {1, 3, 5, 100, 3, 2})
+    void 리뷰_개수_가져오기(int 리뷰_개수) {
+        //given
+        PetFood 테스트_식품 = petFoodRepository.save(PetFoodFixture.키워드_없이_식품_초기화());
+        리뷰_여러개_만들기(리뷰_개수, 테스트_식품);
+
+        //when
+        int 결과 = reviewService.getReviewCount(테스트_식품);
+
+        //then
+        assertThat(결과).isEqualTo(리뷰_개수);
+    }
+
+    private void 리뷰_여러개_만들기(int 리뷰_개수, PetFood 테스트_식품) {
+        List<Review> 리뷰들 = new ArrayList<>();
+        for (int count = 0; count < 리뷰_개수; count++) {
+            리뷰들.add(리뷰_한개_만들기(테스트_식품));
+        }
+        reviewRepository.saveAll(리뷰들);
+    }
+
+    private Review 리뷰_한개_만들기(PetFood 테스트_식품) {
+        Member 회원 = memberRepository.save(Member.builder().build()); // todo: 멤버 필수 필드 추가
+        return Review.builder()
+                .comment("잘 먹네요")
+                .petFood(테스트_식품)
+                .ratings(5)
+                .tastePreference(TastePreference.EATS_VERY_WELL)
+                .stoolCondition(StoolCondition.SOFT_MOIST)
+                .member(회원)
+                .build();
+    }
 
 }
