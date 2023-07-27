@@ -7,12 +7,15 @@ import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
+import jakarta.persistence.OneToMany;
+import java.util.List;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.EqualsAndHashCode;
 import lombok.EqualsAndHashCode.Include;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import zipgo.petfood.domain.PetFood;
 
 @Getter
 @Entity
@@ -41,5 +44,8 @@ public class Brand {
 
     @Column(nullable = false)
     private boolean hasResidentVet;
+
+    @OneToMany(mappedBy = "brand")
+    private List<PetFood> petFoods;
 
 }

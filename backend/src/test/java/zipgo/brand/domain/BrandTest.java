@@ -8,16 +8,46 @@ class BrandTest {
 
     @Test
     void 아이디가_같으면_동등하다() {
-        Brand 브랜드_1 = new Brand(2L, "사료만드는 삼성", "대한민국", 1999, true, false);
-        Brand 브랜드_2 = new Brand(2L, "사료만드는 토스", "대한민국", 2090, true, false);
+        Brand 브랜드_1 = Brand.builder()
+                .id(1L)
+                .name("사료만드는 삼성")
+                .nation("대한민국")
+                .foundedYear(1999)
+                .hasResearchCenter(true)
+                .hasResidentVet(false)
+                .build();
 
-        assertThat(브랜드_2).isEqualTo(브랜드_1);
+        Brand 브랜드_2 = Brand.builder()
+                .id(1L)
+                .name("사료만드는 삼성")
+                .nation("대한민국")
+                .foundedYear(1999)
+                .hasResearchCenter(true)
+                .hasResidentVet(false)
+                .build();
+
+        assertThat(브랜드_1).isEqualTo(브랜드_2);
     }
 
     @Test
     void 아이디가_다르면_동등하지않다() {
-        Brand 브랜드_1 = new Brand(1L, "사료만드는 삼성", "대한민국", 1999, true, false);
-        Brand 브랜드_2 = new Brand(2L, "사료만드는 토스", "대한민국", 2090, true, false);
+        Brand 브랜드_1 = Brand.builder()
+                .id(1L)
+                .name("사료만드는 삼성")
+                .nation("대한민국")
+                .foundedYear(1999)
+                .hasResearchCenter(true)
+                .hasResidentVet(false)
+                .build();
+
+        Brand 브랜드_2 = Brand.builder()
+                .id(2L)
+                .name("사료만드는 삼성")
+                .nation("대한민국")
+                .foundedYear(1999)
+                .hasResearchCenter(true)
+                .hasResidentVet(false)
+                .build();
 
         assertThat(브랜드_2).isNotEqualTo(브랜드_1);
     }
