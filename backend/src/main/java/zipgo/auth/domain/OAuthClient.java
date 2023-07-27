@@ -7,4 +7,5 @@ public interface OAuthClient {
     public String getAccessToken(String authCode);
 
     public OAuthResponse getMemberDetail(String accessToken);
+
 }
