@@ -7,6 +7,9 @@ import static org.hamcrest.Matchers.containsString;
 import static org.hamcrest.Matchers.empty;
 import static org.hamcrest.Matchers.is;
 import static org.hamcrest.Matchers.not;
+import static org.springframework.http.HttpStatus.BAD_REQUEST;
+import static org.springframework.http.HttpStatus.NOT_FOUND;
+import static org.springframework.http.HttpStatus.OK;
 import static org.springframework.restdocs.payload.PayloadDocumentation.fieldWithPath;
 import static org.springframework.restdocs.payload.PayloadDocumentation.responseFields;
 import static org.springframework.restdocs.request.RequestDocumentation.parameterWithName;
@@ -20,7 +23,6 @@ import org.junit.jupiter.api.DisplayNameGeneration;
 import org.junit.jupiter.api.DisplayNameGenerator.ReplaceUnderscores;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
-import org.springframework.http.HttpStatus;
 import org.springframework.restdocs.restassured.RestDocumentationFilter;
 import org.springframework.test.context.jdbc.Sql;
 
@@ -44,7 +46,7 @@ public class PetFoodAcceptanceTest extends AcceptanceTest {
 
             // then
             응답.then()
-                    .assertThat().statusCode(HttpStatus.OK.value())
+                    .assertThat().statusCode(OK.value())
                     .assertThat().body("foodList.size()", is(2));
         }
 
@@ -81,7 +83,7 @@ public class PetFoodAcceptanceTest extends AcceptanceTest {
 
             // then
             응답.then()
-                    .assertThat().statusCode(HttpStatus.OK.value())
+                    .assertThat().statusCode(OK.value())
                     .assertThat().body("foodList.size()", not(empty()));
         }
 
@@ -99,7 +101,7 @@ public class PetFoodAcceptanceTest extends AcceptanceTest {
 
             // then
             응답.then()
-                    .assertThat().statusCode(HttpStatus.NOT_FOUND.value())
+                    .assertThat().statusCode(NOT_FOUND.value())
                     .assertThat().body("message", containsString("키워드를 찾을 수 없습니다."));
 
         }
@@ -136,7 +138,7 @@ public class PetFoodAcceptanceTest extends AcceptanceTest {
             // then
             응답.then()
                     .log().all()
-                    .assertThat().statusCode(HttpStatus.OK.value());
+                    .assertThat().statusCode(OK.value());
         }
 
         @Sql("./insert-pet-food.sql")
@@ -187,7 +189,7 @@ public class PetFoodAcceptanceTest extends AcceptanceTest {
 
             // then
             응답.then()
-                    .assertThat().statusCode(HttpStatus.NOT_FOUND.value());
+                    .assertThat().statusCode(NOT_FOUND.value());
         }
 
         @Test
@@ -204,7 +206,7 @@ public class PetFoodAcceptanceTest extends AcceptanceTest {
 
             // then
             응답.then()
-                    .assertThat().statusCode(HttpStatus.BAD_REQUEST.value());
+                    .assertThat().statusCode(BAD_REQUEST.value());
         }
 
         private RestDocumentationFilter API_예외응답_문서_생성() {
