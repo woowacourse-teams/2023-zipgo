@@ -56,4 +56,8 @@ public class PetFood {
     @Embedded
     private HasStandard hasStandard;
 
+    @Builder.Default
+    @Convert(converter = StringArrayConverter.class)
+    private List<String> functionality = new ArrayList<>();
+
 }

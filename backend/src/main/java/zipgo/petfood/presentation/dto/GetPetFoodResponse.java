@@ -3,6 +3,7 @@ package zipgo.petfood.presentation.dto;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 import zipgo.brand.domain.Brand;
+import zipgo.petfood.domain.HasStandard;
 import zipgo.petfood.domain.PetFood;
 
 public record GetPetFoodResponse(
@@ -12,7 +13,7 @@ public record GetPetFoodResponse(
         String purchaseUrl,
         double rating,
         int reviewCount,
-        ProteinSourceResponse proteinSource,
+        List<String> primaryIngredients,
         NutrientStandardResponse hasStandard,
         List<String> functionality,
         PetFoodBrandResponse brand
@@ -26,8 +27,8 @@ public record GetPetFoodResponse(
                 petFood.getPurchaseLink(),
                 ratingAverage,
                 reviewCount,
-                null,
-                null,
+                petFood.getPrimaryIngredients(),
+                NutrientStandardResponse.from(petFood.getHasStandard()),
                 List.of(),
                 PetFoodBrandResponse.from(petFood.getBrand())
         );
@@ -40,6 +41,10 @@ public record GetPetFoodResponse(
             @JsonProperty(value = "eu")
             boolean hasEuStandard
     ) {
+
+        public static NutrientStandardResponse from(HasStandard hasStandard) {
+            return new NutrientStandardResponse(hasStandard.getUnitedStates(), hasStandard.getEurope());
+        }
 
     }
 
@@ -60,13 +65,6 @@ public record GetPetFoodResponse(
                     brand.isHasResidentVet()
             );
         }
-
-    }
-
-    public record ProteinSourceResponse(
-            List<String> primary,
-            List<String> secondary
-    ) {
 
     }
 

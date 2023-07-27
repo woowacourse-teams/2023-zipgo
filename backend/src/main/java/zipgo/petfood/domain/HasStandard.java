@@ -4,8 +4,10 @@ import jakarta.persistence.Column;
 import jakarta.persistence.Embeddable;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+@Getter
 @Builder
 @Embeddable
 @NoArgsConstructor
@@ -14,11 +16,11 @@ public class HasStandard {
 
     @Builder.Default
     @Column(nullable = false, name = "us_standard")
-    private boolean unitedStates = true;
+    private Boolean unitedStates = true;
 
     @Builder.Default
 
     @Column(nullable = false, name = "eu_standard")
-    private boolean europe = true;
+    private Boolean europe = true;
 
 }
