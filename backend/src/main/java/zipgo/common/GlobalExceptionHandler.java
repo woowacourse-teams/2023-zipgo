@@ -1,4 +1,4 @@
-package zipgo.petfood.presentation;
+package zipgo.common;
 
 import static org.springframework.http.HttpStatus.INTERNAL_SERVER_ERROR;
 import static org.springframework.http.HttpStatus.NOT_FOUND;
