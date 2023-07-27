@@ -29,7 +29,7 @@ public record GetPetFoodResponse(
                 reviewCount,
                 petFood.getPrimaryIngredients(),
                 NutrientStandardResponse.from(petFood.getHasStandard()),
-                List.of(),
+                petFood.getFunctionality(),
                 PetFoodBrandResponse.from(petFood.getBrand())
         );
     }
