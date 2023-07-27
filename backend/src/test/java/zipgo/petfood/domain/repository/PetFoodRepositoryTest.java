@@ -18,6 +18,7 @@ import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
+import org.springframework.test.context.jdbc.Sql;
 import zipgo.brand.domain.Brand;
 import zipgo.brand.domain.repository.BrandRepository;
 import zipgo.petfood.domain.Keyword;
@@ -118,6 +119,16 @@ class PetFoodRepositoryTest {
 
         //then
         assertThat(조회한_식품.getPrimaryIngredients()).contains("닭고기", "쌀", "귀리", "보리");
+    }
+
+    @Test
+    @Sql("classpath:null-array.sql")
+    void 기능성이_null이면_빈_리스트로_가져온다() {
+        //when
+        PetFood 기능성이_없는_식품 = petFoodRepository.getById(100L);
+
+        //then
+        assertThat(기능성이_없는_식품.getFunctionality()).isEmpty();
     }
 
     @Test
