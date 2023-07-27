@@ -4,7 +4,7 @@ import static org.assertj.core.api.AssertionsForClassTypes.assertThatThrownBy;
 
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.mockito.InjectMocks;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.transaction.annotation.Transactional;
 import zipgo.petfood.domain.PetFood;
@@ -14,7 +14,7 @@ import zipgo.petfood.exception.PetFoodException;
 @SpringBootTest
 class PetFoodServiceTest {
 
-    @Autowired
+    @InjectMocks
     private PetFoodService petFoodService;
 
     @Test
@@ -40,5 +40,4 @@ class PetFoodServiceTest {
                 .isInstanceOf(PetFoodException.NotFound.class);
     }
 
-    // todo: spybean으로 바꿔서 단위테스트하기
 }

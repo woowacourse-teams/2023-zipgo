@@ -22,4 +22,13 @@ public class PetFoodFixture {
                 .build();
     }
 
+    public static PetFood 아이디가_있는_식품(Long id) {
+        return PetFood.builder()
+                .id(id)
+                .name("[고집] 돌아온 배배")
+                .imageUrl("https://github.com/woowacourse-teams/2023-zipgo")
+                .purchaseLink("https://avatars.githubusercontent.com/u/94087228?v=4")
+                .build();
+    }
+
 }
