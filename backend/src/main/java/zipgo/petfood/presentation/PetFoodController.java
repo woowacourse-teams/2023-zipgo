@@ -10,7 +10,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import zipgo.petfood.application.PetFoodService;
 import zipgo.petfood.domain.PetFood;
-import zipgo.petfood.exception.PetFoodException;
 import zipgo.petfood.presentation.dto.GetPetFoodResponse;
 import zipgo.petfood.presentation.dto.GetPetFoodResponse.NutrientStandardResponse;
 import zipgo.petfood.presentation.dto.GetPetFoodResponse.PetFoodBrandResponse;
@@ -39,9 +38,8 @@ public class PetFoodController {
 
     @GetMapping("/{id}")
     public ResponseEntity<GetPetFoodResponse> getPetFood(@PathVariable Long id) {
-        if (id > 10000L) {
-            throw new PetFoodException.NotFound(id);
-        }
+        PetFood foundPetFood = petFoodService.getPetFoodBy(id);
+        // todo: review 정보 가져오기
         return ResponseEntity.ok(
                 new GetPetFoodResponse(
                         1L,
