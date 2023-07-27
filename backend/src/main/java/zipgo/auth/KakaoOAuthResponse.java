@@ -11,6 +11,19 @@ public class KakaoOAuthResponse implements OAuthResponse {
     @JsonProperty("kakao_account")
     private KakaoAccount kakaoAcount;
 
+    @Getter
+    @JsonIgnoreProperties(ignoreUnknown = true)
+    static class KakaoAccount {
+        private Profile profile;
+        private String email;
+    }
+
+    @Getter
+    @JsonIgnoreProperties(ignoreUnknown = true)
+    static class Profile {
+        private String nickname;
+    }
+
     @Override
     public String getEmail() {
         return kakaoAcount.getEmail();
@@ -20,22 +33,5 @@ public class KakaoOAuthResponse implements OAuthResponse {
     public String getName() {
         return kakaoAcount.getProfile().getNickname();
     }
-
-}
-
-@Getter
-@JsonIgnoreProperties(ignoreUnknown = true)
-class KakaoAccount {
-
-    private Profile profile;
-    private String email;
-
-}
-
-@Getter
-@JsonIgnoreProperties(ignoreUnknown = true)
-class Profile {
-
-    private String nickname;
 
 }
