@@ -1,13 +1,12 @@
 package zipgo.petfood.application;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.AssertionsForClassTypes.assertThatThrownBy;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.junit.jupiter.api.Assertions.assertAll;
 import static zipgo.petfood.domain.fixture.PetFoodFixture.키워드_없이_식품_초기화;
 import static zipgo.petfood.domain.fixture.PetFoodFixture.키워드_있는_식품_초기화;
 
 import java.util.List;
-import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -69,7 +68,7 @@ class PetFoodServiceTest {
         String 없는_키워드 = "없는 키워드";
 
         // when, then
-        Assertions.assertThatThrownBy(() -> petFoodService.getPetFoodHaving(없는_키워드))
+        assertThatThrownBy(() -> petFoodService.getPetFoodHaving(없는_키워드))
                 .isInstanceOf(KeywordException.NotFound.class);
     }
 
@@ -84,7 +83,7 @@ class PetFoodServiceTest {
         PetFood 조회된_식품 = petFoodService.getPetFoodBy(아이디);
 
         // then
-        Assertions.assertThat(조회된_식품).isEqualTo(테스트용_식품);
+        assertThat(조회된_식품).isEqualTo(테스트용_식품);
     }
 
     @Test

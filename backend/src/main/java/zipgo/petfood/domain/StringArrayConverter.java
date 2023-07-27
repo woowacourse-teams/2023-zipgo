@@ -1,5 +1,7 @@
 package zipgo.petfood.domain;
 
+import static java.lang.String.join;
+
 import jakarta.persistence.AttributeConverter;
 import jakarta.persistence.Converter;
 import java.util.ArrayList;
@@ -9,11 +11,11 @@ import java.util.List;
 @Converter
 public class StringArrayConverter implements AttributeConverter<List<String>, String> {
 
-    private static final String SPLIT_CHAR = ",";
+    private static final String DELIMITER = ",";
 
     @Override
     public String convertToDatabaseColumn(List<String> attribute) {
-        return String.join(SPLIT_CHAR, attribute);
+        return join(DELIMITER, attribute);
     }
 
     @Override
@@ -21,7 +23,7 @@ public class StringArrayConverter implements AttributeConverter<List<String>, St
         if (dbData == null) {
             return new ArrayList<>();
         }
-        return Arrays.stream(dbData.split(SPLIT_CHAR)).toList();
+        return Arrays.stream(dbData.split(DELIMITER)).toList();
     }
 
 }

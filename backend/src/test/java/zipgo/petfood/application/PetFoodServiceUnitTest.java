@@ -12,8 +12,6 @@ import static zipgo.petfood.domain.fixture.PetFoodFixture.키워드_있는_식�
 
 import java.util.List;
 import java.util.Optional;
-import org.assertj.core.api.Assertions;
-import org.assertj.core.api.AssertionsForClassTypes;
 import org.junit.jupiter.api.DisplayNameGeneration;
 import org.junit.jupiter.api.DisplayNameGenerator.ReplaceUnderscores;
 import org.junit.jupiter.api.Test;
@@ -84,7 +82,7 @@ class PetFoodServiceUnitTest {
         PetFood 조회된_식품 = petFoodService.getPetFoodBy(아이디);
 
         // then
-        Assertions.assertThat(조회된_식품).isEqualTo(아이디가_있는_식품);
+        assertThat(조회된_식품).isEqualTo(아이디가_있는_식품);
     }
 
     @Test
@@ -96,7 +94,7 @@ class PetFoodServiceUnitTest {
                 .willReturn(Optional.empty());
 
         // when, then
-        AssertionsForClassTypes.assertThatThrownBy(() -> petFoodService.getPetFoodBy(존재하지_않는_아이디))
+        assertThatThrownBy(() -> petFoodService.getPetFoodBy(존재하지_않는_아이디))
                 .isInstanceOf(PetFoodException.NotFound.class);
     }
 
