@@ -2,6 +2,8 @@ package zipgo.petfood.presentation.dto;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
+import zipgo.brand.domain.Brand;
+import zipgo.petfood.domain.PetFood;
 
 public record GetPetFoodResponse(
         Long id,
@@ -15,6 +17,21 @@ public record GetPetFoodResponse(
         List<String> functionality,
         PetFoodBrandResponse brand
 ) {
+
+    public static GetPetFoodResponse of(PetFood petFood, double ratingAverage, int reviewCount) {
+        return new GetPetFoodResponse(
+                petFood.getId(),
+                petFood.getName(),
+                petFood.getImageUrl(),
+                petFood.getPurchaseLink(),
+                ratingAverage,
+                reviewCount,
+                null,
+                null,
+                List.of(),
+                PetFoodBrandResponse.from(petFood.getBrand())
+        );
+    }
 
     public record NutrientStandardResponse(
             @JsonProperty(value = "us")
@@ -33,6 +50,16 @@ public record GetPetFoodResponse(
             boolean hasResearchCenter,
             boolean hasResidentVet
     ) {
+
+        public static PetFoodBrandResponse from(Brand brand) {
+            return new PetFoodBrandResponse(
+                    brand.getName(),
+                    brand.getNation(),
+                    brand.getFoundedYear(),
+                    brand.isHasResearchCenter(),
+                    brand.isHasResidentVet()
+            );
+        }
 
     }
 

@@ -12,6 +12,9 @@ import org.junit.jupiter.params.provider.ValueSource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.transaction.annotation.Transactional;
+import zipgo.brand.domain.Brand;
+import zipgo.brand.domain.fixture.BrandFixture;
+import zipgo.brand.domain.repository.BrandRepository;
 import zipgo.member.domain.Member;
 import zipgo.member.domain.repository.MemberRepository;
 import zipgo.petfood.domain.PetFood;
@@ -36,19 +39,23 @@ class ReviewServiceTest {
     private PetFoodRepository petFoodRepository;
 
     @Autowired
+    private BrandRepository brandRepository;
+
+    @Autowired
     private MemberRepository memberRepository;
+
 
     @ParameterizedTest
     @MethodSource("별점_리스트_만들기")
     void 식품의_평균_별점을_계산할_수_있다(List<Integer> 별점_리스트, double 예상_결과) {
         // given
-        PetFood 테스트_식품 = petFoodRepository.save(PetFoodFixture.키워드_없이_식품_초기화());
+        PetFood 테스트_식품 = petFoodRepository.save(PetFoodFixture.키워드_없이_식품_초기화(브랜드_조회하기()));
         for (var 별점 : 별점_리스트) {
             별점으로_리뷰_만들기(별점, 테스트_식품);
         }
 
         // when
-        double 계산_결과 = reviewService.getRatingAverage(테스트_식품);
+        double 계산_결과 = reviewService.calculateRatingAverage(테스트_식품);
 
         // then
         assertThat(계산_결과).isEqualTo(예상_결과);
@@ -75,16 +82,20 @@ class ReviewServiceTest {
                 .build());
     }
 
+    private Brand 브랜드_조회하기() {
+        return brandRepository.save(BrandFixture.식품_브랜드_생성하기());
+    }
+
 
     @ParameterizedTest
     @ValueSource(ints = {1, 3, 5, 100, 3, 2})
     void 리뷰_개수_가져오기(int 리뷰_개수) {
         //given
-        PetFood 테스트_식품 = petFoodRepository.save(PetFoodFixture.키워드_없이_식품_초기화());
+        PetFood 테스트_식품 = petFoodRepository.save(PetFoodFixture.키워드_없이_식품_초기화(브랜드_조회하기()));
         리뷰_여러개_만들기(리뷰_개수, 테스트_식품);
 
         //when
-        int 결과 = reviewService.getReviewCount(테스트_식품);
+        int 결과 = reviewService.countReviews(테스트_식품);
 
         //then
         assertThat(결과).isEqualTo(리뷰_개수);

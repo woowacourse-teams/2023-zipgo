@@ -12,6 +12,8 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.transaction.annotation.Transactional;
+import zipgo.brand.domain.Brand;
+import zipgo.brand.domain.repository.BrandRepository;
 import zipgo.petfood.domain.Keyword;
 import zipgo.petfood.domain.PetFood;
 import zipgo.petfood.domain.repository.KeywordRepository;
@@ -28,13 +30,21 @@ class PetFoodServiceTest {
 
     @Autowired
     private KeywordRepository keywordRepository;
+
+    @Autowired
+    private BrandRepository brandRepository;
+
     @Autowired
     private PetFoodService petFoodService;
+
+    private Brand 브랜드_조회하기() {
+        return brandRepository.findAll().get(0);
+    }
 
     @Test
     void 키워드가_다이어트인_식품_목록을_조회한다() {
         // given
-        PetFood 키워드가_없는_식품 = petFoodRepository.save(키워드_없이_식품_초기화());
+        PetFood 키워드가_없는_식품 = petFoodRepository.save(키워드_없이_식품_초기화(브랜드_조회하기()));
         PetFood 다이어트_키워드_식품 = 다이어트_키워드_식품_저장();
 
         // when
@@ -49,7 +59,7 @@ class PetFoodServiceTest {
 
     private PetFood 다이어트_키워드_식품_저장() {
         Keyword 다이어트_키워드 = keywordRepository.findByName("diet").orElseThrow();
-        PetFood 다이어트_키워드_식품 = petFoodRepository.save(키워드_있는_식품_초기화(다이어트_키워드));
+        PetFood 다이어트_키워드_식품 = petFoodRepository.save(키워드_있는_식품_초기화(다이어트_키워드, 브랜드_조회하기()));
         return 다이어트_키워드_식품;
     }
 
@@ -67,7 +77,8 @@ class PetFoodServiceTest {
     @Test
     void 아이디로_식품을_조회할_수_있다() {
         // given
-        PetFood 테스트용_식품 = 키워드_없이_식품_초기화();
+        Brand 브랜드 = brandRepository.findAll().get(0);
+        PetFood 테스트용_식품 = 키워드_없이_식품_초기화(브랜드);
         Long 아이디 = petFoodRepository.save(테스트용_식품).getId();
 
         // when
