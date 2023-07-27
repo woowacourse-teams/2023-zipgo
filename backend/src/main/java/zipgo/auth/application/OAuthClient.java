@@ -1,4 +1,4 @@
-package zipgo.auth.domain;
+package zipgo.auth.application;
 
 import zipgo.auth.OAuthResponse;
 

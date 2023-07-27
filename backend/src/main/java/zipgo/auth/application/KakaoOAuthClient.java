@@ -1,4 +1,4 @@
-package zipgo.auth.domain;
+package zipgo.auth.application;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
