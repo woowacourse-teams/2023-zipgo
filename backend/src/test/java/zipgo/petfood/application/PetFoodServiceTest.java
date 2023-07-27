@@ -68,8 +68,7 @@ class PetFoodServiceTest {
         // given
         String 없는_키워드 = "없는 키워드";
 
-        // when
-        // then
+        // when, then
         Assertions.assertThatThrownBy(() -> petFoodService.getPetFoodHaving(없는_키워드))
                 .isInstanceOf(KeywordException.NotFound.class);
     }
