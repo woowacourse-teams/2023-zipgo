@@ -2,13 +2,15 @@ package zipgo.auth.util;
 
 
 import io.jsonwebtoken.*;
-import io.jsonwebtoken.security.Keys;
+import io.jsonwebtoken.security.SignatureException;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 import javax.crypto.SecretKey;
-import java.nio.charset.StandardCharsets;
 import java.util.Date;
+
+import static io.jsonwebtoken.security.Keys.hmacShaKeyFor;
+import static java.nio.charset.StandardCharsets.*;
 
 @Component
 public class JwtProvider {
@@ -20,7 +22,7 @@ public class JwtProvider {
             @Value("${jwt.secret-key}") String secretKey,
             @Value("${jwt.expire-length}") long validityInMilliseconds
     ) {
-        this.key = Keys.hmacShaKeyFor(secretKey.getBytes(StandardCharsets.UTF_8));
+        this.key = hmacShaKeyFor(secretKey.getBytes(UTF_8));
         this.validityInMilliseconds = validityInMilliseconds;
     }
 
@@ -40,29 +42,13 @@ public class JwtProvider {
         return tokenToJws(token).getBody().getSubject();
     }
 
-    public void validateAbleToken(String token) {
-        try {
-            Jws<Claims> claims = tokenToJws(token);
-
-            validateExpiredToken(claims);
-        } catch (JwtException e) {
-            throw new IllegalStateException(token);
-        }
-    }
-
     private Jws<Claims> tokenToJws(String token) {
         try {
             return Jwts.parserBuilder()
                     .setSigningKey(key)
                     .build()
                     .parseClaimsJws(token);
-        } catch (IllegalArgumentException | MalformedJwtException | ExpiredJwtException e) {
-            throw new IllegalStateException();
-        }
-    }
-
-    private void validateExpiredToken(Jws<Claims> claims) {
-        if (claims.getBody().getExpiration().before(new Date())) {
+        } catch (IllegalArgumentException | MalformedJwtException | ExpiredJwtException | SignatureException e) {
             throw new IllegalStateException();
         }
     }
