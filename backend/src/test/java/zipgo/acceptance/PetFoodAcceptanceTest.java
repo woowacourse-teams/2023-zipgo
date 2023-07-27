@@ -1,5 +1,14 @@
 package zipgo.acceptance;
 
+import com.epages.restdocs.apispec.RestAssuredRestDocumentationWrapper;
+import com.epages.restdocs.apispec.Schema;
+import io.restassured.http.ContentType;
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Nested;
+import org.junit.jupiter.api.Test;
+import org.springframework.http.HttpStatus;
+import org.springframework.restdocs.restassured.RestDocumentationFilter;
+
 import static com.epages.restdocs.apispec.RestAssuredRestDocumentationWrapper.resourceDetails;
 import static io.restassured.RestAssured.given;
 import static org.hamcrest.Matchers.containsString;
@@ -11,18 +20,6 @@ import static org.springframework.restdocs.payload.PayloadDocumentation.response
 import static org.springframework.restdocs.request.RequestDocumentation.parameterWithName;
 import static org.springframework.restdocs.request.RequestDocumentation.queryParameters;
 
-import com.epages.restdocs.apispec.RestAssuredRestDocumentationWrapper;
-import com.epages.restdocs.apispec.Schema;
-import io.restassured.http.ContentType;
-import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.DisplayNameGeneration;
-import org.junit.jupiter.api.DisplayNameGenerator.ReplaceUnderscores;
-import org.junit.jupiter.api.Nested;
-import org.junit.jupiter.api.Test;
-import org.springframework.http.HttpStatus;
-import org.springframework.restdocs.restassured.RestDocumentationFilter;
-
-@DisplayNameGeneration(ReplaceUnderscores.class)
 public class PetFoodAcceptanceTest extends AcceptanceTest {
 
     @Nested
@@ -43,6 +40,7 @@ public class PetFoodAcceptanceTest extends AcceptanceTest {
             // then
             응답.then()
                     .assertThat().statusCode(HttpStatus.OK.value())
+                    .log().all()
                     .assertThat().body("foodList.size()", is(2));
         }
 

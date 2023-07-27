@@ -17,6 +17,7 @@ import org.springframework.restdocs.RestDocumentationExtension;
 import org.springframework.test.context.jdbc.Sql;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
+
 @DisplayNameGeneration(ReplaceUnderscores.class)
 @Sql(scripts = {"classpath:truncate.sql", "classpath:data.sql"})
 @ExtendWith({RestDocumentationExtension.class, SpringExtension.class})
