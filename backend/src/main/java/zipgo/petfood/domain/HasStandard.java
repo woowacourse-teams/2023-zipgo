@@ -19,7 +19,6 @@ public class HasStandard {
     private Boolean unitedStates = true;
 
     @Builder.Default
-
     @Column(nullable = false, name = "eu_standard")
     private Boolean europe = true;
 
