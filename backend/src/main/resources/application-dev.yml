@@ -28,10 +28,14 @@ spring:
       mode: never
 
 ---
-# OAuth
+# OAUTH
 oauth:
   kakao:
     client-id: ${CLIENT_ID}
     redirect-uri: ${REDIRECT_URI}
 
 ---
+# jwt
+jwt:
+  secret-key: ${ZIPGO_SECRET_KEY}
+  expire-length: ${EXPIRE_LENGTH}

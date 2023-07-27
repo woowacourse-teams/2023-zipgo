@@ -29,7 +29,6 @@ public class Member {
 
     private String email;
 
-    @Builder
     public Member(String nickname, String email) {
         this.nickname = nickname;
         this.email = email;
