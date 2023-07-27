@@ -4,6 +4,7 @@ import static jakarta.persistence.FetchType.LAZY;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Convert;
+import jakarta.persistence.Embedded;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
@@ -51,5 +52,8 @@ public class PetFood {
     @Builder.Default
     @Convert(converter = StringArrayConverter.class)
     private List<String> primaryIngredients = new ArrayList<>();
+
+    @Embedded
+    private HasStandard hasStandard;
 
 }
