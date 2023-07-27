@@ -15,8 +15,10 @@ public class ReviewService {
 
     public double calculateRatingAverage(PetFood petFood) {
         List<Review> reviews = reviewRepository.findAllByPetFoodId(petFood.getId());
-        int sumOfRatings = reviews.stream().mapToInt(review -> review.getRatings()).sum();
-        return (double) sumOfRatings / reviews.size();
+        return reviews.stream()
+                .mapToInt(review -> review.getRatings())
+                .average()
+                .getAsDouble();
     }
 
     public int countReviews(PetFood petFood) {
