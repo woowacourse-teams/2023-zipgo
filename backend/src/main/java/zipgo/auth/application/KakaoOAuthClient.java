@@ -1,6 +1,5 @@
 package zipgo.auth.application;
 
-import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
@@ -14,6 +13,7 @@ import zipgo.auth.OAuthResponse;
 import zipgo.auth.util.KakaoTokens;
 
 import static org.springframework.http.HttpMethod.GET;
+import static org.springframework.http.HttpMethod.POST;
 
 @Component
 public class KakaoOAuthClient implements OAuthClient {
@@ -36,11 +36,12 @@ public class KakaoOAuthClient implements OAuthClient {
 
         HttpEntity<MultiValueMap<String, String>> request = new HttpEntity<>(body, header);
 
-        return REST_TEMPLATE.postForObject(
+        return REST_TEMPLATE.exchange(
                 KAKAO_ACCESS_TOKEN_URI,
+                POST,
                 request,
                 KakaoTokens.class
-        ).getAccessToken();
+        ).getBody().getAccessToken();
     }
 
     private HttpHeaders createRequestHeader() {
