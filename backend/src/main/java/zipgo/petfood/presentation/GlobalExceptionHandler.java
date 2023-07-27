@@ -15,8 +15,8 @@ import zipgo.petfood.exception.KeywordException;
 import zipgo.petfood.exception.PetFoodException;
 import zipgo.petfood.presentation.dto.ErrorResponse;
 
-@RestControllerAdvice
 @Log4j2
+@RestControllerAdvice
 public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
 
     @ExceptionHandler({KeywordException.NotFound.class, PetFoodException.NotFound.class})
