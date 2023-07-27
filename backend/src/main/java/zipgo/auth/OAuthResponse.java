@@ -4,6 +4,6 @@ public interface OAuthResponse {
 
     String getEmail();
 
-    String getName();
+    String getNickName();
 
 }

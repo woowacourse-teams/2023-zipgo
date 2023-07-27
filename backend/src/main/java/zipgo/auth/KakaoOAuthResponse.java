@@ -13,14 +13,14 @@ public class KakaoOAuthResponse implements OAuthResponse {
 
     @Getter
     @JsonIgnoreProperties(ignoreUnknown = true)
-    static class KakaoAccount {
+    private static class KakaoAccount {
         private Profile profile;
         private String email;
     }
 
     @Getter
     @JsonIgnoreProperties(ignoreUnknown = true)
-    static class Profile {
+    private static class Profile {
         private String nickname;
     }
 
@@ -30,7 +30,7 @@ public class KakaoOAuthResponse implements OAuthResponse {
     }
 
     @Override
-    public String getName() {
+    public String getNickName() {
         return kakaoAcount.getProfile().getNickname();
     }
 

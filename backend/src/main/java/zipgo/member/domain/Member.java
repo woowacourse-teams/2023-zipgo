@@ -25,14 +25,14 @@ public class Member {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private String name;
+    private String nickname;
 
     private String email;
 
     @Builder
-    public Member(String name, String email) {
-        name = name;
-        email = email;
+    public Member(String nickname, String email) {
+        this.nickname = nickname;
+        this.email = email;
     }
 
 }
