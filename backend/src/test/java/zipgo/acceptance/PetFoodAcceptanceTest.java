@@ -2,6 +2,7 @@ package zipgo.acceptance;
 
 import static com.epages.restdocs.apispec.RestAssuredRestDocumentationWrapper.resourceDetails;
 import static io.restassured.RestAssured.given;
+import static io.restassured.http.ContentType.JSON;
 import static org.hamcrest.Matchers.containsString;
 import static org.hamcrest.Matchers.empty;
 import static org.hamcrest.Matchers.is;
@@ -14,7 +15,6 @@ import static org.springframework.restdocs.request.RequestDocumentation.queryPar
 
 import com.epages.restdocs.apispec.RestAssuredRestDocumentationWrapper;
 import com.epages.restdocs.apispec.Schema;
-import io.restassured.http.ContentType;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.DisplayNameGeneration;
 import org.junit.jupiter.api.DisplayNameGenerator.ReplaceUnderscores;
@@ -35,7 +35,7 @@ public class PetFoodAcceptanceTest extends AcceptanceTest {
         void 키워드를_지정하지_않고_요청한다() {
             // given
             var 요청_준비 = given(spec)
-                    .contentType(ContentType.JSON)
+                    .contentType(JSON)
                     .filter(식품_목록_조회_API_문서_생성());
 
             // when
@@ -72,7 +72,7 @@ public class PetFoodAcceptanceTest extends AcceptanceTest {
             // given
             String 키워드 = "diet";
             var 요청_준비 = given()
-                    .contentType(ContentType.JSON)
+                    .contentType(JSON)
                     .queryParam("keyword", 키워드);
 
             // when
@@ -89,7 +89,7 @@ public class PetFoodAcceptanceTest extends AcceptanceTest {
         void 존재하지_않는_키워드로_요청한다() {
             // given
             var 요청_준비 = given(spec)
-                    .contentType(ContentType.JSON)
+                    .contentType(JSON)
                     .filter(존재하지_않는_키워드_예외_문서_생성())
                     .queryParam("keyword", "존재하지 않는 키워드");
 
@@ -125,7 +125,7 @@ public class PetFoodAcceptanceTest extends AcceptanceTest {
             Long 모의_식품_아이디 = 모의_식품_생성();
 
             var 요청_준비 = given(spec)
-                    .contentType(ContentType.JSON)
+                    .contentType(JSON)
                     .filter(식품_상세_조회_API_문서_생성());
 
             // when
@@ -177,7 +177,7 @@ public class PetFoodAcceptanceTest extends AcceptanceTest {
         void 존재하지_않는_아이디로_요청한다() { // TODO: 예외처리
             //given
             var 요청_준비 = given(spec)
-                    .contentType(ContentType.JSON)
+                    .contentType(JSON)
                     .filter(API_예외응답_문서_생성());
 
             // when
@@ -194,7 +194,7 @@ public class PetFoodAcceptanceTest extends AcceptanceTest {
         void 올바르지_않은_형식의_아이디로_요청한다() {
             //given
             var 요청_준비 = given(spec)
-                    .contentType(ContentType.JSON)
+                    .contentType(JSON)
                     .filter(API_예외응답_문서_생성());
 
             // when

@@ -1,6 +1,10 @@
 package zipgo.review.application;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static zipgo.brand.domain.fixture.BrandFixture.식품_브랜드_생성하기;
+import static zipgo.petfood.domain.fixture.PetFoodFixture.키워드_없이_식품_초기화;
+import static zipgo.review.domain.StoolCondition.SOFT_MOIST;
+import static zipgo.review.domain.TastePreference.EATS_VERY_WELL;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -13,16 +17,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.transaction.annotation.Transactional;
 import zipgo.brand.domain.Brand;
-import zipgo.brand.domain.fixture.BrandFixture;
 import zipgo.brand.domain.repository.BrandRepository;
 import zipgo.member.domain.Member;
 import zipgo.member.domain.repository.MemberRepository;
 import zipgo.petfood.domain.PetFood;
-import zipgo.petfood.domain.fixture.PetFoodFixture;
 import zipgo.petfood.domain.repository.PetFoodRepository;
 import zipgo.review.domain.Review;
-import zipgo.review.domain.StoolCondition;
-import zipgo.review.domain.TastePreference;
 import zipgo.review.repository.ReviewRepository;
 
 @Transactional
@@ -49,7 +49,7 @@ class ReviewServiceTest {
     @MethodSource("별점_리스트_만들기")
     void 식품의_평균_별점을_계산할_수_있다(List<Integer> 별점_리스트, double 예상_결과) {
         // given
-        PetFood 테스트_식품 = petFoodRepository.save(PetFoodFixture.키워드_없이_식품_초기화(브랜드_조회하기()));
+        PetFood 테스트_식품 = petFoodRepository.save(키워드_없이_식품_초기화(브랜드_조회하기()));
         for (var 별점 : 별점_리스트) {
             별점으로_리뷰_만들기(별점, 테스트_식품);
         }
@@ -76,14 +76,14 @@ class ReviewServiceTest {
                 .comment("잘 먹네요")
                 .petFood(테스트_식품)
                 .ratings(별점)
-                .tastePreference(TastePreference.EATS_VERY_WELL)
-                .stoolCondition(StoolCondition.SOFT_MOIST)
+                .tastePreference(EATS_VERY_WELL)
+                .stoolCondition(SOFT_MOIST)
                 .member(회원)
                 .build());
     }
 
     private Brand 브랜드_조회하기() {
-        return brandRepository.save(BrandFixture.식품_브랜드_생성하기());
+        return brandRepository.save(식품_브랜드_생성하기());
     }
 
 
@@ -91,7 +91,7 @@ class ReviewServiceTest {
     @ValueSource(ints = {1, 3, 5, 100, 3, 2})
     void 리뷰_개수_가져오기(int 리뷰_개수) {
         //given
-        PetFood 테스트_식품 = petFoodRepository.save(PetFoodFixture.키워드_없이_식품_초기화(브랜드_조회하기()));
+        PetFood 테스트_식품 = petFoodRepository.save(키워드_없이_식품_초기화(브랜드_조회하기()));
         리뷰_여러개_만들기(리뷰_개수, 테스트_식품);
 
         //when
@@ -115,8 +115,8 @@ class ReviewServiceTest {
                 .comment("잘 먹네요")
                 .petFood(테스트_식품)
                 .ratings(5)
-                .tastePreference(TastePreference.EATS_VERY_WELL)
-                .stoolCondition(StoolCondition.SOFT_MOIST)
+                .tastePreference(EATS_VERY_WELL)
+                .stoolCondition(SOFT_MOIST)
                 .member(회원)
                 .build();
     }
