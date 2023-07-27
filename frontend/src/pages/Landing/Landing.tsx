@@ -2,9 +2,9 @@ import { ChangeEvent, useEffect, useState } from 'react';
 import styled from 'styled-components';
 
 import ZipgoLogo from '@/assets/png/landing_banner.png';
+import FilterSwitch from '@/components/@common/FilterSwitch/FilterSwitch';
 import Header from '@/components/@common/Header/Header';
 import Template from '@/components/@common/Template';
-import FilterSwitch from '@/components/FilterSwitch/FilterSwitch';
 import FoodList from '@/components/Food/FoodList/FoodList';
 import useFoodListQuery from '@/hooks/query/food';
 

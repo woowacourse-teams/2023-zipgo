@@ -1,7 +1,7 @@
 import { ComponentPropsWithoutRef } from 'react';
 import { css, styled } from 'styled-components';
 
-import Checkbox from '../@common/Checkbox/Checkbox';
+import Checkbox from '../Checkbox/Checkbox';
 
 interface FilterSwitchProps extends ComponentPropsWithoutRef<'input'> {
   backgroundColor: string;

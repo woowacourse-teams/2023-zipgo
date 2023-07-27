@@ -6,7 +6,7 @@ type AdverseReaction = (typeof ADVERSE_REACTIONS)[number];
 
 export type Review = {
   id: number;
-  profileIimageUrl?: string;
+  profileImageUrl?: string;
   reviewerName: string;
   rating: number;
   date: string;

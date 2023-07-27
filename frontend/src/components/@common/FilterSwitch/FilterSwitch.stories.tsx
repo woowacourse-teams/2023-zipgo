@@ -2,11 +2,11 @@ import type { Meta, StoryObj } from '@storybook/react';
 import React from 'react';
 import { styled } from 'styled-components';
 
-import theme from '../../styles/theme';
+import theme from '../../../styles/theme';
 import FilterSwitch from './FilterSwitch';
 
 const meta: Meta<typeof FilterSwitch> = {
-  title: 'Zipgo/FilterSwitch',
+  title: '@common/FilterSwitch',
   component: FilterSwitch,
   tags: ['autodocs'],
   argTypes: {
