@@ -1,12 +1,13 @@
 package zipgo.auth.presentation;
 
-import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
-import zipgo.auth.presentation.dto.LoginRequest;
-import zipgo.auth.util.Tokens;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
 import zipgo.auth.application.AuthService;
+import zipgo.auth.util.Tokens;
 
 @RequestMapping("/auth")
 @RequiredArgsConstructor
@@ -16,8 +17,8 @@ public class AuthController {
     private final AuthService authService;
 
     @PostMapping("/login")
-    public ResponseEntity<Tokens> login(@RequestBody @Valid LoginRequest loginRequest) {
-        Tokens tokens = authService.login(loginRequest.getAuthCode());
+    public ResponseEntity<Tokens> login(@RequestParam("code") String authCode) {
+        Tokens tokens = authService.createToken(authCode);
         return ResponseEntity.ok(tokens);
     }
 
