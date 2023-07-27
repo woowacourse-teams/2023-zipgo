@@ -16,7 +16,6 @@ import zipgo.auth.util.KakaoTokens;
 import static org.springframework.http.HttpMethod.GET;
 
 @Component
-@RequiredArgsConstructor
 public class KakaoOAuthClient implements OAuthClient {
 
     private static final RestTemplate REST_TEMPLATE = new RestTemplate();
