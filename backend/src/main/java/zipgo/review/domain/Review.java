@@ -10,6 +10,8 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
+import lombok.EqualsAndHashCode;
+import lombok.EqualsAndHashCode.Include;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import zipgo.common.entity.BaseTimeEntity;
@@ -28,9 +30,11 @@ import static lombok.AccessLevel.PROTECTED;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor(access = PROTECTED)
+@EqualsAndHashCode(onlyExplicitlyIncluded = true)
 public class Review extends BaseTimeEntity {
 
     @Id
+    @Include
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
