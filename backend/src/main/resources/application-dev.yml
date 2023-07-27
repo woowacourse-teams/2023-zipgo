@@ -28,3 +28,10 @@ spring:
       mode: never
 
 ---
+# OAuth
+oauth:
+  kakao:
+    client-id: ${CLIENT_ID}
+    redirect-uri: ${REDIRECT_URI}
+
+---
