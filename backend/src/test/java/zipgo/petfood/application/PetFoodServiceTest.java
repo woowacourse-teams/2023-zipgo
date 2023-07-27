@@ -18,7 +18,6 @@ import zipgo.petfood.domain.PetFood;
 import zipgo.petfood.domain.repository.KeywordRepository;
 import zipgo.petfood.domain.repository.PetFoodRepository;
 import zipgo.petfood.exception.KeywordException;
-import zipgo.petfood.exception.PetFoodException;
 
 @Transactional
 @SpringBootTest
@@ -84,16 +83,6 @@ class PetFoodServiceTest {
 
         // then
         assertThat(조회된_식품).isEqualTo(테스트용_식품);
-    }
-
-    @Test
-    void 존재하지_않는_아이디로_조회시_예외가_발생한다() {
-        // given
-        Long 존재하지_않는_아이디 = -1L;
-
-        // when, then
-        assertThatThrownBy(() -> petFoodService.getPetFoodBy(존재하지_않는_아이디))
-                .isInstanceOf(PetFoodException.NotFound.class);
     }
 
 }

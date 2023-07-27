@@ -8,7 +8,6 @@ import zipgo.petfood.domain.PetFood;
 import zipgo.petfood.domain.repository.KeywordRepository;
 import zipgo.petfood.domain.repository.PetFoodRepository;
 import zipgo.petfood.exception.KeywordException;
-import zipgo.petfood.exception.PetFoodException;
 
 @Service
 @RequiredArgsConstructor
@@ -29,8 +28,7 @@ public class PetFoodService {
     }
 
     public PetFood getPetFoodBy(Long id) {
-        return petFoodRepository.findById(id)
-                .orElseThrow(() -> new PetFoodException.NotFound(id));
+        return petFoodRepository.getById(id);
     }
 
 }

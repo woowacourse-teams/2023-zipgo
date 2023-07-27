@@ -1,6 +1,7 @@
 package zipgo.petfood.domain.repository;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.junit.jupiter.api.Assertions.assertAll;
 import static zipgo.petfood.domain.fixture.PetFoodFixture.식품_초기화;
 import static zipgo.petfood.domain.fixture.PetFoodFixture.키워드_없이_식품_초기화;
@@ -21,6 +22,7 @@ import zipgo.brand.domain.Brand;
 import zipgo.brand.domain.repository.BrandRepository;
 import zipgo.petfood.domain.Keyword;
 import zipgo.petfood.domain.PetFood;
+import zipgo.petfood.exception.PetFoodException;
 
 @DataJpaTest
 @DisplayNameGeneration(ReplaceUnderscores.class)
@@ -116,6 +118,16 @@ class PetFoodRepositoryTest {
 
         //then
         assertThat(조회한_식품.getPrimaryIngredients()).contains("닭고기", "쌀", "귀리", "보리");
+    }
+
+    @Test
+    void 존재하지_않는_아이디로_조회시_예외가_발생한다() {
+        // given
+        Long 존재하지_않는_아이디 = -1L;
+
+        // when, then
+        assertThatThrownBy(() -> petFoodRepository.getById(존재하지_않는_아이디))
+                .isInstanceOf(PetFoodException.NotFound.class);
     }
 
 }
