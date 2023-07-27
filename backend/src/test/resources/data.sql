@@ -11,3 +11,11 @@ values (1, null, '[고집] 돌아온 배배',
        (1, 1, '[고집] 갈비 맛 모밀',
         'https://github.com/woowacourse-teams/2023-zipgo',
         'https://avatars.githubusercontent.com/u/76938931?v=4', true, true, null);
+
+insert into member(id)
+values (1);
+
+insert into review(member_id, pet_food_id, ratings, comment, taste_preference, stool_condition)
+values (1, 1, 5, '잘 먹네요', 'EATS_VERY_WELL', 'SOFT_MOIST'),
+       (1, 1, 3, '잘 안 먹네요', 'NOT_AT_ALL', 'SOFT_MOIST'),
+       (1, 1, 4, '잘 먹네요', 'EATS_MODERATELY', 'SOFT_MOIST');

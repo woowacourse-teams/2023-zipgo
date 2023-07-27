@@ -12,7 +12,6 @@ import zipgo.petfood.application.PetFoodService;
 import zipgo.petfood.domain.PetFood;
 import zipgo.petfood.presentation.dto.GetPetFoodResponse;
 import zipgo.petfood.presentation.dto.GetPetFoodsResponse;
-import zipgo.review.application.ReviewService;
 
 @RestController
 @RequestMapping("/pet-foods")
@@ -20,8 +19,6 @@ import zipgo.review.application.ReviewService;
 public class PetFoodController {
 
     private final PetFoodService petFoodService;
-
-    private final ReviewService reviewService;
 
     @GetMapping
     public ResponseEntity<GetPetFoodsResponse> getPetFoods(@RequestParam(required = false) String keyword) {
@@ -39,8 +36,8 @@ public class PetFoodController {
     @GetMapping("/{id}")
     public ResponseEntity<GetPetFoodResponse> getPetFood(@PathVariable Long id) {
         PetFood foundPetFood = petFoodService.getPetFoodBy(id);
-        int reviewCount = reviewService.countReviews(foundPetFood);
-        double ratingAverage = reviewService.calculateRatingAverage(foundPetFood);
+        int reviewCount = foundPetFood.countReviews();
+        double ratingAverage = foundPetFood.calculateRatingAverage();
 
         return ResponseEntity.ok(GetPetFoodResponse.of(foundPetFood, ratingAverage, reviewCount));
     }

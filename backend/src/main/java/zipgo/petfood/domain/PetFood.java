@@ -11,6 +11,7 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToMany;
 import java.util.ArrayList;
 import java.util.List;
 import lombok.AllArgsConstructor;
@@ -20,6 +21,7 @@ import lombok.EqualsAndHashCode.Include;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import zipgo.brand.domain.Brand;
+import zipgo.review.domain.Review;
 
 @Entity
 @Getter
@@ -59,5 +61,19 @@ public class PetFood {
     @Builder.Default
     @Convert(converter = StringArrayConverter.class)
     private List<String> functionality = new ArrayList<>();
+
+    @OneToMany(mappedBy = "petFood")
+    private List<Review> reviews = new ArrayList<>();
+
+    public double calculateRatingAverage() {
+        return reviews.stream()
+                .mapToInt(review -> review.getRatings())
+                .average()
+                .orElse(0);
+    }
+
+    public int countReviews() {
+        return reviews.size();
+    }
 
 }
