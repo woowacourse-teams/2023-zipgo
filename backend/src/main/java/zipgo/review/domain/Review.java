@@ -35,12 +35,10 @@ public class Review extends BaseTimeEntity {
     private Long id;
 
     @ManyToOne(fetch = LAZY)
-    @Column(nullable = false)
     @JoinColumn(name = "member_id")
     private Member member;
 
     @ManyToOne(fetch = LAZY)
-    @Column(nullable = false)
     @JoinColumn(name = "pet_food_id")
     private PetFood petFood;
 
