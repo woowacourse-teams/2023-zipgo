@@ -15,7 +15,7 @@ const StarRatingDisplay = (starRatingDisplayProps: StarRatingDisplayProps) => {
     <StarContainer>
       {Array.from({ length: 5 }, (_, index) => {
         const imageUrl = index < Math.floor(rating) ? FilledStarIcon : EmptyStarIcon;
-        return <Star size={size} key={index} src={imageUrl} alt="" />;
+        return <Star size={size} key={index} src={imageUrl} alt={`만족도 ${rating}점`} />;
       })}
     </StarContainer>
   );
