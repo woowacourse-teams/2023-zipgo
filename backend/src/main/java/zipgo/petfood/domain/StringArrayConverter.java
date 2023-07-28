@@ -15,6 +15,9 @@ public class StringArrayConverter implements AttributeConverter<List<String>, St
 
     @Override
     public String convertToDatabaseColumn(List<String> attribute) {
+        if (attribute == null) {
+            return "";
+        }
         return join(DELIMITER, attribute);
     }
 

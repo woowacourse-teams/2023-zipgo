@@ -3,7 +3,6 @@ package zipgo.petfood.domain;
 import static jakarta.persistence.FetchType.LAZY;
 
 import jakarta.persistence.Column;
-import jakarta.persistence.Convert;
 import jakarta.persistence.Embedded;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
@@ -11,9 +10,8 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.ManyToOne;
-import jakarta.persistence.OneToMany;
-import java.util.ArrayList;
 import java.util.List;
+import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.EqualsAndHashCode;
@@ -21,14 +19,13 @@ import lombok.EqualsAndHashCode.Include;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import zipgo.brand.domain.Brand;
-import zipgo.review.domain.Review;
 
 @Entity
 @Getter
 @Builder
-@NoArgsConstructor
 @AllArgsConstructor
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class PetFood {
 
     @Id
@@ -51,29 +48,32 @@ public class PetFood {
     @ManyToOne(fetch = LAZY, optional = false)
     private Brand brand;
 
-    @Builder.Default
-    @Convert(converter = StringArrayConverter.class)
-    private List<String> primaryIngredients = new ArrayList<>();
+    @Embedded
+    private PrimaryIngredients primaryIngredients;
 
     @Embedded
     private HasStandard hasStandard;
 
-    @Builder.Default
-    @Convert(converter = StringArrayConverter.class)
-    private List<String> functionality = new ArrayList<>();
+    @Embedded
+    private Functionality functionality;
 
-    @OneToMany(mappedBy = "petFood")
-    private List<Review> reviews = new ArrayList<>();
+    @Embedded
+    private Reviews reviews;
 
     public double calculateRatingAverage() {
-        return reviews.stream()
-                .mapToInt(review -> review.getRating())
-                .average()
-                .orElse(0);
+        return reviews.calculateRatingAverage();
     }
 
     public int countReviews() {
-        return reviews.size();
+        return reviews.countReviews();
+    }
+
+    public List<String> getPrimaryIngredients() {
+        return primaryIngredients.getPrimaryIngredients();
+    }
+
+    public List<String> getFunctionality() {
+        return functionality.getFunctionality();
     }
 
 }

@@ -1,7 +1,9 @@
 package zipgo.petfood.domain;
 
-import jakarta.persistence.Column;
+import jakarta.persistence.Convert;
 import jakarta.persistence.Embeddable;
+import java.util.ArrayList;
+import java.util.List;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Builder.Default;
@@ -13,14 +15,10 @@ import lombok.NoArgsConstructor;
 @Embeddable
 @NoArgsConstructor
 @AllArgsConstructor
-public class HasStandard {
+public class PrimaryIngredients {
 
     @Default
-    @Column(nullable = false, name = "us_standard")
-    private Boolean unitedStates = true;
-
-    @Default
-    @Column(nullable = false, name = "eu_standard")
-    private Boolean europe = true;
+    @Convert(converter = StringArrayConverter.class)
+    private List<String> primaryIngredients = new ArrayList<>();
 
 }

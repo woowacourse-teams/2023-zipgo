@@ -118,7 +118,8 @@ class PetFoodRepositoryTest {
         PetFood 조회한_식품 = petFoodRepository.findById(생성된_아이디).orElseThrow();
 
         //then
-        assertThat(조회한_식품.getPrimaryIngredients()).contains("닭고기", "쌀", "귀리", "보리");
+        assertThat(조회한_식품.getPrimaryIngredients())
+                .contains("닭고기", "쌀", "귀리", "보리");
     }
 
     @Test
