@@ -11,6 +11,7 @@ import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
+import lombok.Builder.Default;
 import lombok.EqualsAndHashCode;
 import lombok.EqualsAndHashCode.Include;
 import lombok.Getter;
@@ -63,7 +64,7 @@ public class Review extends BaseTimeEntity {
     @Column(nullable = false)
     private StoolCondition stoolCondition;
 
-    @Builder.Default
+    @Default
     @OneToMany(mappedBy = "review", orphanRemoval = true, cascade = {PERSIST, REMOVE})
     private List<AdverseReaction> adverseReactions = new ArrayList<>();
 

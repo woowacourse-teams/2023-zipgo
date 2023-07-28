@@ -4,7 +4,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import zipgo.ServiceTest;
 import zipgo.member.domain.Member;
-import zipgo.member.repository.MemberRepository;
+import zipgo.member.domain.repository.MemberRepository;
 import zipgo.petfood.domain.PetFood;
 import zipgo.petfood.domain.repository.PetFoodRepository;
 import zipgo.review.domain.Review;

@@ -8,7 +8,9 @@ import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import org.springframework.restdocs.restassured.RestDocumentationFilter;
 
+import static com.epages.restdocs.apispec.RestAssuredRestDocumentationWrapper.document;
 import static com.epages.restdocs.apispec.RestAssuredRestDocumentationWrapper.resourceDetails;
+import static com.epages.restdocs.apispec.Schema.schema;
 import static io.restassured.RestAssured.given;
 import static io.restassured.http.ContentType.JSON;
 import static org.hamcrest.Matchers.is;
@@ -28,15 +30,13 @@ public class ReviewAcceptanceTest extends AcceptanceTest {
         void 키워드를_지정하지_않고_요청한다() {
             // given
             var 요청_준비 = given(spec)
-                    .contentType(JSON)
-                    ;
+                    .contentType(JSON);
 
             // when
             //TODO petFoodId가 data.sql에 종속적인거 같아서 리뷰 생성 기능 만든 후 리팩터링 예정
             var 응답 = 요청_준비.when()
                     .get("/pet-foods/" + 1 + "/reviews");
 
-            JsonPath jsonPath = 응답.then().extract().body().jsonPath();
             // then
             응답.then()
                     .assertThat().statusCode(OK.value())
@@ -44,12 +44,12 @@ public class ReviewAcceptanceTest extends AcceptanceTest {
         }
 
         private RestDocumentationFilter 식품_목록_조회_API_문서_생성() {
-            var 응답_형식 = Schema.schema("GetReviewsResponse");
+            var 응답_형식 = schema("GetReviewsResponse");
             var 문서_정보 = resourceDetails().summary("리뷰 전체 목록 조회 성공")
                     .description("해당 반려동물 식품에 대한 모든 리뷰를 조회합니다.")
                     .responseSchema(응답_형식);
 
-            return RestAssuredRestDocumentationWrapper.document("리뷰 전체 목록 조회 성공",
+            return document("리뷰 전체 목록 조회 성공",
                     문서_정보,
                     queryParameters(parameterWithName("keyword").optional().description("리뷰 전체 조회 API")),
                     responseFields(

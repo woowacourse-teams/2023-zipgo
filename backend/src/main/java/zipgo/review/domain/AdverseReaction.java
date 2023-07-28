@@ -14,6 +14,7 @@ import lombok.NoArgsConstructor;
 
 import static jakarta.persistence.FetchType.LAZY;
 import static lombok.AccessLevel.PROTECTED;
+import static lombok.EqualsAndHashCode.*;
 
 @Entity
 @Getter
@@ -24,7 +25,7 @@ import static lombok.AccessLevel.PROTECTED;
 public class AdverseReaction {
 
     @Id
-    @EqualsAndHashCode.Include
+    @Include
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
@@ -37,4 +38,5 @@ public class AdverseReaction {
     public void updateReview(Review review) {
         this.review = review;
     }
+
 }

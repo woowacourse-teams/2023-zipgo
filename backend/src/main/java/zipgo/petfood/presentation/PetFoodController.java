@@ -26,8 +26,7 @@ public class PetFoodController {
 
     private List<PetFood> getPetFoodsBy(String keyword) {
         if (keyword == null) {
-            return petFoodService.
-                    getAllPetFoods();
+            return petFoodService.getAllPetFoods();
         }
         return petFoodService.getPetFoodHaving(keyword);
     }
