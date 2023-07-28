@@ -1,21 +1,9 @@
 package zipgo.review.domain;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Enumerated;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
-import jakarta.persistence.OneToMany;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
+import jakarta.persistence.*;
+import lombok.*;
 import lombok.Builder.Default;
-import lombok.EqualsAndHashCode;
 import lombok.EqualsAndHashCode.Include;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
 import zipgo.common.entity.BaseTimeEntity;
 import zipgo.member.domain.Member;
 import zipgo.petfood.domain.PetFood;
@@ -68,7 +56,11 @@ public class Review extends BaseTimeEntity {
     @OneToMany(mappedBy = "review", orphanRemoval = true, cascade = {PERSIST, REMOVE})
     private List<AdverseReaction> adverseReactions = new ArrayList<>();
 
-    public void addAdverseReactions(List<AdverseReaction> adverseReactions) {
+    public void addAdverseReactions(List<String> adverseReactionNames) {
+        List<AdverseReaction> adverseReactions = adverseReactionNames.stream()
+                .map(adverseReaction -> AdverseReaction.builder().name(adverseReaction).build())
+                .toList();
+
         for (AdverseReaction adverseReaction : adverseReactions) {
             adverseReaction.updateReview(this);
             this.adverseReactions.add(adverseReaction);

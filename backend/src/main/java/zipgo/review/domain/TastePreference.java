@@ -1,6 +1,9 @@
 package zipgo.review.domain;
 
 import lombok.Getter;
+import zipgo.review.exception.TastePreferenceException;
+
+import java.util.Arrays;
 
 @Getter
 public enum TastePreference {
@@ -10,10 +13,18 @@ public enum TastePreference {
     EATS_MODERATELY("잘 먹는 편이에요"),
     EATS_VERY_WELL("정말 잘 먹어요");
 
-    private String value;
+    private String description;
 
-    TastePreference(String value) {
-        this.value = value;
+    TastePreference(String description) {
+        this.description = description;
+    }
+
+    public static TastePreference from(String tastePreference) {
+        return Arrays.stream(values())
+                .filter(value -> value.getDescription().equals(tastePreference))
+                .findAny()
+                .orElseThrow(TastePreferenceException.NotFound::new);
     }
 
 }
+

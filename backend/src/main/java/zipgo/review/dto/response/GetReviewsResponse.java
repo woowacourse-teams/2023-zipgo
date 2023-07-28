@@ -25,8 +25,8 @@ public record GetReviewsResponse(
                 review.getRating(),
                 review.getCreatedAt().format(DateTimeFormatter.ofPattern("yyyy-MM-dd")),
                 review.getComment(),
-                review.getStoolCondition().getValue(),
-                review.getTastePreference().getValue(),
+                review.getStoolCondition().getDescription(),
+                review.getTastePreference().getDescription(),
                 getAdverseReactions(review)
         );
     }
