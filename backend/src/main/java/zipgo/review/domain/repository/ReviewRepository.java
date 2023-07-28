@@ -1,4 +1,4 @@
-package zipgo.review.repository;
+package zipgo.review.domain.repository;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import zipgo.review.domain.Review;

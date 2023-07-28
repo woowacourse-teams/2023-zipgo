@@ -1,5 +1,8 @@
 package zipgo.review.domain;
 
+import lombok.Getter;
+
+@Getter
 public enum TastePreference {
 
     NOT_AT_ALL("전혀 안 먹어요"),

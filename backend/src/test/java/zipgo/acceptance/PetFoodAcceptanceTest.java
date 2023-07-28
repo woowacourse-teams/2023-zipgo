@@ -1,28 +1,27 @@
 package zipgo.acceptance;
 
-import static com.epages.restdocs.apispec.RestAssuredRestDocumentationWrapper.resourceDetails;
-import static io.restassured.RestAssured.given;
-import static org.hamcrest.Matchers.containsString;
-import static org.hamcrest.Matchers.empty;
-import static org.hamcrest.Matchers.is;
-import static org.hamcrest.Matchers.not;
-import static org.springframework.restdocs.payload.PayloadDocumentation.fieldWithPath;
-import static org.springframework.restdocs.payload.PayloadDocumentation.responseFields;
-import static org.springframework.restdocs.request.RequestDocumentation.parameterWithName;
-import static org.springframework.restdocs.request.RequestDocumentation.queryParameters;
-
 import com.epages.restdocs.apispec.RestAssuredRestDocumentationWrapper;
 import com.epages.restdocs.apispec.Schema;
 import io.restassured.http.ContentType;
 import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.DisplayNameGeneration;
-import org.junit.jupiter.api.DisplayNameGenerator.ReplaceUnderscores;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import org.springframework.http.HttpStatus;
 import org.springframework.restdocs.restassured.RestDocumentationFilter;
 
-@DisplayNameGeneration(ReplaceUnderscores.class)
+import static com.epages.restdocs.apispec.RestAssuredRestDocumentationWrapper.resourceDetails;
+import static io.restassured.RestAssured.given;
+import static io.restassured.http.ContentType.*;
+import static org.hamcrest.Matchers.containsString;
+import static org.hamcrest.Matchers.empty;
+import static org.hamcrest.Matchers.is;
+import static org.hamcrest.Matchers.not;
+import static org.springframework.http.HttpStatus.OK;
+import static org.springframework.restdocs.payload.PayloadDocumentation.fieldWithPath;
+import static org.springframework.restdocs.payload.PayloadDocumentation.responseFields;
+import static org.springframework.restdocs.request.RequestDocumentation.parameterWithName;
+import static org.springframework.restdocs.request.RequestDocumentation.queryParameters;
+
 public class PetFoodAcceptanceTest extends AcceptanceTest {
 
     @Nested
@@ -33,7 +32,7 @@ public class PetFoodAcceptanceTest extends AcceptanceTest {
         void 키워드를_지정하지_않고_요청한다() {
             // given
             var 요청_준비 = given(spec)
-                    .contentType(ContentType.JSON)
+                    .contentType(JSON)
                     .filter(식품_목록_조회_API_문서_생성());
 
             // when
@@ -42,7 +41,7 @@ public class PetFoodAcceptanceTest extends AcceptanceTest {
 
             // then
             응답.then()
-                    .assertThat().statusCode(HttpStatus.OK.value())
+                    .assertThat().statusCode(OK.value())
                     .assertThat().body("foodList.size()", is(2));
         }
 
@@ -70,7 +69,7 @@ public class PetFoodAcceptanceTest extends AcceptanceTest {
             // given
             String 키워드 = "diet";
             var 요청_준비 = given()
-                    .contentType(ContentType.JSON)
+                    .contentType(JSON)
                     .queryParam("keyword", 키워드);
 
             // when
@@ -79,7 +78,7 @@ public class PetFoodAcceptanceTest extends AcceptanceTest {
 
             // then
             응답.then()
-                    .assertThat().statusCode(HttpStatus.OK.value())
+                    .assertThat().statusCode(OK.value())
                     .assertThat().body("foodList.size()", not(empty()));
         }
 
@@ -87,7 +86,7 @@ public class PetFoodAcceptanceTest extends AcceptanceTest {
         void 존재하지_않는_키워드로_요청한다() {
             // given
             var 요청_준비 = given(spec)
-                    .contentType(ContentType.JSON)
+                    .contentType(JSON)
                     .filter(존재하지_않는_키워드_예외_문서_생성())
                     .queryParam("keyword", "존재하지 않는 키워드");
 
