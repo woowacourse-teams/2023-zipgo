@@ -1,5 +1,6 @@
 package zipgo.auth.application;
 
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
@@ -15,9 +16,9 @@ import static org.springframework.http.HttpMethod.GET;
 import static org.springframework.http.HttpMethod.POST;
 
 @Component
+@RequiredArgsConstructor
 public class KakaoOAuthClient implements OAuthClient {
 
-    private static final RestTemplate REST_TEMPLATE = new RestTemplate();
     private static final String KAKAO_ACCESS_TOKEN_URI = "https://kauth.kakao.com/oauth/token";
     private static final String KAKAO_USER_INFO_URI = "https://kapi.kakao.com/v2/user/me";
     private static final String GRANT_TYPE = "authorization_code";
@@ -27,6 +28,7 @@ public class KakaoOAuthClient implements OAuthClient {
 
     @Value("${oauth.kakao.redirect-uri}")
     private String redirectUri;
+    private final RestTemplate restTemplate;
 
     @Override
     public String getAccessToken(String authCode) {
@@ -35,7 +37,7 @@ public class KakaoOAuthClient implements OAuthClient {
 
         HttpEntity<MultiValueMap<String, String>> request = new HttpEntity<>(body, header);
 
-        return REST_TEMPLATE.exchange(
+        return restTemplate.exchange(
                 KAKAO_ACCESS_TOKEN_URI,
                 POST,
                 request,
@@ -64,7 +66,7 @@ public class KakaoOAuthClient implements OAuthClient {
         headers.setBearerAuth(accessToken);
         HttpEntity<HttpHeaders> requestHeader = new HttpEntity<>(headers);
 
-        return REST_TEMPLATE.exchange(
+        return restTemplate.exchange(
                 KAKAO_USER_INFO_URI,
                 GET,
                 requestHeader,
