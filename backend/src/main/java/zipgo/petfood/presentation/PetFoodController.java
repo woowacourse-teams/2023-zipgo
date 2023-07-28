@@ -8,34 +8,30 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
-import zipgo.petfood.application.PetFoodService;
+import zipgo.petfood.application.PetFoodQueryService;
 import zipgo.petfood.domain.PetFood;
 import zipgo.petfood.presentation.dto.GetPetFoodResponse;
 import zipgo.petfood.presentation.dto.GetPetFoodsResponse;
 
 @RestController
-@RequestMapping("/pet-foods")
 @RequiredArgsConstructor
+@RequestMapping("/pet-foods")
 public class PetFoodController {
 
-    private final PetFoodService petFoodService;
+    private final PetFoodQueryService petFoodQueryService;
 
     @GetMapping
-    public ResponseEntity<GetPetFoodsResponse> getPetFoods(@RequestParam(required = false) String keyword) {
-        List<PetFood> petFoods = getPetFoodsBy(keyword);
+    public ResponseEntity<GetPetFoodsResponse> getPetFoods(
+            @RequestParam String keyword,
+            @RequestParam String brand
+    ) {
+        List<PetFood> petFoods = petFoodQueryService.getPetFoodByDynamicValue(keyword, brand);
         return ResponseEntity.ok(GetPetFoodsResponse.from(petFoods));
-    }
-
-    private List<PetFood> getPetFoodsBy(String keyword) {
-        if (keyword == null) {
-            return petFoodService.getAllPetFoods();
-        }
-        return petFoodService.getPetFoodHaving(keyword);
     }
 
     @GetMapping("/{id}")
     public ResponseEntity<GetPetFoodResponse> getPetFood(@PathVariable Long id) {
-        PetFood foundPetFood = petFoodService.getPetFoodBy(id);
+        PetFood foundPetFood = petFoodQueryService.getPetFoodBy(id);
         int reviewCount = foundPetFood.countReviews();
         double ratingAverage = foundPetFood.calculateRatingAverage();
 

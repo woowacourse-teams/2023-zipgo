@@ -2,7 +2,7 @@ package zipgo.review.application;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import zipgo.ServiceTest;
+import zipgo.common.service.ServiceTest;
 import zipgo.brand.domain.Brand;
 import zipgo.brand.domain.repository.BrandRepository;
 import zipgo.member.domain.Member;

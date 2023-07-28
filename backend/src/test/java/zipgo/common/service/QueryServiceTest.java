@@ -1,4 +1,4 @@
-package zipgo;
+package zipgo.common.service;
 
 import org.junit.jupiter.api.DisplayNameGeneration;
 import org.junit.jupiter.api.DisplayNameGenerator;
