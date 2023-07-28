@@ -20,7 +20,7 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 class JwtTokenProviderTest {
 
     @Autowired
-    private JwtTokenProvider jwtTokenProvider;
+    private JwtProvider jwtProvider;
 
     @Value("${jwt.secret-key}")
     private String secretKey;
@@ -31,7 +31,7 @@ class JwtTokenProviderTest {
         String 페이로드 = String.valueOf(1L);
 
         // expect
-        String 토큰 = jwtTokenProvider.create(페이로드);
+        String 토큰 = jwtProvider.create(페이로드);
 
         // then
         assertThat(토큰).isNotNull();
@@ -44,16 +44,16 @@ class JwtTokenProviderTest {
         String 페이로드 = String.valueOf(1L);
 
         // when
-        String 토큰 = jwtTokenProvider.create(페이로드);
+        String 토큰 = jwtProvider.create(페이로드);
 
         // then
-        assertThat(jwtTokenProvider.getPayload(토큰)).isEqualTo(페이로드);
+        assertThat(jwtProvider.getPayload(토큰)).isEqualTo(페이로드);
     }
 
     @Test
     void 유효하지_않은_토큰의_형식으로_payload를_조회할_경우_예외가_발생한다() {
         // expect
-        assertThatThrownBy(() -> jwtTokenProvider.getPayload(null))
+        assertThatThrownBy(() -> jwtProvider.getPayload(null))
                 .isInstanceOf(IllegalStateException.class);
     }
 
@@ -67,14 +67,14 @@ class JwtTokenProviderTest {
                 .compact();
 
         // expect
-        assertThatThrownBy(() -> jwtTokenProvider.getPayload(만료된_토큰))
+        assertThatThrownBy(() -> jwtProvider.getPayload(만료된_토큰))
                 .isInstanceOf(IllegalStateException.class);
     }
 
     @Test
     void secretKey가_다른_토큰_정보로_payload_조회시_예외가_발생한다() {
         // given
-        JwtTokenProvider 다른_키의_jwt_provider = new JwtTokenProvider(
+        JwtProvider 다른_키의_jwt_provider = new JwtProvider(
                 "빨주노초파남보나만의열쇠",
                 8640000L
         );
@@ -83,7 +83,7 @@ class JwtTokenProviderTest {
         String 다른_키로_만든_토큰 = 다른_키의_jwt_provider.create(String.valueOf(1L));
 
         // then
-        assertThatThrownBy(() -> jwtTokenProvider.getPayload(다른_키로_만든_토큰))
+        assertThatThrownBy(() -> jwtProvider.getPayload(다른_키로_만든_토큰))
                 .isInstanceOf(IllegalStateException.class);
     }
 

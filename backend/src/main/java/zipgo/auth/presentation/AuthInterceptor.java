@@ -5,13 +5,13 @@ import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.HandlerInterceptor;
-import zipgo.auth.util.JwtTokenProvider;
+import zipgo.auth.util.JwtProvider;
 
 @Component
 @RequiredArgsConstructor
 public class AuthInterceptor implements HandlerInterceptor {
 
-    private final JwtTokenProvider jwtTokenProvider;
+    private final JwtProvider jwtProvider;
 
     @Override
     public boolean preHandle(
@@ -20,7 +20,7 @@ public class AuthInterceptor implements HandlerInterceptor {
             Object handler
     ) {
         String token = BearerTokenExtractor.extract(request);
-        jwtTokenProvider.validateAbleToken(token);
+        jwtProvider.validateAbleToken(token);
         return true;
     }
 }

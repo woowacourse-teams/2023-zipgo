@@ -13,12 +13,12 @@ import static io.jsonwebtoken.security.Keys.hmacShaKeyFor;
 import static java.nio.charset.StandardCharsets.UTF_8;
 
 @Component
-public class JwtTokenProvider {
+public class JwtProvider {
 
     private final SecretKey key;
     private final long validityInMilliseconds;
 
-    public JwtTokenProvider(
+    public JwtProvider(
             @Value("${jwt.secret-key}") String secretKey,
             @Value("${jwt.expire-length}") long validityInMilliseconds
     ) {

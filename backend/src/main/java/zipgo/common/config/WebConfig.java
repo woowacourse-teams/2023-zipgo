@@ -8,7 +8,7 @@ import org.springframework.web.servlet.config.annotation.CorsRegistry;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 import zipgo.auth.presentation.AuthInterceptor;
-import zipgo.auth.util.JwtTokenProvider;
+import zipgo.auth.util.JwtProvider;
 
 @Configuration
 @RequiredArgsConstructor
@@ -18,7 +18,7 @@ public class WebConfig implements WebMvcConfigurer {
     private static final String PROD_ORIGIN = "*";
 
     private final AuthInterceptor authInterceptor;
-    private final JwtTokenProvider jwtTokenProvider;
+    private final JwtProvider jwtProvider;
 
     @Override
     public void addCorsMappings(CorsRegistry registry) {
