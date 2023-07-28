@@ -24,7 +24,7 @@ import zipgo.petfood.exception.KeywordException;
 
 @ExtendWith(MockitoExtension.class)
 @DisplayNameGeneration(ReplaceUnderscores.class)
-class PetFoodServiceTest {
+class PetFoodQueryServiceTest {
 
     @InjectMocks
     private PetFoodService petFoodService;

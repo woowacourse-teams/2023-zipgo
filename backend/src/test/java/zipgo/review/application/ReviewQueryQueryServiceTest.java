@@ -2,7 +2,7 @@ package zipgo.review.application;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import zipgo.ServiceTest;
+import zipgo.QueryServiceTest;
 import zipgo.member.domain.Member;
 import zipgo.member.domain.repository.MemberRepository;
 import zipgo.petfood.domain.PetFood;
@@ -23,7 +23,7 @@ import static zipgo.review.fixture.MemberFixture.무민;
 import static zipgo.review.fixture.ReviewFixture.극찬_리뷰_생성;
 import static zipgo.review.fixture.ReviewFixture.혹평_리뷰_생성;
 
-class ReviewQueryServiceTest extends ServiceTest {
+class ReviewQueryQueryServiceTest extends QueryServiceTest {
 
     @Autowired
     private PetFoodRepository petFoodRepository;
