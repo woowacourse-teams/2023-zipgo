@@ -35,5 +35,4 @@ public class WebConfig implements WebMvcConfigurer {
                 .excludePathPatterns(ALLOW_ALL_PATH);
     }
 
-
 }

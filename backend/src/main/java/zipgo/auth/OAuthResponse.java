@@ -6,4 +6,6 @@ public interface OAuthResponse {
 
     String getNickName();
 
+    String getImageUrl();
+
 }

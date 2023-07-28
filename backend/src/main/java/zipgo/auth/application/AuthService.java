@@ -30,7 +30,10 @@ public class AuthService {
             return jwtProvider.create(String.valueOf(memberOptional.get().getId()));
         }
 
-        Member member = new Member(memberDetail.getNickName(), memberDetail.getEmail());
+        Member member = Member.builder()
+                .email(memberDetail.getEmail())
+                .nickname(memberDetail.getEmail())
+                .build();
         Long memberId = memberQueryService.save(member).getId();
         return jwtProvider.create(String.valueOf(memberId));
     }

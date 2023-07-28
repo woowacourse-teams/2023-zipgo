@@ -11,6 +11,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import static lombok.AccessLevel.PROTECTED;
+import static lombok.EqualsAndHashCode.*;
 
 @Entity
 @Getter
@@ -21,17 +22,12 @@ import static lombok.AccessLevel.PROTECTED;
 public class Member {
 
     @Id
-    @EqualsAndHashCode.Include
+    @Include
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     private String nickname;
 
     private String email;
-
-    public Member(String nickname, String email) {
-        this.nickname = nickname;
-        this.email = email;
-    }
 
 }

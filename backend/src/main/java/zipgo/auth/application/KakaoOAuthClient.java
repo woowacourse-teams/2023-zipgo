@@ -5,6 +5,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
@@ -19,9 +20,9 @@ import static org.springframework.http.HttpMethod.POST;
 @RequiredArgsConstructor
 public class KakaoOAuthClient implements OAuthClient {
 
-    private static final String KAKAO_ACCESS_TOKEN_URI = "https://kauth.kakao.com/oauth/token";
-    private static final String KAKAO_USER_INFO_URI = "https://kapi.kakao.com/v2/user/me";
-    private static final String GRANT_TYPE = "authorization_code";
+    public static final String KAKAO_ACCESS_TOKEN_URI = "https://kauth.kakao.com/oauth/token";
+    public static final String KAKAO_USER_INFO_URI = "https://kapi.kakao.com/v2/user/me";
+    public static final String GRANT_TYPE = "authorization_code";
 
     @Value("${oauth.kakao.client-id}")
     private String clientId;
@@ -37,21 +38,22 @@ public class KakaoOAuthClient implements OAuthClient {
 
         HttpEntity<MultiValueMap<String, String>> request = new HttpEntity<>(body, header);
 
-        return restTemplate.exchange(
+        ResponseEntity<KakaoTokens> exchange = restTemplate.exchange(
                 KAKAO_ACCESS_TOKEN_URI,
                 POST,
                 request,
                 KakaoTokens.class
-        ).getBody().getAccessToken();
+        );
+        return exchange.getBody().getAccessToken();
     }
 
-    private HttpHeaders createRequestHeader() {
+    HttpHeaders createRequestHeader() {
         HttpHeaders header = new HttpHeaders();
         header.setContentType(MediaType.APPLICATION_FORM_URLENCODED);
         return new HttpHeaders(header);
     }
 
-    private MultiValueMap<String, String> createRequestBodyWithAuthCode(String authCode) {
+    MultiValueMap<String, String> createRequestBodyWithAuthCode(String authCode) {
         MultiValueMap<String, String> body = new LinkedMultiValueMap<>();
         body.add("grant_type", GRANT_TYPE);
         body.add("client_id", clientId);
