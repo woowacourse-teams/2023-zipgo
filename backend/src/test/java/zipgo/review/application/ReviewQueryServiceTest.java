@@ -41,10 +41,11 @@ class ReviewQueryServiceTest extends ServiceTest {
     void getAllReviews() {
         //given
         PetFood 식품 = 키워드_없이_식품_초기화();
-        Member 멤버 = memberRepository.save(무민);
+        Member 멤버 = memberRepository.save(무민());
         petFoodRepository.save(식품);
         Review 극찬_리뷰 = reviewRepository.save(극찬_리뷰_생성(멤버, 식품));
-        reviewRepository.save(혹평_리뷰_생성(멤버, 식품, List.of(눈물_이상반응(), 먹고_토_이상반응())));
+        Review 혹평_리뷰_생성 = 혹평_리뷰_생성(멤버, 식품, List.of(눈물_이상반응(), 먹고_토_이상반응()));
+        reviewRepository.save(혹평_리뷰_생성);
 
         //when
         List<Review> reviews = reviewQueryService.getAllReviews(식품.getId());

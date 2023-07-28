@@ -26,7 +26,7 @@ public class ReviewFixture {
 
     public static Review 혹평_리뷰_생성(Member 멤버, PetFood 식품, List<AdverseReaction> 이상반응들) {
         Review 리뷰 = Review.builder()
-                .member(무민)
+                .member(멤버)
                 .petFood(식품)
                 .rating(1)
                 .comment("우리 아이가 한 입 먹고 더 안 먹어요 ㅡ.ㅡ 책임지세요.")
