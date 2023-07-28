@@ -1,12 +1,10 @@
-package zipgo.acceptance;
+package zipgo.review.presentation;
 
-import com.epages.restdocs.apispec.RestAssuredRestDocumentationWrapper;
-import com.epages.restdocs.apispec.Schema;
-import io.restassured.path.json.JsonPath;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import org.springframework.restdocs.restassured.RestDocumentationFilter;
+import zipgo.acceptance.AcceptanceTest;
 
 import static com.epages.restdocs.apispec.RestAssuredRestDocumentationWrapper.document;
 import static com.epages.restdocs.apispec.RestAssuredRestDocumentationWrapper.resourceDetails;
@@ -20,7 +18,7 @@ import static org.springframework.restdocs.payload.PayloadDocumentation.response
 import static org.springframework.restdocs.request.RequestDocumentation.parameterWithName;
 import static org.springframework.restdocs.request.RequestDocumentation.queryParameters;
 
-public class ReviewAcceptanceTest extends AcceptanceTest {
+public class ReviewControllerTest extends AcceptanceTest {
 
     @Nested
     @DisplayName("리뷰 전체 목록 조회 API")
