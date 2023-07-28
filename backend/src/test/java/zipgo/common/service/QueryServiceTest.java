@@ -1,4 +1,4 @@
-package zipgo;
+package zipgo.common.service;
 
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.jdbc.Sql;

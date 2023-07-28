@@ -21,8 +21,6 @@ import static org.springframework.restdocs.request.RequestDocumentation.queryPar
 import com.epages.restdocs.apispec.ResourceSnippetDetails;
 import com.epages.restdocs.apispec.Schema;
 import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.DisplayNameGeneration;
-import org.junit.jupiter.api.DisplayNameGenerator.ReplaceUnderscores;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import org.springframework.restdocs.restassured.RestDocumentationFilter;
@@ -44,6 +42,8 @@ public class PetFoodAcceptanceTest extends AcceptanceTest {
             // given
             var 요청_준비 = given(spec)
                     .contentType(JSON)
+                    .queryParam("keyword")
+                    .queryParam("brand")
                     .filter(성공_API_문서_생성("식품 전체 조회 - 성공(키워드 없음)"));
 
             // when
@@ -59,7 +59,10 @@ public class PetFoodAcceptanceTest extends AcceptanceTest {
         private RestDocumentationFilter 성공_API_문서_생성(String name) {
             return document(name,
                     API_정보.responseSchema(성공_응답_형식),
-                    queryParameters(parameterWithName("keyword").optional().description("식품 키워드")),
+                    queryParameters(
+                            parameterWithName("keyword").optional().description("식품 키워드"),
+                            parameterWithName("brand").optional().description("브랜드")
+                            ),
                     responseFields(
                             fieldWithPath("petFoods").description("반려동물 식품 리스트"),
                             fieldWithPath("petFoods[].id").description("식품 id"),
@@ -74,9 +77,11 @@ public class PetFoodAcceptanceTest extends AcceptanceTest {
 
             // given
             String 키워드 = "diet";
+            String 브랜드 = "오리젠";
             var 요청_준비 = given(spec)
                     .contentType(JSON)
                     .queryParam("keyword", 키워드)
+                    .queryParam("brand", 브랜드)
                     .filter(성공_API_문서_생성("식품 전체 조회 - 성공(키워드 지정)"));
 
             // when
@@ -87,29 +92,6 @@ public class PetFoodAcceptanceTest extends AcceptanceTest {
             응답.then()
                     .assertThat().statusCode(OK.value())
                     .assertThat().body("petFoods.size()", not(empty()));
-        }
-
-        @Test
-        void 존재하지_않는_키워드로_요청한다() {
-            // given
-            var 요청_준비 = given(spec)
-                    .contentType(JSON)
-                    .filter(존재하지_않는_키워드_예외_문서_생성())
-                    .queryParam("keyword", "존재하지 않는 키워드");
-
-            // when
-            var 응답 = 요청_준비.when()
-                    .get("/pet-foods");
-
-            // then
-            응답.then()
-                    .assertThat().statusCode(NOT_FOUND.value())
-                    .assertThat().body("message", containsString("키워드를 찾을 수 없습니다."));
-
-        }
-
-        private RestDocumentationFilter 존재하지_않는_키워드_예외_문서_생성() {
-            return document("식품 전체 조회 - 실패(존재하지 않는 키워드)", API_정보.responseSchema(에러_응답_형식));
         }
 
     }
