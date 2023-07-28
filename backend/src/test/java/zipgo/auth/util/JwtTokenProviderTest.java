@@ -1,15 +1,11 @@
 package zipgo.auth.util;
 
 import io.jsonwebtoken.Jwts;
-import io.jsonwebtoken.SignatureAlgorithm;
-import io.jsonwebtoken.security.Keys;
-import org.apache.http.util.Asserts;
 import org.junit.jupiter.api.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.test.context.SpringBootTest;
 
-import java.nio.charset.StandardCharsets;
 import java.util.Date;
 
 import static io.jsonwebtoken.SignatureAlgorithm.*;
@@ -17,15 +13,14 @@ import static io.jsonwebtoken.security.Keys.*;
 import static java.nio.charset.StandardCharsets.*;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
-import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @DisplayNameGeneration(DisplayNameGenerator.ReplaceUnderscores.class)
 @SuppressWarnings("NonAsciiCharacters")
-class JwtProviderTest {
+class JwtTokenProviderTest {
 
     @Autowired
-    private JwtProvider jwtProvider;
+    private JwtTokenProvider jwtTokenProvider;
 
     @Value("${jwt.secret-key}")
     private String secretKey;
@@ -36,7 +31,7 @@ class JwtProviderTest {
         String 페이로드 = String.valueOf(1L);
 
         // expect
-        String 토큰 = jwtProvider.create(페이로드);
+        String 토큰 = jwtTokenProvider.create(페이로드);
 
         // then
         assertThat(토큰).isNotNull();
@@ -49,16 +44,16 @@ class JwtProviderTest {
         String 페이로드 = String.valueOf(1L);
 
         // when
-        String 토큰 = jwtProvider.create(페이로드);
+        String 토큰 = jwtTokenProvider.create(페이로드);
 
         // then
-        assertThat(jwtProvider.getPayload(토큰)).isEqualTo(페이로드);
+        assertThat(jwtTokenProvider.getPayload(토큰)).isEqualTo(페이로드);
     }
 
     @Test
     void 유효하지_않은_토큰의_형식으로_payload를_조회할_경우_예외가_발생한다() {
         // expect
-        assertThatThrownBy(() -> jwtProvider.getPayload(null))
+        assertThatThrownBy(() -> jwtTokenProvider.getPayload(null))
                 .isInstanceOf(IllegalStateException.class);
     }
 
@@ -72,14 +67,14 @@ class JwtProviderTest {
                 .compact();
 
         // expect
-        assertThatThrownBy(() -> jwtProvider.getPayload(만료된_토큰))
+        assertThatThrownBy(() -> jwtTokenProvider.getPayload(만료된_토큰))
                 .isInstanceOf(IllegalStateException.class);
     }
 
     @Test
     void secretKey가_다른_토큰_정보로_payload_조회시_예외가_발생한다() {
         // given
-        JwtProvider 다른_키의_jwt_provider = new JwtProvider(
+        JwtTokenProvider 다른_키의_jwt_provider = new JwtTokenProvider(
                 "빨주노초파남보나만의열쇠",
                 8640000L
         );
@@ -88,7 +83,7 @@ class JwtProviderTest {
         String 다른_키로_만든_토큰 = 다른_키의_jwt_provider.create(String.valueOf(1L));
 
         // then
-        assertThatThrownBy(() -> jwtProvider.getPayload(다른_키로_만든_토큰))
+        assertThatThrownBy(() -> jwtTokenProvider.getPayload(다른_키로_만든_토큰))
                 .isInstanceOf(IllegalStateException.class);
     }
 

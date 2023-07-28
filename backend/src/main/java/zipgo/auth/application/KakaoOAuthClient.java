@@ -10,7 +10,6 @@ import org.springframework.util.MultiValueMap;
 import org.springframework.web.client.RestTemplate;
 import zipgo.auth.KakaoOAuthResponse;
 import zipgo.auth.OAuthResponse;
-import zipgo.auth.util.KakaoTokens;
 
 import static org.springframework.http.HttpMethod.GET;
 import static org.springframework.http.HttpMethod.POST;

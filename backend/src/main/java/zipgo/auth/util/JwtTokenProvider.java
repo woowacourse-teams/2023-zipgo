@@ -10,15 +10,15 @@ import javax.crypto.SecretKey;
 import java.util.Date;
 
 import static io.jsonwebtoken.security.Keys.hmacShaKeyFor;
-import static java.nio.charset.StandardCharsets.*;
+import static java.nio.charset.StandardCharsets.UTF_8;
 
 @Component
-public class JwtProvider {
+public class JwtTokenProvider {
 
     private final SecretKey key;
     private final long validityInMilliseconds;
 
-    public JwtProvider(
+    public JwtTokenProvider(
             @Value("${jwt.secret-key}") String secretKey,
             @Value("${jwt.expire-length}") long validityInMilliseconds
     ) {
@@ -42,6 +42,16 @@ public class JwtProvider {
         return tokenToJws(token).getBody().getSubject();
     }
 
+    public void validateAbleToken(String token) {
+        try {
+            Jws<Claims> claims = tokenToJws(token);
+
+            validateExpiredToken(claims);
+        } catch (JwtException e) {
+            throw new IllegalStateException(token);
+        }
+    }
+
     private Jws<Claims> tokenToJws(String token) {
         try {
             return Jwts.parserBuilder()
@@ -49,6 +59,12 @@ public class JwtProvider {
                     .build()
                     .parseClaimsJws(token);
         } catch (IllegalArgumentException | MalformedJwtException | ExpiredJwtException | SignatureException e) {
+            throw new IllegalStateException();
+        }
+    }
+
+    private void validateExpiredToken(Jws<Claims> claims) {
+        if (claims.getBody().getExpiration().before(new Date())) {
             throw new IllegalStateException();
         }
     }

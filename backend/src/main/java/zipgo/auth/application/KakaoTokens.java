@@ -1,4 +1,4 @@
-package zipgo.auth.util;
+package zipgo.auth.application;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Getter;
