@@ -2,16 +2,26 @@ package zipgo.review.fixture;
 
 import zipgo.member.domain.Member;
 import zipgo.petfood.domain.PetFood;
-import zipgo.review.domain.AdverseReaction;
 import zipgo.review.domain.Review;
 import zipgo.review.domain.StoolCondition;
 import zipgo.review.domain.TastePreference;
+import zipgo.review.dto.request.CreateReviewRequest;
 
+import java.util.ArrayList;
 import java.util.List;
 
-import static zipgo.review.fixture.MemberFixture.무민;
-
 public class ReviewFixture {
+
+    public static CreateReviewRequest 리뷰_생성_요청(Long 식품_id) {
+        return new CreateReviewRequest(
+                식품_id,
+                5,
+                "우리 아이랑 너무 잘 맞아요!",
+                "정말 잘 먹어요",
+                "촉촉 말랑해요",
+                new ArrayList<>()
+        );
+    }
 
     public static Review 극찬_리뷰_생성(Member 멤버, PetFood 식품) {
         return Review.builder()
@@ -24,7 +34,7 @@ public class ReviewFixture {
                 .build();
     }
 
-    public static Review 혹평_리뷰_생성(Member 멤버, PetFood 식품, List<AdverseReaction> 이상반응들) {
+    public static Review 혹평_리뷰_생성(Member 멤버, PetFood 식품, List<String> 이상반응들) {
         Review 리뷰 = Review.builder()
                 .member(멤버)
                 .petFood(식품)

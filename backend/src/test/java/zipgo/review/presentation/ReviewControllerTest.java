@@ -12,11 +12,13 @@ import static com.epages.restdocs.apispec.Schema.schema;
 import static io.restassured.RestAssured.given;
 import static io.restassured.http.ContentType.JSON;
 import static org.hamcrest.Matchers.is;
+import static org.springframework.http.HttpStatus.CREATED;
 import static org.springframework.http.HttpStatus.OK;
 import static org.springframework.restdocs.payload.PayloadDocumentation.fieldWithPath;
 import static org.springframework.restdocs.payload.PayloadDocumentation.responseFields;
 import static org.springframework.restdocs.request.RequestDocumentation.parameterWithName;
 import static org.springframework.restdocs.request.RequestDocumentation.queryParameters;
+import static zipgo.review.fixture.ReviewFixture.리뷰_생성_요청;
 
 public class ReviewControllerTest extends AcceptanceTest {
 
@@ -61,6 +63,42 @@ public class ReviewControllerTest extends AcceptanceTest {
                             fieldWithPath("adverseReactions").description("이상 반응들")
                     ));
         }
+    }
+
+    @Nested
+    @DisplayName("리뷰 생성 API")
+    class CreateReviews {
+
+        @Test
+        void 리뷰를_생성하면_201_반환() {
+            // given
+            //TODO 여기도 갈비씨가 member pr 날려주면 리팩토링 할 듯
+            var 요청_준비 = given(spec)
+                    .queryParam("memberId", 1L)
+                    .body(리뷰_생성_요청(1L))
+                    .contentType(JSON)
+                    .filter(리뷰_생성_API_문서_생성());
+
+            // when
+            var 응답 = 요청_준비.when()
+                    .post("/reviews");
+
+            // then
+            응답.then()
+                    .assertThat().statusCode(CREATED.value());
+        }
+
+        private RestDocumentationFilter 리뷰_생성_API_문서_생성() {
+            var 응답_형식 = schema("CreateReviewResponse");
+            var 문서_정보 = resourceDetails().summary("리뷰 생성 성공")
+                    .description("리뷰를 생성합니다.")
+                    .responseSchema(응답_형식);
+
+            return document("리뷰 생성 성공",
+                    문서_정보
+            );
+        }
+
     }
 
 }
