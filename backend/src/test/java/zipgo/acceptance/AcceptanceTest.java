@@ -1,8 +1,10 @@
 package zipgo.acceptance;
 
+import static com.epages.restdocs.apispec.Schema.schema;
 import static org.springframework.restdocs.operation.preprocess.Preprocessors.prettyPrint;
 import static org.springframework.restdocs.restassured.RestAssuredRestDocumentation.documentationConfiguration;
 
+import com.epages.restdocs.apispec.Schema;
 import io.restassured.RestAssured;
 import io.restassured.builder.RequestSpecBuilder;
 import io.restassured.specification.RequestSpecification;
@@ -25,6 +27,7 @@ import org.springframework.test.context.junit.jupiter.SpringExtension;
 public abstract class AcceptanceTest {
 
     protected RequestSpecification spec;
+    protected Schema 에러_응답_형식 = schema("ErrorResponse");
 
     @LocalServerPort
     private int port;

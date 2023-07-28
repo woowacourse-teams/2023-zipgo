@@ -7,7 +7,7 @@ import zipgo.review.domain.Review;
 
 public record GetReviewsResponse(
         Long id,
-        String reviwerName,
+        String reviewerName,
         int rating,
         String date,
         String comment,

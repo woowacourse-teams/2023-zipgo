@@ -1,6 +1,8 @@
 package zipgo.acceptance;
 
+import static com.epages.restdocs.apispec.RestAssuredRestDocumentationWrapper.document;
 import static com.epages.restdocs.apispec.RestAssuredRestDocumentationWrapper.resourceDetails;
+import static com.epages.restdocs.apispec.Schema.schema;
 import static io.restassured.RestAssured.given;
 import static io.restassured.http.ContentType.JSON;
 import static org.hamcrest.Matchers.containsString;
@@ -16,7 +18,7 @@ import static org.springframework.restdocs.request.RequestDocumentation.paramete
 import static org.springframework.restdocs.request.RequestDocumentation.pathParameters;
 import static org.springframework.restdocs.request.RequestDocumentation.queryParameters;
 
-import com.epages.restdocs.apispec.RestAssuredRestDocumentationWrapper;
+import com.epages.restdocs.apispec.ResourceSnippetDetails;
 import com.epages.restdocs.apispec.Schema;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.DisplayNameGeneration;
@@ -33,12 +35,17 @@ public class PetFoodAcceptanceTest extends AcceptanceTest {
     @DisplayName("식품 목록 조회 API")
     class GetPetFoods {
 
+        private Schema 성공_응답_형식 = schema("GetPetFoodsResponse");
+        private ResourceSnippetDetails API_정보 = resourceDetails()
+                .summary("식품 상세 정보 조회하기")
+                .description("id에 해당하는 식품 상세정보를 조회합니다.");
+
         @Test
         void 키워드를_지정하지_않고_요청한다() {
             // given
             var 요청_준비 = given(spec)
                     .contentType(JSON)
-                    .filter(식품_목록_조회_API_문서_생성());
+                    .filter(성공_API_문서_생성("성공 - 키워드없음"));
 
             // when
             var 응답 = 요청_준비.when()
@@ -50,15 +57,10 @@ public class PetFoodAcceptanceTest extends AcceptanceTest {
                     .assertThat().body("petFoods.size()", is(2));
         }
 
-        private RestDocumentationFilter 식품_목록_조회_API_문서_생성() {
-            var 응답_형식 = Schema.schema("GetPetFoodResponse");
-            var 문서_정보 = resourceDetails().summary("식품 목록 조회 성공")
-                    .description("모든 반려동물 식품을 조회합니다.")
-                    .responseSchema(응답_형식);
-
-            return RestAssuredRestDocumentationWrapper.document("식품 목록 조회 성공",
-                    문서_정보,
-                    queryParameters(parameterWithName("keyword").optional().description("식품 조회 API")),
+        private RestDocumentationFilter 성공_API_문서_생성(String name) {
+            return document(name,
+                    API_정보.responseSchema(성공_응답_형식),
+                    queryParameters(parameterWithName("keyword").optional().description("식품 키워드")),
                     responseFields(
                             fieldWithPath("petFoods").description("반려동물 식품 리스트"),
                             fieldWithPath("petFoods[].id").description("식품 id"),
@@ -73,9 +75,10 @@ public class PetFoodAcceptanceTest extends AcceptanceTest {
 
             // given
             String 키워드 = "diet";
-            var 요청_준비 = given()
+            var 요청_준비 = given(spec)
                     .contentType(JSON)
-                    .queryParam("keyword", 키워드);
+                    .queryParam("keyword", 키워드)
+                    .filter(성공_API_문서_생성("성공 - 키워드지정"));
 
             // when
             var 응답 = 요청_준비.when()
@@ -107,12 +110,7 @@ public class PetFoodAcceptanceTest extends AcceptanceTest {
         }
 
         private RestDocumentationFilter 존재하지_않는_키워드_예외_문서_생성() {
-            var 응답_형식 = Schema.schema("ErrorResponse");
-            var 문서_정보 = resourceDetails().summary("식품 목록 조회 성공")
-                    .description("모든 반려동물 식품을 조회합니다.")
-                    .responseSchema(응답_형식);
-
-            return RestAssuredRestDocumentationWrapper.document("식품 목록 조회 실패", 문서_정보);
+            return document("실패", API_정보.responseSchema(에러_응답_형식));
         }
 
     }
@@ -120,6 +118,11 @@ public class PetFoodAcceptanceTest extends AcceptanceTest {
     @Nested
     @DisplayName("식품 상세 조회 API")
     class GetPetFood {
+
+        private Schema 성공_응답_형식 = schema("GetPetFoodResponse");
+        private ResourceSnippetDetails 문서_정보 = resourceDetails()
+                .summary("식품 상세 정보 조회하기")
+                .description("id에 해당하는 식품 상세정보를 조회합니다.");
 
         @Test
         void 올바른_요청() {
@@ -137,7 +140,6 @@ public class PetFoodAcceptanceTest extends AcceptanceTest {
 
             // then
             응답.then()
-                    .log().all()
                     .assertThat().statusCode(OK.value());
         }
 
@@ -148,13 +150,8 @@ public class PetFoodAcceptanceTest extends AcceptanceTest {
         }
 
         private RestDocumentationFilter 식품_상세_조회_API_문서_생성() {
-            var 응답_형식 = Schema.schema("GetPetFoodResponse");
-            var 문서_정보 = resourceDetails().summary("식품 상세 정보 조회 성공")
-                    .description("id에 해당하는 식품 상세정보를 조회합니다.")
-                    .responseSchema(응답_형식);
-
-            return RestAssuredRestDocumentationWrapper.document("식품 상세 정보 조회 성공",
-                    문서_정보,
+            return document("성공",
+                    문서_정보.responseSchema(성공_응답_형식),
                     pathParameters(parameterWithName("id").description("조회할 상품 id")),
                     responseFields(
                             fieldWithPath("id").description("식품 id"),
@@ -210,12 +207,7 @@ public class PetFoodAcceptanceTest extends AcceptanceTest {
         }
 
         private RestDocumentationFilter API_예외응답_문서_생성() {
-            var 응답_형식 = Schema.schema("ErrorResponse");
-            var 문서_정보 = resourceDetails().summary("식품 목록 조회 실패")
-                    .description("모든 반려동물 식품을 조회합니다.")
-                    .responseSchema(응답_형식);
-
-            return RestAssuredRestDocumentationWrapper.document("식품 목록 조회 실패", 문서_정보);
+            return document("실패", 문서_정보.responseSchema(에러_응답_형식));
         }
 
     }
