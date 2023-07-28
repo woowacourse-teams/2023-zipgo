@@ -67,7 +67,7 @@ public class PetFood {
 
     public double calculateRatingAverage() {
         return reviews.stream()
-                .mapToInt(review -> review.getRatings())
+                .mapToInt(review -> review.getRating())
                 .average()
                 .orElse(0);
     }

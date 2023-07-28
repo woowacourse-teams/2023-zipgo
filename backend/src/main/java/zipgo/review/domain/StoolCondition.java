@@ -1,5 +1,8 @@
 package zipgo.review.domain;
 
+import lombok.Getter;
+
+@Getter
 public enum StoolCondition {
 
     UNCERTAIN("잘 모르겠어요"),

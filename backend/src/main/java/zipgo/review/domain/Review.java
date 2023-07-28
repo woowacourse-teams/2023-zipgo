@@ -14,8 +14,10 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import java.util.ArrayList;
 import java.util.List;
+import jakarta.persistence.OneToMany;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
+import lombok.Builder.Default;
 import lombok.EqualsAndHashCode;
 import lombok.EqualsAndHashCode.Include;
 import lombok.Getter;
@@ -23,6 +25,15 @@ import lombok.NoArgsConstructor;
 import zipgo.common.entity.BaseTimeEntity;
 import zipgo.member.domain.Member;
 import zipgo.petfood.domain.PetFood;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import static jakarta.persistence.CascadeType.PERSIST;
+import static jakarta.persistence.CascadeType.REMOVE;
+import static jakarta.persistence.EnumType.STRING;
+import static jakarta.persistence.FetchType.LAZY;
+import static lombok.AccessLevel.PROTECTED;
 
 @Entity
 @Getter
@@ -46,7 +57,7 @@ public class Review extends BaseTimeEntity {
     private PetFood petFood;
 
     @Column(nullable = false)
-    private Integer ratings;
+    private Integer rating;
 
     @Column(nullable = false)
     private String comment;
@@ -59,8 +70,15 @@ public class Review extends BaseTimeEntity {
     @Column(nullable = false)
     private StoolCondition stoolCondition;
 
-    @Builder.Default
-    @Enumerated(STRING)
+    @Default
+    @OneToMany(mappedBy = "review", orphanRemoval = true, cascade = {PERSIST, REMOVE})
     private List<AdverseReaction> adverseReactions = new ArrayList<>();
+
+    public void addAdverseReactions(List<AdverseReaction> adverseReactions) {
+        for (AdverseReaction adverseReaction : adverseReactions) {
+            adverseReaction.updateReview(this);
+            this.adverseReactions.add(adverseReaction);
+        }
+    }
 
 }

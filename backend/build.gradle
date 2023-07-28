@@ -48,6 +48,12 @@ dependencies {
     runtimeOnly 'com.mysql:mysql-connector-j'
     runtimeOnly 'com.h2database:h2'
 
+    // Querydsl
+    implementation 'com.querydsl:querydsl-jpa:5.0.0:jakarta'
+    annotationProcessor "com.querydsl:querydsl-apt:${dependencyManagement.importedProperties['querydsl.version']}:jakarta"
+    annotationProcessor "jakarta.annotation:jakarta.annotation-api"
+    annotationProcessor "jakarta.persistence:jakarta.persistence-api"
+
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
     testImplementation 'io.rest-assured:rest-assured:5.3.1'
 
@@ -57,6 +63,20 @@ dependencies {
     testImplementation 'io.rest-assured:rest-assured'
 
     swaggerUI 'org.webjars:swagger-ui:4.11.1'
+}
+
+def generated = 'build/generated'
+
+tasks.withType(JavaCompile) {
+    options.getGeneratedSourceOutputDirectory().set(file(generated))
+}
+
+sourceSets {
+    main.java.srcDirs += [generated]
+}
+
+clean {
+    delete file(generated)
 }
 
 jacocoTestReport {
@@ -74,7 +94,7 @@ jacocoTestReport {
                             '**/*Exception*',
                             '**/*Response*',
                             '**/*Request*',
-                            '**/BaseTimeEntity'
+                            '*.BaseTimeEntity'
                     ])
                 })
         )
@@ -84,6 +104,12 @@ jacocoTestReport {
 }
 
 jacocoTestCoverageVerification {
+    def Qdomains = []
+
+    for (qPattern in '*.QA'..'*.QZ') { // qPattern = '*.QA', '*.QB', ... '*.QZ'
+        Qdomains.add(qPattern + '*')
+    }
+
     violationRules {
         rule {
             enabled = true
@@ -101,7 +127,7 @@ jacocoTestCoverageVerification {
                     '*.*Response',
                     '*.*Request',
                     '*.BaseTimeEntity'
-            ]
+            ] + Qdomains
         }
     }
 }

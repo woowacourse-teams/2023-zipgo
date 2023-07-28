@@ -61,7 +61,7 @@ class PetFoodTest {
     void 식품의_평균_별점을_계산할_수_있다(List<Integer> 별점_리스트, double 예상_결과) {
         // given
         List<Review> 리뷰 = 별점_리스트.stream()
-                .map(별점 -> Review.builder().ratings(별점).build())
+                .map(별점 -> Review.builder().rating(별점).build())
                 .toList();
 
         PetFood 테스트_식품 = PetFood.builder()

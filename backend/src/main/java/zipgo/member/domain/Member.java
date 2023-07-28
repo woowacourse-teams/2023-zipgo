@@ -1,7 +1,5 @@
 package zipgo.member.domain;
 
-import static lombok.AccessLevel.PROTECTED;
-
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -12,6 +10,9 @@ import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+import static lombok.AccessLevel.PROTECTED;
+import static lombok.EqualsAndHashCode.*;
+
 @Entity
 @Getter
 @Builder
@@ -21,7 +22,7 @@ import lombok.NoArgsConstructor;
 public class Member {
 
     @Id
-    @EqualsAndHashCode.Include
+    @Include
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
