@@ -2,7 +2,6 @@ package zipgo.petfood.domain.repository;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
-import static org.junit.jupiter.api.Assertions.assertAll;
 import static zipgo.petfood.domain.fixture.PetFoodFixture.식품_초기화;
 import static zipgo.petfood.domain.fixture.PetFoodFixture.키워드_없이_식품_초기화;
 import static zipgo.petfood.domain.fixture.PetFoodFixture.키워드_있는_식품_초기화;
@@ -10,7 +9,6 @@ import static zipgo.petfood.domain.fixture.PetFoodFixture.키워드_있는_식�
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
 import java.util.List;
-import java.util.Optional;
 import org.junit.jupiter.api.DisplayNameGeneration;
 import org.junit.jupiter.api.DisplayNameGenerator.ReplaceUnderscores;
 import org.junit.jupiter.api.Test;
@@ -85,25 +83,19 @@ class PetFoodRepositoryTest {
         Long 아이디 = petFoodRepository.save(테스트_식품).getId();
 
         //when
-        Optional<PetFood> optional_식품 = petFoodRepository.findById(아이디);
+        PetFood 조회_식품 = petFoodRepository.getById(아이디);
 
         //then
-        assertAll(() -> {
-            assertThat(optional_식품).isNotEmpty();
-
-            PetFood 조회한_식품 = optional_식품.orElseThrow();
-            assertThat(조회한_식품).isEqualTo(테스트_식품);
-        });
+        assertThat(조회_식품).isEqualTo(테스트_식품);
     }
 
     @ParameterizedTest
     @ValueSource(longs = {-1L, 999999999999999L, 0L})
-    void 존재하지_않는_아이디로_조회하면_빈_옵셔널을_반환한다(Long 존재하지_않는_아이디) {
-        //when
-        Optional<PetFood> optional_식품 = petFoodRepository.findById(존재하지_않는_아이디);
+    void 존재하지_않는_아이디로_조회하면_예외가_발생한다(Long 존재하지_않는_아이디) {
+        //when, then
+        assertThatThrownBy(() -> petFoodRepository.getById(존재하지_않는_아이디))
+                .isInstanceOf(PetFoodException.NotFound.class);
 
-        //then
-        assertThat(optional_식품).isEmpty();
     }
 
     @Test
@@ -115,7 +107,7 @@ class PetFoodRepositoryTest {
         entityManager.clear();
 
         //when
-        PetFood 조회한_식품 = petFoodRepository.findById(생성된_아이디).orElseThrow();
+        PetFood 조회한_식품 = petFoodRepository.getById(생성된_아이디);
 
         //then
         assertThat(조회한_식품.getPrimaryIngredients())
@@ -130,16 +122,6 @@ class PetFoodRepositoryTest {
 
         //then
         assertThat(기능성이_없는_식품.getFunctionality()).isEmpty();
-    }
-
-    @Test
-    void 존재하지_않는_아이디로_조회시_예외가_발생한다() {
-        // given
-        Long 존재하지_않는_아이디 = -1L;
-
-        // when, then
-        assertThatThrownBy(() -> petFoodRepository.getById(존재하지_않는_아이디))
-                .isInstanceOf(PetFoodException.NotFound.class);
     }
 
 }
