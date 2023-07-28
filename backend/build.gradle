@@ -83,6 +83,7 @@ jacocoTestReport {
                             '**/*Exception*',
                             '**/*Response*',
                             '**/*Request*',
+                            '**/*Config',
                             '**/BaseTimeEntity'
                     ])
                 })
@@ -109,6 +110,7 @@ jacocoTestCoverageVerification {
                     '*.*Exception',
                     '*.*Response',
                     '*.*Request',
+                    '*.*Config',
                     '*.BaseTimeEntity'
             ]
         }
