@@ -11,7 +11,6 @@ import static org.springframework.restdocs.payload.PayloadDocumentation.fieldWit
 import static org.springframework.restdocs.payload.PayloadDocumentation.responseFields;
 import static org.springframework.restdocs.request.RequestDocumentation.parameterWithName;
 import static org.springframework.restdocs.request.RequestDocumentation.pathParameters;
-import static org.springframework.restdocs.request.RequestDocumentation.queryParameters;
 
 import com.epages.restdocs.apispec.ResourceSnippetDetails;
 import com.epages.restdocs.apispec.Schema;
@@ -33,7 +32,7 @@ public class ReviewControllerTest extends AcceptanceTest {
                 .description("해당 반려동물 식품에 대한 모든 리뷰를 조회합니다.");
 
         @Test
-        void 키워드를_지정하지_않고_요청한다() {
+        void 식품_아이디로_리뷰_목록을_조회한다() {
             // given
             var 요청_준비 = given(spec)
                     .contentType(JSON)
@@ -55,7 +54,6 @@ public class ReviewControllerTest extends AcceptanceTest {
             return document("성공",
                     API_정보.responseSchema(성공_응답_형식),
                     pathParameters(parameterWithName("id").description("식품 id")),
-                    queryParameters(parameterWithName("keyword").optional().description("식품 키워드")),
                     responseFields(
                             fieldWithPath("[].id").description("리뷰 id"),
                             fieldWithPath("[].reviewerName").description("리뷰 작성자 이름"),
