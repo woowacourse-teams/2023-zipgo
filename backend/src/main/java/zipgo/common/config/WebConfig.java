@@ -14,6 +14,7 @@ import zipgo.auth.util.JwtProvider;
 @RequiredArgsConstructor
 public class WebConfig implements WebMvcConfigurer {
 
+    private static final String ALLOW_ALL_PATH = "/**";
     private static final String ALLOWED_METHODS = "*";
     private static final String PROD_ORIGIN = "*";
 
@@ -22,7 +23,7 @@ public class WebConfig implements WebMvcConfigurer {
 
     @Override
     public void addCorsMappings(CorsRegistry registry) {
-        registry.addMapping("/**")
+        registry.addMapping(ALLOW_ALL_PATH)
                 .allowedMethods(ALLOWED_METHODS)
                 .allowedOrigins(PROD_ORIGIN)
                 .exposedHeaders(LOCATION);
@@ -31,7 +32,7 @@ public class WebConfig implements WebMvcConfigurer {
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
         registry.addInterceptor(authInterceptor)
-                .excludePathPatterns("*");
+                .excludePathPatterns(ALLOW_ALL_PATH);
     }
 
 }

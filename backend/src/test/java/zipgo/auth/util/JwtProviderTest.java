@@ -5,6 +5,7 @@ import org.junit.jupiter.api.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.test.context.SpringBootTest;
+import zipgo.auth.exception.AuthException;
 
 import java.util.Date;
 
@@ -13,11 +14,12 @@ import static io.jsonwebtoken.security.Keys.*;
 import static java.nio.charset.StandardCharsets.*;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
+import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @DisplayNameGeneration(DisplayNameGenerator.ReplaceUnderscores.class)
 @SuppressWarnings("NonAsciiCharacters")
-class JwtTokenProviderTest {
+class JwtProviderTest {
 
     @Autowired
     private JwtProvider jwtProvider;
@@ -54,7 +56,7 @@ class JwtTokenProviderTest {
     void 유효하지_않은_토큰의_형식으로_payload를_조회할_경우_예외가_발생한다() {
         // expect
         assertThatThrownBy(() -> jwtProvider.getPayload(null))
-                .isInstanceOf(IllegalStateException.class);
+                .isInstanceOf(AuthException.class);
     }
 
     @Test
@@ -68,7 +70,7 @@ class JwtTokenProviderTest {
 
         // expect
         assertThatThrownBy(() -> jwtProvider.getPayload(만료된_토큰))
-                .isInstanceOf(IllegalStateException.class);
+                .isInstanceOf(AuthException.class);
     }
 
     @Test
@@ -84,7 +86,32 @@ class JwtTokenProviderTest {
 
         // then
         assertThatThrownBy(() -> jwtProvider.getPayload(다른_키로_만든_토큰))
-                .isInstanceOf(IllegalStateException.class);
+                .isInstanceOf(AuthException.class);
+    }
+
+    @Test
+    void 유효한_토큰인지_검증한다() {
+        // given
+        String 페이로드 = String.valueOf(1L);
+        String 토큰 = jwtProvider.create(페이로드);
+
+        // when
+        assertDoesNotThrow(() -> jwtProvider.validateAbleToken(토큰));
+    }
+
+    @Test
+    void 만료된_토큰이라면_예외를_발생시킨다() {
+        // given
+        JwtProvider 유효기간이_지난_jwtProvider = new JwtProvider(
+                "빨주노초파남보나만의열쇠",
+                -99999999999L
+        );
+        String 페이로드 = String.valueOf(1L);
+        String 토큰 = 유효기간이_지난_jwtProvider.create(페이로드);
+
+        // expect
+        assertThatThrownBy(() -> 유효기간이_지난_jwtProvider.validateAbleToken(토큰))
+                .isInstanceOf(AuthException.class);
     }
 
 }
