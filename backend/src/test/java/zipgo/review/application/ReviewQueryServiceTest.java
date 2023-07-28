@@ -1,19 +1,8 @@
 package zipgo.review.application;
 
-import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
-import zipgo.QueryServiceTest;
-import zipgo.member.domain.Member;
-import zipgo.member.domain.repository.MemberRepository;
-import zipgo.petfood.domain.PetFood;
-import zipgo.petfood.domain.repository.PetFoodRepository;
-import zipgo.review.domain.Review;
-import zipgo.review.domain.repository.ReviewRepository;
-
-import java.util.List;
-
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertAll;
+import static zipgo.brand.domain.fixture.BrandFixture.식품_브랜드_생성하기;
 import static zipgo.petfood.domain.fixture.PetFoodFixture.키워드_없이_식품_초기화;
 import static zipgo.review.domain.StoolCondition.SOFT_MOIST;
 import static zipgo.review.domain.TastePreference.EATS_VERY_WELL;
@@ -23,7 +12,20 @@ import static zipgo.review.fixture.MemberFixture.무민;
 import static zipgo.review.fixture.ReviewFixture.극찬_리뷰_생성;
 import static zipgo.review.fixture.ReviewFixture.혹평_리뷰_생성;
 
-class ReviewQueryQueryServiceTest extends QueryServiceTest {
+import java.util.List;
+import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
+import zipgo.QueryServiceTest;
+import zipgo.brand.domain.Brand;
+import zipgo.brand.domain.repository.BrandRepository;
+import zipgo.member.domain.Member;
+import zipgo.member.domain.repository.MemberRepository;
+import zipgo.petfood.domain.PetFood;
+import zipgo.petfood.domain.repository.PetFoodRepository;
+import zipgo.review.domain.Review;
+import zipgo.review.domain.repository.ReviewRepository;
+
+class ReviewQueryServiceTest extends QueryServiceTest {
 
     @Autowired
     private PetFoodRepository petFoodRepository;
@@ -35,12 +37,15 @@ class ReviewQueryQueryServiceTest extends QueryServiceTest {
     private MemberRepository memberRepository;
 
     @Autowired
+    private BrandRepository brandRepository;
+
+    @Autowired
     private ReviewQueryService reviewQueryService;
 
     @Test
     void getAllReviews() {
         //given
-        PetFood 식품 = 키워드_없이_식품_초기화();
+        PetFood 식품 = 키워드_없이_식품_초기화(브랜드_조회하기());
         Member 멤버 = memberRepository.save(무민());
         petFoodRepository.save(식품);
         Review 극찬_리뷰 = reviewRepository.save(극찬_리뷰_생성(멤버, 식품));
@@ -61,6 +66,10 @@ class ReviewQueryQueryServiceTest extends QueryServiceTest {
                 () -> assertThat(찾은_리뷰.getStoolCondition()).isEqualTo(SOFT_MOIST),
                 () -> assertThat(찾은_리뷰.getAdverseReactions()).isEmpty()
         );
+    }
+
+    private Brand 브랜드_조회하기() {
+        return brandRepository.save(식품_브랜드_생성하기());
     }
 
 }

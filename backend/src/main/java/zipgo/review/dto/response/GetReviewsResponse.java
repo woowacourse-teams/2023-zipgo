@@ -1,14 +1,13 @@
 package zipgo.review.dto.response;
 
+import java.time.format.DateTimeFormatter;
+import java.util.List;
 import zipgo.review.domain.AdverseReaction;
 import zipgo.review.domain.Review;
 
-import java.time.format.DateTimeFormatter;
-import java.util.List;
-
 public record GetReviewsResponse(
         Long id,
-        String reviwerName,
+        String reviewerName,
         int rating,
         String date,
         String comment,
