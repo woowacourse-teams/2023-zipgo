@@ -23,7 +23,7 @@ import static zipgo.review.fixture.MemberFixture.무민;
 import static zipgo.review.fixture.ReviewFixture.극찬_리뷰_생성;
 import static zipgo.review.fixture.ReviewFixture.혹평_리뷰_생성;
 
-class ReviewServiceTest extends ServiceTest {
+class ReviewQueryServiceTest extends ServiceTest {
 
     @Autowired
     private PetFoodRepository petFoodRepository;
@@ -35,7 +35,7 @@ class ReviewServiceTest extends ServiceTest {
     private MemberRepository memberRepository;
 
     @Autowired
-    private ReviewService reviewService;
+    private ReviewQueryService reviewQueryService;
 
     @Test
     void getAllReviews() {
@@ -47,7 +47,7 @@ class ReviewServiceTest extends ServiceTest {
         reviewRepository.save(혹평_리뷰_생성(멤버, 식품, List.of(눈물_이상반응(), 먹고_토_이상반응())));
 
         //when
-        List<Review> reviews = reviewService.getAllReviews(식품.getId());
+        List<Review> reviews = reviewQueryService.getAllReviews(식품.getId());
         Review 찾은_리뷰 = reviewRepository.findById(극찬_리뷰.getId()).get();
 
         //then
