@@ -1,15 +1,12 @@
 package zipgo.review.fixture;
 
+import java.util.List;
 import zipgo.member.domain.Member;
 import zipgo.petfood.domain.PetFood;
 import zipgo.review.domain.AdverseReaction;
 import zipgo.review.domain.Review;
 import zipgo.review.domain.StoolCondition;
 import zipgo.review.domain.TastePreference;
-
-import java.util.List;
-
-import static zipgo.review.fixture.MemberFixture.무민;
 
 public class ReviewFixture {
 

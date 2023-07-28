@@ -1,11 +1,5 @@
 package zipgo.review.presentation;
 
-import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Nested;
-import org.junit.jupiter.api.Test;
-import org.springframework.restdocs.restassured.RestDocumentationFilter;
-import zipgo.acceptance.AcceptanceTest;
-
 import static com.epages.restdocs.apispec.RestAssuredRestDocumentationWrapper.document;
 import static com.epages.restdocs.apispec.RestAssuredRestDocumentationWrapper.resourceDetails;
 import static com.epages.restdocs.apispec.Schema.schema;
@@ -17,6 +11,12 @@ import static org.springframework.restdocs.payload.PayloadDocumentation.fieldWit
 import static org.springframework.restdocs.payload.PayloadDocumentation.responseFields;
 import static org.springframework.restdocs.request.RequestDocumentation.parameterWithName;
 import static org.springframework.restdocs.request.RequestDocumentation.queryParameters;
+
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Nested;
+import org.junit.jupiter.api.Test;
+import org.springframework.restdocs.restassured.RestDocumentationFilter;
+import zipgo.acceptance.AcceptanceTest;
 
 public class ReviewControllerTest extends AcceptanceTest {
 
@@ -61,6 +61,7 @@ public class ReviewControllerTest extends AcceptanceTest {
                             fieldWithPath("adverseReactions").description("이상 반응들")
                     ));
         }
+
     }
 
 }
