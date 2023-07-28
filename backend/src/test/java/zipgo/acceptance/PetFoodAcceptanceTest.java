@@ -42,7 +42,7 @@ public class PetFoodAcceptanceTest extends AcceptanceTest {
             // then
             응답.then()
                     .assertThat().statusCode(OK.value())
-                    .assertThat().body("foodList.size()", is(2));
+                    .assertThat().body("petFoods.size()", is(2));
         }
 
         private RestDocumentationFilter 식품_목록_조회_API_문서_생성() {
@@ -55,11 +55,11 @@ public class PetFoodAcceptanceTest extends AcceptanceTest {
                     문서_정보,
                     queryParameters(parameterWithName("keyword").optional().description("식품 조회 API")),
                     responseFields(
-                            fieldWithPath("foodList").description("반려동물 식품 리스트"),
-                            fieldWithPath("foodList[].id").description("식품 id"),
-                            fieldWithPath("foodList[].name").description("식품 이름"),
-                            fieldWithPath("foodList[].imageUrl").description("식품 이미지 url"),
-                            fieldWithPath("foodList[].purchaseUrl").description("구매 링크")
+                            fieldWithPath("petFoods").description("반려동물 식품 리스트"),
+                            fieldWithPath("petFoods[].id").description("식품 id"),
+                            fieldWithPath("petFoods[].name").description("식품 이름"),
+                            fieldWithPath("petFoods[].imageUrl").description("식품 이미지 url"),
+                            fieldWithPath("petFoods[].purchaseUrl").description("구매 링크")
                     ));
         }
 
@@ -79,7 +79,7 @@ public class PetFoodAcceptanceTest extends AcceptanceTest {
             // then
             응답.then()
                     .assertThat().statusCode(OK.value())
-                    .assertThat().body("foodList.size()", not(empty()));
+                    .assertThat().body("petFoods.size()", not(empty()));
         }
 
         @Test
