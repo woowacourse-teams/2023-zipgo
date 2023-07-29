@@ -1,6 +1,5 @@
-package zipgo.member.domain.application;
+package zipgo.member.application;
 
-import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.DisplayNameGeneration;
 import org.junit.jupiter.api.DisplayNameGenerator;
 import org.junit.jupiter.api.Test;
@@ -8,11 +7,8 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import zipgo.member.domain.Member;
 import zipgo.member.domain.repository.MemberRepository;
-import zipgo.petfood.domain.repository.KeywordRepository;
 
 import static org.assertj.core.api.Assertions.*;
 import static org.junit.jupiter.api.Assertions.assertAll;
@@ -21,13 +17,13 @@ import static org.mockito.Mockito.when;
 @DisplayNameGeneration(DisplayNameGenerator.ReplaceUnderscores.class)
 @SuppressWarnings("NonAsciiCharacters")
 @ExtendWith(MockitoExtension.class)
-class MemberQueryServiceTest {
+class MemberCommandServiceTest {
 
     @Mock
     private MemberRepository memberRepository;
 
     @InjectMocks
-    private MemberQueryService memberQueryService;
+    private MemberCommandService memberCommandService;
 
     @Test
     void 사용자를_저장할_수_있다() {
@@ -41,7 +37,7 @@ class MemberQueryServiceTest {
                 .thenReturn(Member.builder().id(1L).email("이메일").profileImgUrl("사진").name("이름").build());
 
         // when
-        Member 저장된_멤버 = memberQueryService.save(member);
+        Member 저장된_멤버 = memberCommandService.save(member);
 
         // then
         assertAll(

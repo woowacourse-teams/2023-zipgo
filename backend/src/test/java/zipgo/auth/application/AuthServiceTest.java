@@ -11,8 +11,8 @@ import zipgo.auth.KakaoOAuthResponse;
 import zipgo.auth.OAuthResponse;
 import zipgo.auth.util.JwtProvider;
 import zipgo.member.domain.Member;
-import zipgo.member.domain.application.MemberCommandService;
-import zipgo.member.domain.application.MemberQueryService;
+import zipgo.member.application.MemberQueryService;
+import zipgo.member.application.MemberCommandService;
 
 import java.util.Optional;
 
@@ -30,10 +30,10 @@ class AuthServiceTest {
     private KakaoOAuthClient oAuthClient;
 
     @Mock
-    private MemberCommandService memberCommandService;
+    private MemberQueryService memberQueryService;
 
     @Mock
-    private MemberQueryService memberQueryService;
+    private MemberCommandService memberCommandService;
 
     @Mock
     private JwtProvider jwtProvider;
@@ -46,7 +46,7 @@ class AuthServiceTest {
         // given
         카카오_토큰_받기_성공();
 
-        when(memberCommandService.findByEmail("zipgo@zipgo.com"))
+        when(memberQueryService.findByEmail("zipgo@zipgo.com"))
                 .thenReturn(Optional.of(MEMBER_FIXTURE));
         when(jwtProvider.create("1"))
                 .thenReturn("생성된 토큰");
@@ -63,11 +63,11 @@ class AuthServiceTest {
         // given
         OAuthResponse 카카오_응답 = 카카오_토큰_받기_성공();
 
-        when(memberCommandService.findByEmail("zipgo@zipgo.com"))
+        when(memberQueryService.findByEmail("zipgo@zipgo.com"))
                 .thenReturn(Optional.empty());
 
         Member 저장전_member = Member.builder().email("zipgo@zipgo.com").name("개비").profileImgUrl("사진").build();
-        when(memberQueryService.save(저장전_member))
+        when(memberCommandService.save(저장전_member))
                 .thenReturn(MEMBER_FIXTURE);
 
         when(jwtProvider.create("1"))
