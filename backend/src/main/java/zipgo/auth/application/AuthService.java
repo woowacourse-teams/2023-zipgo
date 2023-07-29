@@ -7,6 +7,7 @@ import zipgo.auth.OAuthResponse;
 import zipgo.auth.util.JwtProvider;
 import zipgo.member.domain.Member;
 import zipgo.member.domain.application.MemberCommandService;
+import zipgo.member.domain.application.MemberDto;
 import zipgo.member.domain.application.MemberQueryService;
 
 import java.util.Optional;
@@ -23,18 +24,15 @@ public class AuthService {
 
     public String createToken(String authCode) {
         String accessToken = oAuthClient.getAccessToken(authCode);
-        OAuthResponse memberDetail = oAuthClient.getMemberDetail(accessToken);
+        OAuthResponse oAuthResponse = oAuthClient.getMemberDetail(accessToken);
 
-        Optional<Member> memberOptional = memberCommandService.findByEmail(memberDetail.getEmail());
+        Optional<Member> memberOptional = memberCommandService.findByEmail(oAuthResponse.getEmail());
         if (memberOptional.isPresent()) {
             return jwtProvider.create(String.valueOf(memberOptional.get().getId()));
         }
 
-        Member member = Member.builder()
-                .email(memberDetail.getEmail())
-                .nickname(memberDetail.getEmail())
-                .build();
-        Long memberId = memberQueryService.save(member).getId();
+        MemberDto memberDto = MemberDto.from(oAuthResponse);
+        Long memberId = memberQueryService.save(memberDto).getId();
         return jwtProvider.create(String.valueOf(memberId));
     }
 

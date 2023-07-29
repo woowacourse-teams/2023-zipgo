@@ -13,7 +13,13 @@ public class MemberQueryService {
 
     private final MemberRepository memberRepository;
 
-    public Member save(Member member) {
+    public Member save(MemberDto memberDto) {
+        Member member = Member.builder()
+                .email(memberDto.email())
+                .profileImgUrl(memberDto.profileImgUrl())
+                .name(memberDto.name())
+                .build();
         return memberRepository.save(member);
     }
+
 }

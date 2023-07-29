@@ -2,12 +2,16 @@ package zipgo.auth;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 @Getter
 @Builder
 @JsonIgnoreProperties(ignoreUnknown = true)
+@AllArgsConstructor
+@NoArgsConstructor
 public class KakaoOAuthResponse implements OAuthResponse {
 
     @JsonProperty("kakao_account")
@@ -15,16 +19,17 @@ public class KakaoOAuthResponse implements OAuthResponse {
 
     @Getter
     @JsonIgnoreProperties(ignoreUnknown = true)
-    private static class KakaoAccount {
+    public static class KakaoAccount {
         private Profile profile;
         private String email;
     }
 
     @Getter
     @JsonIgnoreProperties(ignoreUnknown = true)
-    private static class Profile {
+    public static class Profile {
         private String nickname;
-        private String imgUrl;
+        @JsonProperty("thumbnail_image_url")
+        private String picture;
     }
 
     @Override
@@ -38,8 +43,8 @@ public class KakaoOAuthResponse implements OAuthResponse {
     }
 
     @Override
-    public String getImageUrl() {
-        return kakaoAcount.getProfile().getImgUrl();
+    public String getPicture() {
+        return kakaoAcount.getProfile().getPicture();
     }
 
 }
