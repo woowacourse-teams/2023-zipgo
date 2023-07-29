@@ -78,8 +78,7 @@ class ReviewServiceTest extends ServiceTest {
                 new ArrayList<>()
         );
 
-        //when
-        //then
+        //when, then
         assertThatThrownBy(() -> reviewService.createReview(멤버.getId(), request))
                 .isInstanceOf(TastePreferenceException.NotFound.class);
     }
@@ -99,8 +98,7 @@ class ReviewServiceTest extends ServiceTest {
                 new ArrayList<>()
         );
 
-        //when
-        //then
+        //when, then
         assertThatThrownBy(() -> reviewService.createReview(멤버.getId(), request))
                 .isInstanceOf(StoolConditionException.NotFound.class);
     }
@@ -111,8 +109,7 @@ class ReviewServiceTest extends ServiceTest {
         PetFood 식품 = 키워드_없이_식품_초기화();
         PetFood 저장된_식품 = petFoodRepository.save(식품);
 
-        //when
-        //then
+        //when, then
         assertThatThrownBy(() -> reviewService.createReview(1004L, 리뷰_생성_요청(저장된_식품.getId())))
                 .isInstanceOf(MemberException.NotFound.class);
     }
