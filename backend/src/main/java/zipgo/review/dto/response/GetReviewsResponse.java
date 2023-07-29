@@ -9,7 +9,7 @@ import static java.time.format.DateTimeFormatter.ofPattern;
 
 public record GetReviewsResponse(
         Long id,
-        String reviwerName,
+        String reviewerName,
         int rating,
         String date,
         String comment,

@@ -1,14 +1,13 @@
 package zipgo.petfood.presentation.dto;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 import zipgo.petfood.domain.PetFood;
 
-public record GetPetFoodsResponse(@JsonProperty(value = "foodList") List<PetFoodResponse> petFoods) {
+public record GetPetFoodsResponse(List<PetFoodResponse> petFoods) {
 
     public static GetPetFoodsResponse from(List<PetFood> petFoods) {
         List<PetFoodResponse> petFoodResponses = petFoods.stream()
-                .map(petFood -> PetFoodResponse.from(petFood))
+                .map(PetFoodResponse::from)
                 .toList();
 
         return new GetPetFoodsResponse(petFoodResponses);

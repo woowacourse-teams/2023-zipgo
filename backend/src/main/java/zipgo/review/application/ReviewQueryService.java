@@ -1,12 +1,11 @@
 package zipgo.review.application;
 
+import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import zipgo.review.domain.Review;
 import zipgo.review.domain.repository.ReviewRepository;
-
-import java.util.List;
 
 @Service
 @RequiredArgsConstructor
