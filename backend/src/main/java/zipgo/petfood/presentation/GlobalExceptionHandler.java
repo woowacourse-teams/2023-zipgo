@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.context.request.ServletWebRequest;
 import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
+import zipgo.auth.exception.AuthException;
 import zipgo.petfood.exception.KeywordException.NotFound;
 import zipgo.petfood.presentation.dto.ErrorResponse;
 
@@ -21,6 +22,12 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
     @ExceptionHandler({NotFound.class})
     public ResponseEntity<ErrorResponse> handleNotFoundException(Exception exception) {
         return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                .body(ErrorResponse.of(exception));
+    }
+
+    @ExceptionHandler({AuthException.class})
+    public ResponseEntity<ErrorResponse> handleAuthException(Exception exception) {
+        return ResponseEntity.status(HttpStatus.FORBIDDEN)
                 .body(ErrorResponse.of(exception));
     }
 
