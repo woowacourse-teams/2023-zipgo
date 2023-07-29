@@ -16,7 +16,7 @@ const getReviews = (): GetReviewsRes => ({
     {
       id: 2,
       reviewerName: '노아이즈',
-      rating: 5,
+      rating: 3,
       date: '2023-07-01',
       comment: '제가 먹어봤는데 별로에요',
       tastePreference: '잘 안 먹어요',
@@ -26,7 +26,7 @@ const getReviews = (): GetReviewsRes => ({
     {
       id: 3,
       reviewerName: '롤로노아 로지',
-      rating: 5,
+      rating: 4,
       date: '2023-07-26',
       comment: '저희집 베베가 잘 먹어요',
       tastePreference: '잘 먹는 편이에요',
