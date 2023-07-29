@@ -22,8 +22,7 @@ public class ReviewService {
 
     public Long createReview(Long memberId, CreateReviewRequest request) {
         Member member = memberRepository.getById(memberId);
-        //TODO PetFood pr 머지되면 getById로 리팩터링 할예정
-        PetFood petFood = petFoodRepository.findById(request.petFoodId()).orElseThrow();
+        PetFood petFood = petFoodRepository.getById(request.petFoodId());
 
         Review review = request.toEntity(member, petFood);
         review.addAdverseReactions(request.adverseReactions());

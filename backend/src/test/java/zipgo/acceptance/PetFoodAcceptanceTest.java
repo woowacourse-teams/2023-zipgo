@@ -28,24 +28,23 @@ import org.junit.jupiter.api.Test;
 import org.springframework.restdocs.restassured.RestDocumentationFilter;
 import org.springframework.test.context.jdbc.Sql;
 
-@DisplayNameGeneration(ReplaceUnderscores.class)
 public class PetFoodAcceptanceTest extends AcceptanceTest {
 
     @Nested
-    @DisplayName("식품 목록 조회 API")
+    @DisplayName("식품 전체 조회 API")
     class GetPetFoods {
 
         private Schema 성공_응답_형식 = schema("GetPetFoodsResponse");
         private ResourceSnippetDetails API_정보 = resourceDetails()
-                .summary("식품 상세 정보 조회하기")
-                .description("id에 해당하는 식품 상세정보를 조회합니다.");
+                .summary("식품 전체 조회하기")
+                .description("식품 전체를 조회합니다.");
 
         @Test
         void 키워드를_지정하지_않고_요청한다() {
             // given
             var 요청_준비 = given(spec)
                     .contentType(JSON)
-                    .filter(성공_API_문서_생성("성공 - 키워드없음"));
+                    .filter(성공_API_문서_생성("식품 전체 조회 - 성공(키워드 없음)"));
 
             // when
             var 응답 = 요청_준비.when()
@@ -78,7 +77,7 @@ public class PetFoodAcceptanceTest extends AcceptanceTest {
             var 요청_준비 = given(spec)
                     .contentType(JSON)
                     .queryParam("keyword", 키워드)
-                    .filter(성공_API_문서_생성("성공 - 키워드지정"));
+                    .filter(성공_API_문서_생성("식품 전체 조회 - 성공(키워드 지정)"));
 
             // when
             var 응답 = 요청_준비.when()
@@ -110,7 +109,7 @@ public class PetFoodAcceptanceTest extends AcceptanceTest {
         }
 
         private RestDocumentationFilter 존재하지_않는_키워드_예외_문서_생성() {
-            return document("실패", API_정보.responseSchema(에러_응답_형식));
+            return document("식품 전체 조회 - 실패(존재하지 않는 키워드)", API_정보.responseSchema(에러_응답_형식));
         }
 
     }
@@ -150,7 +149,7 @@ public class PetFoodAcceptanceTest extends AcceptanceTest {
         }
 
         private RestDocumentationFilter 식품_상세_조회_API_문서_생성() {
-            return document("성공",
+            return document("식품 상세 조회 - 성공",
                     문서_정보.responseSchema(성공_응답_형식),
                     pathParameters(parameterWithName("id").description("조회할 상품 id")),
                     responseFields(
@@ -207,7 +206,7 @@ public class PetFoodAcceptanceTest extends AcceptanceTest {
         }
 
         private RestDocumentationFilter API_예외응답_문서_생성() {
-            return document("실패", 문서_정보.responseSchema(에러_응답_형식));
+            return document("식품 상세 조회 - 실패(올바르지 않은 형식)", 문서_정보.responseSchema(에러_응답_형식));
         }
 
     }

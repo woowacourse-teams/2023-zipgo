@@ -14,8 +14,7 @@ import static com.epages.restdocs.apispec.Schema.schema;
 import static io.restassured.RestAssured.given;
 import static io.restassured.http.ContentType.JSON;
 import static org.hamcrest.Matchers.is;
-import static org.springframework.http.HttpStatus.CREATED;
-import static org.springframework.http.HttpStatus.OK;
+import static org.springframework.http.HttpStatus.*;
 import static org.springframework.restdocs.payload.PayloadDocumentation.fieldWithPath;
 import static org.springframework.restdocs.payload.PayloadDocumentation.responseFields;
 import static org.springframework.restdocs.request.RequestDocumentation.parameterWithName;
@@ -29,16 +28,16 @@ public class ReviewControllerTest extends AcceptanceTest {
     class GetReviews {
 
         private Schema 성공_응답_형식 = schema("GetReviewsResponse");
-        private ResourceSnippetDetails API_정보 = resourceDetails()
+        private ResourceSnippetDetails 문서_정보 = resourceDetails()
                 .summary("리뷰 전체 목록 조회하기")
                 .description("해당 반려동물 식품에 대한 모든 리뷰를 조회합니다.");
 
         @Test
-        void 식품_아이디로_리뷰_목록을_조회한다() {
+        void 리뷰를_조회하면_201_반환() {
             // given
             var 요청_준비 = given(spec)
                     .contentType(JSON)
-                    .filter(식품_목록_조회_API_문서_생성());
+                    .filter(리뷰_목록_조회_API_문서_생성());
 
             // when
             //TODO petFoodId가 data.sql에 종속적인거 같아서 리뷰 생성 기능 만든 후 리팩터링 예정
@@ -52,9 +51,9 @@ public class ReviewControllerTest extends AcceptanceTest {
                     .assertThat().body("reviews.size()", is(2));
         }
 
-        private RestDocumentationFilter 식품_목록_조회_API_문서_생성() {
-            return document("성공",
-                    API_정보.responseSchema(성공_응답_형식),
+        private RestDocumentationFilter 리뷰_목록_조회_API_문서_생성() {
+            return document("리뷰 전체 조회 - 성공",
+                    문서_정보.responseSchema(성공_응답_형식),
                     pathParameters(parameterWithName("id").description("식품 id")),
                     responseFields(
                             fieldWithPath("[].id").description("리뷰 id"),
@@ -74,8 +73,13 @@ public class ReviewControllerTest extends AcceptanceTest {
     @DisplayName("리뷰 생성 API")
     class CreateReviews {
 
+        private Schema 성공_응답_형식 = schema("CreateReviewResponse");
+        private ResourceSnippetDetails 문서_정보 = resourceDetails()
+                .summary("리뷰 생성하기")
+                .description("해당 반려동물 식품에 대한 리뷰를 생성합니다.");
+
         @Test
-        void 리뷰를_생성하면_201_반환() {
+        void 리뷰를_성공적으로_생성하면_201_반환() {
             // given
             //TODO 여기도 갈비씨가 member pr 날려주면 리팩토링 할 듯
             var 요청_준비 = given(spec)
@@ -99,9 +103,32 @@ public class ReviewControllerTest extends AcceptanceTest {
                     .description("리뷰를 생성합니다.")
                     .responseSchema(응답_형식);
 
-            return document("리뷰 생성 성공",
+            return document("리뷰 생성 - 성공",
                     문서_정보
             );
+
+        }
+
+        @Test
+        void 없는_식품에_대해_리뷰를_생성하면_404_반환() {
+            // given
+            var 요청_준비 = given(spec)
+                    .queryParam("memberId", 1L)
+                    .body(리뷰_생성_요청(123456789L))
+                    .contentType(JSON)
+                    .filter(API_예외응답_문서_생성());
+
+            // when
+            var 응답 = 요청_준비.when()
+                    .post("/reviews");
+
+            // then
+            응답.then()
+                    .assertThat().statusCode(NOT_FOUND.value());
+        }
+
+        private RestDocumentationFilter API_예외응답_문서_생성() {
+            return document("리뷰 생성 - 실패(없는 식품)", 문서_정보.responseSchema(에러_응답_형식));
         }
 
     }
