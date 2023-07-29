@@ -1,6 +1,7 @@
 package zipgo.auth.presentation;
 
 import jakarta.servlet.http.HttpServletRequest;
+import zipgo.auth.exception.AuthException;
 
 import static org.springframework.http.HttpHeaders.AUTHORIZATION;
 
@@ -22,10 +23,10 @@ public class BearerTokenExtractor {
 
     private static void validate(String authorization) {
         if (authorization == null) {
-            throw new IllegalStateException("사용자 인증이 필요합니다.");
+            throw new AuthException("사용자 인증이 필요합니다.");
         }
         if (!authorization.matches(BEARER_REGEX)) {
-            throw new IllegalStateException("유효하지 않은 인증 형식입니다.");
+            throw new AuthException("유효하지 않은 인증 형식입니다.");
         }
     }
 

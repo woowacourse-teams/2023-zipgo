@@ -6,4 +6,8 @@ public class AuthException extends RuntimeException {
         super(e);
     }
 
+    public AuthException(String message) {
+        super(message);
+    }
+
 }
