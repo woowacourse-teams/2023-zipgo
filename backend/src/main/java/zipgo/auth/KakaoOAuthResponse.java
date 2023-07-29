@@ -15,9 +15,10 @@ import lombok.NoArgsConstructor;
 public class KakaoOAuthResponse implements OAuthResponse {
 
     @JsonProperty("kakao_account")
-    private KakaoAccount kakaoAcount;
+    private KakaoAccount kakaoAccount;
 
     @Getter
+    @Builder
     @JsonIgnoreProperties(ignoreUnknown = true)
     public static class KakaoAccount {
         private Profile profile;
@@ -25,6 +26,7 @@ public class KakaoOAuthResponse implements OAuthResponse {
     }
 
     @Getter
+    @Builder
     @JsonIgnoreProperties(ignoreUnknown = true)
     public static class Profile {
         private String nickname;
@@ -34,17 +36,17 @@ public class KakaoOAuthResponse implements OAuthResponse {
 
     @Override
     public String getEmail() {
-        return kakaoAcount.getEmail();
+        return kakaoAccount.getEmail();
     }
 
     @Override
     public String getNickName() {
-        return kakaoAcount.getProfile().getNickname();
+        return kakaoAccount.getProfile().getNickname();
     }
 
     @Override
     public String getPicture() {
-        return kakaoAcount.getProfile().getPicture();
+        return kakaoAccount.getProfile().getPicture();
     }
 
 }
