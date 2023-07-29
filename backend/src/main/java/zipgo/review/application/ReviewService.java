@@ -10,6 +10,7 @@ import zipgo.petfood.domain.repository.PetFoodRepository;
 import zipgo.review.domain.Review;
 import zipgo.review.domain.repository.ReviewRepository;
 import zipgo.review.dto.request.CreateReviewRequest;
+import zipgo.review.dto.request.UpdateReviewRequest;
 
 @Service
 @Transactional
@@ -29,6 +30,23 @@ public class ReviewService {
 
         reviewRepository.save(review);
         return review.getId();
+    }
+
+    public void updateReview(Long memberId, Long reviewId, UpdateReviewRequest request) {
+        Review review = reviewRepository.getById(reviewId);
+
+        update(memberId, request, review);
+    }
+
+    private static void update(Long memberId, UpdateReviewRequest request, Review review) {
+        review.validateOwner(memberId);
+        review.updateRating(request.rating());
+        review.updateComment(request.comment());
+        review.updateTastePreference(request.tastePreference());
+        review.updateStoolCondition(request.stoolCondition());
+
+        review.removeAdverseReactions();
+        review.addAdverseReactions(request.adverseReactions());
     }
 
 }
