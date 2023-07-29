@@ -4,7 +4,7 @@ type TastePreference = (typeof TASTE_PREFERENCES)[number];
 type StoolCondition = (typeof STOOL_CONDITIONS)[number];
 type AdverseReaction = (typeof ADVERSE_REACTIONS)[number];
 
-export type Review = {
+type Review = {
   id: number;
   profileImageUrl?: string;
   reviewerName: string;
@@ -15,3 +15,5 @@ export type Review = {
   stoolCondition: StoolCondition;
   adverseReactions: AdverseReaction[];
 };
+
+export type { Review };

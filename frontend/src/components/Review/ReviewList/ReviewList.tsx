@@ -1,19 +1,19 @@
 import { styled } from 'styled-components';
 
-import { Review } from '@/types/review/client';
+import { useValidParams } from '@/hooks/@common/useValidParams';
+import useReviewListQuery from '@/hooks/query/review';
 
 import ReviewItem from '../ReviewItem/ReviewItem';
 
-interface ReviewListProps {
-  reviewListData: Review[];
-}
+const ReviewList = () => {
+  const { petFoodId } = useValidParams(['petFoodId']);
+  const { reviewList } = useReviewListQuery({ petFoodId });
 
-const ReviewList = (reviewListProps: ReviewListProps) => {
-  const { reviewListData } = reviewListProps;
+  if (!reviewList) throw new Error('리뷰 목록을 불러오지 못했습니다.');
 
   return (
     <ReviewListContainer>
-      {reviewListData.map(review => (
+      {reviewList.map(review => (
         <ReviewItemWrapper key={review.id}>
           <ReviewItem {...review} />
         </ReviewItemWrapper>

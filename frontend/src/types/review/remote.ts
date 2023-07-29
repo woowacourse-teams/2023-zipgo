@@ -1,9 +1,11 @@
 import { Review } from './client';
 
-export interface GetReviewsReq {
-  foodId: number;
+interface GetReviewsReq {
+  petFoodId: string;
 }
 
-export interface GetReviewsRes {
+interface GetReviewsRes {
   reviews: Review[];
 }
+
+export type { GetReviewsReq, GetReviewsRes };
