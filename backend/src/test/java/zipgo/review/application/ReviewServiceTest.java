@@ -21,8 +21,8 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.junit.jupiter.api.Assertions.assertAll;
 import static zipgo.petfood.domain.fixture.PetFoodFixture.키워드_없이_식품_초기화;
-import static zipgo.review.domain.StoolCondition.SOFT_MOIST;
-import static zipgo.review.domain.TastePreference.EATS_VERY_WELL;
+import static zipgo.review.domain.type.StoolCondition.SOFT_MOIST;
+import static zipgo.review.domain.type.TastePreference.EATS_VERY_WELL;
 import static zipgo.review.fixture.MemberFixture.무민;
 import static zipgo.review.fixture.ReviewFixture.리뷰_생성_요청;
 

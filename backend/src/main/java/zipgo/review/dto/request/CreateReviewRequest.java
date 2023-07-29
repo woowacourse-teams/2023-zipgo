@@ -7,8 +7,8 @@ import jakarta.validation.constraints.NotNull;
 import zipgo.member.domain.Member;
 import zipgo.petfood.domain.PetFood;
 import zipgo.review.domain.Review;
-import zipgo.review.domain.StoolCondition;
-import zipgo.review.domain.TastePreference;
+import zipgo.review.domain.type.StoolCondition;
+import zipgo.review.domain.type.TastePreference;
 
 import java.util.List;
 

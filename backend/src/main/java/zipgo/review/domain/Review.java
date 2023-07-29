@@ -7,6 +7,8 @@ import lombok.EqualsAndHashCode.Include;
 import zipgo.common.entity.BaseTimeEntity;
 import zipgo.member.domain.Member;
 import zipgo.petfood.domain.PetFood;
+import zipgo.review.domain.type.StoolCondition;
+import zipgo.review.domain.type.TastePreference;
 
 import java.util.ArrayList;
 import java.util.List;

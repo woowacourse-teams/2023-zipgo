@@ -1,4 +1,4 @@
-package zipgo.review.domain;
+package zipgo.review.domain.type;
 
 import lombok.Getter;
 import zipgo.review.exception.TastePreferenceException;
