@@ -9,7 +9,7 @@ public class TastePreferenceException extends RuntimeException {
     public static class NotFound extends TastePreferenceException {
 
         public NotFound() {
-            super("기호성을 찾을 수 없습니다.");
+            super("해당 이름의 기호성을 찾을 수 없습니다.");
         }
 
     }
