@@ -30,6 +30,12 @@ oauth:
     redirect-uri: ${REDIRECT_URI}
 
 ---
+# jwt
+jwt:
+  secret-key: ${ZIPGO_SECRET_KEY}
+  expire-length: ${EXPIRE_LENGTH}
+
+---
 # log
 logging:
   level:
