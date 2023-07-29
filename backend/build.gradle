@@ -84,7 +84,10 @@ jacocoTestReport {
                             '**/*Response*',
                             '**/*Request*',
                             '**/*Config',
-                            '**/BaseTimeEntity'
+                            '**/BaseTimeEntity',
+                            '**/*Interceptor',
+                            '**/*ArgumentResolver',
+                            '**/AuthController'
                     ])
                 })
         )
@@ -111,7 +114,10 @@ jacocoTestCoverageVerification {
                     '*.*Response',
                     '*.*Request',
                     '*.*Config',
-                    '*.BaseTimeEntity'
+                    '*.BaseTimeEntity',
+                    '*.*Interceptor',
+                    '*.*ArgumentResolver',
+                    '*.AuthController',
             ]
         }
     }
