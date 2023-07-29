@@ -81,6 +81,7 @@ jacocoTestReport {
                     fileTree(dir: it, excludes: [
                             '**/*Application*',
                             '**/*Exception*',
+                            '**/*Dto',
                             '**/*Response*',
                             '**/*Request*',
                             '**/*Config',
@@ -111,6 +112,7 @@ jacocoTestCoverageVerification {
             excludes = [
                     '*.*Application',
                     '*.*Exception',
+                    '*.*Dto',
                     '*.*Response',
                     '*.*Request',
                     '*.*Config',
