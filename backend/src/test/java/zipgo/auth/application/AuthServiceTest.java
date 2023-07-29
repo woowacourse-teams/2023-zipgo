@@ -12,7 +12,6 @@ import zipgo.auth.OAuthResponse;
 import zipgo.auth.util.JwtProvider;
 import zipgo.member.domain.Member;
 import zipgo.member.domain.application.MemberCommandService;
-import zipgo.member.domain.application.MemberDto;
 import zipgo.member.domain.application.MemberQueryService;
 
 import java.util.Optional;
@@ -67,8 +66,8 @@ class AuthServiceTest {
         when(memberCommandService.findByEmail("zipgo@zipgo.com"))
                 .thenReturn(Optional.empty());
 
-        MemberDto 멤버_DTO = new MemberDto("개비", "사진", "zipgo@zipgo.com");
-        when(memberQueryService.save(멤버_DTO))
+        Member 저장전_member = Member.builder().email("zipgo@zipgo.com").name("개비").profileImgUrl("사진").build();
+        when(memberQueryService.save(저장전_member))
                 .thenReturn(MEMBER_FIXTURE);
 
         when(jwtProvider.create("1"))

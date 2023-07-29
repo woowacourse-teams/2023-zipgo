@@ -9,6 +9,7 @@ import lombok.Builder;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import zipgo.auth.OAuthResponse;
 
 import static lombok.AccessLevel.PROTECTED;
 import static lombok.EqualsAndHashCode.*;
@@ -31,5 +32,13 @@ public class Member {
     private String email;
 
     private String profileImgUrl;
+
+    public static Member from(OAuthResponse oAuthResponse) {
+        return Member.builder()
+                .email(oAuthResponse.getEmail())
+                .name(oAuthResponse.getNickName())
+                .profileImgUrl(oAuthResponse.getPicture())
+                .build();
+    }
 
 }
