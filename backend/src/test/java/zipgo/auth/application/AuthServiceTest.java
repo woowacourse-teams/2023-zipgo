@@ -18,8 +18,7 @@ import zipgo.member.domain.application.MemberQueryService;
 import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.*;
+import static org.mockito.Mockito.when;
 
 @DisplayNameGeneration(DisplayNameGenerator.ReplaceUnderscores.class)
 @SuppressWarnings("NonAsciiCharacters")
@@ -54,31 +53,32 @@ class AuthServiceTest {
                 .thenReturn("생성된 토큰");
 
         // when
-        String token = authService.createToken("코드");
+        String 토큰 = authService.createToken("코드");
 
         // then
-        assertThat(token).isEqualTo("생성된 토큰");
+        assertThat(토큰).isEqualTo("생성된 토큰");
     }
 
     @Test
-    void 멤버를_새로_저장하고_토큰을_발급한다() {
+    void 새로_가입한_멤버의_토큰을_발급한다() {
+        // given
         OAuthResponse 카카오_응답 = 카카오_토큰_받기_성공();
 
         when(memberCommandService.findByEmail("zipgo@zipgo.com"))
                 .thenReturn(Optional.empty());
 
-        MemberDto memberDto = new MemberDto("개비", "사진", "zipgo@zipgo.com");
-        when(memberQueryService.save(memberDto))
+        MemberDto 멤버_DTO = new MemberDto("개비", "사진", "zipgo@zipgo.com");
+        when(memberQueryService.save(멤버_DTO))
                 .thenReturn(MEMBER_FIXTURE);
 
         when(jwtProvider.create("1"))
                 .thenReturn("생성된 토큰");
 
         // when
-        String token = authService.createToken("코드");
+        String 토큰 = authService.createToken("코드");
 
         // then
-        assertThat(token).isEqualTo("생성된 토큰");
+        assertThat(토큰).isEqualTo("생성된 토큰");
     }
 
     private OAuthResponse 카카오_토큰_받기_성공() {
