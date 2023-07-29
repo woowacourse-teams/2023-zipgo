@@ -8,6 +8,7 @@ import org.springframework.web.bind.support.WebDataBinderFactory;
 import org.springframework.web.context.request.NativeWebRequest;
 import org.springframework.web.method.support.HandlerMethodArgumentResolver;
 import org.springframework.web.method.support.ModelAndViewContainer;
+import zipgo.auth.presentation.dto.AuthDto;
 import zipgo.auth.util.JwtProvider;
 
 import java.util.Objects;
@@ -20,7 +21,8 @@ public class JwtArgumentResolver implements HandlerMethodArgumentResolver {
 
     @Override
     public boolean supportsParameter(MethodParameter parameter) {
-        return parameter.hasParameterAnnotation(Auth.class);
+        return parameter.hasParameterAnnotation(Auth.class)
+                && parameter.getParameterType().equals(AuthDto.class);
     }
 
     @Override
@@ -34,6 +36,6 @@ public class JwtArgumentResolver implements HandlerMethodArgumentResolver {
         String token = BearerTokenExtractor.extract(Objects.requireNonNull(request));
         String id = jwtProvider.getPayload(token);
 
-        return id;
+        return new AuthDto(id);
     }
 }

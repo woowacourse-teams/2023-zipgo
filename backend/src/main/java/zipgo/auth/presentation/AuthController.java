@@ -4,10 +4,11 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import zipgo.auth.application.AuthService;
+import zipgo.auth.presentation.dto.AuthDto;
+import zipgo.auth.presentation.dto.AuthResponse;
 import zipgo.auth.presentation.dto.TokenResponse;
 import zipgo.member.application.MemberQueryService;
 import zipgo.member.domain.Member;
-import zipgo.auth.presentation.dto.AuthResponse;
 
 @RequestMapping("/auth")
 @RequiredArgsConstructor
@@ -24,8 +25,8 @@ public class AuthController {
     }
 
     @GetMapping
-    public ResponseEntity<AuthResponse> getMemberInfo(@Auth String id) {
-        Member member = memberQueryService.findById(id);
+    public ResponseEntity<AuthResponse> getMemberDetail(@Auth AuthDto authDto) {
+        Member member = memberQueryService.findById(authDto.id());
         return ResponseEntity.ok(AuthResponse.from(member));
     }
 
