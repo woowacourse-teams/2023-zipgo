@@ -4,7 +4,7 @@ import { ThemeProvider } from 'styled-components';
 import GlobalStyle from '@/components/@common/GlobalStyle';
 import theme from '@/styles/theme';
 
-import Landing from './pages/Landing/Landing';
+import Router from './router/Router';
 import { setScreenSize } from './utils/setScreenSize';
 
 const App = () => {
@@ -27,7 +27,7 @@ const App = () => {
   return (
     <ThemeProvider theme={theme}>
       <GlobalStyle />
-      <Landing />
+      <Router />
     </ThemeProvider>
   );
 };
