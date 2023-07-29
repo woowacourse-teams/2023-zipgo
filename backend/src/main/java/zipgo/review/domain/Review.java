@@ -58,7 +58,7 @@ public class Review extends BaseTimeEntity {
 
     public void addAdverseReactions(List<String> adverseReactionNames) {
         List<AdverseReaction> adverseReactions = adverseReactionNames.stream()
-                .map(adverseReaction -> AdverseReaction.builder().name(adverseReaction).build())
+                .map(AdverseReaction::new)
                 .toList();
 
         for (AdverseReaction adverseReaction : adverseReactions) {
