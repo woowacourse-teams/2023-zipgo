@@ -19,8 +19,8 @@ public class AuthInterceptor implements HandlerInterceptor {
             HttpServletResponse response,
             Object handler
     ) {
-        String token = BearerTokenExtractor.extract(request);
-        jwtProvider.validateAbleToken(token);
+        String accessToken = BearerTokenExtractor.extract(request);
+        jwtProvider.validateAbleToken(accessToken);
         return true;
     }
 }
