@@ -1,9 +1,11 @@
 package zipgo.review.dto.response;
 
-import java.time.format.DateTimeFormatter;
-import java.util.List;
 import zipgo.review.domain.AdverseReaction;
 import zipgo.review.domain.Review;
+
+import java.util.List;
+
+import static java.time.format.DateTimeFormatter.ofPattern;
 
 public record GetReviewsResponse(
         Long id,
@@ -22,10 +24,10 @@ public record GetReviewsResponse(
                 //TODO 소셜로그인에서 이름 추가되면 리팩터링 예정
                 "작성자",
                 review.getRating(),
-                review.getCreatedAt().format(DateTimeFormatter.ofPattern("yyyy-MM-dd")),
+                review.getCreatedAt().format(ofPattern("yyyy-MM-dd")),
                 review.getComment(),
-                review.getStoolCondition().getValue(),
-                review.getTastePreference().getValue(),
+                review.getStoolCondition().getDescription(),
+                review.getTastePreference().getDescription(),
                 getAdverseReactions(review)
         );
     }

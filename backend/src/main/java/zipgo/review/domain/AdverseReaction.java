@@ -39,4 +39,8 @@ public class AdverseReaction {
         this.review = review;
     }
 
+    public AdverseReaction(String name) {
+        this.name = name;
+    }
+
 }
