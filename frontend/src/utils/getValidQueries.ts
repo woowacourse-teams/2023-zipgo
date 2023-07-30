@@ -1,12 +1,12 @@
 import { getArrayMutationMethod } from './getArrayMutationMethod';
 
-export const getValidQueries = <T extends string>(search: string, keyArr: Readonly<T[]>) =>
+export const getValidQueries = <T extends string>(search: string, queryKeys: Readonly<T[]>) =>
   search
     .replace(/^\?/, '')
     .split('&')
     .reduce<Record<T, string | undefined>>((queries, keyValue, _, search) => {
       const [key, value] = keyValue.split('=');
-      const includes = getArrayMutationMethod(keyArr, 'includes');
+      const includes = getArrayMutationMethod(queryKeys, 'includes');
 
       if (Object.hasOwn(queries, key)) {
         throw new Error('Duplicated query');
