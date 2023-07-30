@@ -39,7 +39,6 @@ class JwtProviderTest {
         assertThat(토큰).isNotNull();
     }
 
-    @DisplayName("올바른 토큰 정보로 payload를 조회한다.")
     @Test
     void 올바른_토큰의_정보로_payload를_조회한다() {
         // given

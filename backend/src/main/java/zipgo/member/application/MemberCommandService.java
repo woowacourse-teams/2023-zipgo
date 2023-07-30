@@ -6,8 +6,9 @@ import org.springframework.transaction.annotation.Transactional;
 import zipgo.member.domain.Member;
 import zipgo.member.domain.repository.MemberRepository;
 
-@Transactional(readOnly = true)
+
 @Service
+@Transactional
 @RequiredArgsConstructor
 public class MemberCommandService {
 

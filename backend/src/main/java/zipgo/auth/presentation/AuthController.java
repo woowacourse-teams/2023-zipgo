@@ -10,9 +10,9 @@ import zipgo.auth.presentation.dto.TokenResponse;
 import zipgo.member.application.MemberQueryService;
 import zipgo.member.domain.Member;
 
+@RestController
 @RequestMapping("/auth")
 @RequiredArgsConstructor
-@RestController
 public class AuthController {
 
     private final AuthService authService;

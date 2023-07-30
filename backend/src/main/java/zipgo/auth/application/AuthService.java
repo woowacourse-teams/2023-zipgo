@@ -11,8 +11,8 @@ import zipgo.member.application.MemberCommandService;
 
 import java.util.Optional;
 
-@Transactional
 @Service
+@Transactional
 @RequiredArgsConstructor
 public class AuthService {
 

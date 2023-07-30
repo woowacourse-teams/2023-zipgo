@@ -23,4 +23,5 @@ public class AuthInterceptor implements HandlerInterceptor {
         jwtProvider.validateAbleToken(accessToken);
         return true;
     }
+
 }

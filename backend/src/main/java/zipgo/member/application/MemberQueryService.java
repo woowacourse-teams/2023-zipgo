@@ -8,8 +8,8 @@ import zipgo.member.domain.repository.MemberRepository;
 
 import java.util.Optional;
 
-@Transactional
 @Service
+@Transactional(readOnly = true)
 @RequiredArgsConstructor
 public class MemberQueryService {
 
@@ -24,3 +24,4 @@ public class MemberQueryService {
     }
 
 }
+

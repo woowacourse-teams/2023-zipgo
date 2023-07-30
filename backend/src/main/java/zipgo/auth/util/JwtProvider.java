@@ -43,10 +43,6 @@ public class JwtProvider {
         return tokenToJws(token).getBody().getSubject();
     }
 
-    public void validateAbleToken(String token) {
-        tokenToJws(token);
-    }
-
     private Jws<Claims> tokenToJws(String token) {
         try {
             return Jwts.parserBuilder()
@@ -57,4 +53,9 @@ public class JwtProvider {
             throw new AuthException(e);
         }
     }
+
+    public void validateAbleToken(String token) {
+        tokenToJws(token);
+    }
+
 }

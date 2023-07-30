@@ -9,9 +9,9 @@ import lombok.NoArgsConstructor;
 
 @Getter
 @Builder
-@JsonIgnoreProperties(ignoreUnknown = true)
-@AllArgsConstructor
 @NoArgsConstructor
+@AllArgsConstructor
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class KakaoOAuthResponse implements OAuthResponse {
 
     @JsonProperty("kakao_account")
@@ -50,3 +50,4 @@ public class KakaoOAuthResponse implements OAuthResponse {
     }
 
 }
+

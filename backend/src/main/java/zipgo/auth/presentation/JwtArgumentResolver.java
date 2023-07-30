@@ -38,4 +38,5 @@ public class JwtArgumentResolver implements HandlerMethodArgumentResolver {
 
         return new AuthDto(id);
     }
+
 }
