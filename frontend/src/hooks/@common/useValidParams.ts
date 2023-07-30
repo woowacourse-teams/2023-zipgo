@@ -4,17 +4,14 @@ type Params<Key extends string = string> = {
   readonly [key in Key]: string;
 };
 
-export const useValidParams = (payload: string[]): Readonly<Params<string>> => {
+export const useValidParams = <T extends string>(paramKeys: T[]): Readonly<Params<T>> => {
   const params = useParams();
-  const validParams = payload.reduce((acc, key) => {
-    if (key in params) {
-      if (params[key] === undefined) throw new Error('Invaild Params');
+  const validParams = paramKeys.reduce((acc, key) => {
+    if (!(key in params)) throw new Error(`Param '${key}' not found`);
+    if (!params[key]) throw new Error('Invalid Params');
 
-      return { ...acc, [key]: params[key] };
-    }
-
-    throw new Error(`Param '${key}' not found`);
-  }, {});
+    return { ...acc, [key]: params[key] };
+  }, {} as Readonly<Params<T>>);
 
   return validParams;
 };
