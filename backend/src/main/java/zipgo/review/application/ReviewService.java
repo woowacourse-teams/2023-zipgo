@@ -35,11 +35,11 @@ public class ReviewService {
     public void updateReview(Long memberId, Long reviewId, UpdateReviewRequest request) {
         Review review = reviewRepository.getById(reviewId);
 
-        update(memberId, request, review);
+        review.validateOwner(memberId);
+        update(request, review);
     }
 
-    private static void update(Long memberId, UpdateReviewRequest request, Review review) {
-        review.validateOwner(memberId);
+    private void update(UpdateReviewRequest request, Review review) {
         review.updateRating(request.rating());
         review.updateComment(request.comment());
         review.updateTastePreference(request.tastePreference());
