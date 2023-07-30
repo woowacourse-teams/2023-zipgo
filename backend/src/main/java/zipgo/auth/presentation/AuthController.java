@@ -21,7 +21,7 @@ public class AuthController {
     @PostMapping("/login")
     public ResponseEntity<TokenResponse> login(@RequestParam("code") String authCode) {
         String token = authService.createToken(authCode);
-        return ResponseEntity.ok(new TokenResponse(token));
+        return ResponseEntity.ok(TokenResponse.from(token));
     }
 
     @GetMapping
