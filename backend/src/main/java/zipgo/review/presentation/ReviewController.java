@@ -45,7 +45,6 @@ public class ReviewController {
             @PathVariable Long reviewId,
             @RequestBody @Valid UpdateReviewRequest updateReviewRequest
     ) {
-
         reviewService.updateReview(memberId, reviewId, updateReviewRequest);
         return ResponseEntity.noContent().build();
     }
