@@ -6,6 +6,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import zipgo.member.domain.Member;
 
 @Getter
 @Builder
@@ -47,6 +48,15 @@ public class KakaoOAuthResponse implements OAuthResponse {
     @Override
     public String getPicture() {
         return kakaoAccount.getProfile().getPicture();
+    }
+
+    @Override
+    public Member createMember() {
+        return Member.builder()
+                .name(getNickName())
+                .email(getEmail())
+                .profileImgUrl(getPicture())
+                .build();
     }
 
 }

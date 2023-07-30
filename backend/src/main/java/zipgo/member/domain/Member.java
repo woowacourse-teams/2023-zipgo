@@ -4,15 +4,10 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.EqualsAndHashCode;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import zipgo.auth.OAuthResponse;
+import lombok.*;
 
 import static lombok.AccessLevel.PROTECTED;
-import static lombok.EqualsAndHashCode.*;
+import static lombok.EqualsAndHashCode.Include;
 
 @Entity
 @Getter
@@ -32,13 +27,5 @@ public class Member {
     private String email;
 
     private String profileImgUrl;
-
-    public static Member from(OAuthResponse oAuthResponse) {
-        return Member.builder()
-                .email(oAuthResponse.getEmail())
-                .name(oAuthResponse.getNickName())
-                .profileImgUrl(oAuthResponse.getPicture())
-                .build();
-    }
 
 }

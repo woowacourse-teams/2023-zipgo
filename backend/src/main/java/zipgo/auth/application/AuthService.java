@@ -30,7 +30,7 @@ public class AuthService {
             return jwtProvider.create(String.valueOf(memberOptional.get().getId()));
         }
 
-        Member member = Member.from(oAuthResponse);
+        Member member = oAuthResponse.createMember();
         Long memberId = memberCommandService.save(member).getId();
         return jwtProvider.create(String.valueOf(memberId));
     }
