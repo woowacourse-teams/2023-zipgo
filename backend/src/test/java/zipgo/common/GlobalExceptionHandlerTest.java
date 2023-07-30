@@ -24,16 +24,17 @@ class GlobalExceptionHandlerTest extends AcceptanceTest {
 
     @Test
     void 서버_내부_에러가_발생하면_500을_반환한다() {
-        //given
+        // Given
         given(reviewController.getAllReviews(any())).willThrow(TestException.class);
 
-        //when
+        // when
         ExtractableResponse<Response> response = RestAssured
                 .when().get("/pet-foods/1/reviews")
                 .then().extract();
 
-        //then
+        // then
         ErrorResponse errorResponse = response.as(ErrorResponse.class);
+        assertThat(response.statusCode()).isEqualTo(500);
         assertThat(errorResponse.message()).isEqualTo("서버 내부 오류");
     }
 
