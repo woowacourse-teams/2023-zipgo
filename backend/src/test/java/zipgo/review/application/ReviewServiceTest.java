@@ -160,11 +160,12 @@ class ReviewServiceTest extends ServiceTest {
     @Test
     void 잘못된_리뷰_id로_리뷰를_수정하면_예외_처리() {
         //given
+        long 잘못된_리뷰_id = 123456789L;
         키워드_없이_식품_초기화(브랜드_조회하기());
         Member 멤버 = memberRepository.save(무민());
 
         //when, then
-        Assertions.assertThatThrownBy(() -> reviewService.updateReview(멤버.getId(), 123456789L, 리뷰_수정_요청()))
+        assertThatThrownBy(() -> reviewService.updateReview(멤버.getId(), 잘못된_리뷰_id, 리뷰_수정_요청()))
                 .isInstanceOf(ReviewException.NotFound.class);;
     }
 
