@@ -24,6 +24,8 @@ const globalStyle = css`
     font-family: Pretandard, sans-serif;
   }
 
+  h2,
+  h3,
   p {
     margin: 0;
   }
