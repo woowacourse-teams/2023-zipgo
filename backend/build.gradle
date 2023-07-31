@@ -58,6 +58,7 @@ dependencies {
     testImplementation 'org.springframework.restdocs:spring-restdocs-restassured'
     testImplementation "com.epages:restdocs-api-spec-restassured:${restdocsApiSpecVersion}"
     testImplementation "com.epages:restdocs-api-spec-mockmvc:${restdocsApiSpecVersion}"
+    testImplementation "org.springframework.restdocs:spring-restdocs-mockmvc"
     testImplementation 'io.rest-assured:rest-assured'
 
     swaggerUI 'org.webjars:swagger-ui:4.11.1'
