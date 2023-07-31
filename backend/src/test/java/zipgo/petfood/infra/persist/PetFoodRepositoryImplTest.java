@@ -31,7 +31,7 @@ class PetFoodRepositoryImplTest {
         final String primaryIngredients = "말미잘";
 
         // when
-        List<PetFood> petFoods = petFoodQueryRepository.searchPetFoodByDynamicValues(keyword, brand, primaryIngredients);
+        List<PetFood> petFoods = petFoodQueryRepository.findPetFoods(keyword, brand, primaryIngredients);
 
         // then
         assertAll(
