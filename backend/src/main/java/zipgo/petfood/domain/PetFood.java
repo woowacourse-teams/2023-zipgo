@@ -3,13 +3,15 @@ package zipgo.petfood.domain;
 import static jakarta.persistence.FetchType.LAZY;
 
 import jakarta.persistence.Column;
+import jakarta.persistence.Embedded;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
+import java.util.List;
+import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.EqualsAndHashCode;
@@ -21,9 +23,9 @@ import zipgo.brand.domain.Brand;
 @Entity
 @Getter
 @Builder
-@NoArgsConstructor
 @AllArgsConstructor
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class PetFood {
 
     @Id
@@ -43,7 +45,35 @@ public class PetFood {
     @ManyToOne(fetch = FetchType.LAZY)
     private Keyword keyword;
 
-    @ManyToOne(fetch = LAZY)
+    @ManyToOne(fetch = LAZY, optional = false)
     private Brand brand;
+
+    @Embedded
+    private PrimaryIngredients primaryIngredients;
+
+    @Embedded
+    private HasStandard hasStandard;
+
+    @Embedded
+    private Functionality functionality;
+
+    @Embedded
+    private Reviews reviews;
+
+    public double calculateRatingAverage() {
+        return reviews.calculateRatingAverage();
+    }
+
+    public int countReviews() {
+        return reviews.countReviews();
+    }
+
+    public List<String> getPrimaryIngredients() {
+        return primaryIngredients.getPrimaryIngredients();
+    }
+
+    public List<String> getFunctionality() {
+        return functionality.getFunctionality();
+    }
 
 }

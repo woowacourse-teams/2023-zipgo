@@ -10,6 +10,14 @@ public class AuthException extends RuntimeException {
 
     }
 
+    public static class Forbidden extends AuthException {
+
+        public Forbidden() {
+            super("권한이 없습니다.");
+        }
+
+    }
+
     public AuthException(Throwable e) {
         super(e);
     }

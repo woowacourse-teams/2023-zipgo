@@ -1,17 +1,46 @@
 package zipgo.review.domain;
 
-public enum AdverseReaction {
+import static jakarta.persistence.FetchType.LAZY;
+import static lombok.AccessLevel.PROTECTED;
+import static lombok.EqualsAndHashCode.Include;
 
-    MATTED_FUR("털이 푸석해요"),
-    EATS_AND_VOMITS("먹고 토해요"),
-    TEARY_EYED("눈물이 나요"),
-    SCRATCHES_BODY("촉촉 말랑해요"),
-    LICKS_PAWS("발을 핥아요");
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.ManyToOne;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.EqualsAndHashCode;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
 
-    private String value;
+@Entity
+@Getter
+@Builder
+@AllArgsConstructor
+@NoArgsConstructor(access = PROTECTED)
+@EqualsAndHashCode(onlyExplicitlyIncluded = true)
+public class AdverseReaction {
 
-    AdverseReaction(String value) {
-        this.value = value;
+    @Id
+    @Include
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+
+    @Column(nullable = false)
+    private String name;
+
+    @ManyToOne(fetch = LAZY)
+    private Review review;
+
+    public void updateReview(Review review) {
+        this.review = review;
+    }
+
+    public AdverseReaction(String name) {
+        this.name = name;
     }
 
 }

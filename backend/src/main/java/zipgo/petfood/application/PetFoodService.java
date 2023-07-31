@@ -20,11 +20,15 @@ public class PetFoodService {
         return petFoodRepository.findAll();
     }
 
-    public List<PetFood> getPetFoodHaving(final String keywordName) {
+    public List<PetFood> getPetFoodHaving(String keywordName) {
         Keyword keyword = keywordRepository.findByName(keywordName)
                 .orElseThrow(() -> new KeywordException.NotFound(keywordName));
 
         return petFoodRepository.findByKeyword(keyword);
+    }
+
+    public PetFood getPetFoodBy(Long id) {
+        return petFoodRepository.getById(id);
     }
 
 }

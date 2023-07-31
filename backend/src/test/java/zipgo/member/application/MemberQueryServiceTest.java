@@ -28,13 +28,13 @@ class MemberQueryServiceTest {
     void 문자_id로_회원을_찾을_수_있다() {
         // given
         Member 멤버 = 식별자_없는_멤버();
-        memberRepository.save(멤버);
+        Member 저장된_멤버 = memberRepository.save(멤버);
 
         // when
-        Member 찾은_멤버 = memberQueryService.findById(1L);
+        Member 찾은_멤버 = memberQueryService.findById(저장된_멤버.getId());
 
         // then
-        assertThat(찾은_멤버).isEqualTo(멤버);
+        assertThat(찾은_멤버).isEqualTo(저장된_멤버);
     }
 
 }

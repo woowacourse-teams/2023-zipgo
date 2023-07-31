@@ -10,9 +10,8 @@ public interface MemberRepository extends JpaRepository<Member, Long> {
 
     Optional<Member> findByEmail(String email);
 
-    default Member getById(Long id){
-        return findById(id)
-                .orElseThrow(MemberException::new);
+    default Member getById(Long id) {
+        return findById(id).orElseThrow(MemberException.NotFound::new);
     }
 
 }
