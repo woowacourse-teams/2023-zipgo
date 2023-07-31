@@ -1,7 +1,9 @@
 package zipgo.auth.util;
 
 import io.jsonwebtoken.Jwts;
-import org.junit.jupiter.api.*;
+import org.junit.jupiter.api.DisplayNameGeneration;
+import org.junit.jupiter.api.DisplayNameGenerator;
+import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -9,12 +11,12 @@ import zipgo.auth.exception.AuthException;
 
 import java.util.Date;
 
-import static io.jsonwebtoken.SignatureAlgorithm.*;
-import static io.jsonwebtoken.security.Keys.*;
-import static java.nio.charset.StandardCharsets.*;
+import static io.jsonwebtoken.SignatureAlgorithm.HS256;
+import static io.jsonwebtoken.security.Keys.hmacShaKeyFor;
+import static java.nio.charset.StandardCharsets.UTF_8;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 
 @SuppressWarnings("NonAsciiCharacters")
 @DisplayNameGeneration(DisplayNameGenerator.ReplaceUnderscores.class)
@@ -61,10 +63,11 @@ class JwtProviderTest {
     @Test
     void 만료된_토큰으로_payload를_조회할_경우_예외가_발생한다() {
         // given
+        Date 지나간_유효기간 = new Date((new Date()).getTime() - 1);
         String 만료된_토큰 = Jwts.builder()
                 .signWith(hmacShaKeyFor(secretKey.getBytes(UTF_8)), HS256)
                 .setSubject(String.valueOf(1L))
-                .setExpiration(new Date((new Date()).getTime() - 1))
+                .setExpiration(지나간_유효기간)
                 .compact();
 
         // expect
