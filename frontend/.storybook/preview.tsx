@@ -4,6 +4,32 @@ import { ThemeProvider } from 'styled-components';
 import theme from '../src/styles/theme';
 import React from 'react';
 
+const customViewports = {
+  defaultDevice: {
+    name: 'default',
+    styles: {
+      width: '400px',
+      height: '865px',
+    },
+  },
+
+  iPhoneSE: {
+    name: 'iPhone SE',
+    styles: {
+      width: '375px',
+      height: '667px',
+    },
+  },
+
+  iPhone12Pro: {
+    name: 'iPhone 12 Pro',
+    styles: {
+      width: '390px',
+      height: '844px',
+    },
+  },
+};
+
 const preview: Preview = {
   parameters: {
     actions: { argTypesRegex: '^[A-Z].*' },
@@ -12,6 +38,11 @@ const preview: Preview = {
         color: /(background|color)$/i,
         date: /Date$/,
       },
+    },
+    layout: 'fullScreen',
+    viewport: {
+      viewports: { ...customViewports },
+      defaultViewport: 'defaultDevice',
     },
     options: {
       storySort: (a, b) =>

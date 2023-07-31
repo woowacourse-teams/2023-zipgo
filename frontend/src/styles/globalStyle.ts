@@ -20,6 +20,10 @@ const globalStyle = css`
     font-size: 62.5%;
   }
 
+  body {
+    font-family: Pretandard, sans-serif;
+  }
+
   p {
     margin: 0;
   }
