@@ -24,7 +24,7 @@ class GlobalExceptionHandlerTest extends AcceptanceTest {
 
     @Test
     void 서버_내부_에러가_발생하면_500을_반환한다() {
-        // Given
+        // given
         given(reviewController.getAllReviews(any())).willThrow(TestException.class);
 
         // when
@@ -40,17 +40,17 @@ class GlobalExceptionHandlerTest extends AcceptanceTest {
 
     @Test
     void 스프링_예외가_발생했을때_에러_응답_형식을_반환한다() {
-        //given
+        // given
         given(reviewController.getAllReviews(any())).willAnswer((a) -> {
             throw new HttpMediaTypeNotSupportedException("스프링 예외 메시지");
         });
 
-        //when
+        // when
         ExtractableResponse<Response> response = RestAssured
                 .when().get("/pet-foods/1/reviews")
                 .then().extract();
 
-        //then
+        // then
         ErrorResponse errorResponse = response.as(ErrorResponse.class);
         assertThat(errorResponse.message()).isEqualTo("스프링 예외 메시지");
     }
