@@ -11,7 +11,6 @@ import org.springframework.web.context.request.ServletWebRequest;
 import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 import zipgo.auth.exception.AuthException;
-import zipgo.petfood.exception.KeywordException;
 import zipgo.petfood.exception.PetFoodException;
 import zipgo.petfood.presentation.dto.ErrorResponse;
 import zipgo.review.exception.ReviewException;
@@ -22,9 +21,10 @@ import static org.springframework.http.HttpStatus.*;
 @RestControllerAdvice
 public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
 
-    @ExceptionHandler({KeywordException.NotFound.class,
+    @ExceptionHandler({
             PetFoodException.NotFound.class,
-            ReviewException.NotFound.class})
+            ReviewException.NotFound.class
+    })
     public ResponseEntity<ErrorResponse> handleNotFoundException(Exception exception) {
         return ResponseEntity.status(NOT_FOUND)
                 .body(ErrorResponse.of(exception));
