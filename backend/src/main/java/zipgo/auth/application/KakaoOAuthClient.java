@@ -15,6 +15,7 @@ import zipgo.auth.application.dto.KakaoMemberResponse;
 import zipgo.auth.application.dto.OAuthMemberResponse;
 import zipgo.auth.application.dto.KakaoTokenResponse;
 import zipgo.auth.exception.AuthException;
+import zipgo.common.config.KakaoOAuthCredentials;
 
 import static org.springframework.http.HttpMethod.GET;
 import static org.springframework.http.HttpMethod.POST;
@@ -27,11 +28,7 @@ public class KakaoOAuthClient implements OAuthClient {
     public static final String KAKAO_USER_INFO_URI = "https://kapi.kakao.com/v2/user/me";
     public static final String GRANT_TYPE = "authorization_code";
 
-    @Value("${oauth.kakao.client-id}")
-    private String clientId;
-
-    @Value("${oauth.kakao.redirect-uri}")
-    private String redirectUri;
+    private final KakaoOAuthCredentials kakaoOAuthCredentials;
     private final RestTemplate restTemplate;
 
     @Override
@@ -50,7 +47,7 @@ public class KakaoOAuthClient implements OAuthClient {
                     KakaoTokenResponse.class
             );
         } catch (HttpClientErrorException e) {
-            throw new AuthException.KakaoNotFound("카카오 토큰을 가져오는 중 에러가 발생했습니다.");
+            throw new AuthException.KakaoNotFound("카카오 토큰을 가져오는 중 에러가 발생했습니다.", e);
         }
 
         return exchange.getBody().accessToken();
@@ -65,8 +62,8 @@ public class KakaoOAuthClient implements OAuthClient {
     MultiValueMap<String, String> createRequestBodyWithAuthCode(String authCode) {
         MultiValueMap<String, String> body = new LinkedMultiValueMap<>();
         body.add("grant_type", GRANT_TYPE);
-        body.add("client_id", clientId);
-        body.add("redirect_uri", redirectUri);
+        body.add("client_id", kakaoOAuthCredentials.getClientId());
+        body.add("redirect_uri", kakaoOAuthCredentials.getRedirectUri());
         body.add("code", authCode);
         return new LinkedMultiValueMap<>(body);
     }
@@ -84,7 +81,7 @@ public class KakaoOAuthClient implements OAuthClient {
                     KakaoMemberResponse.class
             );
         } catch (HttpClientErrorException e) {
-            throw new AuthException.KakaoNotFound("카카오 사용자 정보를 가져오는 중 에러가 발생했습니다");
+            throw new AuthException.KakaoNotFound("카카오 사용자 정보를 가져오는 중 에러가 발생했습니다", e);
         }
 
         return response.getBody();
