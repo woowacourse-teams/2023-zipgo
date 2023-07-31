@@ -49,7 +49,7 @@ class MemberQueryServiceTest {
                 .thenReturn(멤버);
 
         // when
-        Member 찾은_멤버 = memberQueryService.findById("1");
+        Member 찾은_멤버 = memberQueryService.findById(1L);
 
         // then
         assertThat(찾은_멤버).isEqualTo(멤버);

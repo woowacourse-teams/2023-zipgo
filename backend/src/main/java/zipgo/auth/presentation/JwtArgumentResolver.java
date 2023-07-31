@@ -36,7 +36,7 @@ public class JwtArgumentResolver implements HandlerMethodArgumentResolver {
         String token = BearerTokenExtractor.extract(Objects.requireNonNull(request));
         String id = jwtProvider.getPayload(token);
 
-        return new AuthDto(id);
+        return new AuthDto(Long.valueOf(id));
     }
 
 }
