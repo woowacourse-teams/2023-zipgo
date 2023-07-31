@@ -7,17 +7,16 @@ interface CheckboxProps extends ComponentPropsWithoutRef<'input'> {
 }
 
 const Checkbox = (props: PropsWithChildren<CheckboxProps>) => {
-  const { asChild, child, onChange, ...restProps } = getValidProps(props);
+  const { asChild, child, ...restProps } = getValidProps(props);
 
   if (asChild) {
     return cloneElement(child, {
       ...restProps,
       type: 'checkbox',
-      onChange,
     });
   }
 
-  return <input {...restProps} type="checkbox" onChange={onChange} />;
+  return <input {...restProps} type="checkbox" />;
 };
 
 export default Checkbox;
