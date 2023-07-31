@@ -1,3 +1,4 @@
+import { useNavigate } from 'react-router-dom';
 import { styled } from 'styled-components';
 
 import { useValidParams } from '@/hooks/@common/useValidParams';
@@ -6,6 +7,7 @@ import useReviewListQuery from '@/hooks/query/review';
 import ReviewItem from '../ReviewItem/ReviewItem';
 
 const ReviewList = () => {
+  const navigate = useNavigate();
   const { petFoodId } = useValidParams(['petFoodId']);
   const { reviewList } = useReviewListQuery({ petFoodId });
 
@@ -18,7 +20,11 @@ const ReviewList = () => {
           <ReviewItem {...review} />
         </ReviewItemWrapper>
       ))}
-      <ReviewAddButton type="button" aria-label="리뷰 추가">
+      <ReviewAddButton
+        type="button"
+        aria-label="리뷰 추가"
+        onClick={() => navigate(`/pet-foods/${petFoodId}/reviews/write`)}
+      >
         +
       </ReviewAddButton>
     </ReviewListContainer>
@@ -46,7 +52,7 @@ const ReviewAddButton = styled.button`
 
   cursor: pointer;
 
-  position: absolute;
+  position: fixed;
   right: 1.6rem;
   bottom: 3.2rem;
 
