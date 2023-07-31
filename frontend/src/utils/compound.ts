@@ -11,7 +11,7 @@ type WithoutAsChild<P> = P & {
 };
 
 // eslint-disable-next-line comma-spacing
-const getValidChildAsChild = <P>(children: ReactNode) => {
+const getValidChild = <P>(children: ReactNode) => {
   const child = Children.only(children);
 
   return isValidElement<P>(child) ? child : null;
@@ -23,7 +23,7 @@ export function getValidProps<P extends PropsWithChildren<{ asChild?: boolean }>
   const { asChild, children, ...restProps } = props;
 
   if (asChild) {
-    const child = getValidChildAsChild<P>(children);
+    const child = getValidChild<P>(children);
 
     if (child) return { ...restProps, asChild, child };
   }
