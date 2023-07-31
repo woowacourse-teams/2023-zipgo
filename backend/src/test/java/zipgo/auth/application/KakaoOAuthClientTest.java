@@ -36,10 +36,8 @@ class KakaoOAuthClientTest {
     @Test
     void accessToken_을_가져올_수_있다() {
         // given
+        HttpEntity<MultiValueMap<String, String>> request = createRequest();
         ResponseEntity<KakaoTokens> response = ResponseEntity.ok(KakaoTokens.builder().accessToken("accessToken").build());
-        HttpHeaders header = kakaoOAuthClient.createRequestHeader();
-        MultiValueMap<String, String> body = kakaoOAuthClient.createRequestBodyWithAuthCode("authCode");
-        HttpEntity<MultiValueMap<String, String>> request = new HttpEntity<>(body, header);
         when(restTemplate.exchange(KAKAO_ACCESS_TOKEN_URI, POST, request, KakaoTokens.class))
                 .thenReturn(response);
 
@@ -50,14 +48,17 @@ class KakaoOAuthClientTest {
         assertThat(accessToken).isEqualTo("accessToken");
     }
 
+    private HttpEntity<MultiValueMap<String, String>> createRequest() {
+        HttpHeaders header = kakaoOAuthClient.createRequestHeader();
+        MultiValueMap<String, String> body = kakaoOAuthClient.createRequestBodyWithAuthCode("authCode");
+        return new HttpEntity<>(body, header);
+    }
+
     @Test
     void 사용자_상세_정보를_가져올_수_있다() {
         // given
-        HttpHeaders headers = new HttpHeaders();
-        headers.setBearerAuth("accessToken");
-        HttpEntity<HttpHeaders> request = new HttpEntity<>(headers);
-        ResponseEntity<KakaoOAuthResponse> response = ResponseEntity.ok(KakaoOAuthResponse.builder()
-                .build());
+        HttpEntity<HttpHeaders> request = createRequestHeader();
+        ResponseEntity<KakaoOAuthResponse> response = ResponseEntity.ok(KakaoOAuthResponse.builder().build());
         when(restTemplate.exchange(KAKAO_USER_INFO_URI, GET, request, KakaoOAuthResponse.class))
                 .thenReturn(response);
 
@@ -66,6 +67,12 @@ class KakaoOAuthClientTest {
 
         // then
         assertThat(oAuthResponse).isNotNull();
+    }
+
+    private static HttpEntity<HttpHeaders> createRequestHeader() {
+        HttpHeaders headers = new HttpHeaders();
+        headers.setBearerAuth("accessToken");
+        return new HttpEntity<>(headers);
     }
 
 }
