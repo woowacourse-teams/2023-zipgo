@@ -72,7 +72,7 @@ class KakaoOAuthClientTest {
         assertThat(oAuthResponse).isNotNull();
     }
 
-    private static HttpEntity<HttpHeaders> createRequestHeader() {
+    private HttpEntity<HttpHeaders> createRequestHeader() {
         HttpHeaders headers = new HttpHeaders();
         headers.setBearerAuth("accessToken");
         return new HttpEntity<>(headers);

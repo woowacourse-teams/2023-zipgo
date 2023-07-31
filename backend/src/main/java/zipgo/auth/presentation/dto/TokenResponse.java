@@ -1,12 +1,18 @@
 package zipgo.auth.presentation.dto;
 
+import zipgo.member.domain.Member;
+
 public record TokenResponse (
-        String token
+        String accessToken,
+        AuthResponse authResponse
 ) {
 
 
-    public static TokenResponse from(String token) {
-        return new TokenResponse(token);
+    public static TokenResponse of(String token, Member member) {
+        return new TokenResponse(
+                token,
+                AuthResponse.from(member)
+        );
     }
 
 }

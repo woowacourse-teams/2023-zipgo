@@ -7,6 +7,7 @@ import zipgo.auth.application.AuthService;
 import zipgo.auth.presentation.dto.AuthDto;
 import zipgo.auth.presentation.dto.AuthResponse;
 import zipgo.auth.presentation.dto.TokenResponse;
+import zipgo.auth.util.JwtProvider;
 import zipgo.member.application.MemberQueryService;
 import zipgo.member.domain.Member;
 
@@ -16,12 +17,15 @@ import zipgo.member.domain.Member;
 public class AuthController {
 
     private final AuthService authService;
+    private final JwtProvider jwtProvider;
     private final MemberQueryService memberQueryService;
 
     @PostMapping("/login")
     public ResponseEntity<TokenResponse> login(@RequestParam("code") String authCode) {
         String token = authService.createToken(authCode);
-        return ResponseEntity.ok(TokenResponse.from(token));
+        String memberId = jwtProvider.getPayload(token);
+        Member member = memberQueryService.findById(Long.valueOf(memberId));
+        return ResponseEntity.ok(TokenResponse.of(token, member));
     }
 
     @GetMapping
