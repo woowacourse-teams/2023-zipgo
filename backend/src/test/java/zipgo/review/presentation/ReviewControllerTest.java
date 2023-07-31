@@ -20,8 +20,11 @@ import static org.springframework.restdocs.payload.PayloadDocumentation.response
 import static org.springframework.restdocs.request.RequestDocumentation.parameterWithName;
 import static org.springframework.restdocs.request.RequestDocumentation.pathParameters;
 import static zipgo.review.fixture.ReviewFixture.리뷰_생성_요청;
+import static zipgo.review.fixture.ReviewFixture.리뷰_수정_요청;
 
 public class ReviewControllerTest extends AcceptanceTest {
+
+    //TODO 갈비꺼 merge 후 고정 상수 리팩터링하기
 
     @Nested
     @DisplayName("리뷰 전체 목록 조회 API")
@@ -98,15 +101,9 @@ public class ReviewControllerTest extends AcceptanceTest {
         }
 
         private RestDocumentationFilter 리뷰_생성_API_문서_생성() {
-            var 응답_형식 = schema("CreateReviewResponse");
-            var 문서_정보 = resourceDetails().summary("리뷰 생성 성공")
-                    .description("리뷰를 생성합니다.")
-                    .responseSchema(응답_형식);
-
             return document("리뷰 생성 - 성공",
-                    문서_정보
+                    문서_정보.responseSchema(성공_응답_형식)
             );
-
         }
 
         @Test
@@ -129,6 +126,68 @@ public class ReviewControllerTest extends AcceptanceTest {
 
         private RestDocumentationFilter API_예외응답_문서_생성() {
             return document("리뷰 생성 - 실패(없는 식품)", 문서_정보.responseSchema(에러_응답_형식));
+        }
+
+    }
+
+    @Nested
+    @DisplayName("리뷰 수정 API")
+    class UpdateReviews {
+
+        private Schema 성공_응답_형식 = schema("UpdateReviewResponse");
+        private ResourceSnippetDetails 문서_정보 = resourceDetails()
+                .summary("리뷰 수정하기")
+                .description("해당 반려동물 식품에 대한 리뷰를 수정합니다.");
+
+        @Test
+        void 리뷰를_성공적으로_수정하면_204_반환() {
+            // given
+            var 요청_준비 = given(spec)
+                    .queryParam("memberId", 1L)
+                    .body(리뷰_수정_요청())
+                    .contentType(JSON)
+                    .filter(리뷰_수정_API_문서_생성());
+
+            // when
+            var 응답 = 요청_준비.when()
+                    .put("/reviews/" + 1);
+
+            // then
+            응답.then()
+                    .assertThat().statusCode(NO_CONTENT.value());
+        }
+
+        private RestDocumentationFilter 리뷰_수정_API_문서_생성() {
+            var 응답_형식 = schema("UpdateReviewResponse");
+            var 문서_정보 = resourceDetails().summary("리뷰 수정 성공")
+                    .description("리뷰를 수정합니다.")
+                    .responseSchema(응답_형식);
+
+            return document("리뷰 수정 - 성공",
+                    문서_정보.responseSchema(성공_응답_형식)
+            );
+        }
+
+        @Test
+        void 리뷰를_쓴_사람이_아닌_멤버가_리뷰를_수정하면_403_반환() {
+            // given
+            var 요청_준비 = given(spec)
+                    .queryParam("memberId", 2L)
+                    .body(리뷰_생성_요청(123456789L))
+                    .contentType(JSON)
+                    .filter(API_예외응답_문서_생성());
+
+            // when
+            var 응답 = 요청_준비.when()
+                    .put("/reviews/" + 1);
+
+            // then
+            응답.then()
+                    .assertThat().statusCode(FORBIDDEN.value());
+        }
+
+        private RestDocumentationFilter API_예외응답_문서_생성() {
+            return document("리뷰 생성 - 실패(Forbidden)", 문서_정보.responseSchema(에러_응답_형식));
         }
 
     }

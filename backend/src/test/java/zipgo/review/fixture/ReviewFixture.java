@@ -4,6 +4,7 @@ import zipgo.member.domain.Member;
 import zipgo.petfood.domain.PetFood;
 import zipgo.review.domain.Review;
 import zipgo.review.dto.request.CreateReviewRequest;
+import zipgo.review.dto.request.UpdateReviewRequest;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -23,6 +24,16 @@ public class ReviewFixture {
                 "정말 잘 먹어요",
                 "촉촉 말랑해요",
                 new ArrayList<>()
+        );
+    }
+
+    public static UpdateReviewRequest 리뷰_수정_요청() {
+        return new UpdateReviewRequest(
+                4,
+                "change comment",
+                "잘 먹는 편이에요",
+                "잘 모르겠어요",
+                List.of("먹고 토해요")
         );
     }
 

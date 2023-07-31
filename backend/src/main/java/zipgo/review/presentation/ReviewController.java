@@ -8,6 +8,7 @@ import zipgo.review.application.ReviewQueryService;
 import zipgo.review.application.ReviewService;
 import zipgo.review.domain.Review;
 import zipgo.review.dto.request.CreateReviewRequest;
+import zipgo.review.dto.request.UpdateReviewRequest;
 import zipgo.review.dto.response.GetReviewsResponse;
 
 import java.net.URI;
@@ -36,6 +37,16 @@ public class ReviewController {
                 .map(GetReviewsResponse::from)
                 .toList();
         return ResponseEntity.ok(reviewsResponses);
+    }
+
+    @PutMapping("/reviews/{reviewId}")
+    public ResponseEntity<Void> update(
+            Long memberId,
+            @PathVariable Long reviewId,
+            @RequestBody @Valid UpdateReviewRequest updateReviewRequest
+    ) {
+        reviewService.updateReview(memberId, reviewId, updateReviewRequest);
+        return ResponseEntity.noContent().build();
     }
 
 }

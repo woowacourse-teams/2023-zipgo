@@ -4,6 +4,8 @@ import jakarta.persistence.*;
 import lombok.*;
 import lombok.Builder.Default;
 import lombok.EqualsAndHashCode.Include;
+import org.springframework.beans.Mergeable;
+import zipgo.auth.exception.AuthException;
 import zipgo.common.entity.BaseTimeEntity;
 import zipgo.member.domain.Member;
 import zipgo.petfood.domain.PetFood;
@@ -13,8 +15,7 @@ import zipgo.review.domain.type.TastePreference;
 import java.util.ArrayList;
 import java.util.List;
 
-import static jakarta.persistence.CascadeType.PERSIST;
-import static jakarta.persistence.CascadeType.REMOVE;
+import static jakarta.persistence.CascadeType.*;
 import static jakarta.persistence.EnumType.STRING;
 import static jakarta.persistence.FetchType.LAZY;
 import static lombok.AccessLevel.PROTECTED;
@@ -67,6 +68,39 @@ public class Review extends BaseTimeEntity {
             adverseReaction.updateReview(this);
             this.adverseReactions.add(adverseReaction);
         }
+    }
+
+    public void updateRating(Integer rating) {
+        this.rating = rating;
+    }
+
+    public void updateComment(String comment) {
+        this.comment = comment;
+    }
+
+    public void updateTastePreference(String tastePreference) {
+        this.tastePreference = TastePreference.from(tastePreference);
+    }
+
+    public void updateStoolCondition(String stoolCondition) {
+        this.stoolCondition = StoolCondition.from(stoolCondition);
+    }
+
+    public void validateOwner(Long memberId) {
+        if (!isWrittenBy(memberId)) {
+            throw new AuthException.Forbidden();
+        }
+    }
+
+    private boolean isWrittenBy(Long memberId) {
+        if (memberId == null) {
+            return false;
+        }
+        return this.member.getId() == memberId;
+    }
+
+    public void removeAdverseReactions() {
+        this.adverseReactions.clear();
     }
 
 }
