@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.test.context.SpringBootTest;
 import zipgo.auth.exception.AuthException;
+import zipgo.common.config.JwtCredentials;
 
 import java.util.Date;
 
@@ -26,8 +27,8 @@ class JwtProviderTest {
     @Autowired
     private JwtProvider jwtProvider;
 
-    @Value("${jwt.secret-key}")
-    private String secretKey;
+    @Autowired
+    private JwtCredentials jwtCredentials;
 
     @Test
     void 토큰을_생성한다() {
@@ -65,7 +66,7 @@ class JwtProviderTest {
         // given
         Date 지나간_유효기간 = new Date((new Date()).getTime() - 1);
         String 만료된_토큰 = Jwts.builder()
-                .signWith(hmacShaKeyFor(secretKey.getBytes(UTF_8)), HS256)
+                .signWith(hmacShaKeyFor(jwtCredentials.getSecretKey().getBytes(UTF_8)), HS256)
                 .setSubject(String.valueOf(1L))
                 .setExpiration(지나간_유효기간)
                 .compact();
@@ -79,8 +80,10 @@ class JwtProviderTest {
     void secretKey가_다른_토큰_정보로_payload_조회시_예외가_발생한다() {
         // given
         JwtProvider 다른_키의_jwt_provider = new JwtProvider(
-                "빨주노초파남보나만의열쇠",
-                8640000L
+                new JwtCredentials(
+                        "빨주노초파남보나만의열쇠",
+                        123123123123L
+                )
         );
 
         // when
@@ -105,8 +108,10 @@ class JwtProviderTest {
     void 만료된_토큰이라면_예외를_발생시킨다() {
         // given
         JwtProvider 유효기간이_지난_jwtProvider = new JwtProvider(
-                "빨주노초파남보나만의열쇠",
-                -99999999999L
+                new JwtCredentials(
+                        jwtCredentials.getSecretKey(),
+                        -99999999999L
+                )
         );
         String 페이로드 = String.valueOf(1L);
         String 토큰 = 유효기간이_지난_jwtProvider.create(페이로드);

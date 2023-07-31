@@ -3,9 +3,9 @@ package zipgo.auth.util;
 
 import io.jsonwebtoken.*;
 import io.jsonwebtoken.security.SignatureException;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 import zipgo.auth.exception.AuthException;
+import zipgo.common.config.JwtCredentials;
 
 import javax.crypto.SecretKey;
 import java.util.Date;
@@ -20,11 +20,10 @@ public class JwtProvider {
     private final long validityInMilliseconds;
 
     public JwtProvider(
-            @Value("${jwt.secret-key}") String secretKey,
-            @Value("${jwt.expire-length}") long validityInMilliseconds
+            JwtCredentials jwtCredentials
     ) {
-        this.key = hmacShaKeyFor(secretKey.getBytes(UTF_8));
-        this.validityInMilliseconds = validityInMilliseconds;
+        this.key = hmacShaKeyFor(jwtCredentials.getSecretKey().getBytes(UTF_8));
+        this.validityInMilliseconds = jwtCredentials.getExpireLengthMillisecond();
     }
 
     public String create(String payload) {
