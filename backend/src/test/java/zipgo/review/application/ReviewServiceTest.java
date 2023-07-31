@@ -1,26 +1,5 @@
 package zipgo.review.application;
 
-import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
-import zipgo.common.service.ServiceTest;
-import zipgo.brand.domain.Brand;
-import zipgo.brand.domain.repository.BrandRepository;
-import zipgo.member.domain.Member;
-import zipgo.member.domain.repository.MemberRepository;
-import zipgo.member.exception.MemberException;
-import zipgo.petfood.domain.PetFood;
-import zipgo.petfood.domain.repository.PetFoodRepository;
-import zipgo.review.domain.Review;
-import zipgo.review.domain.repository.AdverseReactionRepository;
-import zipgo.review.domain.repository.ReviewRepository;
-import zipgo.review.dto.request.CreateReviewRequest;
-import zipgo.review.exception.ReviewException;
-import zipgo.review.exception.StoolConditionException;
-import zipgo.review.exception.TastePreferenceException;
-
-import java.util.ArrayList;
-import java.util.List;
-
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.junit.jupiter.api.Assertions.assertAll;
@@ -33,7 +12,29 @@ import static zipgo.review.domain.type.TastePreference.EATS_VERY_WELL;
 import static zipgo.review.fixture.AdverseReactionFixture.눈물_이상반응;
 import static zipgo.review.fixture.AdverseReactionFixture.먹고_토_이상반응;
 import static zipgo.review.fixture.MemberFixture.무민;
-import static zipgo.review.fixture.ReviewFixture.*;
+import static zipgo.review.fixture.ReviewFixture.리뷰_생성_요청;
+import static zipgo.review.fixture.ReviewFixture.리뷰_수정_요청;
+import static zipgo.review.fixture.ReviewFixture.혹평_리뷰_생성;
+
+import java.util.ArrayList;
+import java.util.List;
+import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
+import zipgo.brand.domain.Brand;
+import zipgo.brand.domain.repository.BrandRepository;
+import zipgo.common.service.ServiceTest;
+import zipgo.member.domain.Member;
+import zipgo.member.domain.repository.MemberRepository;
+import zipgo.member.exception.MemberException;
+import zipgo.petfood.domain.PetFood;
+import zipgo.petfood.domain.repository.PetFoodRepository;
+import zipgo.review.domain.Review;
+import zipgo.review.domain.repository.AdverseReactionRepository;
+import zipgo.review.domain.repository.ReviewRepository;
+import zipgo.review.dto.request.CreateReviewRequest;
+import zipgo.review.exception.ReviewException;
+import zipgo.review.exception.StoolConditionException;
+import zipgo.review.exception.TastePreferenceException;
 
 class ReviewServiceTest extends ServiceTest {
 

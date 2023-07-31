@@ -1,18 +1,22 @@
 package zipgo.review.presentation;
 
 import jakarta.validation.Valid;
+import java.net.URI;
+import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RestController;
 import zipgo.review.application.ReviewQueryService;
 import zipgo.review.application.ReviewService;
 import zipgo.review.domain.Review;
 import zipgo.review.dto.request.CreateReviewRequest;
 import zipgo.review.dto.request.UpdateReviewRequest;
 import zipgo.review.dto.response.GetReviewsResponse;
-
-import java.net.URI;
-import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
