@@ -37,8 +37,10 @@ class KakaoOAuthClientTest {
     void accessToken_을_가져올_수_있다() {
         // given
         HttpEntity<MultiValueMap<String, String>> request = createRequest();
-        ResponseEntity<KakaoTokens> response = ResponseEntity.ok(KakaoTokens.builder().accessToken("accessToken").build());
-        when(restTemplate.exchange(KAKAO_ACCESS_TOKEN_URI, POST, request, KakaoTokens.class))
+        ResponseEntity<KakaoDetailDto> response = ResponseEntity.ok(
+                new KakaoDetailDto("accessToken", null, null, null, null, null)
+        );
+        when(restTemplate.exchange(KAKAO_ACCESS_TOKEN_URI, POST, request, KakaoDetailDto.class))
                 .thenReturn(response);
 
         // when

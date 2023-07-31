@@ -40,19 +40,19 @@ public class KakaoOAuthClient implements OAuthClient {
 
         HttpEntity<MultiValueMap<String, String>> request = new HttpEntity<>(body, header);
 
-        ResponseEntity<KakaoTokens> exchange;
+        ResponseEntity<KakaoDetailDto> exchange;
         try {
             exchange = restTemplate.exchange(
                     KAKAO_ACCESS_TOKEN_URI,
                     POST,
                     request,
-                    KakaoTokens.class
+                    KakaoDetailDto.class
             );
         } catch (HttpClientErrorException e) {
             throw new AuthException.KakaoNotFound("카카오 토큰을 가져오는 중 에러가 발생했습니다.");
         }
 
-        return exchange.getBody().getAccessToken();
+        return exchange.getBody().accessToken();
     }
 
     HttpHeaders createRequestHeader() {
