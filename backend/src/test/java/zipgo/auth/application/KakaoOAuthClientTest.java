@@ -15,16 +15,16 @@ import org.springframework.web.client.RestTemplate;
 import zipgo.auth.KakaoOAuthResponse;
 import zipgo.auth.OAuthResponse;
 
-import static org.assertj.core.api.Assertions.*;
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.when;
 import static org.springframework.http.HttpMethod.GET;
 import static org.springframework.http.HttpMethod.POST;
 import static zipgo.auth.application.KakaoOAuthClient.KAKAO_ACCESS_TOKEN_URI;
 import static zipgo.auth.application.KakaoOAuthClient.KAKAO_USER_INFO_URI;
 
-@DisplayNameGeneration(DisplayNameGenerator.ReplaceUnderscores.class)
-@SuppressWarnings("NonAsciiCharacters")
 @ExtendWith(MockitoExtension.class)
+@SuppressWarnings("NonAsciiCharacters")
+@DisplayNameGeneration(DisplayNameGenerator.ReplaceUnderscores.class)
 class KakaoOAuthClientTest {
 
     @Mock

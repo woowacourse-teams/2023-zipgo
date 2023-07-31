@@ -16,8 +16,8 @@ import zipgo.member.domain.Member;
 import zipgo.petfood.domain.PetFood;
 
 @DataJpaTest
-@DisplayNameGeneration(DisplayNameGenerator.ReplaceUnderscores.class)
 @SuppressWarnings("NonAsciiCharacters")
+@DisplayNameGeneration(DisplayNameGenerator.ReplaceUnderscores.class)
 class MemberRepositoryTest {
 
     @Autowired
