@@ -11,9 +11,9 @@ import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.RestTemplate;
-import zipgo.auth.KakaoOAuthResponse;
-import zipgo.auth.OAuthResponse;
-import zipgo.auth.application.dto.KakaoDetailDto;
+import zipgo.auth.application.dto.KakaoOAuthResponse;
+import zipgo.auth.application.dto.OAuthResponse;
+import zipgo.auth.application.dto.KakaoInfoResponse;
 import zipgo.auth.exception.AuthException;
 
 import static org.springframework.http.HttpMethod.GET;
@@ -41,13 +41,13 @@ public class KakaoOAuthClient implements OAuthClient {
 
         HttpEntity<MultiValueMap<String, String>> request = new HttpEntity<>(body, header);
 
-        ResponseEntity<KakaoDetailDto> exchange;
+        ResponseEntity<KakaoInfoResponse> exchange;
         try {
             exchange = restTemplate.exchange(
                     KAKAO_ACCESS_TOKEN_URI,
                     POST,
                     request,
-                    KakaoDetailDto.class
+                    KakaoInfoResponse.class
             );
         } catch (HttpClientErrorException e) {
             throw new AuthException.KakaoNotFound("카카오 토큰을 가져오는 중 에러가 발생했습니다.");

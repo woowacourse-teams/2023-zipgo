@@ -1,6 +1,6 @@
 package zipgo.auth.application;
 
-import zipgo.auth.OAuthResponse;
+import zipgo.auth.application.dto.OAuthResponse;
 
 public interface OAuthClient {
 

@@ -12,9 +12,9 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.client.RestTemplate;
-import zipgo.auth.KakaoOAuthResponse;
-import zipgo.auth.OAuthResponse;
-import zipgo.auth.application.dto.KakaoDetailDto;
+import zipgo.auth.application.dto.KakaoOAuthResponse;
+import zipgo.auth.application.dto.OAuthResponse;
+import zipgo.auth.application.dto.KakaoInfoResponse;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.when;
@@ -38,10 +38,10 @@ class KakaoOAuthClientTest {
     void accessToken_을_가져올_수_있다() {
         // given
         HttpEntity<MultiValueMap<String, String>> request = createRequest();
-        ResponseEntity<KakaoDetailDto> response = ResponseEntity.ok(
-                new KakaoDetailDto("accessToken", null, null, null, null, null)
+        ResponseEntity<KakaoInfoResponse> response = ResponseEntity.ok(
+                new KakaoInfoResponse("accessToken", null, null, null, null, null)
         );
-        when(restTemplate.exchange(KAKAO_ACCESS_TOKEN_URI, POST, request, KakaoDetailDto.class))
+        when(restTemplate.exchange(KAKAO_ACCESS_TOKEN_URI, POST, request, KakaoInfoResponse.class))
                 .thenReturn(response);
 
         // when

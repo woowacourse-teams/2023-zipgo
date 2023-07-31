@@ -1,4 +1,4 @@
-package zipgo.auth;
+package zipgo.auth.application.dto;
 
 import zipgo.member.domain.Member;
 
