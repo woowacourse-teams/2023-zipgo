@@ -76,14 +76,13 @@ jacocoTestReport {
                     fileTree(dir: it, excludes: [
                             '**/*Application*',
                             '**/*Exception*',
-                            '**/*Dto',
+                            '**/*Dto*',
                             '**/*Response*',
                             '**/*Request*',
-                            '**/*Config',
+                            '**/*Config*',
                             '**/BaseTimeEntity',
-                            '**/*Interceptor',
-                            '**/*ArgumentResolver',
-                            '**/AuthController'
+                            '**/*Interceptor*',
+                            '**/*ArgumentResolver*'
                     ])
                 })
         )
@@ -113,8 +112,7 @@ jacocoTestCoverageVerification {
                     '*.*Config',
                     '*.BaseTimeEntity',
                     '*.*Interceptor',
-                    '*.*ArgumentResolver',
-                    '*.AuthController',
+                    '*.*ArgumentResolver'
             ]
         }
     }
