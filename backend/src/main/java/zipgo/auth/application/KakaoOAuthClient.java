@@ -9,9 +9,11 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
+import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.RestTemplate;
 import zipgo.auth.KakaoOAuthResponse;
 import zipgo.auth.OAuthResponse;
+import zipgo.auth.exception.AuthException;
 
 import static org.springframework.http.HttpMethod.GET;
 import static org.springframework.http.HttpMethod.POST;
@@ -33,17 +35,23 @@ public class KakaoOAuthClient implements OAuthClient {
 
     @Override
     public String getAccessToken(String authCode) {
-        HttpHeaders header = createRequestHeader();
         MultiValueMap<String, String> body = createRequestBodyWithAuthCode(authCode);
+        HttpHeaders header = createRequestHeader();
 
         HttpEntity<MultiValueMap<String, String>> request = new HttpEntity<>(body, header);
 
-        ResponseEntity<KakaoTokens> exchange = restTemplate.exchange(
-                KAKAO_ACCESS_TOKEN_URI,
-                POST,
-                request,
-                KakaoTokens.class
-        );
+        ResponseEntity<KakaoTokens> exchange;
+        try {
+            exchange = restTemplate.exchange(
+                    KAKAO_ACCESS_TOKEN_URI,
+                    POST,
+                    request,
+                    KakaoTokens.class
+            );
+        } catch (HttpClientErrorException e) {
+            throw new AuthException.KakaoNotFound("카카오 토큰을 가져오는 중 에러가 발생했습니다.");
+        }
+
         return exchange.getBody().getAccessToken();
     }
 
@@ -64,16 +72,27 @@ public class KakaoOAuthClient implements OAuthClient {
 
     @Override
     public OAuthResponse getMemberDetail(String accessToken) {
+        HttpEntity<HttpHeaders> request = createRequest(accessToken);
+
+        ResponseEntity<KakaoOAuthResponse> response;
+        try {
+            response = restTemplate.exchange(
+                    KAKAO_USER_INFO_URI,
+                    GET,
+                    request,
+                    KakaoOAuthResponse.class
+            );
+        } catch (HttpClientErrorException e) {
+            throw new IllegalArgumentException("카카오 사용자 정보를 가져오는 중 에러가 발생했습니다");
+        }
+
+        return response.getBody();
+    }
+
+    private HttpEntity<HttpHeaders> createRequest(String accessToken) {
         HttpHeaders headers = new HttpHeaders();
         headers.setBearerAuth(accessToken);
-        HttpEntity<HttpHeaders> requestHeader = new HttpEntity<>(headers);
-
-        return restTemplate.exchange(
-                KAKAO_USER_INFO_URI,
-                GET,
-                requestHeader,
-                KakaoOAuthResponse.class
-        ).getBody();
+        return new HttpEntity<>(headers);
     }
 
 }

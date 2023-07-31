@@ -20,6 +20,8 @@ public class KakaoOAuthResponse implements OAuthResponse {
 
     @Getter
     @Builder
+    @NoArgsConstructor
+    @AllArgsConstructor
     @JsonIgnoreProperties(ignoreUnknown = true)
     public static class KakaoAccount {
         private Profile profile;
@@ -28,6 +30,8 @@ public class KakaoOAuthResponse implements OAuthResponse {
 
     @Getter
     @Builder
+    @NoArgsConstructor
+    @AllArgsConstructor
     @JsonIgnoreProperties(ignoreUnknown = true)
     public static class Profile {
         private String nickname;
