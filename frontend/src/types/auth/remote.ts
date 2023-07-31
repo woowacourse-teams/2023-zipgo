@@ -1,9 +1,13 @@
-export interface KAuthError {
+/** @description kakao REST API error response - kauth.kakao.com */
+/** @see https://developers.kakao.com/docs/latest/ko/reference/rest-api-reference#response-format */
+export interface KakaoAuthError {
   error: string;
   error_description: string;
 }
 
-export interface KApiError {
+/** @description kakao REST API error response - kapi.kakao.com */
+/** @see https://developers.kakao.com/docs/latest/ko/reference/rest-api-reference#response-format */
+export interface KakaoApiError {
   msg: string;
   code: number;
 }
@@ -26,4 +30,4 @@ export interface LogoutKakaoAuthRes {
   id: number;
 }
 
-export interface LogoutKaKaoAuthError extends KApiError {}
+export interface LogoutKaKaoAuthError extends KakaoApiError {}
