@@ -150,7 +150,8 @@ public class ReviewControllerTest extends AcceptanceTest {
 
             // when
             var 응답 = 요청_준비.when()
-                    .put("/reviews/" + 1);
+                    .pathParam("reviewId", 1)
+                    .put("/reviews/{reviewId}");
 
             // then
             응답.then()
@@ -159,7 +160,8 @@ public class ReviewControllerTest extends AcceptanceTest {
 
         private RestDocumentationFilter 리뷰_수정_API_문서_생성() {
             return document("리뷰 수정 - 성공",
-                    문서_정보.responseSchema(성공_응답_형식)
+                    문서_정보.responseSchema(성공_응답_형식),
+                    pathParameters(parameterWithName("reviewId").description("리뷰 id"))
             );
         }
 
@@ -174,7 +176,8 @@ public class ReviewControllerTest extends AcceptanceTest {
 
             // when
             var 응답 = 요청_준비.when()
-                    .put("/reviews/" + 1);
+                    .pathParam("reviewId", 1)
+                    .put("/reviews/{reviewId}");
 
             // then
             응답.then()
@@ -207,7 +210,8 @@ public class ReviewControllerTest extends AcceptanceTest {
 
             // when
             var 응답 = 요청_준비.when()
-                    .delete("/reviews/" + 1);
+                    .pathParam("reviewId", 1)
+                    .delete("/reviews/{reviewId}");
 
             // then
             응답.then()
@@ -216,7 +220,8 @@ public class ReviewControllerTest extends AcceptanceTest {
 
         private RestDocumentationFilter 리뷰_삭제_API_문서_생성() {
             return document("리뷰 삭제 - 성공",
-                    문서_정보.responseSchema(성공_응답_형식)
+                    문서_정보.responseSchema(성공_응답_형식),
+                    pathParameters(parameterWithName("reviewId").description("리뷰 id"))
             );
         }
 
@@ -231,7 +236,8 @@ public class ReviewControllerTest extends AcceptanceTest {
 
             // when
             var 응답 = 요청_준비.when()
-                    .delete("/reviews/" + 1);
+                    .pathParam("reviewId", 1)
+                    .delete("/reviews/{reviewId}");
 
             // then
             응답.then()
