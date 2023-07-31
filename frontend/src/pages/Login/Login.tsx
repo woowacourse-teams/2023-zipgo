@@ -1,7 +1,7 @@
 import styled from 'styled-components';
 
-import KakaoLogin from '@/assets/png/kakao_login_large_wide.png';
 import ZipgoBanner from '@/assets/png/landing_banner.png';
+import KakaoSymbol from '@/assets/svg/kakao_symbol.svg';
 import ZipgoLogo from '@/assets/svg/zipgo_logo_dark.svg';
 import Template from '@/components/@common/Template';
 import { useAuth } from '@/hooks/auth';
@@ -24,7 +24,8 @@ const Login = () => {
           </Intro>
         </IntroContainer>
         <KakaoLoginButton type="button" onClick={getKakaoAuth}>
-          <img src={KakaoLogin} alt="카카오 로그인" />
+          <img src={KakaoSymbol} alt="카카오 심볼" />
+          <span>카카오 로그인</span>
         </KakaoLoginButton>
       </Layout>
     </Template.WithoutHeader>
@@ -88,14 +89,27 @@ const Intro = styled.h1`
 const KakaoLoginButton = styled.button`
   position: absolute;
   bottom: 2rem;
+  left: 50%;
+  transform: translateX(-50%);
 
-  width: 100%;
-  padding: 0 2rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 
-  background: transparent;
+  width: calc(100% - 4rem);
+  height: 5.1rem;
+
+  background: #fee500;
   border: none;
+  border-radius: 12px;
 
-  & > img {
-    width: 100%;
+  & > span {
+    /* stylelint-disable-next-line declaration-property-unit-allowed-list */
+    margin-left: 8px;
+
+    font-size: 1.7rem;
+    font-weight: 700;
+    font-style: normal;
+    color: rgb(0 0 0 / 85%);
   }
 `;
