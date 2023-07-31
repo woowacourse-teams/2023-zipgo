@@ -2,6 +2,7 @@ package zipgo.member.domain.repository;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import zipgo.member.domain.Member;
+import zipgo.member.exception.MemberException;
 
 import java.util.Optional;
 
@@ -11,7 +12,7 @@ public interface MemberRepository extends JpaRepository<Member, Long> {
 
     default Member getById(Long id){
         return findById(id)
-                .orElseThrow(IllegalArgumentException::new);
+                .orElseThrow(MemberException::new);
     }
 
 }

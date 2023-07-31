@@ -14,6 +14,7 @@ import org.springframework.util.MultiValueMap;
 import org.springframework.web.client.RestTemplate;
 import zipgo.auth.KakaoOAuthResponse;
 import zipgo.auth.OAuthResponse;
+import zipgo.auth.application.dto.KakaoDetailDto;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.when;

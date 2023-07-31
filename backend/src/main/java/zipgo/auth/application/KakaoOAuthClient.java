@@ -13,6 +13,7 @@ import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.RestTemplate;
 import zipgo.auth.KakaoOAuthResponse;
 import zipgo.auth.OAuthResponse;
+import zipgo.auth.application.dto.KakaoDetailDto;
 import zipgo.auth.exception.AuthException;
 
 import static org.springframework.http.HttpMethod.GET;
@@ -83,7 +84,7 @@ public class KakaoOAuthClient implements OAuthClient {
                     KakaoOAuthResponse.class
             );
         } catch (HttpClientErrorException e) {
-            throw new IllegalArgumentException("카카오 사용자 정보를 가져오는 중 에러가 발생했습니다");
+            throw new AuthException.KakaoNotFound("카카오 사용자 정보를 가져오는 중 에러가 발생했습니다");
         }
 
         return response.getBody();
