@@ -15,7 +15,6 @@ import static org.springframework.restdocs.payload.PayloadDocumentation.fieldWit
 import static org.springframework.restdocs.payload.PayloadDocumentation.responseFields;
 import static org.springframework.restdocs.request.RequestDocumentation.parameterWithName;
 import static org.springframework.restdocs.request.RequestDocumentation.pathParameters;
-import static org.springframework.restdocs.request.RequestDocumentation.queryParameters;
 
 import com.epages.restdocs.apispec.ResourceSnippetDetails;
 import com.epages.restdocs.apispec.Schema;
@@ -24,6 +23,7 @@ import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import org.springframework.restdocs.restassured.RestDocumentationFilter;
 import org.springframework.test.context.jdbc.Sql;
+import zipgo.petfood.presentation.dto.PetFoodSelectRequest;
 
 public class PetFoodAcceptanceTest extends AcceptanceTest {
 
@@ -39,29 +39,34 @@ public class PetFoodAcceptanceTest extends AcceptanceTest {
         @Test
         void 키워드를_지정하지_않고_요청한다() {
             // given
+            String 키워드 = "";
+            String 브랜드 = "오리젠";
+            String 주단백질원 = "말미잘";
+
+            PetFoodSelectRequest request = new PetFoodSelectRequest(키워드, 브랜드, 주단백질원);
+
             var 요청_준비 = given(spec)
                     .contentType(JSON)
-                    .queryParam("keyword")
-                    .queryParam("brand")
+                    .body(request)
                     .filter(성공_API_문서_생성("식품 전체 조회 - 성공(키워드 없음)"));
 
             // when
             var 응답 = 요청_준비.when()
-                    .get("/pet-foods");
+                    .post("/pet-foods");
 
             // then
             응답.then()
                     .assertThat().statusCode(OK.value())
-                    .assertThat().body("petFoods.size()", is(2));
+                    .assertThat().body("petFoods.size()", is(1));
         }
 
         private RestDocumentationFilter 성공_API_문서_생성(String name) {
             return document(name,
                     API_정보.responseSchema(성공_응답_형식),
-                    queryParameters(
-                            parameterWithName("keyword").optional().description("식품 키워드"),
-                            parameterWithName("brand").optional().description("브랜드")
-                            ),
+//                    queryParameters(
+//                            parameterWithName("keyword").optional().description("식품 키워드"),
+//                            parameterWithName("brand").optional().description("브랜드")
+//                            ),
                     responseFields(
                             fieldWithPath("petFoods").description("반려동물 식품 리스트"),
                             fieldWithPath("petFoods[].id").description("식품 id"),
@@ -73,19 +78,21 @@ public class PetFoodAcceptanceTest extends AcceptanceTest {
 
         @Test
         void 키워드가_있는_목록을_요청한다() {
-
             // given
             String 키워드 = "diet";
             String 브랜드 = "오리젠";
+            String 주단백질원 = "말미잘";
+
+            PetFoodSelectRequest request = new PetFoodSelectRequest(키워드, 브랜드, 주단백질원);
+
             var 요청_준비 = given(spec)
                     .contentType(JSON)
-                    .queryParam("keyword", 키워드)
-                    .queryParam("brand", 브랜드)
+                    .body(request)
                     .filter(성공_API_문서_생성("식품 전체 조회 - 성공(키워드 지정)"));
 
             // when
             var 응답 = 요청_준비.when()
-                    .get("/pet-foods");
+                    .post("/pet-foods");
 
             // then
             응답.then()

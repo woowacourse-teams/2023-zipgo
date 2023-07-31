@@ -5,13 +5,15 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import zipgo.petfood.application.PetFoodQueryService;
 import zipgo.petfood.domain.PetFood;
 import zipgo.petfood.presentation.dto.GetPetFoodResponse;
 import zipgo.petfood.presentation.dto.GetPetFoodsResponse;
+import zipgo.petfood.presentation.dto.PetFoodSelectRequest;
 
 @RestController
 @RequiredArgsConstructor
@@ -20,12 +22,15 @@ public class PetFoodController {
 
     private final PetFoodQueryService petFoodQueryService;
 
-    @GetMapping
+    @PostMapping
     public ResponseEntity<GetPetFoodsResponse> getPetFoods(
-            @RequestParam String keyword,
-            @RequestParam String brand
+            @RequestBody PetFoodSelectRequest request
     ) {
-        List<PetFood> petFoods = petFoodQueryService.getPetFoodByDynamicValue(keyword, brand);
+        List<PetFood> petFoods = petFoodQueryService.getPetFoodByDynamicValue(
+                request.keyword(),
+                request.brand(),
+                request.primaryIngredients()
+        );
         return ResponseEntity.ok(GetPetFoodsResponse.from(petFoods));
     }
 
