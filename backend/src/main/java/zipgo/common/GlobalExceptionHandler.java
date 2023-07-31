@@ -3,7 +3,6 @@ package zipgo.common;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -18,31 +17,29 @@ import zipgo.petfood.exception.PetFoodException;
 import zipgo.petfood.presentation.dto.ErrorResponse;
 import zipgo.review.exception.ReviewException;
 
+import static org.springframework.http.HttpStatus.*;
+
 @Log4j2
 @RestControllerAdvice
 public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
 
     @ExceptionHandler({KeywordException.NotFound.class,
             PetFoodException.NotFound.class,
-            ReviewException.NotFound.class})
+            ReviewException.NotFound.class,
+            MemberException.NotFound.class})
     public ResponseEntity<ErrorResponse> handleNotFoundException(Exception exception) {
-        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(ErrorResponse.of(exception));
+        return ResponseEntity.status(NOT_FOUND).body(ErrorResponse.of(exception));
     }
 
     @ExceptionHandler({Exception.class})
     public ResponseEntity<ErrorResponse> handleException(Exception exception) {
         logger.error("서버 내부 오류 발생", exception);
-        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(new ErrorResponse("서버 내부 오류"));
+        return ResponseEntity.status(INTERNAL_SERVER_ERROR).body(new ErrorResponse("서버 내부 오류"));
     }
 
     @ExceptionHandler({AuthException.Forbidden.class})
     public ResponseEntity<ErrorResponse> handleForbiddenException(Exception exception) {
-        return ResponseEntity.status(HttpStatus.FORBIDDEN).body(ErrorResponse.of(exception));
-    }
-
-    @ExceptionHandler({MemberException.class})
-    public ResponseEntity<ErrorResponse> handleAuthException(MemberException exception) {
-        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(ErrorResponse.of(exception));
+        return ResponseEntity.status(FORBIDDEN).body(ErrorResponse.of(exception));
     }
 
     @Override

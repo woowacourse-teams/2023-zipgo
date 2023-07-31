@@ -12,5 +12,4 @@ public class JwtCredentials {
     private final String secretKey;
     private final long expireLengthMillisecond;
 
-
 }
