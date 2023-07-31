@@ -13,7 +13,7 @@ import zipgo.member.domain.Member;
 @NoArgsConstructor
 @AllArgsConstructor
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class KakaoOAuthResponse implements OAuthResponse {
+public class KakaoMemberResponse implements OAuthMemberResponse {
 
     @JsonProperty("kakao_account")
     private KakaoAccount kakaoAccount;

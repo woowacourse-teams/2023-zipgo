@@ -2,7 +2,7 @@ package zipgo.auth.application.dto;
 
 import zipgo.member.domain.Member;
 
-public interface OAuthResponse {
+public interface OAuthMemberResponse {
 
     String getEmail();
 

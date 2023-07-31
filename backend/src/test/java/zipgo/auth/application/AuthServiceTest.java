@@ -7,8 +7,8 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
-import zipgo.auth.application.dto.KakaoOAuthResponse;
-import zipgo.auth.application.dto.OAuthResponse;
+import zipgo.auth.application.dto.KakaoMemberResponse;
+import zipgo.auth.application.dto.OAuthMemberResponse;
 import zipgo.auth.util.JwtProvider;
 import zipgo.member.domain.Member;
 import zipgo.member.domain.repository.MemberRepository;
@@ -57,7 +57,7 @@ class AuthServiceTest {
     @Test
     void 새로_가입한_멤버의_토큰을_발급한다() {
         // given
-        OAuthResponse 카카오_응답 = 카카오_토큰_받기_성공();
+        OAuthMemberResponse 카카오_응답 = 카카오_토큰_받기_성공();
         when(memberRepository.findByEmail("이메일"))
                 .thenReturn(Optional.empty());
 
@@ -76,21 +76,21 @@ class AuthServiceTest {
         assertThat(토큰).isEqualTo("생성된 토큰");
     }
 
-    private OAuthResponse 카카오_토큰_받기_성공() {
+    private OAuthMemberResponse 카카오_토큰_받기_성공() {
         when(oAuthClient.getAccessToken("코드"))
                 .thenReturn("토큰");
 
-        OAuthResponse oAuthResponse = 카카오_응답();
-        when(oAuthClient.getMemberDetail("토큰"))
-                .thenReturn(oAuthResponse);
+        OAuthMemberResponse oAuthMemberResponse = 카카오_응답();
+        when(oAuthClient.getMember("토큰"))
+                .thenReturn(oAuthMemberResponse);
 
-        return oAuthResponse;
+        return oAuthMemberResponse;
     }
 
-    private static KakaoOAuthResponse 카카오_응답() {
-        return KakaoOAuthResponse.builder().kakaoAccount(KakaoOAuthResponse.KakaoAccount.builder()
+    private static KakaoMemberResponse 카카오_응답() {
+        return KakaoMemberResponse.builder().kakaoAccount(KakaoMemberResponse.KakaoAccount.builder()
                 .email("이메일")
-                .profile(KakaoOAuthResponse.Profile.builder()
+                .profile(KakaoMemberResponse.Profile.builder()
                         .nickname("이름")
                         .picture("사진")
                         .build())

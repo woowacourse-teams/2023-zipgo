@@ -11,9 +11,9 @@ import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.RestTemplate;
-import zipgo.auth.application.dto.KakaoOAuthResponse;
-import zipgo.auth.application.dto.OAuthResponse;
-import zipgo.auth.application.dto.KakaoInfoResponse;
+import zipgo.auth.application.dto.KakaoMemberResponse;
+import zipgo.auth.application.dto.OAuthMemberResponse;
+import zipgo.auth.application.dto.KakaoTokenResponse;
 import zipgo.auth.exception.AuthException;
 
 import static org.springframework.http.HttpMethod.GET;
@@ -41,13 +41,13 @@ public class KakaoOAuthClient implements OAuthClient {
 
         HttpEntity<MultiValueMap<String, String>> request = new HttpEntity<>(body, header);
 
-        ResponseEntity<KakaoInfoResponse> exchange;
+        ResponseEntity<KakaoTokenResponse> exchange;
         try {
             exchange = restTemplate.exchange(
                     KAKAO_ACCESS_TOKEN_URI,
                     POST,
                     request,
-                    KakaoInfoResponse.class
+                    KakaoTokenResponse.class
             );
         } catch (HttpClientErrorException e) {
             throw new AuthException.KakaoNotFound("카카오 토큰을 가져오는 중 에러가 발생했습니다.");
@@ -72,16 +72,16 @@ public class KakaoOAuthClient implements OAuthClient {
     }
 
     @Override
-    public OAuthResponse getMemberDetail(String accessToken) {
+    public OAuthMemberResponse getMember(String accessToken) {
         HttpEntity<HttpHeaders> request = createRequest(accessToken);
 
-        ResponseEntity<KakaoOAuthResponse> response;
+        ResponseEntity<KakaoMemberResponse> response;
         try {
             response = restTemplate.exchange(
                     KAKAO_USER_INFO_URI,
                     GET,
                     request,
-                    KakaoOAuthResponse.class
+                    KakaoMemberResponse.class
             );
         } catch (HttpClientErrorException e) {
             throw new AuthException.KakaoNotFound("카카오 사용자 정보를 가져오는 중 에러가 발생했습니다");

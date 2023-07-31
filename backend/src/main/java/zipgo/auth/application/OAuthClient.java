@@ -1,11 +1,11 @@
 package zipgo.auth.application;
 
-import zipgo.auth.application.dto.OAuthResponse;
+import zipgo.auth.application.dto.OAuthMemberResponse;
 
 public interface OAuthClient {
 
     public String getAccessToken(String authCode);
 
-    public OAuthResponse getMemberDetail(String accessToken);
+    public OAuthMemberResponse getMember(String accessToken);
 
 }
