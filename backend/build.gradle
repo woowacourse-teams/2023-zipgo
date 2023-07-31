@@ -154,7 +154,7 @@ generateSwaggerUIZipgo {
     doLast {
         copy {
             from outputDir.toPath()
-            into "src/main/resources/static/docs/"
+            into "build/resources/main/static/docs"
         }
     }
 }
