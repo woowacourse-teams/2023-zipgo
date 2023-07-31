@@ -42,10 +42,10 @@ class PetFoodQueryServiceTest {
                 .build();
         PetFood 다이어트_키워드_식품 = 키워드_있는_식품_초기화(키워드, 브랜드);
 
-        when(petFoodQueryRepository.searchPetFoodByDynamicValues("diet", null)).thenReturn(List.of(다이어트_키워드_식품));
+        when(petFoodQueryRepository.searchPetFoodByDynamicValues("diet", null, null)).thenReturn(List.of(다이어트_키워드_식품));
 
         // when
-        List<PetFood> 조회_결과 = petFoodQueryService.getPetFoodByDynamicValue("diet", null);
+        List<PetFood> 조회_결과 = petFoodQueryService.getPetFoodByDynamicValue("diet", null, null);
 
         // then
         assertAll(
@@ -61,7 +61,7 @@ class PetFoodQueryServiceTest {
 
         // when, then
         assertAll(
-                () -> assertThat(petFoodQueryService.getPetFoodByDynamicValue(없는_키워드, null))
+                () -> assertThat(petFoodQueryService.getPetFoodByDynamicValue(없는_키워드, null, null))
                         .hasSize(0)
         );
     }

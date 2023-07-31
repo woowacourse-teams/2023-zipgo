@@ -51,7 +51,7 @@ class PetFoodServiceTest {
         PetFood 다이어트_키워드_식품 = 다이어트_키워드_식품_저장();
 
         // when
-        List<PetFood> 조회_결과 = petFoodQueryService.getPetFoodByDynamicValue("diet", null);
+        List<PetFood> 조회_결과 = petFoodQueryService.getPetFoodByDynamicValue("diet", null, null);
 
         // then
         assertAll(() -> {
@@ -72,7 +72,7 @@ class PetFoodServiceTest {
         String 없는_키워드 = "없는 키워드";
 
         // when
-        List<PetFood> responses = petFoodQueryService.getPetFoodByDynamicValue(없는_키워드, null);
+        List<PetFood> responses = petFoodQueryService.getPetFoodByDynamicValue(없는_키워드, null, null);
 
         // then
         assertThat(responses).hasSize(0);

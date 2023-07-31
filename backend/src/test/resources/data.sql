@@ -14,7 +14,10 @@ values (1, 1, '[고집] 돌아온 배배',
         'https://avatars.githubusercontent.com/u/94087228?v=4', true, true, '튼튼,짱짱', '닭고기,쌀'),
        (2, 1, '[고집] 갈비 맛 모밀',
         'https://github.com/woowacourse-teams/2023-zipgo',
-        'https://avatars.githubusercontent.com/u/76938931?v=4', true, true, null, '닭고기');
+        'https://avatars.githubusercontent.com/u/76938931?v=4', true, true, null, '닭고기'),
+       (1, 1, '[고집] 말미잘 맛 민무',
+        'https://github.com/woowacourse-teams/2023-zipgo',
+        'https://avatars.githubusercontent.com/u/76938931?v=4', true, true, null, '말미잘');
 
 insert into member DEFAULT VALUES;
 insert into member DEFAULT VALUES;

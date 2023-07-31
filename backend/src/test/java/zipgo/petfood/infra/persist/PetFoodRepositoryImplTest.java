@@ -28,17 +28,18 @@ class PetFoodRepositoryImplTest {
         // given
         final String keyword = "diet";
         final String brand = "오리젠";
+        final String primaryIngredients = "말미잘";
 
         // when
-        List<PetFood> petFoods = petFoodQueryRepository.searchPetFoodByDynamicValues(keyword, brand);
+        List<PetFood> petFoods = petFoodQueryRepository.searchPetFoodByDynamicValues(keyword, brand, primaryIngredients);
 
         // then
         assertAll(
                 () -> assertThat(petFoods).extracting(petFood -> petFood.getKeyword().getName()).contains(keyword),
                 () -> assertThat(petFoods).extracting(petFood -> petFood.getBrand().getName()).contains(brand),
+                () -> assertThat(petFoods).extracting(petFood -> petFood.getPrimaryIngredients()).contains(List.of(primaryIngredients)),
                 () -> assertThat(petFoods).hasSize(1)
         );
     }
 
 }
-

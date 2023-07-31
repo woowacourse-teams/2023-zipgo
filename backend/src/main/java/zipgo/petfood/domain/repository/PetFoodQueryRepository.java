@@ -12,6 +12,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 import zipgo.petfood.domain.PetFood;
+import zipgo.petfood.domain.PrimaryIngredients;
 
 @Repository
 @RequiredArgsConstructor
@@ -20,14 +21,18 @@ public class PetFoodQueryRepository {
 
     private final JPAQueryFactory queryFactory;
 
-    public List<PetFood> searchPetFoodByDynamicValues(String keywordName, String brandName) {
+    public List<PetFood> searchPetFoodByDynamicValues(String keywordName, String brandName, String primaryIngredients) {
         return queryFactory
                 .selectFrom(petFood)
                 .join(petFood.keyword, keyword)
                 .fetchJoin()
                 .join(petFood.brand, brand)
                 .fetchJoin()
-                .where(equalsKeyword(keywordName), equalsBrand(brandName))
+                .where(
+                        equalsKeyword(keywordName),
+                        equalsBrand(brandName),
+                        equalsPrimaryIngredients(primaryIngredients)
+                )
                 .fetch();
     }
 
@@ -41,6 +46,14 @@ public class PetFoodQueryRepository {
     private BooleanExpression equalsBrand(String brandName) {
         if (hasText(brandName)) {
             return brand.name.eq(brandName);
+        }
+        return null;
+    }
+
+    private BooleanExpression equalsPrimaryIngredients(String primaryIngredients) {
+        if (hasText(primaryIngredients)) {
+            PrimaryIngredients request = new PrimaryIngredients(List.of(primaryIngredients));
+            return petFood.primaryIngredients.in(request);
         }
         return null;
     }
