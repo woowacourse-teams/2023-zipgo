@@ -4,7 +4,7 @@ import zipgo.member.domain.Member;
 
 public record AuthResponse(
         String name,
-        String imageUrl
+        String profileImgUrl
 ) {
 
     public static AuthResponse from(Member member) {
