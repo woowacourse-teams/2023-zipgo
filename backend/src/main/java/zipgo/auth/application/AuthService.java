@@ -6,8 +6,7 @@ import org.springframework.transaction.annotation.Transactional;
 import zipgo.auth.OAuthResponse;
 import zipgo.auth.util.JwtProvider;
 import zipgo.member.domain.Member;
-import zipgo.member.application.MemberQueryService;
-import zipgo.member.application.MemberCommandService;
+import zipgo.member.domain.repository.MemberRepository;
 
 import java.util.Optional;
 
@@ -18,20 +17,19 @@ public class AuthService {
 
     private final OAuthClient oAuthClient;
     private final JwtProvider jwtProvider;
-    private final MemberCommandService memberCommandService;
-    private final MemberQueryService memberQueryService;
+    private final MemberRepository memberRepository;
 
     public String createToken(String authCode) {
         String accessToken = oAuthClient.getAccessToken(authCode);
         OAuthResponse oAuthResponse = oAuthClient.getMemberDetail(accessToken);
 
-        Optional<Member> memberOptional = memberQueryService.findByEmail(oAuthResponse.getEmail());
+        Optional<Member> memberOptional = memberRepository.findByEmail(oAuthResponse.getEmail());
         if (memberOptional.isPresent()) {
             return jwtProvider.create(String.valueOf(memberOptional.get().getId()));
         }
 
-        Member member = oAuthResponse.createMember();
-        Long memberId = memberCommandService.save(member).getId();
+        Member member = oAuthResponse.toMember();
+        Long memberId = memberRepository.save(member).getId();
         return jwtProvider.create(String.valueOf(memberId));
     }
 

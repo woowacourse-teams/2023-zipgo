@@ -55,7 +55,7 @@ public class KakaoOAuthResponse implements OAuthResponse {
     }
 
     @Override
-    public Member createMember() {
+    public Member toMember() {
         return Member.builder()
                 .name(getNickName())
                 .email(getEmail())

@@ -10,6 +10,6 @@ public interface OAuthResponse {
 
     String getPicture();
 
-    Member createMember();
+    Member toMember();
 
 }

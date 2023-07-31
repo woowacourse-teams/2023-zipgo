@@ -49,7 +49,11 @@ public class JwtProvider {
                     .setSigningKey(key)
                     .build()
                     .parseClaimsJws(token);
-        } catch (IllegalArgumentException | MalformedJwtException | ExpiredJwtException | SignatureException | UnsupportedJwtException e) {
+        } catch (IllegalArgumentException
+                 | MalformedJwtException
+                 | ExpiredJwtException
+                 | SignatureException
+                 | UnsupportedJwtException e) {
             throw new AuthException(e);
         }
     }
