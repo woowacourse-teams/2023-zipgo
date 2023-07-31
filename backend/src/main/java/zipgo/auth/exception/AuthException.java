@@ -4,8 +4,8 @@ public class AuthException extends RuntimeException {
 
     public static class KakaoNotFound extends AuthException {
 
-        public KakaoNotFound(String message) {
-            super(message);
+        public KakaoNotFound(String message, Throwable cause) {
+            super(message, cause);
         }
 
     }
@@ -18,12 +18,12 @@ public class AuthException extends RuntimeException {
 
     }
 
-    public AuthException(Throwable e) {
-        super(e);
-    }
-
     public AuthException(String message) {
         super(message);
+    }
+
+    public AuthException(String message, Throwable cause) {
+        super(message, cause);
     }
 
 }

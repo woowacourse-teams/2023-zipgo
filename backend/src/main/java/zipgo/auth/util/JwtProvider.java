@@ -48,12 +48,16 @@ public class JwtProvider {
                     .setSigningKey(key)
                     .build()
                     .parseClaimsJws(token);
-        } catch (IllegalArgumentException
-                 | MalformedJwtException
-                 | ExpiredJwtException
-                 | SignatureException
-                 | UnsupportedJwtException e) {
-            throw new AuthException(e);
+        } catch (MalformedJwtException e) {
+            throw new AuthException("JWT 서명이 잘못되었습니다.", e);
+        } catch (ExpiredJwtException e) {
+            throw new AuthException("유효기간이 만료된 토큰입니다.", e);
+        } catch (SignatureException e) {
+            throw new AuthException("토큰의 서명 유효성 검사가 실패했습니다.", e);
+        } catch (UnsupportedJwtException e) {
+            throw new AuthException("지원하지 않는 JWT입니다.", e);
+        } catch (Exception e) {
+            throw new AuthException("토큰의 알 수 없는 문제가 발생했습니다.", e);
         }
     }
 
