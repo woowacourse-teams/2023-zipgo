@@ -17,13 +17,13 @@ import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.when;
+import static zipgo.member.domain.fixture.MemberFixture.식별자_없는_멤버;
+import static zipgo.member.domain.fixture.MemberFixture.식별자_있는_멤버;
 
 @ExtendWith(MockitoExtension.class)
 @SuppressWarnings("NonAsciiCharacters")
 @DisplayNameGeneration(DisplayNameGenerator.ReplaceUnderscores.class)
 class AuthServiceTest {
-
-    private static final Member MEMBER_FIXTURE = Member.builder().id(1L).email("zipgo@zipgo.com").name("개비").profileImgUrl("사진").build();
 
     @Mock
     private KakaoOAuthClient oAuthClient;
@@ -42,8 +42,8 @@ class AuthServiceTest {
         // given
         카카오_토큰_받기_성공();
 
-        when(memberRepository.findByEmail("zipgo@zipgo.com"))
-                .thenReturn(Optional.of(MEMBER_FIXTURE));
+        when(memberRepository.findByEmail("이메일"))
+                .thenReturn(Optional.of(식별자_있는_멤버()));
         when(jwtProvider.create("1"))
                 .thenReturn("생성된 토큰");
 
@@ -58,13 +58,13 @@ class AuthServiceTest {
     void 새로_가입한_멤버의_토큰을_발급한다() {
         // given
         OAuthResponse 카카오_응답 = 카카오_토큰_받기_성공();
-
-        when(memberRepository.findByEmail("zipgo@zipgo.com"))
+        when(memberRepository.findByEmail("이메일"))
                 .thenReturn(Optional.empty());
 
-        Member 저장전_member = Member.builder().email("zipgo@zipgo.com").name("개비").profileImgUrl("사진").build();
-        when(memberRepository.save(저장전_member))
-                .thenReturn(MEMBER_FIXTURE);
+        Member 멤버 = 식별자_없는_멤버();
+        Member 저장된_멤버 = 식별자_있는_멤버();
+        when(memberRepository.save(식별자_없는_멤버()))
+                .thenReturn(저장된_멤버);
 
         when(jwtProvider.create("1"))
                 .thenReturn("생성된 토큰");
@@ -89,9 +89,9 @@ class AuthServiceTest {
 
     private static KakaoOAuthResponse 카카오_응답() {
         return KakaoOAuthResponse.builder().kakaoAccount(KakaoOAuthResponse.KakaoAccount.builder()
-                .email("zipgo@zipgo.com")
+                .email("이메일")
                 .profile(KakaoOAuthResponse.Profile.builder()
-                        .nickname("개비")
+                        .nickname("이름")
                         .picture("사진")
                         .build())
                 .build()).build();

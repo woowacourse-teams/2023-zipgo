@@ -1,19 +1,14 @@
 package zipgo.member.domain.repository;
 
-import static org.junit.jupiter.api.Assertions.*;
-
 import static org.assertj.core.api.Assertions.assertThat;
-import static zipgo.member.domain.fixture.MemberFixture.멤버_생성;
+import static zipgo.member.domain.fixture.MemberFixture.식별자_없는_멤버;
 
 import org.junit.jupiter.api.DisplayNameGeneration;
 import org.junit.jupiter.api.DisplayNameGenerator;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.params.ParameterizedTest;
-import org.junit.jupiter.params.provider.CsvSource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import zipgo.member.domain.Member;
-import zipgo.petfood.domain.PetFood;
 
 @DataJpaTest
 @SuppressWarnings("NonAsciiCharacters")
@@ -26,7 +21,7 @@ class MemberRepositoryTest {
     @Test
     void 아이디로_멤버를_찾을_수_있다() {
         // given
-        Member 멤버 = 멤버_생성();
+        Member 멤버 = 식별자_없는_멤버();
         Member 저장된_멤버 = memberRepository.save(멤버);
         Long 식별자 = 저장된_멤버.getId();
 
