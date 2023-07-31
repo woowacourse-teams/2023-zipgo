@@ -81,7 +81,7 @@ const Intro = styled.h1`
   font-size: 3.8rem;
   font-weight: 500;
   font-style: normal;
-  color: var(--grey-700, #333d4b);
+  color: ${({ theme }) => theme.color.grey700};
   letter-spacing: -0.5px;
 `;
 
