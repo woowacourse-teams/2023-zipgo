@@ -13,7 +13,7 @@ const queryClient = new QueryClient({
   defaultOptions: {
     queries: {
       suspense: true,
-      retry: 0,
+      retry: false,
       useErrorBoundary: true,
     },
     mutations: {
