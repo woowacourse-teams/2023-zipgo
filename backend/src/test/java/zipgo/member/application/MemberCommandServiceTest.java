@@ -10,7 +10,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import zipgo.member.domain.Member;
 import zipgo.member.domain.repository.MemberRepository;
 
-import static org.assertj.core.api.Assertions.*;
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertAll;
 import static org.mockito.Mockito.when;
 
@@ -42,9 +42,9 @@ class MemberCommandServiceTest {
         // then
         assertAll(
                 () -> assertThat(저장된_멤버.getEmail()).isEqualTo("이메일"),
-                () ->assertThat(저장된_멤버.getProfileImgUrl()).isEqualTo("사진"),
-                () ->assertThat(저장된_멤버.getName()).isEqualTo("이름"),
-                () ->assertThat(저장된_멤버.getId()).isNotNull()
+                () -> assertThat(저장된_멤버.getProfileImgUrl()).isEqualTo("사진"),
+                () -> assertThat(저장된_멤버.getName()).isEqualTo("이름"),
+                () -> assertThat(저장된_멤버.getId()).isNotNull()
         );
     }
 
