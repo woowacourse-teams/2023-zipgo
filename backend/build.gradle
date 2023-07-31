@@ -82,7 +82,8 @@ jacocoTestReport {
                             '**/*Config*',
                             '**/BaseTimeEntity',
                             '**/*Interceptor*',
-                            '**/*ArgumentResolver*'
+                            '**/*ArgumentResolver*',
+                            '**/*ExceptionHandler*'
                     ])
                 })
         )
@@ -112,7 +113,8 @@ jacocoTestCoverageVerification {
                     '*.*Config',
                     '*.BaseTimeEntity',
                     '*.*Interceptor',
-                    '*.*ArgumentResolver'
+                    '*.*ArgumentResolver',
+                    '*.*ExceptionHandler'
             ]
         }
     }
