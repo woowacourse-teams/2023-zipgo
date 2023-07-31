@@ -15,7 +15,7 @@ const Login = () => {
         <IntroContainer>
           <LogoBannerContainer>
             <LogoImg src={ZipgoLogo} alt="집사의고민 로고" />
-            <BannerImg src={ZipgoBanner} />
+            <BannerImg src={ZipgoBanner} alt="집사의고민 배너 이미지" />
           </LogoBannerContainer>
           <Intro>
             답답했던 사료 고민은
