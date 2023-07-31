@@ -39,7 +39,7 @@ class PetFoodServiceUnitTest {
         Keyword 키워드 = new Keyword(1L, "diet");
         PetFood 다이어트_키워드_식품 = 키워드_있는_식품_초기화(키워드, mock());
 
-        when(petFoodQueryRepository.searchPetFoodByDynamicValues("diet", null, null))
+        when(petFoodQueryRepository.findPetFoods("diet", null, null))
                 .thenReturn(List.of(다이어트_키워드_식품));
 
         // when

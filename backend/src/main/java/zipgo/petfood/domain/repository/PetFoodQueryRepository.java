@@ -21,7 +21,7 @@ public class PetFoodQueryRepository {
 
     private final JPAQueryFactory queryFactory;
 
-    public List<PetFood> searchPetFoodByDynamicValues(String keywordName, String brandName, String primaryIngredients) {
+    public List<PetFood> findPetFoods(String keywordName, String brandName, String primaryIngredients) {
         return queryFactory
                 .selectFrom(petFood)
                 .join(petFood.keyword, keyword)

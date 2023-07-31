@@ -17,7 +17,7 @@ public class PetFoodQueryService {
     private final PetFoodQueryRepository petFoodQueryRepository;
 
     public List<PetFood> getPetFoodByDynamicValue(String keyword, String brand, String primaryIngredients) {
-        return petFoodQueryRepository.searchPetFoodByDynamicValues(keyword, brand, primaryIngredients);
+        return petFoodQueryRepository.findPetFoods(keyword, brand, primaryIngredients);
     }
 
     public PetFood getPetFoodBy(Long id) {
