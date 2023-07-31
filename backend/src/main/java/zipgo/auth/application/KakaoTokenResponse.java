@@ -1,6 +1,7 @@
 package zipgo.auth.application;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.databind.PropertyNamingStrategies;
+import com.fasterxml.jackson.databind.annotation.JsonNaming;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -10,24 +11,14 @@ import lombok.NoArgsConstructor;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class KakaoTokens {
+@JsonNaming(PropertyNamingStrategies.SnakeCaseStrategy.class)
+public class KakaoTokenResponse {
 
-    @JsonProperty("access_token")
     private String accessToken;
-
-    @JsonProperty("token_type")
     private String tokenType;
-
-    @JsonProperty("refresh_token")
     private String refreshToken;
-
-    @JsonProperty("expires_in")
     private String expiresIn;
-
-    @JsonProperty("refresh_token_expires_in")
     private String refreshTokenExpiresIn;
-
-    @JsonProperty("scope")
     private String scope;
 
 }
