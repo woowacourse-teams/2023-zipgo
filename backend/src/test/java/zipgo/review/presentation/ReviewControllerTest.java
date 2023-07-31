@@ -158,11 +158,6 @@ public class ReviewControllerTest extends AcceptanceTest {
         }
 
         private RestDocumentationFilter 리뷰_수정_API_문서_생성() {
-            var 응답_형식 = schema("UpdateReviewResponse");
-            var 문서_정보 = resourceDetails().summary("리뷰 수정 성공")
-                    .description("리뷰를 수정합니다.")
-                    .responseSchema(응답_형식);
-
             return document("리뷰 수정 - 성공",
                     문서_정보.responseSchema(성공_응답_형식)
             );
@@ -187,7 +182,64 @@ public class ReviewControllerTest extends AcceptanceTest {
         }
 
         private RestDocumentationFilter API_예외응답_문서_생성() {
-            return document("리뷰 생성 - 실패(Forbidden)", 문서_정보.responseSchema(에러_응답_형식));
+            return document("리뷰 수정 - 실패(Forbidden)", 문서_정보.responseSchema(에러_응답_형식));
+        }
+
+    }
+
+    @Nested
+    @DisplayName("리뷰 삭제 API")
+    class DeleteReviews {
+
+        private Schema 성공_응답_형식 = schema("DeleteReviewResponse");
+        private ResourceSnippetDetails 문서_정보 = resourceDetails()
+                .summary("리뷰 삭제하기")
+                .description("해당 반려동물 식품에 대한 리뷰를 삭제합니다.");
+
+        @Test
+        void 리뷰를_성공적으로_삭제하면_204_반환() {
+            // given
+            var 요청_준비 = given(spec)
+                    .queryParam("memberId", 1L)
+                    .body(리뷰_수정_요청())
+                    .contentType(JSON)
+                    .filter(리뷰_삭제_API_문서_생성());
+
+            // when
+            var 응답 = 요청_준비.when()
+                    .delete("/reviews/" + 1);
+
+            // then
+            응답.then()
+                    .assertThat().statusCode(NO_CONTENT.value());
+        }
+
+        private RestDocumentationFilter 리뷰_삭제_API_문서_생성() {
+            return document("리뷰 삭제 - 성공",
+                    문서_정보.responseSchema(성공_응답_형식)
+            );
+        }
+
+        @Test
+        void 리뷰를_쓴_사람이_아닌_멤버가_리뷰를_삭제하면_403_반환() {
+            // given
+            var 요청_준비 = given(spec)
+                    .queryParam("memberId", 2L)
+                    .body(리뷰_생성_요청(123456789L))
+                    .contentType(JSON)
+                    .filter(API_예외응답_문서_생성());
+
+            // when
+            var 응답 = 요청_준비.when()
+                    .delete("/reviews/" + 1);
+
+            // then
+            응답.then()
+                    .assertThat().statusCode(FORBIDDEN.value());
+        }
+
+        private RestDocumentationFilter API_예외응답_문서_생성() {
+            return document("리뷰 삭제 - 실패(Forbidden)", 문서_정보.responseSchema(에러_응답_형식));
         }
 
     }
