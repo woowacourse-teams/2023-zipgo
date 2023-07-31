@@ -60,10 +60,8 @@ class PetFoodQueryServiceTest {
         String 없는_키워드 = "없는 키워드";
 
         // when, then
-        assertAll(
-                () -> assertThat(petFoodQueryService.getPetFoodByDynamicValue(없는_키워드, null, null))
-                        .hasSize(0)
-        );
+        assertThat(petFoodQueryService.getPetFoodByDynamicValue(없는_키워드, null, null))
+                .hasSize(0);
     }
 
 }
