@@ -1,16 +1,13 @@
 package zipgo.petfood.application;
 
-import static java.util.Optional.of;
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.junit.jupiter.api.Assertions.assertAll;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
-import static zipgo.brand.domain.fixture.BrandFixture.*;
+import static zipgo.brand.domain.fixture.BrandFixture.식품_브랜드_생성하기;
 import static zipgo.petfood.domain.fixture.PetFoodFixture.키워드_있는_식품_초기화;
 
 import java.util.List;
-import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.DisplayNameGeneration;
 import org.junit.jupiter.api.DisplayNameGenerator.ReplaceUnderscores;
 import org.junit.jupiter.api.Test;

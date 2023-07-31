@@ -1,5 +1,23 @@
 package zipgo.review.presentation;
 
+import static com.epages.restdocs.apispec.RestAssuredRestDocumentationWrapper.document;
+import static com.epages.restdocs.apispec.RestAssuredRestDocumentationWrapper.resourceDetails;
+import static com.epages.restdocs.apispec.Schema.schema;
+import static io.restassured.RestAssured.given;
+import static io.restassured.http.ContentType.JSON;
+import static org.hamcrest.Matchers.is;
+import static org.springframework.http.HttpStatus.CREATED;
+import static org.springframework.http.HttpStatus.FORBIDDEN;
+import static org.springframework.http.HttpStatus.NOT_FOUND;
+import static org.springframework.http.HttpStatus.NO_CONTENT;
+import static org.springframework.http.HttpStatus.OK;
+import static org.springframework.restdocs.payload.PayloadDocumentation.fieldWithPath;
+import static org.springframework.restdocs.payload.PayloadDocumentation.responseFields;
+import static org.springframework.restdocs.request.RequestDocumentation.parameterWithName;
+import static org.springframework.restdocs.request.RequestDocumentation.pathParameters;
+import static zipgo.review.fixture.ReviewFixture.리뷰_생성_요청;
+import static zipgo.review.fixture.ReviewFixture.리뷰_수정_요청;
+
 import com.epages.restdocs.apispec.ResourceSnippetDetails;
 import com.epages.restdocs.apispec.Schema;
 import org.junit.jupiter.api.DisplayName;
@@ -7,20 +25,6 @@ import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import org.springframework.restdocs.restassured.RestDocumentationFilter;
 import zipgo.acceptance.AcceptanceTest;
-
-import static com.epages.restdocs.apispec.RestAssuredRestDocumentationWrapper.document;
-import static com.epages.restdocs.apispec.RestAssuredRestDocumentationWrapper.resourceDetails;
-import static com.epages.restdocs.apispec.Schema.schema;
-import static io.restassured.RestAssured.given;
-import static io.restassured.http.ContentType.JSON;
-import static org.hamcrest.Matchers.is;
-import static org.springframework.http.HttpStatus.*;
-import static org.springframework.restdocs.payload.PayloadDocumentation.fieldWithPath;
-import static org.springframework.restdocs.payload.PayloadDocumentation.responseFields;
-import static org.springframework.restdocs.request.RequestDocumentation.parameterWithName;
-import static org.springframework.restdocs.request.RequestDocumentation.pathParameters;
-import static zipgo.review.fixture.ReviewFixture.리뷰_생성_요청;
-import static zipgo.review.fixture.ReviewFixture.리뷰_수정_요청;
 
 public class ReviewControllerTest extends AcceptanceTest {
 

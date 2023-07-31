@@ -1,11 +1,10 @@
 package zipgo.review.dto.response;
 
-import zipgo.review.domain.AdverseReaction;
-import zipgo.review.domain.Review;
+import static java.time.format.DateTimeFormatter.ofPattern;
 
 import java.util.List;
-
-import static java.time.format.DateTimeFormatter.ofPattern;
+import zipgo.review.domain.AdverseReaction;
+import zipgo.review.domain.Review;
 
 public record GetReviewsResponse(
         Long id,
