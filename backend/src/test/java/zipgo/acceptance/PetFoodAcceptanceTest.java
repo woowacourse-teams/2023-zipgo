@@ -63,10 +63,6 @@ public class PetFoodAcceptanceTest extends AcceptanceTest {
         private RestDocumentationFilter 성공_API_문서_생성(String name) {
             return document(name,
                     API_정보.responseSchema(성공_응답_형식),
-//                    queryParameters(
-//                            parameterWithName("keyword").optional().description("식품 키워드"),
-//                            parameterWithName("brand").optional().description("브랜드")
-//                            ),
                     responseFields(
                             fieldWithPath("petFoods").description("반려동물 식품 리스트"),
                             fieldWithPath("petFoods[].id").description("식품 id"),
