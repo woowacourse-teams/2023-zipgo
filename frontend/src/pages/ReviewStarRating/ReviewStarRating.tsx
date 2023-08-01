@@ -1,13 +1,29 @@
-import { useEffect, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import { styled } from 'styled-components';
 
 import BackIcon from '@/assets/svg/back_btn.svg';
 import StarRatingInput from '@/components/@common/StarRating/StarRatingInput/StarRatingInput';
 import Template from '@/components/@common/Template';
+import { AdverseReaction, StoolCondition, TastePreference } from '@/types/review/client';
+
+interface LocationState {
+  state: {
+    isEditMode: boolean;
+    userRating: number;
+    reviewDetail: {
+      reviewId: number;
+      tastePreference: TastePreference;
+      stoolCondition: StoolCondition;
+      adverseReactions: AdverseReaction[];
+      comment: string;
+    };
+  };
+}
 
 const ReviewStarRating = () => {
   const navigate = useNavigate();
+  const location = useLocation() as LocationState;
+  const { isEditMode = false, userRating = 0, reviewDetail } = { ...location.state };
 
   const { petFoodId, name, imageUrl } = {
     // 식품상세 api 연동 전 임시 데이터..
@@ -16,20 +32,11 @@ const ReviewStarRating = () => {
     imageUrl: 'https://www.purinapetcare.co.kr/data/files/e3469d6a8936e6416891b97bdbd7c708.png',
   };
 
-  const [rating, setRating] = useState(0);
-
   const onClickStar = (selectedRating: number) => {
-    setRating(selectedRating);
-  };
-
-  useEffect(() => {
-    if (rating === 0) return;
-
-    navigate(`/pet-foods/${petFoodId}/reviews/write/detail`, {
-      state: { petFoodId, name, rating, imageUrl },
+    navigate(`/pet-foods/${petFoodId}/reviews/write/${selectedRating}/detail/${isEditMode}`, {
+      state: { petFoodId, name, imageUrl, reviewDetail },
     });
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [rating]);
+  };
 
   const goBack = () => navigate(-1);
 
@@ -44,7 +51,7 @@ const ReviewStarRating = () => {
         </FoodImageWrapper>
         <FoodName>{name}</FoodName>
         <Label>이 사료 어땠어요?</Label>
-        <StarRatingInput rating={rating} onClickStar={onClickStar} size="extra-large" />
+        <StarRatingInput rating={userRating} onClickStar={onClickStar} size="extra-large" />
         <Caption>별점을 매겨주세요!</Caption>
       </Container>
     </Template.WithoutHeader>

@@ -30,6 +30,8 @@ const reviewHandlers = [
     return res(ctx.status(201), ctx.set('Location', `/reviews/${newReviews.at(-1)?.id}`));
   }),
 
+  rest.put(`${BASE_URL}/reviews/:reviewId`, async (req, res, ctx) => res(ctx.status(204))),
+
   rest.delete(`${BASE_URL}/reviews/:reviewId`, (req, res, ctx) => res(ctx.status(204))),
 ];
 

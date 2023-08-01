@@ -19,6 +19,12 @@ interface PostReviewReq {
 
 interface PostReviewRes {}
 
+interface PutReviewReq extends PostReviewReq {
+  reviewId: number;
+}
+
+interface PutReviewRes {}
+
 interface DeleteReviewReq {
   reviewId: number;
 }
@@ -32,4 +38,6 @@ export type {
   GetReviewsRes,
   PostReviewReq,
   PostReviewRes,
+  PutReviewReq,
+  PutReviewRes,
 };

@@ -5,6 +5,8 @@ import {
   GetReviewsRes,
   PostReviewReq,
   PostReviewRes,
+  PutReviewReq,
+  PutReviewRes,
 } from '@/types/review/remote';
 
 import { client } from '.';
@@ -17,6 +19,13 @@ export const getReviews = async ({ petFoodId }: GetReviewsReq) => {
 
 export const postReview = async (postReviewProps: PostReviewReq) => {
   const { data } = await client.post<PostReviewRes>('/reviews', postReviewProps);
+
+  return data;
+};
+
+export const putReview = async (putReviewProps: PutReviewReq) => {
+  const { reviewId, ...restPutReviewProps } = putReviewProps;
+  const { data } = await client.put<PutReviewRes>(`/reviews/${reviewId}`, restPutReviewProps);
 
   return data;
 };

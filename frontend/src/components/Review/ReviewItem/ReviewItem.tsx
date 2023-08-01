@@ -1,13 +1,14 @@
 import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import styled, { css } from 'styled-components';
 
-import VerticalDotsIcon from '@/assets/svg/vertical_dots_icon.svg';
 import StarRatingDisplay from '@/components/@common/StarRating/StarRatingDisplay/StartRatingDisplay';
 import {
   COMMENT_VISIABLE_LINE_LIMIT,
   PROFILE_DEFAULT_IMG_URL,
   REACTIONS,
 } from '@/constants/review';
+import { useValidParams } from '@/hooks/@common/useValidParams';
 import { useRemoveReviewMutation } from '@/hooks/query/review';
 import { Review } from '@/types/review/client';
 
@@ -26,8 +27,20 @@ const ReviewItem = (reviewItemProps: ReviewItemProps) => {
     comment,
   } = reviewItemProps;
 
-  const [isCommentExpanded, setIsCommentExpanded] = useState(false);
+  const navigate = useNavigate();
+  const { petFoodId } = useValidParams(['petFoodId']);
   const { removeReviewMutation } = useRemoveReviewMutation();
+  const [isCommentExpanded, setIsCommentExpanded] = useState(false);
+
+  const onClickEditButton = () => {
+    navigate(`/pet-foods/${petFoodId}/reviews/write`, {
+      state: {
+        isEditMode: true,
+        userRating: rating,
+        reviewDetail: { reviewId: id, tastePreference, stoolCondition, adverseReactions, comment },
+      },
+    });
+  };
 
   const onClickRemoveButton = () => {
     removeReviewMutation.removeReview({ reviewId: id });
@@ -43,7 +56,7 @@ const ReviewItem = (reviewItemProps: ReviewItemProps) => {
           <ReviewerName>{reviewerName}</ReviewerName>
         </ReviewImageAndNameContainer>
         <ButtonContainer>
-          <TextButton type="button" aria-label="리뷰 수정">
+          <TextButton type="button" aria-label="리뷰 수정" onClick={onClickEditButton}>
             수정
           </TextButton>
           <TextButton type="button" aria-label="리뷰 삭제" onClick={onClickRemoveButton}>

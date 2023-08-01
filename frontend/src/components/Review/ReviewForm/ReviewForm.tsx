@@ -1,26 +1,66 @@
-import { FormEvent } from 'react';
+import { FormEvent, useEffect } from 'react';
 import { styled } from 'styled-components';
 
 import Label from '@/components/@common/Label/Label';
 import { ADVERSE_REACTIONS, STOOL_CONDITIONS, TASTE_PREFERENCES } from '@/constants/review';
-import { useAddReviewMutation } from '@/hooks/query/review';
+import { useAddReviewMutation, useEditReviewMutation } from '@/hooks/query/review';
 import { ACTION_TYPES, useReviewForm } from '@/hooks/review/useReviewForm';
+import { AdverseReaction, StoolCondition, TastePreference } from '@/types/review/client';
 
 interface ReviewFormProps {
   petFoodId: number;
   rating: number;
+  isEditMode?: boolean;
+  reviewDetail?: {
+    reviewId: number;
+    tastePreference: TastePreference;
+    stoolCondition: StoolCondition;
+    adverseReactions: AdverseReaction[];
+    comment: string;
+  };
 }
 
 const ReviewForm = (reviewFormProps: ReviewFormProps) => {
-  const { petFoodId, rating } = reviewFormProps;
+  const { petFoodId, rating, isEditMode = false, reviewDetail } = reviewFormProps;
   const { review, reviewDispatch } = useReviewForm({ petFoodId, rating });
   const { addReviewMutation } = useAddReviewMutation();
+  const { editReviewMutation } = useEditReviewMutation();
 
   const onSubmitReview = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
+    if (isEditMode && reviewDetail) {
+      await editReviewMutation.editReview({ reviewId: reviewDetail.reviewId, ...review });
+
+      return;
+    }
+
     await addReviewMutation.addReview(review);
   };
+
+  useEffect(() => {
+    if (isEditMode && reviewDetail) {
+      reviewDispatch({
+        type: ACTION_TYPES.SET_TASTE_PREFERENCE,
+        tastePreference: reviewDetail.tastePreference,
+      });
+
+      reviewDispatch({
+        type: ACTION_TYPES.SET_STOOL_CONDITION,
+        stoolCondition: reviewDetail.stoolCondition,
+      });
+
+      reviewDetail.adverseReactions.forEach(adverseReactionData => {
+        reviewDispatch({
+          type: ACTION_TYPES.SET_ADVERSE_REACTIONS,
+          adverseReaction: adverseReactionData,
+        });
+      });
+
+      reviewDispatch({ type: ACTION_TYPES.SET_COMMENT, comment: reviewDetail.comment });
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   return (
     <ReviewFormContainer onSubmit={onSubmitReview}>
