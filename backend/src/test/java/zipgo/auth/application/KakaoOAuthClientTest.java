@@ -15,13 +15,12 @@ import org.springframework.util.MultiValueMap;
 import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.RestTemplate;
 import zipgo.auth.application.dto.KakaoMemberResponse;
-import zipgo.auth.application.dto.OAuthMemberResponse;
 import zipgo.auth.application.dto.KakaoTokenResponse;
+import zipgo.auth.application.dto.OAuthMemberResponse;
 import zipgo.auth.exception.AuthException;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
-import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 import static org.springframework.http.HttpMethod.GET;
 import static org.springframework.http.HttpMethod.POST;
@@ -119,6 +118,7 @@ class KakaoOAuthClientTest {
                     .isInstanceOf(AuthException.KakaoNotFound.class)
                     .hasMessageContaining("카카오 사용자 정보를 가져오는 중 에러가 발생");
         }
+
     }
 
 }

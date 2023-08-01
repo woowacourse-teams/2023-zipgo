@@ -19,9 +19,7 @@ public class JwtProvider {
     private final SecretKey key;
     private final long validityInMilliseconds;
 
-    public JwtProvider(
-            JwtCredentials jwtCredentials
-    ) {
+    public JwtProvider(JwtCredentials jwtCredentials) {
         this.key = hmacShaKeyFor(jwtCredentials.getSecretKey().getBytes(UTF_8));
         this.validityInMilliseconds = jwtCredentials.getExpireLengthMillisecond();
     }
@@ -29,7 +27,6 @@ public class JwtProvider {
     public String create(String payload) {
         Date now = new Date();
         Date validity = new Date(now.getTime() + validityInMilliseconds);
-
         return Jwts.builder()
                 .setSubject(payload)
                 .setIssuedAt(now)
@@ -54,8 +51,6 @@ public class JwtProvider {
             throw new AuthException("유효기간이 만료된 토큰입니다.", e);
         } catch (SignatureException e) {
             throw new AuthException("토큰의 서명 유효성 검사가 실패했습니다.", e);
-        } catch (UnsupportedJwtException e) {
-            throw new AuthException("지원하지 않는 JWT입니다.", e);
         } catch (Exception e) {
             throw new AuthException("토큰의 알 수 없는 문제가 발생했습니다.", e);
         }
