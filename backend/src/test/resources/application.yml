@@ -2,8 +2,8 @@ spring:
   datasource:
     driver-class-name: org.h2.Driver
     url: jdbc:h2:mem:test;MODE=MYSQL
-    username: root
-    password: p@ssword
+    username: sa
+    password:
   jpa:
     show-sql: true
     hibernate:
@@ -20,9 +20,9 @@ spring:
       enabled: true
 
 jwt:
-  secret-key: 027eb3f4aa36e178497290da0fa573ee
+  secret-key: this1-is2-zipgo3-test4-secret5-key6
   expire-length-milli-second: 604800000
 oauth:
   kakao:
-    client-id: 027eb3f4aa36e178497290da0fa573ee
-    redirect-uri: http://localhost:8080/kakao/callback
+    client-id: this1-is2-zipgo3-test4-client5-id7
+    redirect-uri: test-redirect-uri
