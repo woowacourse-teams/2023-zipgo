@@ -22,8 +22,8 @@ const StarRatingDisplay = (starRatingDisplayProps: StarRatingDisplayProps) => {
 };
 
 const StarContainer = styled.div`
-  display: inline-block;
-  gap: 0.3rem;
+  display: flex;
+  gap: 0.4rem;
 `;
 
 const Star = styled.img<{ size: 'small' | 'medium' | 'large' }>`
