@@ -12,7 +12,6 @@ import zipgo.petfood.domain.Keyword;
 import zipgo.petfood.domain.PetFood;
 import zipgo.petfood.domain.repository.KeywordRepository;
 import zipgo.petfood.domain.repository.PetFoodRepository;
-import zipgo.petfood.exception.KeywordException;
 
 import java.util.List;
 
@@ -39,7 +38,7 @@ class PetFoodServiceTest {
     private BrandRepository brandRepository;
 
     @Autowired
-    private PetFoodService petFoodService;
+    private PetFoodQueryService petFoodQueryService;
 
     private Brand 브랜드_조회하기() {
         return brandRepository.findAll().get(0);
@@ -52,7 +51,7 @@ class PetFoodServiceTest {
         PetFood 다이어트_키워드_식품 = 다이어트_키워드_식품_저장();
 
         // when
-        List<PetFood> 조회_결과 = petFoodService.getPetFoodHaving("diet");
+        List<PetFood> 조회_결과 = petFoodQueryService.getPetFoodByDynamicValue("diet", null, null);
 
         // then
         assertAll(() -> {
@@ -72,9 +71,11 @@ class PetFoodServiceTest {
         // given
         String 없는_키워드 = "없는 키워드";
 
-        // when, then
-        assertThatThrownBy(() -> petFoodService.getPetFoodHaving(없는_키워드))
-                .isInstanceOf(KeywordException.NotFound.class);
+        // when
+        List<PetFood> responses = petFoodQueryService.getPetFoodByDynamicValue(없는_키워드, null, null);
+
+        // then
+        assertThat(responses).hasSize(0);
     }
 
     @Test
@@ -85,7 +86,7 @@ class PetFoodServiceTest {
         Long 아이디 = petFoodRepository.save(테스트용_식품).getId();
 
         // when
-        PetFood 조회된_식품 = petFoodService.getPetFoodBy(아이디);
+        PetFood 조회된_식품 = petFoodQueryService.getPetFoodBy(아이디);
 
         // then
         assertThat(조회된_식품).isEqualTo(테스트용_식품);

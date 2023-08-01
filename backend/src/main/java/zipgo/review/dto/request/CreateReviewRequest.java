@@ -4,13 +4,12 @@ import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
+import java.util.List;
 import zipgo.member.domain.Member;
 import zipgo.petfood.domain.PetFood;
 import zipgo.review.domain.Review;
 import zipgo.review.domain.type.StoolCondition;
 import zipgo.review.domain.type.TastePreference;
-
-import java.util.List;
 
 public record CreateReviewRequest(
         @NotNull(message = "Null이 올 수 없습니다. 올바른 값인지 확인해주세요.")
