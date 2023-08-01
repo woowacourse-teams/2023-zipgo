@@ -55,14 +55,14 @@ const BackButton = styled.button`
 
   cursor: pointer;
 
-  position: fixed;
+  position: absolute;
   top: 6.8rem;
   left: 2rem;
 `;
 
 const FoodInfoWrapper = styled.div`
   width: 100%;
-  margin-top: 17.4rem;
+  margin-top: 24rem;
   margin-bottom: 2.4rem;
   padding: 2.4rem 0;
 
