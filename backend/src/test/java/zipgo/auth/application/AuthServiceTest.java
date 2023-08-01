@@ -4,9 +4,11 @@ import org.junit.jupiter.api.DisplayNameGeneration;
 import org.junit.jupiter.api.DisplayNameGenerator;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.InjectMocks;
-import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.transaction.annotation.Transactional;
 import zipgo.auth.application.dto.KakaoMemberResponse;
 import zipgo.auth.application.dto.OAuthMemberResponse;
 import zipgo.auth.util.JwtProvider;
@@ -20,31 +22,33 @@ import static org.mockito.Mockito.when;
 import static zipgo.member.domain.fixture.MemberFixture.식별자_없는_멤버;
 import static zipgo.member.domain.fixture.MemberFixture.식별자_있는_멤버;
 
+@Transactional
+@SpringBootTest
 @ExtendWith(MockitoExtension.class)
 @SuppressWarnings("NonAsciiCharacters")
 @DisplayNameGeneration(DisplayNameGenerator.ReplaceUnderscores.class)
 class AuthServiceTest {
 
-    @Mock
+    @MockBean
     private KakaoOAuthClient oAuthClient;
 
-    @Mock
-    private MemberRepository memberRepository;
-
-    @Mock
+    @MockBean
     private JwtProvider jwtProvider;
 
-    @InjectMocks
+    @MockBean
+    private MemberRepository memberRepository;
+
+    @Autowired
     private AuthService authService;
 
     @Test
     void 기존_멤버의_토큰을_발급한다() {
         // given
-        카카오_토큰_받기_성공();
-
+        OAuthMemberResponse 카카오_응답 = 카카오_토큰_받기_성공();
+        Member 저장된_멤버 = 식별자_있는_멤버();
         when(memberRepository.findByEmail("이메일"))
-                .thenReturn(Optional.of(식별자_있는_멤버()));
-        when(jwtProvider.create("1"))
+                .thenReturn(Optional.of(저장된_멤버));
+        when(jwtProvider.create(String.valueOf(저장된_멤버.getId())))
                 .thenReturn("생성된 토큰");
 
         // when
@@ -60,7 +64,6 @@ class AuthServiceTest {
         OAuthMemberResponse 카카오_응답 = 카카오_토큰_받기_성공();
         when(memberRepository.findByEmail("이메일"))
                 .thenReturn(Optional.empty());
-
         Member 멤버 = 식별자_없는_멤버();
         Member 저장된_멤버 = 식별자_있는_멤버();
         when(memberRepository.save(식별자_없는_멤버()))
@@ -87,7 +90,7 @@ class AuthServiceTest {
         return oAuthMemberResponse;
     }
 
-    private static KakaoMemberResponse 카카오_응답() {
+    private KakaoMemberResponse 카카오_응답() {
         return KakaoMemberResponse.builder().kakaoAccount(KakaoMemberResponse.KakaoAccount.builder()
                 .email("이메일")
                 .profile(KakaoMemberResponse.Profile.builder()
