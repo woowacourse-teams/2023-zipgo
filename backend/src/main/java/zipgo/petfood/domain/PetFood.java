@@ -1,7 +1,5 @@
 package zipgo.petfood.domain;
 
-import static jakarta.persistence.FetchType.LAZY;
-
 import jakarta.persistence.Column;
 import jakarta.persistence.Embedded;
 import jakarta.persistence.Entity;
@@ -20,6 +18,8 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import zipgo.brand.domain.Brand;
 
+import static jakarta.persistence.FetchType.LAZY;
+
 @Entity
 @Getter
 @Builder
@@ -36,10 +36,10 @@ public class PetFood {
     @Column(nullable = false)
     private String name;
 
-    @Column
+    @Column(length = 2048)
     private String purchaseLink;
 
-    @Column
+    @Column(length = 2048)
     private String imageUrl;
 
     @ManyToOne(fetch = FetchType.LAZY)

@@ -163,6 +163,7 @@ public class PetFoodAcceptanceTest extends AcceptanceTest {
                             fieldWithPath("hasStandard.eu").description("유럽 기준 충족 여부").type(JsonFieldType.BOOLEAN),
                             fieldWithPath("functionality").description("기능성").type(JsonFieldType.ARRAY),
                             fieldWithPath("brand.name").description("브랜드명").type(JsonFieldType.STRING),
+                            fieldWithPath("brand.imageUrl").description("브랜드 사진 url").type(JsonFieldType.STRING),
                             fieldWithPath("brand.state").description("브랜드 국가").type(JsonFieldType.STRING),
                             fieldWithPath("brand.foundedYear").description("브랜드 설립연도").type(JsonFieldType.NUMBER),
                             fieldWithPath("brand.hasResearchCenter").description("브랜드 연구 기관 존재 여부")
