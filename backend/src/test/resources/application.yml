@@ -19,10 +19,10 @@ spring:
     console:
       enabled: true
 
-jwt:
-  secret-key: this1-is2-zipgo3-test4-secret5-key6
-  expire-length-milli-second: 604800000
 oauth:
   kakao:
-    client-id: this1-is2-zipgo3-test4-client5-id7
-    redirect-uri: test-redirect-uri
+    client-id: ${CLIENT_ID}
+    redirect-uri: ${REDIRECT_URI}
+jwt:
+  secret-key: ${ZIPGO_SECRET_KEY}
+  expire-length: ${EXPIRE_LENGTH}
