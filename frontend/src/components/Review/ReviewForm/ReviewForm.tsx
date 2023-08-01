@@ -134,7 +134,7 @@ const DetailReviewText = styled.textarea`
   line-height: 2.4rem;
   color: ${({ theme }) => theme.color.grey500};
 
-  border: 1px solid ${({ theme }) => theme.color.grey400};
+  border: 1px solid ${({ theme }) => theme.color.grey250};
   border-radius: 8px;
 
   &:focus {
