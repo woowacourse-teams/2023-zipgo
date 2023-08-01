@@ -27,7 +27,9 @@ import static zipgo.review.fixture.ReviewFixture.리뷰_수정_요청;
 
 public class ReviewControllerTest extends AcceptanceTest {
 
-    //TODO 갈비꺼 merge 후 고정 상수 리팩터링하기
+    private Long petFoodId = 1L;
+    private Long reviewId = 1L;
+    private Long 잘못된_id = 123456789L;
 
     @Nested
     @DisplayName("리뷰 전체 목록 조회 API")
@@ -46,9 +48,8 @@ public class ReviewControllerTest extends AcceptanceTest {
                     .filter(리뷰_목록_조회_API_문서_생성());
 
             // when
-            //TODO petFoodId가 data.sql에 종속적인거 같아서 리뷰 생성 기능 만든 후 리팩터링 예정
             var 응답 = 요청_준비.when()
-                    .pathParam("id", 1)
+                    .pathParam("id", petFoodId)
                     .get("/pet-foods/{id}/reviews");
 
             // then
@@ -88,11 +89,10 @@ public class ReviewControllerTest extends AcceptanceTest {
         @Test
         void 리뷰를_성공적으로_생성하면_201_반환() {
             // given
-            String token = jwtProvider.create("1");
+            var token = jwtProvider.create("1");
             var 요청_준비 = given(spec)
                     .header("Authorization", "Bearer " + token)
-                    .queryParam("memberId", 1L)
-                    .body(리뷰_생성_요청(1L))
+                    .body(리뷰_생성_요청(petFoodId))
                     .contentType(JSON)
                     .filter(리뷰_생성_API_문서_생성());
 
@@ -122,10 +122,10 @@ public class ReviewControllerTest extends AcceptanceTest {
         @Test
         void 없는_식품에_대해_리뷰를_생성하면_404_반환() {
             // given
-            String token = jwtProvider.create("1");
+            var token = jwtProvider.create("1");
             var 요청_준비 = given(spec)
                     .header("Authorization", "Bearer " + token)
-                    .body(리뷰_생성_요청(123456789L))
+                    .body(리뷰_생성_요청(잘못된_id))
                     .contentType(JSON)
                     .filter(API_예외응답_문서_생성());
 
@@ -157,7 +157,7 @@ public class ReviewControllerTest extends AcceptanceTest {
         @Test
         void 리뷰를_성공적으로_수정하면_204_반환() {
             // given
-            String token = jwtProvider.create("1");
+            var token = jwtProvider.create("1");
             var 요청_준비 = given(spec)
                     .header("Authorization", "Bearer " + token)
                     .body(리뷰_수정_요청())
@@ -166,7 +166,7 @@ public class ReviewControllerTest extends AcceptanceTest {
 
             // when
             var 응답 = 요청_준비.when()
-                    .pathParam("reviewId", 1)
+                    .pathParam("reviewId", reviewId)
                     .put("/reviews/{reviewId}");
 
             // then
@@ -191,16 +191,16 @@ public class ReviewControllerTest extends AcceptanceTest {
         @Test
         void 리뷰를_쓴_사람이_아닌_멤버가_리뷰를_수정하면_403_반환() {
             // given
-            String notOwnerToken = jwtProvider.create("2");
+            var notOwnerToken = jwtProvider.create("2");
             var 요청_준비 = given(spec)
                     .header("Authorization", "Bearer " + notOwnerToken)
-                    .body(리뷰_생성_요청(1L))
+                    .body(리뷰_생성_요청(petFoodId))
                     .contentType(JSON)
                     .filter(API_예외응답_문서_생성());
 
             // when
             var 응답 = 요청_준비.when()
-                    .pathParam("reviewId", 1)
+                    .pathParam("reviewId", reviewId)
                     .put("/reviews/{reviewId}");
 
             // then
@@ -217,6 +217,8 @@ public class ReviewControllerTest extends AcceptanceTest {
 
     }
 
+
+
     @Nested
     @DisplayName("리뷰 삭제 API")
     class DeleteReviews {
@@ -229,7 +231,7 @@ public class ReviewControllerTest extends AcceptanceTest {
         @Test
         void 리뷰를_성공적으로_삭제하면_204_반환() {
             // given
-            String token = jwtProvider.create("1");
+            var token = jwtProvider.create("1");
             var 요청_준비 = given(spec)
                     .header("Authorization", "Bearer " + token)
                     .body(리뷰_수정_요청())
@@ -238,7 +240,7 @@ public class ReviewControllerTest extends AcceptanceTest {
 
             // when
             var 응답 = 요청_준비.when()
-                    .pathParam("reviewId", 1)
+                    .pathParam("reviewId", reviewId)
                     .delete("/reviews/{reviewId}");
 
             // then
@@ -257,16 +259,16 @@ public class ReviewControllerTest extends AcceptanceTest {
         @Test
         void 리뷰를_쓴_사람이_아닌_멤버가_리뷰를_삭제하면_403_반환() {
             // given
-            String notOwnerToken = jwtProvider.create("2");
+            var notOwnerToken = jwtProvider.create("2");
             var 요청_준비 = given(spec)
                     .header("Authorization", "Bearer " + notOwnerToken)
-                    .body(리뷰_생성_요청(1L))
+                    .body(리뷰_생성_요청(petFoodId))
                     .contentType(JSON)
                     .filter(API_예외응답_문서_생성());
 
             // when
             var 응답 = 요청_준비.when()
-                    .pathParam("reviewId", 1)
+                    .pathParam("reviewId", reviewId)
                     .delete("/reviews/{reviewId}");
 
             // then
