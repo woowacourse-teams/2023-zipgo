@@ -1,12 +1,7 @@
 package zipgo.petfood.application;
 
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.Assertions.assertThatThrownBy;
-import static org.junit.jupiter.api.Assertions.assertAll;
-import static zipgo.petfood.domain.fixture.PetFoodFixture.키워드_없이_식품_초기화;
-import static zipgo.petfood.domain.fixture.PetFoodFixture.키워드_있는_식품_초기화;
-
-import java.util.List;
+import org.junit.jupiter.api.DisplayNameGeneration;
+import org.junit.jupiter.api.DisplayNameGenerator;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -19,8 +14,19 @@ import zipgo.petfood.domain.repository.KeywordRepository;
 import zipgo.petfood.domain.repository.PetFoodRepository;
 import zipgo.petfood.exception.KeywordException;
 
+import java.util.List;
+
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
+import static org.junit.jupiter.api.Assertions.assertAll;
+import static zipgo.petfood.domain.fixture.PetFoodFixture.키워드_없이_식품_초기화;
+import static zipgo.petfood.domain.fixture.PetFoodFixture.키워드_있는_식품_초기화;
+
 @Transactional
 @SpringBootTest
+
+@SuppressWarnings("NonAsciiCharacters")
+@DisplayNameGeneration(DisplayNameGenerator.ReplaceUnderscores.class)
 class PetFoodServiceTest {
 
     @Autowired

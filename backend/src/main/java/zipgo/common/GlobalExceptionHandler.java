@@ -11,6 +11,7 @@ import org.springframework.web.context.request.ServletWebRequest;
 import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 import zipgo.auth.exception.AuthException;
+import zipgo.member.exception.MemberException;
 import zipgo.petfood.exception.KeywordException;
 import zipgo.petfood.exception.PetFoodException;
 import zipgo.petfood.presentation.dto.ErrorResponse;
@@ -24,35 +25,34 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
 
     @ExceptionHandler({KeywordException.NotFound.class,
             PetFoodException.NotFound.class,
-            ReviewException.NotFound.class})
+            ReviewException.NotFound.class,
+            MemberException.NotFound.class})
     public ResponseEntity<ErrorResponse> handleNotFoundException(Exception exception) {
-        return ResponseEntity.status(NOT_FOUND)
-                .body(ErrorResponse.of(exception));
-    }
-
-    @ExceptionHandler({AuthException.Forbidden.class})
-    public ResponseEntity<ErrorResponse> handleForbiddenException(Exception exception) {
-        return ResponseEntity.status(FORBIDDEN)
-                .body(ErrorResponse.of(exception));
+        return ResponseEntity.status(NOT_FOUND).body(ErrorResponse.of(exception));
     }
 
     @ExceptionHandler({Exception.class})
     public ResponseEntity<ErrorResponse> handleException(Exception exception) {
         logger.error("서버 내부 오류 발생", exception);
-        return ResponseEntity.status(INTERNAL_SERVER_ERROR)
-                .body(new ErrorResponse("서버 내부 오류"));
+        return ResponseEntity.status(INTERNAL_SERVER_ERROR).body(new ErrorResponse("서버 내부 오류"));
+    }
+
+    @ExceptionHandler({AuthException.Forbidden.class})
+    public ResponseEntity<ErrorResponse> handleForbiddenException(Exception exception) {
+        return ResponseEntity.status(FORBIDDEN).body(ErrorResponse.of(exception));
     }
 
     @Override
-    protected ResponseEntity<Object> handleExceptionInternal(Exception ex, Object body,
-                                                             HttpHeaders headers,
-                                                             HttpStatusCode statusCode,
-                                                             WebRequest request) {
+    protected ResponseEntity<Object> handleExceptionInternal(
+            Exception exception,
+            Object body,
+            HttpHeaders headers,
+            HttpStatusCode statusCode,
+            WebRequest request) {
         if (isAlreadyCommitted(request)) {
             return null;
         }
-        return ResponseEntity.status(statusCode)
-                .body(ErrorResponse.of(ex));
+        return ResponseEntity.status(statusCode).body(ErrorResponse.of(exception));
     }
 
     private boolean isAlreadyCommitted(WebRequest request) {

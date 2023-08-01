@@ -28,6 +28,7 @@ import static org.springframework.restdocs.request.RequestDocumentation.pathPara
 import static zipgo.review.fixture.ReviewFixture.리뷰_생성_요청;
 import static zipgo.review.fixture.ReviewFixture.리뷰_수정_요청;
 
+
 public class ReviewControllerTest extends AcceptanceTest {
 
     // TODO: API 문서에 헤더 정보 추가

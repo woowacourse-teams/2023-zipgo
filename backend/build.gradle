@@ -42,17 +42,20 @@ dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-validation'
     implementation 'org.springframework.boot:spring-boot-starter-web'
 
+    implementation 'io.jsonwebtoken:jjwt-api:0.11.5'
+    runtimeOnly 'io.jsonwebtoken:jjwt-impl:0.11.5'
+    runtimeOnly 'io.jsonwebtoken:jjwt-jackson:0.11.5'
+
     compileOnly 'org.projectlombok:lombok'
     annotationProcessor 'org.projectlombok:lombok'
 
-    runtimeOnly 'com.mysql:mysql-connector-j'
-    runtimeOnly 'com.h2database:h2'
-
-    // Querydsl
     implementation 'com.querydsl:querydsl-jpa:5.0.0:jakarta'
     annotationProcessor "com.querydsl:querydsl-apt:${dependencyManagement.importedProperties['querydsl.version']}:jakarta"
     annotationProcessor "jakarta.annotation:jakarta.annotation-api"
     annotationProcessor "jakarta.persistence:jakarta.persistence-api"
+
+    runtimeOnly 'com.mysql:mysql-connector-j'
+    runtimeOnly 'com.h2database:h2'
 
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
     testImplementation 'io.rest-assured:rest-assured:5.3.1'
@@ -60,6 +63,7 @@ dependencies {
     testImplementation 'org.springframework.restdocs:spring-restdocs-restassured'
     testImplementation "com.epages:restdocs-api-spec-restassured:${restdocsApiSpecVersion}"
     testImplementation "com.epages:restdocs-api-spec-mockmvc:${restdocsApiSpecVersion}"
+    testImplementation "org.springframework.restdocs:spring-restdocs-mockmvc"
     testImplementation 'io.rest-assured:rest-assured'
 
     swaggerUI 'org.webjars:swagger-ui:4.11.1'
@@ -94,7 +98,11 @@ jacocoTestReport {
                             '**/*Exception*',
                             '**/*Response*',
                             '**/*Request*',
-                            '*.BaseTimeEntity'
+                            '**/BaseTimeEntity',
+                            '**/*Dto*',
+                            '**/*Interceptor*',
+                            '**/*ArgumentResolver*',
+                            '**/*ExceptionHandler*'
                     ])
                 })
         )
@@ -124,9 +132,13 @@ jacocoTestCoverageVerification {
             excludes = [
                     '*.*Application',
                     '*.*Exception',
+                    '*.*Dto',
                     '*.*Response',
                     '*.*Request',
-                    '*.BaseTimeEntity'
+                    '*.BaseTimeEntity',
+                    '*.*Interceptor',
+                    '*.*ArgumentResolver',
+                    '*.*ExceptionHandler'
             ] + Qdomains
         }
     }

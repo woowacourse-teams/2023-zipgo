@@ -1,26 +1,27 @@
 package zipgo.common;
 
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.BDDMockito.given;
-
 import io.restassured.RestAssured;
 import io.restassured.response.ExtractableResponse;
 import io.restassured.response.Response;
-import org.junit.jupiter.api.DisplayNameGeneration;
-import org.junit.jupiter.api.DisplayNameGenerator.ReplaceUnderscores;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.mock.mockito.SpyBean;
 import org.springframework.web.HttpMediaTypeNotSupportedException;
 import zipgo.acceptance.AcceptanceTest;
+import zipgo.auth.presentation.AuthController;
 import zipgo.petfood.presentation.PetFoodController;
 import zipgo.petfood.presentation.dto.ErrorResponse;
 
-@DisplayNameGeneration(ReplaceUnderscores.class)
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.BDDMockito.given;
+
 class GlobalExceptionHandlerTest extends AcceptanceTest {
 
     @SpyBean(name = "petFoodController")
     private PetFoodController petFoodController;
+
+    @SpyBean(name = "authController")
+    private AuthController authController;
 
     @Test
     void 서버_내부_에러가_발생하면_500을_반환한다() {
@@ -53,6 +54,7 @@ class GlobalExceptionHandlerTest extends AcceptanceTest {
         ErrorResponse errorResponse = response.as(ErrorResponse.class);
         assertThat(errorResponse.message()).isEqualTo("스프링 예외 메시지");
     }
+
 
     class TestException extends RuntimeException {
 

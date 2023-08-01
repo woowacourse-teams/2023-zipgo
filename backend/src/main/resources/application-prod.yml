@@ -23,8 +23,23 @@ spring:
     open-in-view: false
 
 ---
+# OAuth
+oauth:
+  kakao:
+    client-id: ${CLIENT_ID}
+    redirect-uri: ${REDIRECT_URI}
+
+---
+# jwt
+jwt:
+  secret-key: ${ZIPGO_SECRET_KEY}
+  expire-length: ${EXPIRE_LENGTH}
+
+---
 # log
 logging:
   level:
     org.hibernate.SQL: error
     org.hibernate.type: error
+
+---
