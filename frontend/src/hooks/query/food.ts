@@ -3,11 +3,11 @@ import { useQuery } from '@tanstack/react-query';
 import { getFoodDetail, getFoodList } from '@/apis/food';
 import { Parameter } from '@/types/common/utility';
 
-const QUERY_KEY = { foodList: 'foodList', foodDetail: 'foodDetail' };
+const QUERY_KEY = { foodList: 'foodList', foodDetail: 'foodDetail', petFoods: 'petFoods' };
 
 const useFoodListQuery = (payload: Parameter<typeof getFoodList>) => {
   const { data, ...restQuery } = useQuery({
-    queryKey: [QUERY_KEY.foodList],
+    queryKey: [QUERY_KEY.petFoods],
     queryFn: () => getFoodList(payload),
   });
 

@@ -3,6 +3,9 @@ export type Food = {
   name: string;
   imageUrl: string;
   purchaseUrl: string;
+};
+
+export type FoodDetail = Food & {
   rating: number;
   reviewCount: number;
   primaryIngredients: string[];

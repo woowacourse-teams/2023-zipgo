@@ -1,15 +1,15 @@
-import { Food } from './client';
+import { Food, FoodDetail } from './client';
 
 export interface GetFoodListReq {
   keyword: string[];
 }
 
 export interface GetFoodListRes {
-  petFoods: Pick<Food, 'id' | 'name' | 'imageUrl' | 'purchaseUrl'>[];
+  petFoods: Food[];
 }
 
 export interface GetFoodDetailReq {
   petFoodId: string;
 }
 
-export interface GetFoodDetailRes extends Food {}
+export interface GetFoodDetailRes extends FoodDetail {}

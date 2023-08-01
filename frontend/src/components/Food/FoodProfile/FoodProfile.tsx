@@ -1,9 +1,9 @@
 import { styled } from 'styled-components';
 
 import StarRatingDisplay from '@/components/@common/StarRating/StarRatingDisplay/StartRatingDisplay';
-import type { Food } from '@/types/food/client';
+import type { FoodDetail } from '@/types/food/client';
 
-type FoodProfileProps = Pick<Food, 'name' | 'imageUrl' | 'rating' | 'brand'>;
+type FoodProfileProps = Pick<FoodDetail, 'name' | 'imageUrl' | 'rating' | 'brand'>;
 
 const FoodProfile = (foodProfileProps: FoodProfileProps) => {
   const { name, imageUrl, rating, brand } = foodProfileProps;
