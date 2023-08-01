@@ -19,4 +19,17 @@ interface PostReviewReq {
 
 interface PostReviewRes {}
 
-export type { GetReviewsReq, GetReviewsRes, PostReviewReq, PostReviewRes };
+interface DeleteReviewReq {
+  reviewId: number;
+}
+
+interface DeleteReviewRes {}
+
+export type {
+  DeleteReviewReq,
+  DeleteReviewRes,
+  GetReviewsReq,
+  GetReviewsRes,
+  PostReviewReq,
+  PostReviewRes,
+};

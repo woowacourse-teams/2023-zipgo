@@ -1,4 +1,11 @@
-import { GetReviewsReq, GetReviewsRes, PostReviewReq, PostReviewRes } from '@/types/review/remote';
+import {
+  DeleteReviewReq,
+  DeleteReviewRes,
+  GetReviewsReq,
+  GetReviewsRes,
+  PostReviewReq,
+  PostReviewRes,
+} from '@/types/review/remote';
 
 import { client } from '.';
 
@@ -10,6 +17,12 @@ export const getReviews = async ({ petFoodId }: GetReviewsReq) => {
 
 export const postReview = async (postReviewProps: PostReviewReq) => {
   const { data } = await client.post<PostReviewRes>('/reviews', postReviewProps);
+
+  return data;
+};
+
+export const deleteReview = async ({ reviewId }: DeleteReviewReq) => {
+  const { data } = await client.delete<DeleteReviewRes>(`/reviews/${reviewId}`);
 
   return data;
 };
