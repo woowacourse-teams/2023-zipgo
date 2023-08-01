@@ -1,6 +1,5 @@
 package zipgo.review.application;
 
-import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import zipgo.ServiceTest;
@@ -166,7 +165,24 @@ class ReviewServiceTest extends ServiceTest {
 
         //when, then
         assertThatThrownBy(() -> reviewService.updateReview(멤버.getId(), 잘못된_리뷰_id, 리뷰_수정_요청()))
-                .isInstanceOf(ReviewException.NotFound.class);;
+                .isInstanceOf(ReviewException.NotFound.class);
+    }
+
+    @Test
+    void 리뷰를_삭제할_수_있다() {
+        //given
+        PetFood 식품 = 키워드_없이_식품_초기화(브랜드_조회하기());
+        Member 멤버 = memberRepository.save(무민());
+        petFoodRepository.save(식품);
+        Review 리뷰 = reviewRepository.save(혹평_리뷰_생성(멤버, 식품,
+                List.of(눈물_이상반응().getName(), 먹고_토_이상반응().getName())));
+
+        //when
+        reviewService.deleteReview(멤버.getId(), 리뷰.getId());
+
+        //then
+        assertThatThrownBy(() -> reviewRepository.getById(리뷰.getId()))
+                .isInstanceOf(ReviewException.NotFound.class);
     }
 
 }
