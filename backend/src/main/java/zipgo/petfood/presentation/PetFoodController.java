@@ -23,9 +23,7 @@ public class PetFoodController {
     private final PetFoodQueryService petFoodQueryService;
 
     @PostMapping
-    public ResponseEntity<GetPetFoodsResponse> getPetFoods(
-            @RequestBody PetFoodSelectRequest request
-    ) {
+    public ResponseEntity<GetPetFoodsResponse> getPetFoods(@RequestBody PetFoodSelectRequest request) {
         List<PetFood> petFoods = petFoodQueryService.getPetFoodByDynamicValue(
                 request.keyword(),
                 request.brand(),
