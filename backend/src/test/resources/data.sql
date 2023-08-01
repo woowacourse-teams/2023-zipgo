@@ -1,8 +1,8 @@
 insert into keyword(id, name)
 values (1, 'diet');
 
-insert into brand(id, name, nation, founded_year, has_research_center, has_resident_vet)
-values (1, '오리젠', '미국', 1985, true, true);
+insert into brand(id, name, nation, founded_year, has_research_center, has_resident_vet, image_url)
+values (1, '오리젠', '미국', 1985, true, true, 'https://intl.acana.com/wp-content/themes/acana2019/img/logo.png');
 
 insert into pet_food(brand_id, keyword_id, name, purchase_link, image_url, us_standard, eu_standard, functionality,
                      primary_ingredients)
