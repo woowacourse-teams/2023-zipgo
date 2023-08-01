@@ -1,20 +1,5 @@
 package zipgo.review.application;
 
-import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
-import zipgo.QueryServiceTest;
-import zipgo.brand.domain.Brand;
-import zipgo.brand.domain.fixture.BrandFixture;
-import zipgo.brand.domain.repository.BrandRepository;
-import zipgo.member.domain.Member;
-import zipgo.member.domain.repository.MemberRepository;
-import zipgo.petfood.domain.PetFood;
-import zipgo.petfood.domain.repository.PetFoodRepository;
-import zipgo.review.domain.Review;
-import zipgo.review.domain.repository.ReviewRepository;
-
-import java.util.List;
-
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertAll;
 import static zipgo.brand.domain.fixture.BrandFixture.식품_브랜드_생성하기;
@@ -26,6 +11,19 @@ import static zipgo.review.fixture.AdverseReactionFixture.먹고_토_이상반�
 import static zipgo.review.fixture.MemberFixture.무민;
 import static zipgo.review.fixture.ReviewFixture.극찬_리뷰_생성;
 import static zipgo.review.fixture.ReviewFixture.혹평_리뷰_생성;
+
+import java.util.List;
+import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
+import zipgo.brand.domain.Brand;
+import zipgo.brand.domain.repository.BrandRepository;
+import zipgo.common.service.QueryServiceTest;
+import zipgo.member.domain.Member;
+import zipgo.member.domain.repository.MemberRepository;
+import zipgo.petfood.domain.PetFood;
+import zipgo.petfood.domain.repository.PetFoodRepository;
+import zipgo.review.domain.Review;
+import zipgo.review.domain.repository.ReviewRepository;
 
 class ReviewQueryServiceTest extends QueryServiceTest {
 

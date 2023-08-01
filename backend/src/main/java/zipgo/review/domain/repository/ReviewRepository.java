@@ -2,8 +2,6 @@ package zipgo.review.domain.repository;
 
 import java.util.List;
 import org.springframework.data.jpa.repository.JpaRepository;
-import zipgo.petfood.domain.PetFood;
-import zipgo.petfood.exception.PetFoodException;
 import zipgo.review.domain.Review;
 import zipgo.review.exception.ReviewException;
 
