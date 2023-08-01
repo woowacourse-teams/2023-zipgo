@@ -1,3 +1,5 @@
+import { keyframes } from 'styled-components';
+
 // 색상 팔레트
 const color = {
   primary: '#3E5E8E',
@@ -39,15 +41,35 @@ const componentStyle = {
     padding: '10px 20px',
     borderRadius: '4px',
     fontWeight: 'bold',
-    // 추가적인 버튼 스타일 정의
   },
   input: {
     border: '1px solid #CCCCCC',
     borderRadius: '4px',
     padding: '8px',
-    // 추가적인 인풋 스타일 정의
   },
-  // 추가적인 컴포넌트 스타일 정의
+
+  backDrop: {
+    position: 'fixed',
+    top: 0,
+    left: 0,
+
+    width: '100vw',
+    height: 'calc(var(--vh, 1vh) * 100)',
+
+    background: 'rgba(0, 0, 0, 0.50)',
+  },
+} as const;
+
+const animation = {
+  bottomSheetAppear: keyframes`
+   from {
+      transform: translateY(100%);
+    }
+
+    to {
+      transform: translateY(0%);
+    }
+  `,
 } as const;
 
 // 테마 객체
@@ -56,6 +78,7 @@ const theme = {
   font,
   shadow,
   componentStyle,
+  animation,
 };
 
 export default theme;
