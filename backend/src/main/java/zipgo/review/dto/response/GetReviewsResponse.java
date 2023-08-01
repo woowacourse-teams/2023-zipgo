@@ -34,7 +34,7 @@ public record GetReviewsResponse(
 
     private static List<String> getAdverseReactions(Review review) {
         return review.getAdverseReactions().stream()
-                .map(AdverseReaction::getName)
+                .map(adverseReaction -> adverseReaction.getAdverseReactionName().getDescription())
                 .toList();
     }
 

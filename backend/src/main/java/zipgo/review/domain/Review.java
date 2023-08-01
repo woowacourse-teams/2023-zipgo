@@ -4,18 +4,19 @@ import jakarta.persistence.*;
 import lombok.*;
 import lombok.Builder.Default;
 import lombok.EqualsAndHashCode.Include;
-import org.springframework.beans.Mergeable;
 import zipgo.auth.exception.AuthException;
 import zipgo.common.entity.BaseTimeEntity;
 import zipgo.member.domain.Member;
 import zipgo.petfood.domain.PetFood;
+import zipgo.review.domain.type.AdverseReactionName;
 import zipgo.review.domain.type.StoolCondition;
 import zipgo.review.domain.type.TastePreference;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import static jakarta.persistence.CascadeType.*;
+import static jakarta.persistence.CascadeType.PERSIST;
+import static jakarta.persistence.CascadeType.REMOVE;
 import static jakarta.persistence.EnumType.STRING;
 import static jakarta.persistence.FetchType.LAZY;
 import static lombok.AccessLevel.PROTECTED;
@@ -61,7 +62,7 @@ public class Review extends BaseTimeEntity {
 
     public void addAdverseReactions(List<String> adverseReactionNames) {
         List<AdverseReaction> adverseReactions = adverseReactionNames.stream()
-                .map(AdverseReaction::new)
+                .map(name -> new AdverseReaction(AdverseReactionName.from(name)))
                 .toList();
 
         for (AdverseReaction adverseReaction : adverseReactions) {
