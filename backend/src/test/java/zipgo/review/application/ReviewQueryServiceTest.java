@@ -11,7 +11,6 @@ import zipgo.petfood.domain.PetFood;
 import zipgo.petfood.domain.repository.PetFoodRepository;
 import zipgo.review.domain.Review;
 import zipgo.review.domain.repository.ReviewRepository;
-import zipgo.review.domain.type.AdverseReactionName;
 
 import java.util.List;
 
@@ -52,9 +51,7 @@ class ReviewQueryServiceTest extends QueryServiceTest {
         Member 멤버 = memberRepository.save(무민());
         petFoodRepository.save(식품);
         Review 극찬_리뷰 = reviewRepository.save(극찬_리뷰_생성(멤버, 식품));
-        Review 혹평_리뷰_생성 = 혹평_리뷰_생성(멤버, 식품, List.of(눈물_이상반응().getAdverseReactionName().getDescription(),
-                먹고_토_이상반응().getAdverseReactionName().getDescription()));
-
+        Review 혹평_리뷰_생성 = 혹평_리뷰_생성(멤버, 식품, List.of(눈물_이상반응().getAdverseReactionName().getDescription(), 먹고_토_이상반응().getAdverseReactionName().getDescription()));
         reviewRepository.save(혹평_리뷰_생성);
 
         //when
@@ -63,8 +60,8 @@ class ReviewQueryServiceTest extends QueryServiceTest {
 
         //then
         assertAll(
-                //TODO 리뷰 작성자 검증 추가예정
                 () -> assertThat(reviews.size()).isEqualTo(2),
+                () -> assertThat(찾은_리뷰.getMember().getName()).isEqualTo("무민"),
                 () -> assertThat(찾은_리뷰.getRating()).isEqualTo(5),
                 () -> assertThat(찾은_리뷰.getComment()).isEqualTo("우리 아이랑 너무 잘 맞아요!"),
                 () -> assertThat(찾은_리뷰.getTastePreference()).isEqualTo(EATS_VERY_WELL),
