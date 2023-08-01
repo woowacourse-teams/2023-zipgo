@@ -1,27 +1,35 @@
-import { useState } from 'react';
-import { useLocation, useNavigate } from 'react-router-dom';
+import { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { styled } from 'styled-components';
 
-import BackIcon from '@/assets/svg/back_icon.svg';
+import BackIcon from '@/assets/svg/back_btn.svg';
 import StarRatingInput from '@/components/@common/StarRating/StarRatingInput/StarRatingInput';
 import Template from '@/components/@common/Template';
 
-interface LocationState {
-  state: {
-    imageUrl: string;
-    name: string;
-  };
-}
-
 const ReviewStarRating = () => {
   const navigate = useNavigate();
-  const location = useLocation() as LocationState;
-  const { imageUrl, name } = { ...location.state };
+
+  const { petFoodId, name, imageUrl } = {
+    // 식품상세 api 연동 전 임시 데이터..
+    petFoodId: 1,
+    name: '퓨리나 프로플랜 민감한 장건강 12kg',
+    imageUrl: 'https://www.purinapetcare.co.kr/data/files/e3469d6a8936e6416891b97bdbd7c708.png',
+  };
+
   const [rating, setRating] = useState(0);
 
   const onClickStar = (selectedRating: number) => {
     setRating(selectedRating);
   };
+
+  useEffect(() => {
+    if (rating === 0) return;
+
+    navigate(`/pet-foods/${petFoodId}/reviews/write/detail`, {
+      state: { petFoodId, name, rating, imageUrl },
+    });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [rating]);
 
   const goBack = () => navigate(-1);
 
@@ -74,8 +82,6 @@ const FoodImage = styled.img`
   height: 100%;
 
   object-fit: cover;
-
-  transition: all 200ms ease;
 `;
 
 const FoodImageWrapper = styled.div`
