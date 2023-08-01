@@ -8,7 +8,6 @@ const color = {
   white: '#FFFFFF',
   grey250: '#C7CFD7',
   grey200: '#F2F4F6',
-  grey250: '#C7CFD7',
   grey300: '#AFB8C1',
   grey400: '#8B95A1',
   grey500: '#4E5968',
