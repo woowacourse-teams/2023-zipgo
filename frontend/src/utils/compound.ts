@@ -1,6 +1,8 @@
 import { Children, isValidElement, PropsWithChildren, ReactElement, ReactNode } from 'react';
 
-type WithAsChild<P> = P & {
+export type PropsWithAsChild<P = unknown> = PropsWithChildren<P> & { asChild?: boolean };
+
+type WithAsChild<P> = Omit<P, 'children'> & {
   asChild: true;
   child: ReactElement<P>;
 };
@@ -28,5 +30,5 @@ export function getValidProps<P extends PropsWithChildren<{ asChild?: boolean }>
     if (child) return { ...restProps, asChild, child };
   }
 
-  return { ...restProps, asChild: false, child: null };
+  return { ...props, asChild: false, child: null };
 }
