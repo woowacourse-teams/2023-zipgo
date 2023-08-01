@@ -3,10 +3,11 @@ const color = {
   primary: '#3E5E8E',
   secondary: '#7DA3C2',
   warning: '#E73846',
+  blue: '#D0E6F9',
 
   white: '#FFFFFF',
-  grey200: '#F2F4F6',
   grey250: '#C7CFD7',
+  grey200: '#F2F4F6',
   grey300: '#AFB8C1',
   grey400: '#8B95A1',
   grey500: '#4E5968',
