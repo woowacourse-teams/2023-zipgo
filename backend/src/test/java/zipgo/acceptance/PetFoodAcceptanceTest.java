@@ -8,13 +8,13 @@ import org.junit.jupiter.api.Test;
 import org.springframework.restdocs.payload.JsonFieldType;
 import org.springframework.restdocs.restassured.RestDocumentationFilter;
 import org.springframework.test.context.jdbc.Sql;
+import zipgo.petfood.presentation.dto.PetFoodSelectRequest;
 
 import static com.epages.restdocs.apispec.RestAssuredRestDocumentationWrapper.document;
 import static com.epages.restdocs.apispec.RestAssuredRestDocumentationWrapper.resourceDetails;
 import static com.epages.restdocs.apispec.Schema.schema;
 import static io.restassured.RestAssured.given;
 import static io.restassured.http.ContentType.JSON;
-import static org.hamcrest.Matchers.containsString;
 import static org.hamcrest.Matchers.empty;
 import static org.hamcrest.Matchers.is;
 import static org.hamcrest.Matchers.not;
@@ -25,7 +25,6 @@ import static org.springframework.restdocs.payload.PayloadDocumentation.fieldWit
 import static org.springframework.restdocs.payload.PayloadDocumentation.responseFields;
 import static org.springframework.restdocs.request.RequestDocumentation.parameterWithName;
 import static org.springframework.restdocs.request.RequestDocumentation.pathParameters;
-import zipgo.petfood.presentation.dto.PetFoodSelectRequest;
 
 public class PetFoodAcceptanceTest extends AcceptanceTest {
 
@@ -150,6 +149,7 @@ public class PetFoodAcceptanceTest extends AcceptanceTest {
                             fieldWithPath("hasStandard.eu").description("유럽 기준 충족 여부").type(JsonFieldType.BOOLEAN),
                             fieldWithPath("functionality").description("기능성").type(JsonFieldType.ARRAY),
                             fieldWithPath("brand.name").description("브랜드명").type(JsonFieldType.STRING),
+                            fieldWithPath("brand.imageUrl").description("브랜드 이미지 url").type(JsonFieldType.STRING),
                             fieldWithPath("brand.state").description("브랜드 국가").type(JsonFieldType.STRING),
                             fieldWithPath("brand.foundedYear").description("브랜드 설립연도").type(JsonFieldType.NUMBER),
                             fieldWithPath("brand.hasResearchCenter").description("브랜드 연구 기관 존재 여부")
