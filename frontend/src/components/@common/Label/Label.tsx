@@ -72,17 +72,17 @@ const Label = (labelProps: LabelProps) => {
 
   return (
     <LabelWrapper
-      hasBorder={hasBorder}
-      borderColor={borderColor}
-      backgroundColor={backgroundColor}
-      textColor={textColor}
-      width={width}
+      $hasBorder={hasBorder}
+      $borderColor={borderColor}
+      $backgroundColor={backgroundColor}
+      $textColor={textColor}
+      $width={width}
+      $clicked={clicked}
       onClick={onClick}
-      clicked={clicked}
     >
       <LabelInner>
         {icon && <Icon src={icon} alt="라벨 아이콘" />}
-        <LabelText fontSize={fontSize} fontWeight={fontWeight}>
+        <LabelText $fontSize={fontSize} $fontWeight={fontWeight}>
           {text}
         </LabelText>
       </LabelInner>
@@ -92,8 +92,19 @@ const Label = (labelProps: LabelProps) => {
 
 export default Label;
 
-type LabelStyleProps = Omit<LabelProps, 'text' | 'icon'>;
-type LabelTextStyleProps = Pick<LabelProps, 'fontWeight' | 'fontSize'>;
+interface LabelStyleProps {
+  $hasBorder?: boolean;
+  $borderColor?: string;
+  $backgroundColor?: string;
+  $textColor?: string;
+  $width?: number;
+  $clicked?: boolean;
+}
+
+interface LabelTextStyleProps {
+  $fontSize?: number;
+  $fontWeight?: number;
+}
 
 const LabelWrapper = styled.div<LabelStyleProps>`
   user-select: none;
@@ -103,16 +114,21 @@ const LabelWrapper = styled.div<LabelStyleProps>`
   width: fit-content;
   height: 3rem;
 
-  ${({ width }) => (width ? `width: ${width}rem` : 'padding: 0 1.6rem')};
+  ${({ $width }) => ($width ? `width: ${$width}rem` : 'padding: 0 1.6rem')};
 
-  color: ${({ textColor }) => textColor};
+  color: ${({ $textColor }) => $textColor};
 
-  background-color: ${({ clicked, theme, backgroundColor }) =>
-    clicked ? theme.color.blue : backgroundColor};
+  background-color: ${({ $clicked, theme, $backgroundColor }) =>
+    $clicked ? theme.color.blue : $backgroundColor};
   border-radius: 20px;
 
-  ${({ hasBorder, clicked, borderColor }) =>
-    hasBorder && !clicked && `border: 1px solid ${borderColor}`};
+  ${({ $hasBorder, $clicked, $borderColor }) =>
+    $hasBorder &&
+    !$clicked &&
+    `
+        outline: 1px solid ${$borderColor};
+        outline-offset: -1px;
+    `}
 
   ${({ onClick }) => onClick && 'cursor: pointer'};
 `;
@@ -129,8 +145,8 @@ const LabelInner = styled.div`
 const LabelText = styled.p<LabelTextStyleProps>`
   margin-top: 0.2rem;
 
-  font-size: ${({ fontSize }) => fontSize}rem;
-  font-weight: ${({ fontWeight }) => fontWeight};
+  font-size: ${({ $fontSize }) => $fontSize}rem;
+  font-weight: ${({ $fontWeight }) => $fontWeight};
   line-height: 2rem;
   letter-spacing: 0.04rem;
 `;
