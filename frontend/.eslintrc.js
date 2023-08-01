@@ -53,6 +53,10 @@ module.exports = {
     'react/function-component-definition': [2, { namedComponents: 'arrow-function' }],
     'react/jsx-filename-extension': [2, { extensions: ['.js', '.jsx', '.ts', '.tsx'] }],
 
+    'jsx-a11y/click-events-have-key-events': 'warn',
+    'jsx-a11y/interactive-supports-focus': 'warn',
+    'jsx-a11y/no-static-element-interactions': 'warn',
+
     '@typescript-eslint/no-unused-vars': 'off',
 
     'simple-import-sort/imports': 'error',
