@@ -21,7 +21,7 @@ public class JwtProvider {
 
     public JwtProvider(JwtCredentials jwtCredentials) {
         this.key = hmacShaKeyFor(jwtCredentials.getSecretKey().getBytes(UTF_8));
-        this.validityInMilliseconds = jwtCredentials.getExpireLengthMillisecond();
+        this.validityInMilliseconds = jwtCredentials.getExpireLength();
     }
 
     public String create(String payload) {
