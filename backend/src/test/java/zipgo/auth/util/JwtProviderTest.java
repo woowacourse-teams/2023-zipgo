@@ -100,7 +100,7 @@ class JwtProviderTest {
         String 토큰 = jwtProvider.create(페이로드);
 
         // when
-        assertDoesNotThrow(() -> jwtProvider.validateAbleToken(토큰));
+        assertDoesNotThrow(() -> jwtProvider.validateParseJws(토큰));
     }
 
     @Test
@@ -116,7 +116,7 @@ class JwtProviderTest {
         String 토큰 = 유효기간이_지난_jwtProvider.create(페이로드);
 
         // expect
-        assertThatThrownBy(() -> 유효기간이_지난_jwtProvider.validateAbleToken(토큰))
+        assertThatThrownBy(() -> 유효기간이_지난_jwtProvider.validateParseJws(토큰))
                 .isInstanceOf(AuthException.class);
     }
 

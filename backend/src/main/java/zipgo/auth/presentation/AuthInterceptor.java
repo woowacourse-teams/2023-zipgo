@@ -20,7 +20,7 @@ public class AuthInterceptor implements HandlerInterceptor {
             Object handler
     ) {
         String accessToken = BearerTokenExtractor.extract(request);
-        jwtProvider.validateAbleToken(accessToken);
+        jwtProvider.validateParseJws(accessToken);
         return true;
     }
 

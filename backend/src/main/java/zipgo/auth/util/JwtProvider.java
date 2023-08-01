@@ -36,10 +36,10 @@ public class JwtProvider {
     }
 
     public String getPayload(String token) {
-        return tokenToJws(token).getBody().getSubject();
+        return validateParseJws(token).getBody().getSubject();
     }
 
-    private Jws<Claims> tokenToJws(String token) {
+    public Jws<Claims> validateParseJws(String token) {
         try {
             return Jwts.parserBuilder()
                     .setSigningKey(key)
@@ -54,10 +54,6 @@ public class JwtProvider {
         } catch (Exception e) {
             throw new AuthException("토큰의 알 수 없는 문제가 발생했습니다.", e);
         }
-    }
-
-    public void validateAbleToken(String token) {
-        tokenToJws(token);
     }
 
 }
