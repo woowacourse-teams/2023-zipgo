@@ -4,6 +4,7 @@ import App from '@/App';
 import ReviewList from '@/components/Review/ReviewList/ReviewList';
 import Landing from '@/pages/Landing/Landing';
 import Login from '@/pages/Login/Login';
+import ReviewAddition from '@/pages/ReviewAddition/ReviewAddition';
 import ReviewStarRating from '@/pages/ReviewStarRating/ReviewStarRating';
 
 export const router = createBrowserRouter([
@@ -27,6 +28,10 @@ export const router = createBrowserRouter([
       {
         path: 'pet-foods/:petFoodId/reviews/write',
         element: <ReviewStarRating />,
+      },
+      {
+        path: 'pet-foods/:petFoodId/reviews/write/detail',
+        element: <ReviewAddition />,
       },
     ],
   },
