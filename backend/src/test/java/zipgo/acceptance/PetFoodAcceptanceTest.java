@@ -1,23 +1,11 @@
 package zipgo.acceptance;
 
-import com.epages.restdocs.apispec.ResourceSnippetDetails;
-import com.epages.restdocs.apispec.Schema;
-import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Nested;
-import org.junit.jupiter.api.Test;
-import org.springframework.restdocs.payload.JsonFieldType;
-import org.springframework.restdocs.restassured.RestDocumentationFilter;
-import org.springframework.test.context.jdbc.Sql;
-import zipgo.petfood.presentation.dto.PetFoodSelectRequest;
-
 import static com.epages.restdocs.apispec.RestAssuredRestDocumentationWrapper.document;
 import static com.epages.restdocs.apispec.RestAssuredRestDocumentationWrapper.resourceDetails;
 import static com.epages.restdocs.apispec.Schema.schema;
 import static io.restassured.RestAssured.given;
 import static io.restassured.http.ContentType.JSON;
-import static org.hamcrest.Matchers.empty;
-import static org.hamcrest.Matchers.is;
-import static org.hamcrest.Matchers.not;
+import static java.util.Collections.EMPTY_LIST;
 import static org.springframework.http.HttpStatus.BAD_REQUEST;
 import static org.springframework.http.HttpStatus.NOT_FOUND;
 import static org.springframework.http.HttpStatus.OK;
@@ -29,6 +17,16 @@ import static org.springframework.restdocs.payload.PayloadDocumentation.fieldWit
 import static org.springframework.restdocs.payload.PayloadDocumentation.responseFields;
 import static org.springframework.restdocs.request.RequestDocumentation.parameterWithName;
 import static org.springframework.restdocs.request.RequestDocumentation.pathParameters;
+
+import com.epages.restdocs.apispec.ResourceSnippetDetails;
+import com.epages.restdocs.apispec.Schema;
+import java.util.List;
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Nested;
+import org.junit.jupiter.api.Test;
+import org.springframework.restdocs.payload.JsonFieldType;
+import org.springframework.restdocs.restassured.RestDocumentationFilter;
+import org.springframework.test.context.jdbc.Sql;
 
 public class PetFoodAcceptanceTest extends AcceptanceTest {
 
@@ -42,27 +40,51 @@ public class PetFoodAcceptanceTest extends AcceptanceTest {
                 .description("식품 전체를 조회합니다.");
 
         @Test
-        void 키워드를_지정하지_않고_요청한다() {
+        void 필터를_지정하지_않고_요청한다() {
             // given
-            String 키워드 = "";
-            String 브랜드 = "오리젠";
-            String 주단백질원 = "말미잘";
-
-            PetFoodSelectRequest request = new PetFoodSelectRequest(키워드, 브랜드, 주단백질원);
+            List<Long> 브랜드 = EMPTY_LIST;
+            List<String> 영양기준 = EMPTY_LIST;
+            List<String> 기능성 = EMPTY_LIST;
+            List<String> 주단백질원 = EMPTY_LIST;
 
             var 요청_준비 = given(spec)
-                    .contentType(JSON)
-                    .body(request)
-                    .filter(성공_API_문서_생성("식품 전체 조회 - 성공(키워드 없음)"));
+                    .queryParam("brandIds", 브랜드)
+                    .queryParam("nutrientStandards", 영양기준)
+                    .queryParam("functionalities", 기능성)
+                    .queryParam("mainIngredients", 주단백질원)
+                    .filter(성공_API_문서_생성("식품 필터링 없이 조회 - 성공(전체 조회)"));
 
             // when
             var 응답 = 요청_준비.when()
-                    .post("/pet-foods");
+                    .get("/pet-foods");
 
             // then
             응답.then()
-                    .assertThat().statusCode(OK.value())
-                    .assertThat().body("petFoods.size()", is(1));
+                    .assertThat().statusCode(OK.value());
+        }
+
+        @Test
+        void 필터를_지정해서_요청한다() {
+            // given
+            List<Long> 브랜드 = List.of(1L);
+            List<String> 영양기준 = List.of("유럽");
+            List<String> 기능성 = List.of("튼튼");
+            List<String> 주단백질원 = List.of("닭고기");
+
+            var 요청_준비 = given(spec)
+                    .queryParam("brandIds", 브랜드)
+                    .queryParam("nutrientStandards", 영양기준)
+                    .queryParam("functionalities", 기능성)
+                    .queryParam("mainIngredients", 주단백질원)
+                    .filter(성공_API_문서_생성("식품 필터링 조회 - 성공"));
+
+            // when
+            var 응답 = 요청_준비.when()
+                    .get("/pet-foods");
+
+            // then
+            응답.then()
+                    .assertThat().statusCode(OK.value());
         }
 
         private RestDocumentationFilter 성공_API_문서_생성(String name) {
@@ -76,30 +98,6 @@ public class PetFoodAcceptanceTest extends AcceptanceTest {
                             fieldWithPath("petFoods[].foodName").description("식품 이름").type(JsonFieldType.STRING),
                             fieldWithPath("petFoods[].purchaseUrl").description("구매 링크").type(JsonFieldType.STRING)
                     ));
-        }
-
-        @Test
-        void 키워드가_있는_목록을_요청한다() {
-            // given
-            String 키워드 = "diet";
-            String 브랜드 = "오리젠";
-            String 주단백질원 = "말미잘";
-
-            PetFoodSelectRequest request = new PetFoodSelectRequest(키워드, 브랜드, 주단백질원);
-
-            var 요청_준비 = given(spec)
-                    .contentType(JSON)
-                    .body(request)
-                    .filter(성공_API_문서_생성("식품 전체 조회 - 성공(키워드 지정)"));
-
-            // when
-            var 응답 = 요청_준비.when()
-                    .post("/pet-foods");
-
-            // then
-            응답.then()
-                    .assertThat().statusCode(OK.value())
-                    .assertThat().body("petFoods.size()", not(empty()));
         }
 
     }

@@ -1,11 +1,20 @@
 package zipgo.petfood.application;
 
+import static java.util.Collections.EMPTY_LIST;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.assertAll;
+import static zipgo.petfood.domain.fixture.PetFoodFixture.키워드_없이_식품_초기화;
+import static zipgo.petfood.domain.fixture.PetFoodFixture.키워드_있는_식품_초기화;
+
 import java.util.List;
 import org.junit.jupiter.api.DisplayNameGeneration;
 import org.junit.jupiter.api.DisplayNameGenerator;
+import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.context.jdbc.Sql;
 import zipgo.brand.domain.Brand;
 import zipgo.brand.domain.fixture.BrandFixture;
 import zipgo.brand.domain.repository.BrandRepository;
@@ -15,14 +24,11 @@ import zipgo.petfood.domain.repository.KeywordRepository;
 import zipgo.petfood.domain.repository.PetFoodRepository;
 import zipgo.petfood.presentation.dto.FilterResponse;
 
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.assertAll;
-import static zipgo.petfood.domain.fixture.PetFoodFixture.키워드_없이_식품_초기화;
-import static zipgo.petfood.domain.fixture.PetFoodFixture.키워드_있는_식품_초기화;
-
 @SpringBootTest
 @SuppressWarnings("NonAsciiCharacters")
+@Sql(scripts = {"classpath:truncate.sql", "classpath:data.sql"})
 @DisplayNameGeneration(DisplayNameGenerator.ReplaceUnderscores.class)
+@AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
 class PetFoodQueryServiceTest {
 
     @Autowired
@@ -39,6 +45,123 @@ class PetFoodQueryServiceTest {
 
     private Brand 브랜드_조회하기() {
         return brandRepository.findAll().get(0);
+    }
+
+    @Nested
+    class 필터_조회 {
+
+        @Test
+        void 브랜드를_만족하는_식품만_반환한다() {
+            // when
+            List<PetFood> petFoods = petFoodQueryService.getPetFoods(
+                    List.of(2L),
+                    EMPTY_LIST,
+                    EMPTY_LIST,
+                    EMPTY_LIST
+            );
+
+            // then
+            assertAll(
+                    () -> assertThat(petFoods).extracting(PetFood::getName)
+                            .contains("[고집] 갈비 맛 모밀"),
+                    () -> assertThat(petFoods).extracting(petFood -> petFood.getBrand().getId())
+                            .contains(2L)
+            );
+        }
+
+        @Test
+        void 영양_기준을_만족하는_식품만_반환한다() {
+            // when
+            List<PetFood> petFoods = petFoodQueryService.getPetFoods(
+                    EMPTY_LIST,
+                    List.of("유럽"),
+                    EMPTY_LIST,
+                    EMPTY_LIST
+            );
+
+            // then
+            assertAll(
+                    () -> assertThat(petFoods).extracting(PetFood::getName)
+                            .contains("[고집] 돌아온 배배", "[고집] 말미잘 맛 민무"),
+                    () -> assertThat(petFoods).extracting(petFood -> petFood.getHasStandard().getEurope())
+                            .contains(true)
+            );
+        }
+
+        @Test
+        void 주원료를_만족하는_식품만_반환한다() {
+            // when
+            List<PetFood> petFoods = petFoodQueryService.getPetFoods(
+                    EMPTY_LIST,
+                    EMPTY_LIST,
+                    List.of("말미잘"),
+                    EMPTY_LIST
+            );
+
+            // then
+            assertAll(
+                    () -> assertThat(petFoods).extracting(PetFood::getName)
+                            .contains("[고집] 돌아온 배배", "[고집] 말미잘 맛 민무"),
+                    () -> assertThat(petFoods).extracting(PetFood::getPrimaryIngredients)
+                            .contains(List.of("말미잘"))
+            );
+        }
+
+        @Test
+        void 기능성을_만족하는_식품만_반환한다() {
+            // when
+            List<PetFood> petFoods = petFoodQueryService.getPetFoods(
+                    EMPTY_LIST,
+                    EMPTY_LIST,
+                    EMPTY_LIST,
+                    List.of("튼튼")
+            );
+
+            // then
+            assertAll(
+                    () -> assertThat(petFoods).extracting(PetFood::getName)
+                            .contains("[고집] 돌아온 배배"),
+                    () -> assertThat(petFoods).extracting(PetFood::getFunctionality)
+                            .contains(List.of("튼튼"))
+            );
+        }
+
+        @Test
+        void 모든_필터를_만족하는_식품만_반환한다() {
+            // when
+            List<PetFood> petFoods = petFoodQueryService.getPetFoods(
+                    List.of(1L),
+                    List.of("유럽"),
+                    List.of("닭고기"),
+                    List.of("튼튼")
+            );
+
+            // then
+            assertAll(
+                    () -> assertThat(petFoods).extracting(petFood -> petFood.getBrand().getId())
+                            .contains(1L),
+                    () -> assertThat(petFoods).extracting(petFood -> petFood.getHasStandard().getEurope())
+                            .contains(true),
+                    () -> assertThat(petFoods).extracting(PetFood::getFunctionality)
+                            .contains(List.of("튼튼")),
+                    () -> assertThat(petFoods).extracting(PetFood::getPrimaryIngredients)
+                            .contains(List.of("닭고기", "말미잘"))
+            );
+        }
+
+        @Test
+        void 모든_정보가_NULL일_경우_모든_식품을_반환한다() {
+            // when
+            List<PetFood> petFoods = petFoodQueryService.getPetFoods(
+                    EMPTY_LIST,
+                    EMPTY_LIST,
+                    EMPTY_LIST,
+                    EMPTY_LIST
+            );
+
+            // then
+            assertThat(petFoods.size()).isEqualTo(petFoodRepository.findAll().size());
+        }
     }
 
     @Test

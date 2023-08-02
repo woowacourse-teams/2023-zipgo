@@ -30,7 +30,7 @@ public class PetFoodFixture {
                 .keyword(keyword)
                 .functionality(new Functionality(List.of("튼튼,짱짱")))
                 .primaryIngredients(new PrimaryIngredients(List.of("닭고기,쌀", "말미잘")))
-                .hasStandard(HasStandard.builder().build())
+                .hasStandard(HasStandard.builder().europe(false).unitedStates(true).build())
                 .brand(brand)
                 .build();
     }

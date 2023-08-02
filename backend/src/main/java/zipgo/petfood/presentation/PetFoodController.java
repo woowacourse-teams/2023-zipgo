@@ -1,13 +1,14 @@
 package zipgo.petfood.presentation;
 
+import static java.util.Collections.EMPTY_LIST;
+
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import zipgo.brand.domain.Brand;
 import zipgo.petfood.application.PetFoodQueryService;
@@ -16,7 +17,6 @@ import zipgo.petfood.presentation.dto.FilterMetadataResponse;
 import zipgo.petfood.presentation.dto.FilterResponse;
 import zipgo.petfood.presentation.dto.GetPetFoodResponse;
 import zipgo.petfood.presentation.dto.GetPetFoodsResponse;
-import zipgo.petfood.presentation.dto.PetFoodSelectRequest;
 
 @RestController
 @RequiredArgsConstructor
@@ -25,14 +25,35 @@ public class PetFoodController {
 
     private final PetFoodQueryService petFoodQueryService;
 
-    @PostMapping
-    public ResponseEntity<GetPetFoodsResponse> getPetFoods(@RequestBody PetFoodSelectRequest request) {
-        List<PetFood> petFoods = petFoodQueryService.getPetFoodByDynamicValue(
-                request.keyword(),
-                request.brand(),
-                request.primaryIngredients()
+    @GetMapping
+    public ResponseEntity<GetPetFoodsResponse> getPetFoods(
+            @RequestParam List<Long> brandIds,
+            @RequestParam List<String> nutrientStandards,
+            @RequestParam List<String> functionalities,
+            @RequestParam List<String> mainIngredients
+            ) {
+        List<PetFood> petFoods = petFoodQueryService.getPetFoods(
+                convertBrandIds(brandIds),
+                convertNullCollection(nutrientStandards),
+                convertNullCollection(mainIngredients),
+                convertNullCollection(functionalities)
         );
+        System.out.println("petFoods = " + petFoods);
         return ResponseEntity.ok(GetPetFoodsResponse.from(petFoods));
+    }
+
+    private static List<Long> convertBrandIds(List<Long> brandIds) {
+        if (brandIds == null) {
+            brandIds = EMPTY_LIST;
+        }
+        return brandIds;
+    }
+
+    private static List<String> convertNullCollection(List<String> collections) {
+        if (collections == null) {
+            collections = EMPTY_LIST;
+        }
+        return collections;
     }
 
     @GetMapping("/{id}")
