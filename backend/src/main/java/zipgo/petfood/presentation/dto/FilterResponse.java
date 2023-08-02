@@ -5,9 +5,9 @@ import zipgo.brand.domain.Brand;
 
 public record FilterResponse(
         List<BrandResponse> brands,
-        List<String> functionalities,
-        List<String> mainIngredients,
-        List<String> nutritionStandards
+        List<FunctionalityResponse> functionalities,
+        List<PrimaryIngredientResponse> mainIngredients,
+        List<NutrientStandardResponse> nutritionStandards
 ) {
 
     public static FilterResponse from(
@@ -19,10 +19,34 @@ public record FilterResponse(
                 brands.stream()
                         .map(BrandResponse::from)
                         .toList(),
-                functionalities,
-                primaryIngredients,
-                List.of("유럽", "미국")
-                );
+                functionalities.stream().map(functionality -> new FunctionalityResponse(0L, functionality)).toList(),
+                primaryIngredients.stream().map(ingredient -> new PrimaryIngredientResponse(0L, ingredient)).toList(),
+                List.of(new NutrientStandardResponse(0L, "미국"), new NutrientStandardResponse(0L, "유럽"))
+        );
+    }
+
+    public record BrandResponse(
+            Long id,
+            String brandUrl,
+            String brandName
+    ) {
+
+        public static BrandResponse from(Brand brand) {
+            return new BrandResponse(brand.getId(), brand.getImageUrl(), brand.getName());
+        }
+
+    }
+
+    public record PrimaryIngredientResponse(Long id, String ingredients) {
+
+    }
+
+    public record FunctionalityResponse(Long id, String functionality) {
+
+    }
+
+    public record NutrientStandardResponse(Long id, String nation) {
+
     }
 
 }

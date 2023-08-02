@@ -1,5 +1,15 @@
 package zipgo.acceptance;
 
+import com.epages.restdocs.apispec.ResourceSnippetDetails;
+import com.epages.restdocs.apispec.Schema;
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Nested;
+import org.junit.jupiter.api.Test;
+import org.springframework.restdocs.payload.JsonFieldType;
+import org.springframework.restdocs.restassured.RestDocumentationFilter;
+import org.springframework.test.context.jdbc.Sql;
+import zipgo.petfood.presentation.dto.PetFoodSelectRequest;
+
 import static com.epages.restdocs.apispec.RestAssuredRestDocumentationWrapper.document;
 import static com.epages.restdocs.apispec.RestAssuredRestDocumentationWrapper.resourceDetails;
 import static com.epages.restdocs.apispec.Schema.schema;
@@ -12,21 +22,13 @@ import static org.springframework.http.HttpStatus.BAD_REQUEST;
 import static org.springframework.http.HttpStatus.NOT_FOUND;
 import static org.springframework.http.HttpStatus.OK;
 import static org.springframework.restdocs.payload.JsonFieldType.ARRAY;
+import static org.springframework.restdocs.payload.JsonFieldType.NUMBER;
 import static org.springframework.restdocs.payload.JsonFieldType.OBJECT;
+import static org.springframework.restdocs.payload.JsonFieldType.STRING;
 import static org.springframework.restdocs.payload.PayloadDocumentation.fieldWithPath;
 import static org.springframework.restdocs.payload.PayloadDocumentation.responseFields;
 import static org.springframework.restdocs.request.RequestDocumentation.parameterWithName;
 import static org.springframework.restdocs.request.RequestDocumentation.pathParameters;
-
-import com.epages.restdocs.apispec.ResourceSnippetDetails;
-import com.epages.restdocs.apispec.Schema;
-import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Nested;
-import org.junit.jupiter.api.Test;
-import org.springframework.restdocs.payload.JsonFieldType;
-import org.springframework.restdocs.restassured.RestDocumentationFilter;
-import org.springframework.test.context.jdbc.Sql;
-import zipgo.petfood.presentation.dto.PetFoodSelectRequest;
 
 public class PetFoodAcceptanceTest extends AcceptanceTest {
 
@@ -210,24 +212,36 @@ public class PetFoodAcceptanceTest extends AcceptanceTest {
             return document("필터링 메타데이터 정보 조회 - 성공",
                     문서_정보.responseSchema(성공_응답_형식),
                     responseFields(
-                            fieldWithPath("keywords").type(ARRAY).description("키워드"),
+                            fieldWithPath("keywords").type(ARRAY).description("필터 키워드 목록"),
                             fieldWithPath("filters").type(OBJECT).description("필터 정보"),
                             fieldWithPath("filters.brands[]").type(ARRAY).description("브랜드"),
+                            fieldWithPath("filters.brands[].id").type(NUMBER).description("브랜드 아이디"),
+                            fieldWithPath("filters.brands[].brandName").type(STRING).description("브랜드 이름"),
+                            fieldWithPath("filters.brands[].brandUrl").type(STRING).description("브랜드 이미지 url"),
                             fieldWithPath("filters.nutritionStandards[]").type(ARRAY).description("영양기준"),
-                            fieldWithPath("filters.mainIngredients[]").type(ARRAY).description("주원료"),
-                            fieldWithPath("filters.functionalities[]").type(ARRAY).description("기능성")
+                            fieldWithPath("filters.nutritionStandards[].id").type(NUMBER).description("영양기준 아이디"),
+                            fieldWithPath("filters.nutritionStandards[].nation").type(STRING).description("영양기준 국가"),
+                            fieldWithPath("filters.mainIngredients[]").type(ARRAY).description("주원료 배열"),
+                            fieldWithPath("filters.mainIngredients[].id").type(NUMBER).description("주원료 아이디"),
+                            fieldWithPath("filters.mainIngredients[].ingredients").type(STRING).description("주원료 이름"),
+                            fieldWithPath("filters.functionalities[]").type(ARRAY).description("기능성 배열"),
+                            fieldWithPath("filters.functionalities[].id").type(NUMBER).description("기능성 아이디"),
+                            fieldWithPath("filters.functionalities[].functionality").type(STRING).description("기능성 이름")
                     ));
         }
 
         private Schema 성공_응답_형식 = schema("FilterMetadataResponse");
+
+        // TODO: 구현 후 문서 수정하기
         private ResourceSnippetDetails 문서_정보 = resourceDetails()
-                .summary("필터링 메타데이터 정보 조회하기")
-                .description("필터링에 필요한 메타데이터 정보를 조회합니다.");
+                .summary("[임시] 필터링 메타데이터 정보 조회하기")
+                .description("필터링에 필요한 메타데이터 정보를 조회합니다. 230802 - 실제 데이터 아님");
 
         @Test
         void 필터링에_필요한_메타데이터를_조회한다() {
             // when
             var 응답 = given(spec)
+                    .filter(필터링_메타데이터_API_문서_생성())
                     .when()
                     .get("/pet-foods/filters");
 
@@ -235,6 +249,7 @@ public class PetFoodAcceptanceTest extends AcceptanceTest {
             응답.then()
                     .assertThat().statusCode(OK.value());
         }
+
     }
 
 }

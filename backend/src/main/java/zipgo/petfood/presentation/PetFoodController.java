@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import zipgo.brand.domain.Brand;
 import zipgo.petfood.application.PetFoodQueryService;
 import zipgo.petfood.domain.PetFood;
 import zipgo.petfood.presentation.dto.FilterMetadataResponse;
@@ -44,8 +45,46 @@ public class PetFoodController {
 
     @GetMapping("/filters")
     public ResponseEntity<FilterMetadataResponse> getFilterMetadata() {
-        FilterResponse filter = petFoodQueryService.getMetadataForFilter();
-        return ResponseEntity.ok().body(FilterMetadataResponse.of(filter));
+//        FilterResponse filter = petFoodQueryService.getMetadataForFilter();
+        FilterMetadataResponse metadata = buildMetadata();
+        return ResponseEntity.ok().body(metadata);
+    }
+
+    private FilterMetadataResponse buildMetadata() {
+        return FilterMetadataResponse.of(
+                FilterResponse.from(
+                        List.of(Brand.builder()
+                                        .id(2L)
+                                        .name("오리젠")
+                                        .nation("캐나다")
+                                        .imageUrl(
+                                                "https://orijenpetfoods.com.au/wp-content/themes/orijen/images/ORIJEN-Logo2016.png")
+                                        .build(),
+                                Brand.builder()
+                                        .id(1L)
+                                        .name("퓨리나")
+                                        .nation("미국")
+                                        .imageUrl(
+                                                "https://www.nestle.com/sites/default/files/styles/brand_logo/public/purina-logo-square-2023.png?h=a7e6d17b&itok=k6CCv7Sr")
+                                        .build(),
+                                Brand.builder()
+                                        .id(3L)
+                                        .name("아카나")
+                                        .nation("캐나다")
+                                        .imageUrl("https://intl.acana.com/wp-content/themes/acana2019/img/logo.png")
+                                        .build(),
+                                Brand.builder()
+                                        .id(4L)
+                                        .name("인스팅트")
+                                        .nation("미국")
+                                        .imageUrl(
+                                                "https://instinctpetfood.com/wp-content/uploads/2021/08/instinct-logo.jpg")
+                                        .build()
+                        ),
+                        List.of("닭고기", "칠면조", "자연란"),
+                        List.of("체중조절", "단백질풍부", "발육")
+                )
+        );
     }
 
 }
