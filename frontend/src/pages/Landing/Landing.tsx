@@ -1,7 +1,7 @@
 import { ChangeEvent, useEffect, useState } from 'react';
 import styled from 'styled-components';
 
-import ZipgoLogo from '@/assets/png/landing_banner.png';
+import ZipgoBanner from '@/assets/png/landing_banner.png';
 import FilterSwitch from '@/components/@common/FilterSwitch/FilterSwitch';
 import Header from '@/components/@common/Header/Header';
 import Template from '@/components/@common/Template';
@@ -35,7 +35,7 @@ const Landing = () => {
               <BannerTitle>집사의 고민</BannerTitle>
             </TitleContainer>
           </BannerText>
-          <BannerImg src={ZipgoLogo} />
+          <BannerImg src={ZipgoBanner} />
         </BannerSection>
         <ToggleBox>
           <FilterSwitch id="filter" onChange={onToggle} />

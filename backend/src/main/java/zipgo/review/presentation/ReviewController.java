@@ -1,18 +1,25 @@
 package zipgo.review.presentation;
 
 import jakarta.validation.Valid;
+import java.net.URI;
+import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
+import zipgo.auth.presentation.Auth;
+import zipgo.auth.presentation.dto.AuthDto;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RestController;
 import zipgo.review.application.ReviewQueryService;
 import zipgo.review.application.ReviewService;
 import zipgo.review.domain.Review;
 import zipgo.review.dto.request.CreateReviewRequest;
 import zipgo.review.dto.request.UpdateReviewRequest;
 import zipgo.review.dto.response.GetReviewsResponse;
-
-import java.net.URI;
-import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
@@ -23,10 +30,10 @@ public class ReviewController {
 
     @PostMapping("/reviews")
     public ResponseEntity<Void> create(
-            Long memberId,
+            @Auth AuthDto authDto,
             @RequestBody @Valid CreateReviewRequest createReviewRequest
     ) {
-        Long reviewId = reviewService.createReview(memberId, createReviewRequest);
+        Long reviewId = reviewService.createReview(authDto.id(), createReviewRequest);
         return ResponseEntity.created(URI.create("/reviews/" + reviewId)).build();
     }
 
@@ -41,11 +48,20 @@ public class ReviewController {
 
     @PutMapping("/reviews/{reviewId}")
     public ResponseEntity<Void> update(
-            Long memberId,
+            @Auth AuthDto authDto,
             @PathVariable Long reviewId,
             @RequestBody @Valid UpdateReviewRequest updateReviewRequest
     ) {
-        reviewService.updateReview(memberId, reviewId, updateReviewRequest);
+        reviewService.updateReview(authDto.id(), reviewId, updateReviewRequest);
+        return ResponseEntity.noContent().build();
+    }
+
+    @DeleteMapping("/reviews/{reviewId}")
+    public ResponseEntity<Void> delete(
+            @Auth AuthDto authDto,
+            @PathVariable Long reviewId
+    ) {
+        reviewService.deleteReview(authDto.id(), reviewId);
         return ResponseEntity.noContent().build();
     }
 

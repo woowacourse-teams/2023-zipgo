@@ -1,16 +1,9 @@
 package zipgo.petfood.domain.repository;
 
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.Assertions.assertThatThrownBy;
-import static zipgo.petfood.domain.fixture.PetFoodFixture.식품_초기화;
-import static zipgo.petfood.domain.fixture.PetFoodFixture.키워드_없이_식품_초기화;
-import static zipgo.petfood.domain.fixture.PetFoodFixture.키워드_있는_식품_초기화;
-
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
-import java.util.List;
 import org.junit.jupiter.api.DisplayNameGeneration;
-import org.junit.jupiter.api.DisplayNameGenerator.ReplaceUnderscores;
+import org.junit.jupiter.api.DisplayNameGenerator;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
@@ -23,8 +16,16 @@ import zipgo.petfood.domain.Keyword;
 import zipgo.petfood.domain.PetFood;
 import zipgo.petfood.exception.PetFoodException;
 
+import java.util.List;
+
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
+import static org.junit.jupiter.api.Assertions.assertAll;
+import static zipgo.petfood.domain.fixture.PetFoodFixture.*;
+
 @DataJpaTest
-@DisplayNameGeneration(ReplaceUnderscores.class)
+@SuppressWarnings("NonAsciiCharacters")
+@DisplayNameGeneration(DisplayNameGenerator.ReplaceUnderscores.class)
 class PetFoodRepositoryTest {
 
     @Autowired
@@ -67,8 +68,10 @@ class PetFoodRepositoryTest {
         List<PetFood> 조회된_식품 = petFoodRepository.findByKeyword(키워드가_있는_식품.getKeyword());
 
         // then
-        assertThat(조회된_식품).contains(키워드가_있는_식품);
-        assertThat(조회된_식품).doesNotContain(키워드가_없는_식품);
+        assertAll(
+                () -> assertThat(조회된_식품).contains(키워드가_있는_식품),
+                () -> assertThat(조회된_식품).doesNotContain(키워드가_없는_식품)
+        );
     }
 
     private PetFood 키워드있는_식품_생성하기() {

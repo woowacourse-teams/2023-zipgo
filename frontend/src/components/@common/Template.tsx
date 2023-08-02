@@ -1,4 +1,5 @@
-import { createElement, isValidElement, PropsWithChildren } from 'react';
+/* eslint-disable consistent-return */
+import { createElement, isValidElement, PropsWithChildren, ReactNode } from 'react';
 import styled, { css, isStyledComponent } from 'styled-components';
 
 import { getComputedStyleOfSC } from '@/utils/styled-components';
@@ -15,43 +16,81 @@ interface StaticHeaderLayout<T> {
   staticHeader: T;
 }
 
+interface TemplateProps {
+  footer?: boolean;
+}
+
 const Template = <T extends React.FC>(
-  props: PropsWithChildren<FixedHeaderLayout<T> | StaticHeaderLayout<T>>,
+  props: PropsWithChildren<(FixedHeaderLayout<T> | StaticHeaderLayout<T>) & TemplateProps>,
 ) => {
-  const { children, fixedHeader, staticHeader } = props;
+  const { children, fixedHeader, staticHeader, footer = true } = props;
   const $header = fixedHeader ? fixedHeader({}) : staticHeader!({});
 
   if (!isValidElement($header)) throw new Error('Not valid header');
 
-  const paddingTop = isStyledComponent($header.type)
+  const headerHeight = isStyledComponent($header.type)
     ? getComputedStyleOfSC($header.type, 'height')
     : undefined;
 
   return (
     <Layout>
       {createElement(fixedHeader ?? staticHeader!)}
-      <Container paddingTop={fixedHeader && paddingTop}>{children}</Container>
-      <Footer />
+      <Container isFixedHeader={Boolean(fixedHeader)} headerHeight={headerHeight}>
+        {children}
+      </Container>
+      {footer && <Footer />}
     </Layout>
   );
 };
 
+interface WithoutHeaderProps extends TemplateProps {}
+
+const WithoutHeader = (props: PropsWithChildren<WithoutHeaderProps>) => {
+  const { children, footer } = props;
+
+  return (
+    <Layout>
+      <Container>{children}</Container>
+      {footer && <Footer />}
+    </Layout>
+  );
+};
+
+Template.WithoutHeader = WithoutHeader;
+
 export default Template;
 
 const Layout = styled.div`
+  position: relative;
+
   width: 100vw;
   min-height: calc(var(--vh, 1vh) * 100);
 `;
 
-const Container = styled.div<{
-  paddingTop?: string;
-}>`
-  width: 100%;
-  min-height: calc(var(--vh, 1vh) * 100);
+const Container = styled.div<
+  | {
+      isFixedHeader: boolean;
+      headerHeight?: string;
+    }
+  | { isFixedHeader?: never; headerHeight?: never }
+>`
+  position: absolute;
 
-  ${({ paddingTop }) =>
-    paddingTop &&
-    css`
-      padding-top: ${paddingTop};
-    `}
+  width: 100%;
+  height: 100%;
+  min-height: calc((var(--vh, 1vh) * 100));
+
+  ${({ isFixedHeader, headerHeight }) => {
+    if (isFixedHeader === true) {
+      return css`
+        padding-top: ${headerHeight};
+      `;
+    }
+
+    if (isFixedHeader === false) {
+      return css`
+        min-height: calc((var(--vh, 1vh) * 100) - ${headerHeight});
+      `;
+    }
+  }}
 `;

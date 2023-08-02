@@ -1,8 +1,9 @@
 import { styled } from 'styled-components';
 
 import theme from '@/styles/theme';
+import { StyledProps } from '@/types/common/utility';
 
-interface LabelProps {
+interface BasicLabelProps {
   /*
    * 라벨에 들어갈 텍스트를 설정합니다.
    */
@@ -14,14 +15,6 @@ interface LabelProps {
 
   // 스타일링
 
-  /*
-   * 라벨 Border 유무를 설정합니다.
-   */
-  hasBorder?: boolean;
-  /*
-   * 라벨 Border 색상을 설정합니다. 지정하지 않으면 Border가 설정되지 않습니다.
-   */
-  borderColor?: string;
   /*
    * 라벨 배경 색상을 설정합니다.
    */
@@ -48,19 +41,38 @@ interface LabelProps {
   /*
    * 라벨을 클릭했을 때 이벤트. 설정해주면 라벨이 버튼이 됩니다.
    */
-  onClick?: () => void;
+  onClick?: VoidFunction;
   /*
    * 라벨이 클릭 된 상태. 라벨의 스타일을 클릭 된 상태로 간단하게 바꿉니다.
    */
   clicked?: boolean;
 }
 
+interface NoBorderLabelProps {
+  /*
+   * 라벨 Border 유무를 설정합니다.
+   */
+  hasBorder: false;
+}
+
+interface HasBorderLabelProps {
+  /*
+   * 라벨 Border 유무를 설정합니다.
+   */
+  hasBorder?: true;
+  /*
+   * 라벨 Border 색상을 설정합니다. 지정하지 않으면 Border가 설정되지 않습니다.
+   */
+  borderColor?: string;
+}
+
+type LabelProps = (BasicLabelProps & NoBorderLabelProps) | (BasicLabelProps & HasBorderLabelProps);
+
 const Label = (labelProps: LabelProps) => {
   const {
     text,
     icon,
     hasBorder = true,
-    borderColor = theme.color.primary,
     backgroundColor = theme.color.white,
     textColor = theme.color.primary,
     fontSize = 1.4,
@@ -73,7 +85,7 @@ const Label = (labelProps: LabelProps) => {
   return (
     <LabelWrapper
       $hasBorder={hasBorder}
-      $borderColor={borderColor}
+      $borderColor={'borderColor' in labelProps ? labelProps.borderColor : theme.color.primary}
       $backgroundColor={backgroundColor}
       $textColor={textColor}
       $width={width}
@@ -92,19 +104,15 @@ const Label = (labelProps: LabelProps) => {
 
 export default Label;
 
-interface LabelStyleProps {
-  $hasBorder?: boolean;
-  $borderColor?: string;
-  $backgroundColor?: string;
-  $textColor?: string;
-  $width?: number;
-  $clicked?: boolean;
-}
+interface LabelStyleProps
+  extends StyledProps<
+    Omit<
+      BasicLabelProps & HasBorderLabelProps,
+      'text' | 'icon' | 'fontSize' | 'fontWeight' | 'hasBorder'
+    > & { hasBorder: boolean }
+  > {}
 
-interface LabelTextStyleProps {
-  $fontSize?: number;
-  $fontWeight?: number;
-}
+interface LabelTextStyleProps extends StyledProps<Pick<LabelProps, 'fontSize' | 'fontWeight'>> {}
 
 const LabelWrapper = styled.div<LabelStyleProps>`
   user-select: none;

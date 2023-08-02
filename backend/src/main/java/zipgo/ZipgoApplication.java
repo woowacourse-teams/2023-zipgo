@@ -2,10 +2,13 @@ package zipgo;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.data.jpa.repository.config.EnableJpaAuditing;
+import zipgo.common.config.JwtCredentials;
 
 @EnableJpaAuditing
 @SpringBootApplication
+@EnableConfigurationProperties({JwtCredentials.class})
 public class ZipgoApplication {
 
     public static void main(String[] args) {
