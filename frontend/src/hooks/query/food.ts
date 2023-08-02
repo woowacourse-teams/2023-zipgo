@@ -1,11 +1,16 @@
 import { useQuery } from '@tanstack/react-query';
 
-import { getFoodDetail, getFoodList } from '@/apis/food';
+import { getFoodDetail, getFoodList, getFoodListFilterMeta } from '@/apis/food';
 import { Parameter } from '@/types/common/utility';
 
-const QUERY_KEY = { foodList: 'foodList', foodDetail: 'foodDetail', petFoods: 'petFoods' };
+const QUERY_KEY = {
+  foodList: 'foodList',
+  foodDetail: 'foodDetail',
+  petFoods: 'petFoods',
+  foodListFilterMeta: 'foodListFilterMeta',
+};
 
-const useFoodListQuery = (payload: Parameter<typeof getFoodList>) => {
+export const useFoodListQuery = (payload: Parameter<typeof getFoodList>) => {
   const { data, ...restQuery } = useQuery({
     queryKey: [QUERY_KEY.petFoods],
     queryFn: () => getFoodList(payload),
@@ -17,7 +22,7 @@ const useFoodListQuery = (payload: Parameter<typeof getFoodList>) => {
   };
 };
 
-const useFoodDetailQuery = (payload: Parameter<typeof getFoodDetail>) => {
+export const useFoodDetailQuery = (payload: Parameter<typeof getFoodDetail>) => {
   const { data, ...restQuery } = useQuery({
     queryKey: [`${QUERY_KEY.foodDetail}${payload.petFoodId}`],
     queryFn: () => getFoodDetail(payload),
@@ -29,4 +34,14 @@ const useFoodDetailQuery = (payload: Parameter<typeof getFoodDetail>) => {
   };
 };
 
-export { useFoodDetailQuery, useFoodListQuery };
+export const useFoodListFilterMetaQuery = () => {
+  const { data, ...restQuery } = useQuery({
+    queryKey: [QUERY_KEY.foodListFilterMeta],
+    queryFn: getFoodListFilterMeta,
+  });
+
+  return {
+    ...data,
+    ...restQuery,
+  };
+};
