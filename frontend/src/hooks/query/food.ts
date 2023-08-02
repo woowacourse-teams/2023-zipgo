@@ -1,9 +1,9 @@
 import { useQuery } from '@tanstack/react-query';
 
-import { getFoodList } from '@/apis/food';
+import { getFoodDetail, getFoodList } from '@/apis/food';
 import { Parameter } from '@/types/common/utility';
 
-const QUERY_KEY = { foodList: 'foodList' };
+const QUERY_KEY = { foodList: 'foodList', foodDetail: 'foodDetail' };
 
 const useFoodListQuery = (payload: Parameter<typeof getFoodList>) => {
   const { data, ...restQuery } = useQuery({
@@ -12,9 +12,21 @@ const useFoodListQuery = (payload: Parameter<typeof getFoodList>) => {
   });
 
   return {
-    foodList: data?.foodList,
+    foodList: data?.petFoods,
     ...restQuery,
   };
 };
 
-export default useFoodListQuery;
+const useFoodDetailQuery = (payload: Parameter<typeof getFoodDetail>) => {
+  const { data, ...restQuery } = useQuery({
+    queryKey: [`${QUERY_KEY.foodDetail}${payload.petFoodId}`],
+    queryFn: () => getFoodDetail(payload),
+  });
+
+  return {
+    foodData: data,
+    ...restQuery,
+  };
+};
+
+export { useFoodDetailQuery, useFoodListQuery };
