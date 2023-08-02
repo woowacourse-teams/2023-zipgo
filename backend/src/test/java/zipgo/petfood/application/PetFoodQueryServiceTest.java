@@ -1,7 +1,6 @@
 package zipgo.petfood.application;
 
 import java.util.List;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.DisplayNameGeneration;
 import org.junit.jupiter.api.DisplayNameGenerator;
 import org.junit.jupiter.api.Test;
@@ -91,7 +90,7 @@ class PetFoodQueryServiceTest {
     }
 
     @Test
-    @Disabled("230802 메타데이터 API 요구사항 변경사항 반영 전 비활성화")
+//    @Disabled("230802 메타데이터 API 요구사항 변경사항 반영 전 비활성화")
     void 필터링에_필요한_식품_데이터를_조회한다() {
         // given
         Keyword keyword = keywordRepository.save(new Keyword(1L, "diet"));
@@ -102,7 +101,7 @@ class PetFoodQueryServiceTest {
         FilterResponse metadata = petFoodQueryService.getMetadataForFilter();
 
         // then
-        assertAll(
+//        assertAll(
 //                () -> assertThat(metadata.brands())
 //                        .extracting(BrandResponse::brandName).contains("오리젠", "퓨리나"),
 //                () -> assertThat(metadata.functionalities())
@@ -111,7 +110,7 @@ class PetFoodQueryServiceTest {
 //                        .contains("닭고기", "쌀", "말미잘"),
 //                () -> assertThat(metadata.nutritionStandards())
 //                        .contains("유럽", "미국")
-        );
+//        );
     }
 
 }

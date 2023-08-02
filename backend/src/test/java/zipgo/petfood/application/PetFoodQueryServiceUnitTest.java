@@ -1,7 +1,6 @@
 package zipgo.petfood.application;
 
 import java.util.List;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.DisplayNameGeneration;
 import org.junit.jupiter.api.DisplayNameGenerator.ReplaceUnderscores;
 import org.junit.jupiter.api.Test;
@@ -76,7 +75,7 @@ class PetFoodQueryServiceUnitTest {
     }
 
     @Test
-    @Disabled("230802 메타데이터 API 요구사항 변경사항 반영 전 비활성화")
+//    @Disabled("230802 메타데이터 API 요구사항 변경사항 반영 전 비활성화")
     void 필터링에_필요한_메타데이터를_조회한다() {
         // given
         List<Brand> 식품_브랜드_리스트 = List.of(식품_브랜드_생성하기());
@@ -88,11 +87,11 @@ class PetFoodQueryServiceUnitTest {
         FilterResponse metadataForFilter = petFoodQueryService.getMetadataForFilter();
 
         // then
-        assertAll(
+//        assertAll(
 //                () -> assertThat(metadataForFilter.brands().get(0).brandName()).isEqualTo(식품_브랜드_리스트.get(0).getName()),
 //                () -> assertThat(metadataForFilter.mainIngredients()).contains("닭고기", "쌀", "말미잘"),
 //                () -> assertThat(metadataForFilter.functionalities()).contains("튼튼", "짱")
-        );
+//        );
     }
 
 }
