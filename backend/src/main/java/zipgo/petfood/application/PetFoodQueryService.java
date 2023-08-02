@@ -31,34 +31,22 @@ public class PetFoodQueryService {
             List<String> primaryIngredientList,
             List<String> functionalityList
     ) {
-        List<PetFood> petFoods = petFoodRepository.findAll();
-        for (PetFood petFood : petFoods) {
-            System.out.println("petFood.getBrand().getId() = " + petFood.getBrand().getId());
-            System.out.println("petFood.getHasStandard().getEurope() = " + petFood.getHasStandard().getEurope());
-            System.out.println("petFood.getFunctionality().get(0) = " + petFood.getFunctionality().get(0));
-            System.out.println("petFood.getPrimaryIngredients().get(0) = " + petFood.getPrimaryIngredients().get(0));
-            System.out.println("=================================");
-        }
         return petFoodRepository.findAll().stream()
-                .filter(petFood -> isValidStandard(petFood.getId(), nutrientStandards, petFood.getHasStandard())
-                        && isContainBrandIds(petFood.getId(), brandIds, petFood.getBrand().getId())
-                        && isContainMainIngredients(petFood.getId(), petFood.getPrimaryIngredients(), primaryIngredientList)
+                .filter(petFood -> isValidStandard(nutrientStandards, petFood.getHasStandard())
+                        && isContainBrandIds(brandIds, petFood.getBrand().getId())
+                        && isContainMainIngredients(petFood.getPrimaryIngredients(), primaryIngredientList)
                         && isContainFunctionalities(petFood.getId(), petFood.getFunctionality(), functionalityList))
                 .collect(Collectors.toList());
     }
 
-    private boolean isContainBrandIds(Long petFoodId, List<Long> brandIds, Long brandId) {
+    private boolean isContainBrandIds(List<Long> brandIds, Long brandId) {
         if (brandIds.isEmpty()) {
             return true;
         }
-        boolean contains = brandIds.contains(brandId);
-        if (petFoodId == 1L) {
-            System.out.println("result1 = " + contains);
-        }
-        return contains;
+        return brandIds.contains(brandId);
     }
 
-    private static boolean isValidStandard(Long petFoodId, List<String> nutrientStandards, HasStandard hasStandard) {
+    private static boolean isValidStandard(List<String> nutrientStandards, HasStandard hasStandard) {
         if (nutrientStandards.isEmpty()) {
             return true;
         }
@@ -71,17 +59,10 @@ public class PetFoodQueryService {
                 isValid = false;
             }
         }
-        if (petFoodId == 1L) {
-            System.out.println("result2 = " + isValid);
-        }
         return isValid;
     }
 
-    private static boolean isContainMainIngredients(Long petFoodId, List<String> primaryIngredients, List<String> primaryIngredientList) {
-        System.out.println("petFoodId = " + petFoodId);
-        System.out.println("primaryIngredients = " + primaryIngredients);
-        System.out.println("primaryIngredientList = " + primaryIngredientList);
-        System.out.println();
+    private static boolean isContainMainIngredients(List<String> primaryIngredients, List<String> primaryIngredientList) {
         if (primaryIngredientList.isEmpty()) {
             return true;
         }
@@ -90,12 +71,8 @@ public class PetFoodQueryService {
                 .flatMap(Collection::stream)
                 .toList();
 
-        boolean result = primaryIngredientList.stream()
+        return primaryIngredientList.stream()
                 .anyMatch(it -> allPrimaryIngredients.contains(it));
-        if (petFoodId == 1L) {
-            System.out.println("result3 = " + result);
-        }
-        return result;
     }
 
     private static boolean isContainFunctionalities(Long petFoodId, List<String> functionalities, List<String> functionalityList) {
@@ -107,12 +84,8 @@ public class PetFoodQueryService {
                 .flatMap(Collection::stream)
                 .toList();
 
-        boolean result = functionalities.stream()
+        return functionalities.stream()
                 .anyMatch(it -> allFunctionalities.contains(it));
-        if (petFoodId == 1L) {
-            System.out.println("result4 = " + result);
-        }
-        return result;
     }
 
     public List<PetFood> getPetFoodByDynamicValue(String keyword, String brand, String primaryIngredients) {
