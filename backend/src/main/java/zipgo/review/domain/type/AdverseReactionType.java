@@ -6,7 +6,7 @@ import zipgo.review.exception.TastePreferenceException;
 import java.util.Arrays;
 
 @Getter
-public enum AdverseReactionName {
+public enum AdverseReactionType {
 
     FRIZZY_FUR("털이 푸석해요"),
     VOMITING("먹고 토해요"),
@@ -17,11 +17,11 @@ public enum AdverseReactionName {
 
     private String description;
 
-    AdverseReactionName(String description) {
+    AdverseReactionType(String description) {
         this.description = description;
     }
 
-    public static AdverseReactionName from(String tastePreference) {
+    public static AdverseReactionType from(String tastePreference) {
         return Arrays.stream(values())
                 .filter(value -> value.getDescription().equals(tastePreference))
                 .findAny()

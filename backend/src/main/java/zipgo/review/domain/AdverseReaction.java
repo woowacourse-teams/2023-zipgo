@@ -11,7 +11,7 @@ import lombok.Builder;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import zipgo.review.domain.type.AdverseReactionName;
+import zipgo.review.domain.type.AdverseReactionType;
 
 @Entity
 @Getter
@@ -28,7 +28,7 @@ public class AdverseReaction {
 
     @Enumerated(STRING)
     @Column(nullable = false)
-    private AdverseReactionName adverseReactionName;
+    private AdverseReactionType adverseReactionType;
 
     @ManyToOne(fetch = LAZY)
     private Review review;
@@ -37,8 +37,8 @@ public class AdverseReaction {
         this.review = review;
     }
 
-    public AdverseReaction(AdverseReactionName adverseReactionName) {
-        this.adverseReactionName = adverseReactionName;
+    public AdverseReaction(AdverseReactionType adverseReactionType) {
+        this.adverseReactionType = adverseReactionType;
     }
 
 }

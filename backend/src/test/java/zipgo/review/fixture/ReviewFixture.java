@@ -4,7 +4,7 @@ import zipgo.member.domain.Member;
 import zipgo.petfood.domain.PetFood;
 import zipgo.review.domain.AdverseReaction;
 import zipgo.review.domain.Review;
-import zipgo.review.domain.type.AdverseReactionName;
+import zipgo.review.domain.type.AdverseReactionType;
 import zipgo.review.dto.request.CreateReviewRequest;
 import zipgo.review.dto.request.UpdateReviewRequest;
 
@@ -47,7 +47,7 @@ public class ReviewFixture {
                 .comment("우리 아이랑 너무 잘 맞아요!")
                 .tastePreference(EATS_VERY_WELL)
                 .stoolCondition(SOFT_MOIST)
-                .adverseReactions(List.of(new AdverseReaction(AdverseReactionName.from("없어요"))))
+                .adverseReactions(List.of(new AdverseReaction(AdverseReactionType.from("없어요"))))
                 .build();
 
     }

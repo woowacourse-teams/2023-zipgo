@@ -3,7 +3,7 @@ package zipgo.review.dto.response;
 import static java.time.format.DateTimeFormatter.ofPattern;
 
 import java.util.List;
-import zipgo.review.domain.AdverseReaction;
+
 import zipgo.review.domain.Review;
 
 public record GetReviewsResponse(
@@ -32,7 +32,7 @@ public record GetReviewsResponse(
 
     private static List<String> getAdverseReactions(Review review) {
         return review.getAdverseReactions().stream()
-                .map(adverseReaction -> adverseReaction.getAdverseReactionName().getDescription())
+                .map(adverseReaction -> adverseReaction.getAdverseReactionType().getDescription())
                 .toList();
     }
 
