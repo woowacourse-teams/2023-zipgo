@@ -21,6 +21,7 @@ import static org.hamcrest.Matchers.not;
 import static org.springframework.http.HttpStatus.BAD_REQUEST;
 import static org.springframework.http.HttpStatus.NOT_FOUND;
 import static org.springframework.http.HttpStatus.OK;
+import static org.springframework.restdocs.payload.JsonFieldType.ARRAY;
 import static org.springframework.restdocs.payload.PayloadDocumentation.fieldWithPath;
 import static org.springframework.restdocs.payload.PayloadDocumentation.responseFields;
 import static org.springframework.restdocs.request.RequestDocumentation.parameterWithName;
@@ -197,6 +198,39 @@ public class PetFoodAcceptanceTest extends AcceptanceTest {
             return document("식품 상세 조회 - 실패(올바르지 않은 형식)", 문서_정보.responseSchema(에러_응답_형식));
         }
 
+    }
+
+    @Nested
+    @DisplayName("필터링 조회")
+    class GetFilterInfo {
+
+        private RestDocumentationFilter 필터링_메타데이터_API_문서_생성() {
+            return document("필터링 메타데이터 정보 조회 - 성공",
+                    문서_정보.responseSchema(성공_응답_형식),
+                    responseFields(
+                            fieldWithPath("keywords").type(ARRAY).description("키워드"),
+                            fieldWithPath("filters.brands[]").type(ARRAY).description("브랜드"),
+                            fieldWithPath("filters.nutritionStandards[]").type(ARRAY).description("영양기준"),
+                            fieldWithPath("filters.mainIngredients[]").type(ARRAY).description("주원료"),
+                            fieldWithPath("filters.functionalities[]").type(ARRAY).description("기능성")
+                    ));
+        }
+
+
+        private Schema 성공_응답_형식 = schema("FilterMetadataResponse");
+        private ResourceSnippetDetails 문서_정보 = resourceDetails()
+                .summary("필터링 메타데이터 정보 조회하기")
+                .description("필터링에 필요한 메타데이터 정보를 조회합니다.");
+
+        @Test
+        void 필터링에_필요한_메타데이터를_조회한다() {
+            // when
+            var 응답 = given(spec).when().get("/pet-foods/filters");
+
+            // then
+            응답.then()
+                    .assertThat().statusCode(OK.value());
+        }
     }
 
 }

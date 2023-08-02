@@ -1,9 +1,9 @@
 package zipgo.auth.presentation;
 
+import static org.springframework.http.HttpHeaders.AUTHORIZATION;
+
 import jakarta.servlet.http.HttpServletRequest;
 import zipgo.auth.exception.AuthException;
-
-import static org.springframework.http.HttpHeaders.AUTHORIZATION;
 
 public class BearerTokenExtractor {
 

@@ -1,10 +1,9 @@
 package zipgo.member.domain.repository;
 
+import java.util.Optional;
 import org.springframework.data.jpa.repository.JpaRepository;
 import zipgo.member.domain.Member;
 import zipgo.member.exception.MemberException;
-
-import java.util.Optional;
 
 public interface MemberRepository extends JpaRepository<Member, Long> {
 

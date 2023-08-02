@@ -2,24 +2,27 @@ package zipgo.petfood.presentation.dto;
 
 import java.util.List;
 import zipgo.brand.domain.Brand;
-import zipgo.petfood.domain.PetFood;
 
 public record FilterResponse(
-        List<String> nutritionStandards,
-        List<String> mainIngredients,
         List<BrandResponse> brands,
-        List<String> functionality
+        List<String> functionalities,
+        List<String> mainIngredients,
+        List<String> nutritionStandards
 ) {
 
-    public static FilterResponse from(PetFood petFood, List<Brand> brands) {
+    public static FilterResponse from(
+            List<Brand> brands,
+            List<String> primaryIngredients,
+            List<String> functionalities
+    ) {
         return new FilterResponse(
-                List.of("유럽", "미국"),
-                petFood.getPrimaryIngredients(),
                 brands.stream()
                         .map(BrandResponse::from)
                         .toList(),
-                petFood.getFunctionality()
-        );
+                functionalities,
+                primaryIngredients,
+                List.of("유럽", "미국")
+                );
     }
 
 }

@@ -1,5 +1,8 @@
 package zipgo.auth.application;
 
+import static org.springframework.http.HttpMethod.GET;
+import static org.springframework.http.HttpMethod.POST;
+
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpEntity;
@@ -12,12 +15,9 @@ import org.springframework.util.MultiValueMap;
 import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.RestTemplate;
 import zipgo.auth.application.dto.KakaoMemberResponse;
-import zipgo.auth.application.dto.OAuthMemberResponse;
 import zipgo.auth.application.dto.KakaoTokenResponse;
+import zipgo.auth.application.dto.OAuthMemberResponse;
 import zipgo.auth.exception.AuthException;
-
-import static org.springframework.http.HttpMethod.GET;
-import static org.springframework.http.HttpMethod.POST;
 
 @Component
 @RequiredArgsConstructor

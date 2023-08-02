@@ -9,9 +9,12 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import zipgo.brand.application.BrandQueryService;
+import zipgo.brand.domain.Brand;
 import zipgo.petfood.application.PetFoodQueryService;
 import zipgo.petfood.domain.PetFood;
 import zipgo.petfood.presentation.dto.FilterMetadataResponse;
+import zipgo.petfood.presentation.dto.FilterResponse;
 import zipgo.petfood.presentation.dto.GetPetFoodResponse;
 import zipgo.petfood.presentation.dto.GetPetFoodsResponse;
 import zipgo.petfood.presentation.dto.PetFoodSelectRequest;
@@ -21,6 +24,7 @@ import zipgo.petfood.presentation.dto.PetFoodSelectRequest;
 @RequestMapping("/pet-foods")
 public class PetFoodController {
 
+    private final BrandQueryService brandQueryService;
     private final PetFoodQueryService petFoodQueryService;
 
     @PostMapping
@@ -38,13 +42,14 @@ public class PetFoodController {
         PetFood foundPetFood = petFoodQueryService.getPetFoodBy(id);
         int reviewCount = foundPetFood.countReviews();
         double ratingAverage = foundPetFood.calculateRatingAverage();
-
         return ResponseEntity.ok(GetPetFoodResponse.of(foundPetFood, ratingAverage, reviewCount));
     }
 
     @GetMapping("/filters")
     public ResponseEntity<FilterMetadataResponse> getFilterMetadata() {
-        return null;
+        List<Brand> brands = brandQueryService.getAll();
+        FilterResponse filter = petFoodQueryService.getMetadataForFilter();
+        return ResponseEntity.ok().body(FilterMetadataResponse.of(filter, brands));
     }
 
 }
