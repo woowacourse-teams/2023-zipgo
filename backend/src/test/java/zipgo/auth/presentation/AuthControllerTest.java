@@ -1,5 +1,15 @@
 package zipgo.auth.presentation;
 
+import static com.epages.restdocs.apispec.RestAssuredRestDocumentationWrapper.resourceDetails;
+import static org.mockito.Mockito.when;
+import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.post;
+import static org.springframework.restdocs.payload.PayloadDocumentation.fieldWithPath;
+import static org.springframework.restdocs.payload.PayloadDocumentation.responseFields;
+import static org.springframework.restdocs.request.RequestDocumentation.parameterWithName;
+import static org.springframework.restdocs.request.RequestDocumentation.queryParameters;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import static zipgo.member.domain.fixture.MemberFixture.식별자_있는_멤버;
+
 import com.epages.restdocs.apispec.MockMvcRestDocumentationWrapper;
 import com.epages.restdocs.apispec.Schema;
 import org.junit.jupiter.api.DisplayNameGeneration;
@@ -17,16 +27,6 @@ import org.springframework.test.web.servlet.MockMvc;
 import zipgo.auth.application.AuthService;
 import zipgo.auth.util.JwtProvider;
 import zipgo.member.application.MemberQueryService;
-
-import static com.epages.restdocs.apispec.RestAssuredRestDocumentationWrapper.resourceDetails;
-import static org.mockito.Mockito.when;
-import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.post;
-import static org.springframework.restdocs.payload.PayloadDocumentation.fieldWithPath;
-import static org.springframework.restdocs.payload.PayloadDocumentation.responseFields;
-import static org.springframework.restdocs.request.RequestDocumentation.parameterWithName;
-import static org.springframework.restdocs.request.RequestDocumentation.queryParameters;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
-import static zipgo.member.domain.fixture.MemberFixture.식별자_있는_멤버;
 
 @AutoConfigureRestDocs
 @ExtendWith(SpringExtension.class)

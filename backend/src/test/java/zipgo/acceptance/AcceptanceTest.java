@@ -1,5 +1,9 @@
 package zipgo.acceptance;
 
+import static com.epages.restdocs.apispec.Schema.schema;
+import static org.springframework.restdocs.operation.preprocess.Preprocessors.prettyPrint;
+import static org.springframework.restdocs.restassured.RestAssuredRestDocumentation.documentationConfiguration;
+
 import com.epages.restdocs.apispec.Schema;
 import io.restassured.RestAssured;
 import io.restassured.builder.RequestSpecBuilder;
@@ -16,10 +20,6 @@ import org.springframework.restdocs.RestDocumentationExtension;
 import org.springframework.test.context.jdbc.Sql;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import zipgo.auth.util.JwtProvider;
-
-import static com.epages.restdocs.apispec.Schema.schema;
-import static org.springframework.restdocs.operation.preprocess.Preprocessors.prettyPrint;
-import static org.springframework.restdocs.restassured.RestAssuredRestDocumentation.documentationConfiguration;
 
 @SuppressWarnings("NonAsciiCharacters")
 @Sql(scripts = {"classpath:truncate.sql", "classpath:data.sql"})

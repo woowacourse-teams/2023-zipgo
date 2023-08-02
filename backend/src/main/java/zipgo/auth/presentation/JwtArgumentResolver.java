@@ -1,6 +1,7 @@
 package zipgo.auth.presentation;
 
 import jakarta.servlet.http.HttpServletRequest;
+import java.util.Objects;
 import lombok.RequiredArgsConstructor;
 import org.springframework.core.MethodParameter;
 import org.springframework.stereotype.Component;
@@ -10,8 +11,6 @@ import org.springframework.web.method.support.HandlerMethodArgumentResolver;
 import org.springframework.web.method.support.ModelAndViewContainer;
 import zipgo.auth.presentation.dto.AuthDto;
 import zipgo.auth.util.JwtProvider;
-
-import java.util.Objects;
 
 @Component
 @RequiredArgsConstructor
