@@ -20,6 +20,6 @@ public interface PetFoodRepository extends JpaRepository<PetFood, Long> {
     List<String> findAllPrimaryIngredients();
 
     @Query("select distinct pf.functionality.functionality from PetFood pf")
-    List<String> findAllFunctionality();
+    List<String> findAllFunctionalities();
 
 }
