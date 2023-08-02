@@ -12,10 +12,16 @@ else
     echo "> kill -15 $CURRENT_PID"
     sudo kill -15 $CURRENT_PID
     sleep 5
+    if ps -p $CURRENT_PID > /dev/null; then
+        echo "> 애플리케이션을 다시 종료합니다."
+        kill -9 $PROCESS_ID
+    else
+        echo "> 프로세스 아이디 $CURRENT_PID 가 성공적으로 종료되었습니다."
+    fi
 fi
 
 sudo chmod +x zipgo-backend-0.0.1-SNAPSHOT.jar
 sudo nohup java -jar \
--Dspring.profiles.active=prod \
+-Dspring.profiles.active=dev \
 -Dspring.config.import=env.properties \
 zipgo-backend-0.0.1-SNAPSHOT.jar > ~/application.log 2>&1 &
