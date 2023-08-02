@@ -41,8 +41,10 @@ const Dialog = (props: PropsWithChildren<DialogProps>) => {
 };
 
 const Trigger = (props: PropsWithChildren<TriggerProps>) => {
-  const { asChild, child, onClick: onClickProps, ...restProps } = getValidProps(props);
+  const { resolveChildren, onClick: onClickProps, ...restProps } = getValidProps(props);
   const { isOpened, openHandler } = useDialogContext();
+
+  const resolved = resolveChildren({});
 
   /** @todo aria-controls: dialog content id */
   const triggerA11y = {
@@ -51,8 +53,8 @@ const Trigger = (props: PropsWithChildren<TriggerProps>) => {
     'aria-expanded': isOpened,
   } as const;
 
-  const trigger = asChild ? (
-    cloneElement(child, {
+  const trigger = resolved.asChild ? (
+    cloneElement(resolved.child, {
       ...restProps,
       ...triggerA11y,
       onClick: composeEventHandlers(onClickProps, openHandler),
@@ -64,7 +66,7 @@ const Trigger = (props: PropsWithChildren<TriggerProps>) => {
       type="button"
       onClick={composeEventHandlers(onClickProps, openHandler)}
     >
-      {props.children || 'Trigger'}
+      {resolved.children || 'Trigger'}
     </button>
   );
 
@@ -78,15 +80,17 @@ const Portal = ({ children, container = document.body }: PropsWithChildren<Porta
 };
 
 const BackDrop = (props: PropsWithChildren<BackDropProps>) => {
-  const { asChild, child, onClick: onClickProps, ...restProps } = getValidProps(props);
+  const { resolveChildren, onClick: onClickProps, ...restProps } = getValidProps(props);
   const { isOpened, openHandler } = useDialogContext();
+
+  const resolved = resolveChildren({});
 
   const backDropA11y = {
     'aria-hidden': true,
   } as const;
 
-  const backDrop = asChild ? (
-    cloneElement(child, {
+  const backDrop = resolved.asChild ? (
+    cloneElement(resolved.child, {
       ...restProps,
       ...backDropA11y,
       onClick: composeEventHandlers(onClickProps, openHandler),
@@ -108,21 +112,23 @@ const DefaultBackDrop = styled.div`
 `;
 
 const Content = (props: PropsWithChildren<ContentProps>) => {
-  const { asChild, child, ...restProps } = getValidProps(props);
+  const { resolveChildren, ...restProps } = getValidProps(props);
   const { isOpened } = useDialogContext();
+
+  const resolved = resolveChildren({});
 
   const contentA11y = {
     role: 'dialog',
   } as const;
 
-  const content = asChild ? (
-    cloneElement(child, {
+  const content = resolved.asChild ? (
+    cloneElement(resolved.child, {
       ...restProps,
       ...contentA11y,
     })
   ) : (
     <div {...restProps} {...contentA11y}>
-      {props.children}
+      {resolved.children}
     </div>
   );
 
@@ -131,20 +137,21 @@ const Content = (props: PropsWithChildren<ContentProps>) => {
 
 const Close = (props: PropsWithChildren<CloseProps>) => {
   const {
-    asChild,
-    child,
+    resolveChildren,
     onClick: onClickProps,
     'aria-label': ariaLabel,
     ...restProps
   } = getValidProps(props);
   const { isOpened, openHandler } = useDialogContext();
 
+  const resolved = resolveChildren({});
+
   const closeA11y = {
     'aria-label': ariaLabel || 'Close',
   } as const;
 
-  const close = asChild ? (
-    cloneElement(child, {
+  const close = resolved.asChild ? (
+    cloneElement(resolved.child, {
       ...restProps,
       ...closeA11y,
       onClick: composeEventHandlers(onClickProps, openHandler),
@@ -156,7 +163,7 @@ const Close = (props: PropsWithChildren<CloseProps>) => {
       type="button"
       onClick={composeEventHandlers(onClickProps, openHandler)}
     >
-      {props.children || 'X'}
+      {resolved.children || 'X'}
     </button>
   );
 

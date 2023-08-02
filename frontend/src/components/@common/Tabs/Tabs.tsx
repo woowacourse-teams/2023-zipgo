@@ -1,7 +1,8 @@
 import { cloneElement, ComponentPropsWithoutRef, useId } from 'react';
 
 import TabsProvider, { useTabsContext } from '@/context/Tabs/TabsContext';
-import { getValidProps, PropsWithAsChild } from '@/utils/compound';
+import type { AsChild, PropsWithAsChild, PropsWithRenderProps } from '@/utils/compound';
+import { getValidProps } from '@/utils/compound';
 import { composeEventHandlers } from '@/utils/dom';
 
 export interface TabProps {
@@ -18,15 +19,17 @@ const Tabs = (props: PropsWithAsChild<TabProps>) => {
 interface ListProps extends ComponentPropsWithoutRef<'div'> {}
 
 const List = (props: PropsWithAsChild<ListProps>) => {
-  const { asChild, child, ...restProps } = getValidProps(props);
+  const { resolveChildren, ...restProps } = getValidProps(props);
+
+  const resolved = resolveChildren({});
 
   const listA11y = {
     role: 'tablist',
     'aria-orientation': 'horizontal',
   } as const;
 
-  const list = asChild ? (
-    cloneElement(child, {
+  const list = resolved.asChild ? (
+    cloneElement(resolved.child, {
       ...restProps,
       ...listA11y,
     })
@@ -42,11 +45,12 @@ const List = (props: PropsWithAsChild<ListProps>) => {
 interface TriggerProps extends ComponentPropsWithoutRef<'button'> {
   value: string;
 }
-
-const Trigger = (props: PropsWithAsChild<TriggerProps>) => {
+const k: ComponentPropsWithoutRef<'button'> = {
+  children: null,
+};
+const Trigger = (props: PropsWithRenderProps<TriggerProps & AsChild, { selected: boolean }>) => {
   const {
-    asChild,
-    child,
+    resolveChildren,
     value,
     id: idProps,
     onClick: onClickProps,
@@ -59,16 +63,20 @@ const Trigger = (props: PropsWithAsChild<TriggerProps>) => {
 
   const onClick = composeEventHandlers(onClickProps, () => changeTab(value));
 
+  const selected = value === selectedValue;
+
   const id = idProps ?? `trigger-${value}-${uuid}`;
+
+  const resolved = resolveChildren({ selected });
 
   /** @todo aria-controls: tab content id */
   const triggerA11y = {
     role: 'tab',
-    'aria-selected': value === selectedValue,
+    'aria-selected': selected,
   } as const;
 
-  const trigger = asChild ? (
-    cloneElement(child, {
+  const trigger = resolved.asChild ? (
+    cloneElement(resolved.child, {
       ...restProps,
       ...triggerA11y,
       onClick,
@@ -76,7 +84,7 @@ const Trigger = (props: PropsWithAsChild<TriggerProps>) => {
     })
   ) : (
     <button {...restProps} {...triggerA11y} id={id} type="button" onClick={onClick}>
-      {props.children || 'Tab'}
+      {resolved.children || 'Tab'}
     </button>
   );
 
@@ -87,8 +95,8 @@ interface ContentProps extends ComponentPropsWithoutRef<'section'> {
   value: string;
 }
 
-const Content = (props: PropsWithAsChild<ContentProps>) => {
-  const { asChild, child, value, id: idProps, ...restProps } = getValidProps(props);
+const Content = (props: PropsWithRenderProps<ContentProps>) => {
+  const { resolveChildren, value, id: idProps, ...restProps } = getValidProps(props);
 
   const uuid = useId();
 
@@ -96,14 +104,16 @@ const Content = (props: PropsWithAsChild<ContentProps>) => {
 
   const id = idProps ?? `content-${value}-${uuid}`;
 
+  const resolved = resolveChildren({});
+
   /** @todo aria-labelledby: tab trigger id */
   const contentA11y = {
     role: 'tabpanel',
     'aria-orientation': 'horizontal',
   } as const;
 
-  const trigger = asChild ? (
-    cloneElement(child, {
+  const content = resolved.asChild ? (
+    cloneElement(resolved.child, {
       ...restProps,
       ...contentA11y,
       hidden: selectedValue !== value,
@@ -111,11 +121,11 @@ const Content = (props: PropsWithAsChild<ContentProps>) => {
     })
   ) : (
     <section {...restProps} {...contentA11y} id={id} hidden={selectedValue !== value}>
-      {props.children}
+      {resolved.children}
     </section>
   );
 
-  return trigger;
+  return content;
 };
 
 Tabs.List = List;

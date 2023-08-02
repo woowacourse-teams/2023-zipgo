@@ -1,16 +1,24 @@
 import { Children, isValidElement, PropsWithChildren, ReactElement, ReactNode } from 'react';
 
-export type PropsWithAsChild<P = unknown> = PropsWithChildren<P> & { asChild?: boolean };
+export type AsChild = {
+  asChild?: boolean;
+};
+
+export type PropsWithAsChild<P = unknown> = PropsWithChildren<P> & AsChild;
+
+export type PropsWithRenderProps<P = unknown, R extends object = object> = Omit<P, 'children'> & {
+  children?: ReactNode | ((payload: R) => JSX.Element);
+} & AsChild;
 
 type WithAsChild<P> = Omit<P, 'children'> & {
   asChild: true;
   child: ReactElement<P>;
 };
 
-type WithoutAsChild<P> = P & {
+type WithoutAsChild = PropsWithChildren<{
   asChild: false;
   child: null;
-};
+}>;
 
 // eslint-disable-next-line comma-spacing
 const getValidChild = <P>(children: ReactNode) => {
@@ -19,16 +27,24 @@ const getValidChild = <P>(children: ReactNode) => {
   return isValidElement<P>(child) ? child : null;
 };
 
-export function getValidProps<P extends PropsWithChildren<{ asChild?: boolean }>>(
-  props: P,
-): WithAsChild<P> | WithoutAsChild<P> {
+export function getValidProps<P, R extends object>(
+  props: PropsWithRenderProps<P, R> | PropsWithAsChild<P>,
+): Omit<typeof props, 'asChild' | 'children'> & {
+  resolveChildren: (payload: R) => WithAsChild<P> | WithoutAsChild;
+} {
   const { asChild, children, ...restProps } = props;
 
-  if (asChild) {
-    const child = getValidChild<P>(children);
+  const resolveChildren = (payload: R): WithAsChild<P> | WithoutAsChild => {
+    const resolvedChildren = typeof children === 'function' ? children(payload) : children;
 
-    if (child) return { ...restProps, asChild, child };
-  }
+    if (asChild) {
+      const child = getValidChild<P>(resolvedChildren);
 
-  return { ...props, asChild: false, child: null };
+      if (child) return { asChild, child };
+    }
+
+    return { asChild: false, child: null, children: resolvedChildren };
+  };
+
+  return { resolveChildren, ...restProps };
 }
