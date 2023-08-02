@@ -39,6 +39,7 @@ module.exports = {
     'function-paren-newline': 'off',
     'no-extra-boolean-cast': 'off',
     'no-confusing-arrow': 'off',
+    'react/destructuring-assignment': 'off',
 
     'react/jsx-props-no-spreading': 'off',
     'react/react-in-jsx-scope': 'off',
