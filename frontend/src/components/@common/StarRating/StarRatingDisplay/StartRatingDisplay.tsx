@@ -12,10 +12,10 @@ const StarRatingDisplay = (starRatingDisplayProps: StarRatingDisplayProps) => {
   const { rating, size = 'medium' } = starRatingDisplayProps;
 
   return (
-    <StarContainer>
+    <StarContainer aria-label={`만족도 ${rating}점`}>
       {Array.from({ length: 5 }, (_, index) => {
         const imageUrl = index < Math.floor(rating) ? FilledStarIcon : EmptyStarIcon;
-        return <Star size={size} key={index} src={imageUrl} alt={`만족도 ${rating}점`} />;
+        return <Star size={size} key={index} src={imageUrl} alt="" />;
       })}
     </StarContainer>
   );

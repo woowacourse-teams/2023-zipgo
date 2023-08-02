@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { styled } from 'styled-components';
 
@@ -24,6 +25,7 @@ const ReviewStarRating = () => {
   const navigate = useNavigate();
   const location = useLocation() as LocationState;
   const { isEditMode = false, userRating = 0, reviewDetail } = { ...location.state };
+  const [rating, setRating] = useState(userRating);
 
   const { petFoodId, name, imageUrl } = {
     // 식품상세 api 연동 전 임시 데이터..
@@ -31,6 +33,8 @@ const ReviewStarRating = () => {
     name: '퓨리나 프로플랜 민감한 장건강 12kg',
     imageUrl: 'https://www.purinapetcare.co.kr/data/files/e3469d6a8936e6416891b97bdbd7c708.png',
   };
+
+  const onMouseDownStar = (selectedRating: number) => setRating(selectedRating);
 
   const onClickStar = (selectedRating: number) => {
     navigate(`/pet-foods/${petFoodId}/reviews/write/${selectedRating}/detail/${isEditMode}`, {
@@ -51,7 +55,12 @@ const ReviewStarRating = () => {
         </FoodImageWrapper>
         <FoodName>{name}</FoodName>
         <Label>이 사료 어땠어요?</Label>
-        <StarRatingInput rating={userRating} onClickStar={onClickStar} size="extra-large" />
+        <StarRatingInput
+          rating={rating}
+          onClickStar={onClickStar}
+          onMouseDownStar={onMouseDownStar}
+          size="extra-large"
+        />
         <Caption>별점을 매겨주세요!</Caption>
       </Container>
     </Template.WithoutHeader>

@@ -6,26 +6,32 @@ import FilledStarIcon from '@/assets/svg/filled_star_icon.svg';
 interface StarRatingInputProps {
   rating: number;
   onClickStar: (selectedRating: number) => void;
+  onMouseDownStar: (selectedRating: number) => void;
   size: 'small' | 'medium' | 'large' | 'extra-large';
 }
 
 const StarRatingInput = (starRatingInputProps: StarRatingInputProps) => {
-  const { rating, onClickStar, size = 'medium' } = starRatingInputProps;
+  const { rating, onClickStar, onMouseDownStar, size = 'medium' } = starRatingInputProps;
 
   const renderStars = () =>
     Array.from({ length: 5 }, (_, index) => index + 1).map(starIndex => (
-      <StarLabel key={starIndex} htmlFor={`star-input-${starIndex}`}>
+      <StarLabel
+        key={starIndex}
+        htmlFor={`star-input-${starIndex}`}
+        onMouseDown={() => onMouseDownStar(starIndex)}
+      >
         <StarInput
           type="radio"
           id={`star-input-${starIndex}`}
           name="star-rating"
           value={starIndex}
           onClick={() => onClickStar(starIndex)}
+          aria-label={`${starIndex}점`}
         />
         <Star
           key={starIndex}
           src={starIndex <= rating ? FilledStarIcon : EmptyStarIcon}
-          alt={starIndex <= rating ? `${starIndex}번째 색칠된 별` : `${starIndex}번째 빈 별`}
+          alt=""
           size={size}
         />
       </StarLabel>

@@ -66,12 +66,14 @@ const ReviewForm = (reviewFormProps: ReviewFormProps) => {
     <ReviewFormContainer onSubmit={onSubmitReview}>
       <DetailReviewContainer>
         <LabelTitle htmlFor="tastePreference">기호성</LabelTitle>
-        <LabelContainer>
+        <LabelContainer role="radiogroup" id="tastePreference">
           {TASTE_PREFERENCES.map(text => (
             <Label
+              role="radio"
               key={text}
               text={text}
               clicked={review.tastePreference === text}
+              aria-checked={review.tastePreference === text}
               onClick={() => {
                 reviewDispatch({
                   type: ACTION_TYPES.SET_TASTE_PREFERENCE,
@@ -84,12 +86,14 @@ const ReviewForm = (reviewFormProps: ReviewFormProps) => {
       </DetailReviewContainer>
       <DetailReviewContainer>
         <LabelTitle htmlFor="stoolCondition">대변 상태</LabelTitle>
-        <LabelContainer>
+        <LabelContainer role="radiogroup" id="stoolCondition">
           {STOOL_CONDITIONS.map(text => (
             <Label
+              role="radio"
               key={text}
               text={text}
               clicked={review.stoolCondition === text}
+              aria-checked={review.stoolCondition === text}
               onClick={() => {
                 reviewDispatch({
                   type: ACTION_TYPES.SET_STOOL_CONDITION,
@@ -102,12 +106,14 @@ const ReviewForm = (reviewFormProps: ReviewFormProps) => {
       </DetailReviewContainer>
       <DetailReviewContainer>
         <LabelTitle htmlFor="adverseReactions">이상 반응</LabelTitle>
-        <LabelContainer>
+        <LabelContainer id="adverseReactions">
           {ADVERSE_REACTIONS.map(text => (
             <Label
+              role="checkbox"
               key={text}
               text={text}
               clicked={review.adverseReactions.includes(text)}
+              aria-checked={review.adverseReactions.includes(text)}
               onClick={() => {
                 reviewDispatch({
                   type: ACTION_TYPES.SET_ADVERSE_REACTIONS,

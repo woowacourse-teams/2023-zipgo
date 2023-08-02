@@ -1,3 +1,4 @@
+import { ComponentPropsWithoutRef } from 'react';
 import { styled } from 'styled-components';
 
 import theme from '@/styles/theme';
@@ -66,7 +67,11 @@ interface HasBorderLabelProps {
   borderColor?: string;
 }
 
-type LabelProps = (BasicLabelProps & NoBorderLabelProps) | (BasicLabelProps & HasBorderLabelProps);
+type LabelProps = (
+  | (BasicLabelProps & NoBorderLabelProps)
+  | (BasicLabelProps & HasBorderLabelProps)
+) &
+  ComponentPropsWithoutRef<'div'>;
 
 const Label = (labelProps: LabelProps) => {
   const {
@@ -80,6 +85,7 @@ const Label = (labelProps: LabelProps) => {
     width,
     onClick,
     clicked,
+    ...restProps
   } = labelProps;
 
   return (
@@ -91,6 +97,7 @@ const Label = (labelProps: LabelProps) => {
       $width={width}
       $clicked={clicked}
       onClick={onClick}
+      {...restProps}
     >
       <LabelInner>
         {icon && <Icon src={icon} alt="라벨 아이콘" />}
