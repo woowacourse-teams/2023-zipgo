@@ -1,9 +1,8 @@
 package zipgo.review.domain.type;
 
+import java.util.Arrays;
 import lombok.Getter;
 import zipgo.review.exception.TastePreferenceException;
-
-import java.util.Arrays;
 
 @Getter
 public enum AdverseReactionType {
