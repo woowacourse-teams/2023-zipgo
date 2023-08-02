@@ -1,5 +1,12 @@
 package zipgo.review.fixture;
 
+import static zipgo.review.domain.type.StoolCondition.DIARRHEA;
+import static zipgo.review.domain.type.StoolCondition.SOFT_MOIST;
+import static zipgo.review.domain.type.TastePreference.EATS_VERY_WELL;
+import static zipgo.review.domain.type.TastePreference.NOT_AT_ALL;
+
+import java.util.ArrayList;
+import java.util.List;
 import zipgo.member.domain.Member;
 import zipgo.petfood.domain.PetFood;
 import zipgo.review.domain.AdverseReaction;
@@ -7,14 +14,6 @@ import zipgo.review.domain.Review;
 import zipgo.review.domain.type.AdverseReactionType;
 import zipgo.review.dto.request.CreateReviewRequest;
 import zipgo.review.dto.request.UpdateReviewRequest;
-
-import java.util.ArrayList;
-import java.util.List;
-
-import static zipgo.review.domain.type.StoolCondition.DIARRHEA;
-import static zipgo.review.domain.type.StoolCondition.SOFT_MOIST;
-import static zipgo.review.domain.type.TastePreference.EATS_VERY_WELL;
-import static zipgo.review.domain.type.TastePreference.NOT_AT_ALL;
 
 public class ReviewFixture {
 
