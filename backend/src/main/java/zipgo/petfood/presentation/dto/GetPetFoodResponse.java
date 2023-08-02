@@ -50,6 +50,7 @@ public record GetPetFoodResponse(
 
     public record PetFoodBrandResponse(
             String name,
+            String imageUrl,
             String state,
             int foundedYear,
             boolean hasResearchCenter,
@@ -59,6 +60,7 @@ public record GetPetFoodResponse(
         public static PetFoodBrandResponse from(Brand brand) {
             return new PetFoodBrandResponse(
                     brand.getName(),
+                    brand.getImageUrl(),
                     brand.getNation(),
                     brand.getFoundedYear(),
                     brand.isHasResearchCenter(),
