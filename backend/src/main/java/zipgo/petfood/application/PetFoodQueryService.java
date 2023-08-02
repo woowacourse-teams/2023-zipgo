@@ -40,7 +40,7 @@ public class PetFoodQueryService {
                 .distinct()
                 .toList();
 
-        List<String> functionalities = petFoodRepository.findAllFunctionality().stream()
+        List<String> functionalities = petFoodRepository.findAllFunctionalities().stream()
                 .map(functionality -> asList(functionality.split(",")))
                 .flatMap(Collection::stream)
                 .distinct()

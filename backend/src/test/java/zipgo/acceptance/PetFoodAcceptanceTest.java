@@ -22,6 +22,7 @@ import static org.springframework.http.HttpStatus.BAD_REQUEST;
 import static org.springframework.http.HttpStatus.NOT_FOUND;
 import static org.springframework.http.HttpStatus.OK;
 import static org.springframework.restdocs.payload.JsonFieldType.ARRAY;
+import static org.springframework.restdocs.payload.JsonFieldType.OBJECT;
 import static org.springframework.restdocs.payload.PayloadDocumentation.fieldWithPath;
 import static org.springframework.restdocs.payload.PayloadDocumentation.responseFields;
 import static org.springframework.restdocs.request.RequestDocumentation.parameterWithName;
@@ -210,13 +211,13 @@ public class PetFoodAcceptanceTest extends AcceptanceTest {
                     문서_정보.responseSchema(성공_응답_형식),
                     responseFields(
                             fieldWithPath("keywords").type(ARRAY).description("키워드"),
+                            fieldWithPath("filters").type(OBJECT).description("필터 정보"),
                             fieldWithPath("filters.brands[]").type(ARRAY).description("브랜드"),
                             fieldWithPath("filters.nutritionStandards[]").type(ARRAY).description("영양기준"),
                             fieldWithPath("filters.mainIngredients[]").type(ARRAY).description("주원료"),
                             fieldWithPath("filters.functionalities[]").type(ARRAY).description("기능성")
                     ));
         }
-
 
         private Schema 성공_응답_형식 = schema("FilterMetadataResponse");
         private ResourceSnippetDetails 문서_정보 = resourceDetails()
@@ -226,7 +227,9 @@ public class PetFoodAcceptanceTest extends AcceptanceTest {
         @Test
         void 필터링에_필요한_메타데이터를_조회한다() {
             // when
-            var 응답 = given(spec).when().get("/pet-foods/filters");
+            var 응답 = given(spec)
+                    .when()
+                    .get("/pet-foods/filters");
 
             // then
             응답.then()

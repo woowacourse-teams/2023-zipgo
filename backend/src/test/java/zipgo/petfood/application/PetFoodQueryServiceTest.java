@@ -80,7 +80,7 @@ class PetFoodQueryServiceTest {
         List<Brand> 식품_브랜드_리스트 = List.of(식품_브랜드_생성하기());
         when(brandRepository.findAll()).thenReturn(식품_브랜드_리스트);
         when(petFoodRepository.findAllPrimaryIngredients()).thenReturn(List.of("닭고기,쌀", "닭고기", "말미잘"));
-        when(petFoodRepository.findAllFunctionality()).thenReturn(List.of("튼튼,짱"));
+        when(petFoodRepository.findAllFunctionalities()).thenReturn(List.of("튼튼,짱"));
 
         // when
         FilterResponse metadataForFilter = petFoodQueryService.getMetadataForFilter();
