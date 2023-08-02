@@ -9,7 +9,7 @@ const meta = {
   tags: ['autodocs'],
   decorators: [
     (Story, { parameters }) => (
-      <div style={{ backgroundColor: '#f2f2f2', padding: 10 }}>
+      <div style={{ backgroundColor: '#fff', paddingTop: 10 }}>
         <Story />
       </div>
     ),
@@ -21,29 +21,36 @@ type Story = StoryObj<typeof NavigationBar>;
 
 export const Basic: Story = {
   args: {
-    data: [{ title: '상세정보' }, { title: '리뷰 (12)' }],
-    index: 0,
+    navData: [{ title: '상세정보' }, { title: '리뷰 (12)' }],
+    navIndex: 0,
+    style: {
+      backgroundColor: '#fff',
+    },
   },
 };
 
 export const ManyMenus: Story = {
   args: {
-    data: [{ title: '상세정보' }, { title: '리뷰 (12)' }, { title: '브랜드' }],
-    index: 0,
+    navData: [{ title: '상세정보' }, { title: '리뷰 (12)' }, { title: '브랜드' }],
+    navIndex: 0,
+    style: {
+      backgroundColor: '#fff',
+    },
   },
 };
 
 export const NotFixedItems: Story = {
   args: {
-    data: [{ title: '영양기준' }, { title: '주원료' }, { title: '브랜드' }, { title: '기능성' }],
+    navData: [{ title: '영양기준' }, { title: '주원료' }, { title: '브랜드' }, { title: '기능성' }],
     fixedWidth: false,
-    index: 0,
+    navIndex: 0,
     indicatorColor: '#333D4B',
     style: {
       height: 60,
       backgroundColor: '#fff',
       borderTopLeftRadius: 20,
       borderTopRightRadius: 20,
+      border: '1px solid #AFB8C1',
     },
   },
 };

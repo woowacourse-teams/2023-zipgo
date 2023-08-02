@@ -14,39 +14,48 @@ import { StyledProps } from '@/types/common/utility';
 
 interface NavData {
   title: string;
-  onClick?: () => void;
+  onClick?: VoidFunction;
 }
 
 interface NavigationBarProps {
-  data: NavData[];
-  index: number;
+  navData: NavData[];
+  navIndex: number;
   fixedWidth?: boolean;
   indicatorColor?: string;
   style?: CSSProperties;
 }
 
 interface NavigationBarMethod {
-  snapToIndex(index: number): void;
-  snapToNext(): void;
-  snapToPrev(): void;
+  snapToIndex: (index: number) => void;
+  snapToNext: VoidFunction;
+  snapToPrev: VoidFunction;
 }
 
 type NavigationBar = NavigationBarMethod;
 
 const NavigationBarComponent = forwardRef<NavigationBarMethod, NavigationBarProps>(
   (navigationBarProps, ref) => {
+    useImperativeHandle(ref, () => ({
+      snapToIndex,
+      snapToNext,
+      snapToPrev,
+    }));
+
     const {
-      data,
-      index,
+      navData,
+      navIndex,
       fixedWidth = true,
       indicatorColor = theme.color.primary,
       style,
     } = navigationBarProps;
 
-    const [currentIndex, setCurrentIndex] = useState<number>(index);
+    const [currentIndex, setCurrentIndex] = useState<number>(navIndex);
+
+    const [currentItemLeft, setCurrentItemLeft] = useState<number>(0);
+    const [currentItemWidth, setCurrentItemWidth] = useState<number>(0);
 
     const snapToIndex = (index: number) => {
-      if (index >= 0 && index < data.length) {
+      if (index >= 0 && index < navData.length) {
         setCurrentIndex(index);
       }
     };
@@ -59,16 +68,12 @@ const NavigationBarComponent = forwardRef<NavigationBarMethod, NavigationBarProp
       setCurrentIndex(prev => prev - 1);
     };
 
-    useImperativeHandle(ref, () => ({
-      snapToIndex,
-      snapToNext,
-      snapToPrev,
-    }));
+    const onClickNavItem = (nav: NavData, index: number) => {
+      nav.onClick && nav.onClick();
+      setCurrentIndex(index);
+    };
 
     const currentItemRef = useRef<HTMLUListElement>(null);
-
-    const [currentItemLeft, setCurrentItemLeft] = useState<number>(0);
-    const [currentItemWidth, setCurrentItemWidth] = useState<number>(0);
 
     useEffect(() => {
       const item = currentItemRef.current;
@@ -86,14 +91,11 @@ const NavigationBarComponent = forwardRef<NavigationBarMethod, NavigationBarProp
     return (
       <NavWrapper style={style} $fixedWidth={fixedWidth}>
         <NavList ref={currentItemRef} $fixedWidth={fixedWidth}>
-          {data.map((nav, index) => (
+          {navData.map((nav, index) => (
             <NavItem
               type="button"
               key={index}
-              onClick={() => {
-                nav.onClick && nav.onClick();
-                setCurrentIndex(index);
-              }}
+              onClick={() => onClickNavItem(nav, index)}
               $fixedWidth={fixedWidth}
             >
               <NavItemTitle $clicked={currentIndex === index}>{nav.title}</NavItemTitle>
@@ -103,7 +105,7 @@ const NavigationBarComponent = forwardRef<NavigationBarMethod, NavigationBarProp
         <CurrentNavIndicator
           $fixedWidth={fixedWidth}
           $indicatorColor={indicatorColor}
-          $dataLength={data.length}
+          $dataLength={navData.length}
           $left={currentItemLeft}
           $width={currentItemWidth}
         />
@@ -118,17 +120,18 @@ const NavigationBar = memo(NavigationBarComponent);
 
 export default NavigationBar;
 
-type PropsWithFixedWith = StyledProps<Pick<NavigationBarProps, 'fixedWidth'>>;
+interface PropsWithFixedWith extends StyledProps<Pick<NavigationBarProps, 'fixedWidth'>> {}
 
-type NavIndicatorProps = StyledProps<
-  Pick<NavigationBarProps, 'fixedWidth' | 'indicatorColor'> & {
-    left: number;
-    width: number;
-    dataLength: number;
-  }
->;
+interface NavIndicatorProps
+  extends StyledProps<
+    Pick<NavigationBarProps, 'fixedWidth' | 'indicatorColor'> & {
+      left: number;
+      width: number;
+      dataLength: number;
+    }
+  > {}
 
-type PropsWithClicked = StyledProps<{ clicked: boolean }>;
+interface PropsWithClicked extends StyledProps<{ clicked: boolean }> {}
 
 const NavWrapper = styled.nav<PropsWithFixedWith>`
   position: relative;
