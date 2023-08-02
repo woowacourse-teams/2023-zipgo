@@ -1,4 +1,4 @@
-import { Food, FoodDetail } from './client';
+import { Filters, Food, FoodDetail, KeywordsEn } from './client';
 
 export interface GetFoodListReq {
   keyword: string[];
@@ -13,3 +13,8 @@ export interface GetFoodDetailReq {
 }
 
 export interface GetFoodDetailRes extends FoodDetail {}
+
+export interface GetFoodListFilterMetaRes {
+  keywords: KeywordsEn;
+  filters: Filters;
+}
