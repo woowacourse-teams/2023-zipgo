@@ -14,7 +14,7 @@ else
     sleep 5
     if ps -p $CURRENT_PID > /dev/null; then
         echo "> 애플리케이션을 다시 종료합니다."
-        kill -9 $PROCESS_ID
+        sudo kill -9 $CURRENT_PID
     else
         echo "> 프로세스 아이디 $CURRENT_PID 가 성공적으로 종료되었습니다."
     fi
