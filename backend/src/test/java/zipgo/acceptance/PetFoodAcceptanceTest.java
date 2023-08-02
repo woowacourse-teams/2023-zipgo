@@ -68,8 +68,9 @@ public class PetFoodAcceptanceTest extends AcceptanceTest {
                     responseFields(
                             fieldWithPath("petFoods").description("반려동물 식품 리스트").type(JsonFieldType.ARRAY),
                             fieldWithPath("petFoods[].id").description("식품 id").type(JsonFieldType.NUMBER),
-                            fieldWithPath("petFoods[].name").description("식품 이름").type(JsonFieldType.STRING),
                             fieldWithPath("petFoods[].imageUrl").description("식품 이미지 url").type(JsonFieldType.STRING),
+                            fieldWithPath("petFoods[].brandName").description("브랜드 이름").type(JsonFieldType.STRING),
+                            fieldWithPath("petFoods[].foodName").description("식품 이름").type(JsonFieldType.STRING),
                             fieldWithPath("petFoods[].purchaseUrl").description("구매 링크").type(JsonFieldType.STRING)
                     ));
         }
