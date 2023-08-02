@@ -1,20 +1,17 @@
 package zipgo.review.domain;
 
+import static jakarta.persistence.EnumType.STRING;
 import static jakarta.persistence.FetchType.LAZY;
 import static lombok.AccessLevel.PROTECTED;
 import static lombok.EqualsAndHashCode.Include;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.ManyToOne;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import zipgo.review.domain.type.AdverseReactionType;
 
 @Entity
 @Getter
@@ -29,8 +26,9 @@ public class AdverseReaction {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @Enumerated(STRING)
     @Column(nullable = false)
-    private String name;
+    private AdverseReactionType adverseReactionType;
 
     @ManyToOne(fetch = LAZY)
     private Review review;
@@ -39,8 +37,8 @@ public class AdverseReaction {
         this.review = review;
     }
 
-    public AdverseReaction(String name) {
-        this.name = name;
+    public AdverseReaction(AdverseReactionType adverseReactionType) {
+        this.adverseReactionType = adverseReactionType;
     }
 
 }

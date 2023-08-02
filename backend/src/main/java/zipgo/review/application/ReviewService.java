@@ -49,4 +49,11 @@ public class ReviewService {
         review.addAdverseReactions(request.adverseReactions());
     }
 
+    public void deleteReview(Long memberId, Long reviewId) {
+        Review review = reviewRepository.getById(reviewId);
+
+        review.validateOwner(memberId);
+        reviewRepository.delete(review);
+    }
+
 }

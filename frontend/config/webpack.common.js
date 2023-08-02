@@ -58,7 +58,7 @@ module.exports = {
     new HtmlWebpackPlugin({
       template: paths.appHtml,
     }),
-    new DefinePlugin(env.stringified),
+    new DefinePlugin({ ...env.stringified, isDevelopment, isProduction }),
     new ForkTsCheckerWebpackPlugin({
       typescript: {
         configFile: paths.appTsConfig,

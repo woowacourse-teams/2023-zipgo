@@ -1,37 +1,22 @@
-import {
-  ChangeEvent,
-  Children,
-  cloneElement,
-  ComponentPropsWithoutRef,
-  isValidElement,
-  ReactNode,
-} from 'react';
+import { cloneElement, ComponentPropsWithoutRef, PropsWithChildren } from 'react';
+
+import { getValidProps } from '@/utils/compound';
 
 interface CheckboxProps extends ComponentPropsWithoutRef<'input'> {
-  asChild: boolean;
-  children: ReactNode;
+  asChild?: boolean;
 }
 
-interface CheckboxInput {
-  type: 'checkbox';
-  onChange: (e: ChangeEvent<HTMLInputElement>) => void;
-}
-
-const Checkbox = (CheckboxProps: Partial<CheckboxProps>) => {
-  const { asChild = false, children, onChange, ...props } = CheckboxProps;
+const Checkbox = (props: PropsWithChildren<CheckboxProps>) => {
+  const { asChild, child, ...restProps } = getValidProps(props);
 
   if (asChild) {
-    if (isValidElement<CheckboxInput>(children)) {
-      const child = Children.only(children);
-
-      return cloneElement(child, {
-        type: 'checkbox',
-        onChange,
-      });
-    }
+    return cloneElement(child, {
+      ...restProps,
+      type: 'checkbox',
+    });
   }
 
-  return <input {...props} type="checkbox" onChange={onChange} />;
+  return <input {...restProps} type="checkbox" />;
 };
 
 export default Checkbox;
