@@ -1,5 +1,5 @@
 /* eslint-disable react/no-array-index-key */
-import { useEffect, useRef, useState } from 'react';
+import { useRef, useState } from 'react';
 import { styled } from 'styled-components';
 
 import Button from '@/components/@common/Button/Button';
@@ -26,9 +26,15 @@ const FoodDetail = () => {
 
   if (!foodData) throw new Error('식품 상세 페이지를 불러오지 못했습니다.');
 
+  const { name, hasStandard, proteinSource, brand, functionality, purchaseUrl } = foodData;
+
+  const onClickPurchaseButton = () => {
+    window.open(purchaseUrl, '_blank');
+  };
+
   return (
     <>
-      <PageHeader title={foodData.name} />
+      <PageHeader title={name} />
 
       <FoodDetailWrapper>
         <FoodProfileContainer>
@@ -45,32 +51,30 @@ const FoodDetail = () => {
           <FoodDetailInfoWrapper>
             <InfoBlock headText="기존 충족 여부">
               <NutritionStandard>
-                <NutritionStandardBlock state={State.us} satisfied={foodData.hasStandard.us} />
-                <NutritionStandardBlock state={State.eu} satisfied={foodData.hasStandard.eu} />
+                <NutritionStandardBlock state={State.us} satisfied={hasStandard.us} />
+                <NutritionStandardBlock state={State.eu} satisfied={hasStandard.eu} />
               </NutritionStandard>
             </InfoBlock>
             <InfoBlock headText="주원료">
               <NutritionText>
-                {`${foodData.proteinSource.primary.map(source => `${source},`)} ${
-                  foodData.proteinSource.secondary
-                }`}
+                {`${[...proteinSource.primary, ...proteinSource.secondary].join(', ')}`}
               </NutritionText>
             </InfoBlock>
             <InfoBlock headText="기능성">
               <FunctionalList>
-                {['튼튼', '건강'].map((functional, index) => (
+                {functionality.map((functional, index) => (
                   <Label key={index} text={functional} />
                 ))}
               </FunctionalList>
             </InfoBlock>
             <InfoBlock headText="브랜드 정보를 꼭 확인하세요!">
-              <BrandBlock {...foodData.brand} />
+              <BrandBlock {...brand} />
             </InfoBlock>
           </FoodDetailInfoWrapper>
         )}
         {pageIndex === 1 && <ReviewList />}
       </FoodDetailWrapper>
-      <Button text="구매하러 가기" onClick={() => {}} fixed />
+      <Button text="구매하러 가기" onClick={onClickPurchaseButton} fixed />
     </>
   );
 };

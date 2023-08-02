@@ -44,7 +44,8 @@ const getFoodDetail = (): GetFoodDetailRes => ({
   id: 0,
   name: '개꿀맛사료',
   imageUrl: 'https://m.wellfeed.co.kr/web/product/big/202305/d535183f626c65184ac0d674477f744b.jpg',
-  purchaseUrl: '',
+  purchaseUrl:
+    'https://www.coupang.com/vp/products/6080929259?itemId=12642998513&vendorItemId=4116327396&q=%EB%82%98%EC%9A%B0%ED%94%84%EB%A0%88%EC%8B%9C+%EA%B0%95%EC%95%84%EC%A7%80%EC%9A%A9+%EC%82%AC%EB%A3%8C&itemsCount=36&searchId=2d6ab623c99242e388be97d7302d6cfe&rank=1&isAddedCart=',
   rating: 4.12,
   reviewCount: 12,
   proteinSource: {
