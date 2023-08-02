@@ -127,7 +127,7 @@ const LabelWrapper = styled.div<LabelStyleProps>`
   color: ${({ $textColor }) => $textColor};
 
   background-color: ${({ $clicked, theme, $backgroundColor }) =>
-    $clicked ? '#D0E6F9' : $backgroundColor};
+    $clicked ? theme.color.blue : $backgroundColor};
   border-radius: 20px;
 
   ${({ $hasBorder, $clicked, $borderColor }) =>

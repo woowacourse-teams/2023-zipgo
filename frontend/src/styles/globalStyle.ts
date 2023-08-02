@@ -24,6 +24,9 @@ const globalStyle = css`
     font-family: Pretandard, sans-serif;
   }
 
+  button,
+  ul,
+  li,
   h1,
   h2,
   h3,
