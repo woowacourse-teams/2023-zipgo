@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import zipgo.petfood.application.PetFoodQueryService;
 import zipgo.petfood.domain.PetFood;
+import zipgo.petfood.presentation.dto.FilterMetadataResponse;
 import zipgo.petfood.presentation.dto.GetPetFoodResponse;
 import zipgo.petfood.presentation.dto.GetPetFoodsResponse;
 import zipgo.petfood.presentation.dto.PetFoodSelectRequest;
@@ -39,6 +40,11 @@ public class PetFoodController {
         double ratingAverage = foundPetFood.calculateRatingAverage();
 
         return ResponseEntity.ok(GetPetFoodResponse.of(foundPetFood, ratingAverage, reviewCount));
+    }
+
+    @GetMapping("/filters")
+    public ResponseEntity<FilterMetadataResponse> getFilterMetadata() {
+        return null;
     }
 
 }
