@@ -18,4 +18,8 @@ public class ReviewQueryService {
         return reviewRepository.findAllByPetFoodId(petFoodId);
     }
 
+    public Review getReview(Long reviewId) {
+        return reviewRepository.getById(reviewId);
+    }
+
 }

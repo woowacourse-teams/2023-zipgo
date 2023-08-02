@@ -37,6 +37,7 @@ public class ReviewController {
         return ResponseEntity.created(URI.create("/reviews/" + reviewId)).build();
     }
 
+    //TODO petFoodId 쿼러파라미터로 변경
     @GetMapping("/pet-foods/{petFoodId}/reviews")
     public ResponseEntity<List<GetReviewsResponse>> getAllReviews(@PathVariable Long petFoodId) {
         List<Review> reviews = reviewQueryService.getAllReviews(petFoodId);
@@ -44,6 +45,12 @@ public class ReviewController {
                 .map(GetReviewsResponse::from)
                 .toList();
         return ResponseEntity.ok(reviewsResponses);
+    }
+
+    @GetMapping("/reviews/{id}")
+    public ResponseEntity<GetReviewsResponse> getReview(@PathVariable Long id) {
+        Review review = reviewQueryService.getReview(id);
+        return ResponseEntity.ok(GetReviewsResponse.from(review));
     }
 
     @PutMapping("/reviews/{reviewId}")
