@@ -19,6 +19,7 @@ interface NavData {
 
 interface NavigationBarProps {
   navData: NavData[];
+  onChangeNav: (index: number) => void;
   navIndex: number;
   fixedWidth?: boolean;
   indicatorColor?: string;
@@ -47,6 +48,7 @@ const NavigationBarComponent = forwardRef<NavigationBarMethod, NavigationBarProp
       fixedWidth = true,
       indicatorColor = theme.color.primary,
       style,
+      onChangeNav,
     } = navigationBarProps;
 
     const [currentIndex, setCurrentIndex] = useState<number>(navIndex);
@@ -76,6 +78,8 @@ const NavigationBarComponent = forwardRef<NavigationBarMethod, NavigationBarProp
     const currentItemRef = useRef<HTMLUListElement>(null);
 
     useEffect(() => {
+      onChangeNav(currentIndex);
+
       const item = currentItemRef.current;
       if (item) {
         const childNode = currentItemRef.current.childNodes[currentIndex] as HTMLButtonElement;
@@ -86,7 +90,7 @@ const NavigationBarComponent = forwardRef<NavigationBarMethod, NavigationBarProp
           setCurrentItemWidth(childNode.getBoundingClientRect().width);
         }
       }
-    }, [currentIndex]);
+    }, [currentIndex, onChangeNav]);
 
     return (
       <NavWrapper style={style} $fixedWidth={fixedWidth}>
