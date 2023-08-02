@@ -38,7 +38,7 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
         return ResponseEntity.status(INTERNAL_SERVER_ERROR).body(new ErrorResponse("서버 내부 오류"));
     }
 
-    @ExceptionHandler({AuthException.Forbidden.class})
+    @ExceptionHandler({AuthException.class})
     public ResponseEntity<ErrorResponse> handleForbiddenException(Exception exception) {
         return ResponseEntity.status(FORBIDDEN).body(ErrorResponse.of(exception));
     }
