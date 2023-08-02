@@ -6,7 +6,7 @@ import FilterSwitch from '@/components/@common/FilterSwitch/FilterSwitch';
 import Header from '@/components/@common/Header/Header';
 import Template from '@/components/@common/Template';
 import FoodList from '@/components/Food/FoodList/FoodList';
-import useFoodListQuery from '@/hooks/query/food';
+import { useFoodListQuery } from '@/hooks/query/food';
 
 const Landing = () => {
   const [keyword, setKeyword] = useState<string[]>([]);
@@ -17,7 +17,7 @@ const Landing = () => {
 
   useEffect(() => {
     refetch();
-  }, [keyword]);
+  }, [keyword, refetch]);
 
   if (!foodList) return null;
 

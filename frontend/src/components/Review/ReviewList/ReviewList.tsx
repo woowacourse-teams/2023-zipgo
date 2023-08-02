@@ -46,7 +46,7 @@ const ReviewAddButton = styled.button`
 
   cursor: pointer;
 
-  position: absolute;
+  position: fixed;
   right: 1.6rem;
   bottom: 3.2rem;
 
