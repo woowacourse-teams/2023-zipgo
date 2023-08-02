@@ -1,4 +1,4 @@
-import { GetFoodDetailRes, GetFoodListRes } from '@/types/food/remote';
+import { GetFoodDetailRes, GetFoodListFilterMetaRes, GetFoodListRes } from '@/types/food/remote';
 
 const getFoodList = (): GetFoodListRes => ({
   petFoods: [
@@ -65,5 +65,15 @@ const getFoodDetail = (): GetFoodDetailRes => ({
   },
 });
 
-const foodFixture = { getFoodList, getFoodDetail };
+const getFoodListFilterMeta = (): GetFoodListFilterMetaRes => ({
+  keywords: ['nutritionStandard', 'mainIngredients', 'brands', 'functionality'],
+  filters: {
+    nutritionStandard: [],
+    mainIngredients: [],
+    brands: [],
+    functionality: [],
+  },
+});
+
+const foodFixture = { getFoodList, getFoodDetail, getFoodListFilterMeta };
 export default foodFixture;
