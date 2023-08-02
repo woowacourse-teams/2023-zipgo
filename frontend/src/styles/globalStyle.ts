@@ -29,6 +29,7 @@ const globalStyle = css`
   h3,
   p {
     margin: 0;
+    padding: 0;
   }
 `;
 
