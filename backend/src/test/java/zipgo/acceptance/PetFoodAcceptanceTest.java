@@ -1,5 +1,15 @@
 package zipgo.acceptance;
 
+import com.epages.restdocs.apispec.ResourceSnippetDetails;
+import com.epages.restdocs.apispec.Schema;
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Nested;
+import org.junit.jupiter.api.Test;
+import org.springframework.restdocs.payload.JsonFieldType;
+import org.springframework.restdocs.restassured.RestDocumentationFilter;
+import org.springframework.test.context.jdbc.Sql;
+import zipgo.petfood.presentation.dto.PetFoodSelectRequest;
+
 import static com.epages.restdocs.apispec.RestAssuredRestDocumentationWrapper.document;
 import static com.epages.restdocs.apispec.RestAssuredRestDocumentationWrapper.resourceDetails;
 import static com.epages.restdocs.apispec.Schema.schema;
@@ -15,15 +25,6 @@ import static org.springframework.restdocs.payload.PayloadDocumentation.fieldWit
 import static org.springframework.restdocs.payload.PayloadDocumentation.responseFields;
 import static org.springframework.restdocs.request.RequestDocumentation.parameterWithName;
 import static org.springframework.restdocs.request.RequestDocumentation.pathParameters;
-
-import com.epages.restdocs.apispec.ResourceSnippetDetails;
-import com.epages.restdocs.apispec.Schema;
-import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Nested;
-import org.junit.jupiter.api.Test;
-import org.springframework.restdocs.restassured.RestDocumentationFilter;
-import org.springframework.test.context.jdbc.Sql;
-import zipgo.petfood.presentation.dto.PetFoodSelectRequest;
 
 public class PetFoodAcceptanceTest extends AcceptanceTest {
 
@@ -64,11 +65,11 @@ public class PetFoodAcceptanceTest extends AcceptanceTest {
             return document(name,
                     API_정보.responseSchema(성공_응답_형식),
                     responseFields(
-                            fieldWithPath("petFoods").description("반려동물 식품 리스트"),
-                            fieldWithPath("petFoods[].id").description("식품 id"),
-                            fieldWithPath("petFoods[].name").description("식품 이름"),
-                            fieldWithPath("petFoods[].imageUrl").description("식품 이미지 url"),
-                            fieldWithPath("petFoods[].purchaseUrl").description("구매 링크")
+                            fieldWithPath("petFoods").description("반려동물 식품 리스트").type(JsonFieldType.ARRAY),
+                            fieldWithPath("petFoods[].id").description("식품 id").type(JsonFieldType.NUMBER),
+                            fieldWithPath("petFoods[].name").description("식품 이름").type(JsonFieldType.STRING),
+                            fieldWithPath("petFoods[].imageUrl").description("식품 이미지 url").type(JsonFieldType.STRING),
+                            fieldWithPath("petFoods[].purchaseUrl").description("구매 링크").type(JsonFieldType.STRING)
                     ));
         }
 
@@ -137,21 +138,24 @@ public class PetFoodAcceptanceTest extends AcceptanceTest {
                     문서_정보.responseSchema(성공_응답_형식),
                     pathParameters(parameterWithName("id").description("조회할 상품 id")),
                     responseFields(
-                            fieldWithPath("id").description("식품 id"),
-                            fieldWithPath("name").description("식품 이름"),
-                            fieldWithPath("imageUrl").description("식품 이미지 url"),
-                            fieldWithPath("purchaseUrl").description("구매링크"),
-                            fieldWithPath("rating").description("평균 별점"),
-                            fieldWithPath("reviewCount").description("리뷰수"),
-                            fieldWithPath("primaryIngredients").description("주 원료"),
-                            fieldWithPath("hasStandard.us").description("미국 기준 충족 여부"),
-                            fieldWithPath("hasStandard.eu").description("유럽 기준 충족 여부"),
-                            fieldWithPath("functionality").description("기능성"),
-                            fieldWithPath("brand.name").description("브랜드명"),
-                            fieldWithPath("brand.state").description("브랜드 국가"),
-                            fieldWithPath("brand.foundedYear").description("브랜드 설립연도"),
-                            fieldWithPath("brand.hasResearchCenter").description("브랜드 연구 기관 존재 여부"),
+                            fieldWithPath("id").description("식품 id").type(JsonFieldType.NUMBER),
+                            fieldWithPath("name").description("식품 이름").type(JsonFieldType.STRING),
+                            fieldWithPath("imageUrl").description("식품 이미지 url").type(JsonFieldType.STRING),
+                            fieldWithPath("purchaseUrl").description("구매링크").type(JsonFieldType.STRING),
+                            fieldWithPath("rating").description("평균 별점").type(JsonFieldType.NUMBER),
+                            fieldWithPath("reviewCount").description("리뷰수").type(JsonFieldType.NUMBER),
+                            fieldWithPath("primaryIngredients").description("주 원료").type(JsonFieldType.ARRAY),
+                            fieldWithPath("hasStandard.us").description("미국 기준 충족 여부").type(JsonFieldType.BOOLEAN),
+                            fieldWithPath("hasStandard.eu").description("유럽 기준 충족 여부").type(JsonFieldType.BOOLEAN),
+                            fieldWithPath("functionality").description("기능성").type(JsonFieldType.ARRAY),
+                            fieldWithPath("brand.name").description("브랜드명").type(JsonFieldType.STRING),
+                            fieldWithPath("brand.imageUrl").description("브랜드 이미지 url").type(JsonFieldType.STRING),
+                            fieldWithPath("brand.state").description("브랜드 국가").type(JsonFieldType.STRING),
+                            fieldWithPath("brand.foundedYear").description("브랜드 설립연도").type(JsonFieldType.NUMBER),
+                            fieldWithPath("brand.hasResearchCenter").description("브랜드 연구 기관 존재 여부")
+                                    .type(JsonFieldType.BOOLEAN),
                             fieldWithPath("brand.hasResidentVet").description("상주 수의사 존재 여부")
+                                    .type(JsonFieldType.BOOLEAN)
                     ));
         }
 
