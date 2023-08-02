@@ -15,14 +15,10 @@ import static com.epages.restdocs.apispec.Schema.schema;
 import static io.restassured.RestAssured.given;
 import static io.restassured.http.ContentType.JSON;
 import static org.hamcrest.Matchers.is;
-import static org.springframework.http.HttpStatus.CREATED;
-import static org.springframework.http.HttpStatus.FORBIDDEN;
-import static org.springframework.http.HttpStatus.NOT_FOUND;
-import static org.springframework.http.HttpStatus.NO_CONTENT;
-import static org.springframework.http.HttpStatus.OK;
-import static org.springframework.restdocs.payload.PayloadDocumentation.fieldWithPath;
-import static org.springframework.restdocs.payload.PayloadDocumentation.requestFields;
-import static org.springframework.restdocs.payload.PayloadDocumentation.responseFields;
+import static org.springframework.http.HttpStatus.*;
+import static org.springframework.restdocs.headers.HeaderDocumentation.headerWithName;
+import static org.springframework.restdocs.headers.HeaderDocumentation.requestHeaders;
+import static org.springframework.restdocs.payload.PayloadDocumentation.*;
 import static org.springframework.restdocs.request.RequestDocumentation.parameterWithName;
 import static org.springframework.restdocs.request.RequestDocumentation.pathParameters;
 import static zipgo.review.fixture.ReviewFixture.리뷰_생성_요청;
@@ -31,8 +27,9 @@ import static zipgo.review.fixture.ReviewFixture.리뷰_수정_요청;
 
 public class ReviewControllerTest extends AcceptanceTest {
 
-    // TODO: API 문서에 헤더 정보 추가
-    //TODO 갈비꺼 merge 후 고정 상수 리팩터링하기
+    private Long petFoodId = 1L;
+    private Long reviewId = 1L;
+    private Long 잘못된_id = 123456789L;
 
     @Nested
     @DisplayName("리뷰 전체 목록 조회 API")
@@ -51,9 +48,8 @@ public class ReviewControllerTest extends AcceptanceTest {
                     .filter(리뷰_목록_조회_API_문서_생성());
 
             // when
-            //TODO petFoodId가 data.sql에 종속적인거 같아서 리뷰 생성 기능 만든 후 리팩터링 예정
             var 응답 = 요청_준비.when()
-                    .pathParam("id", 1)
+                    .pathParam("id", petFoodId)
                     .get("/pet-foods/{id}/reviews");
 
             // then
@@ -93,10 +89,10 @@ public class ReviewControllerTest extends AcceptanceTest {
         @Test
         void 리뷰를_성공적으로_생성하면_201_반환() {
             // given
-            //TODO 여기도 갈비씨가 member pr 날려주면 리팩토링 할 듯
+            var token = jwtProvider.create("1");
             var 요청_준비 = given(spec)
-                    .queryParam("memberId", 1L)
-                    .body(리뷰_생성_요청(1L))
+                    .header("Authorization", "Bearer " + token)
+                    .body(리뷰_생성_요청(petFoodId))
                     .contentType(JSON)
                     .filter(리뷰_생성_API_문서_생성());
 
@@ -112,6 +108,7 @@ public class ReviewControllerTest extends AcceptanceTest {
         private RestDocumentationFilter 리뷰_생성_API_문서_생성() {
             return document("리뷰 생성 - 성공",
                     문서_정보.requestSchema(요청_형식).responseSchema(성공_응답_형식),
+                    requestHeaders(headerWithName("Authorization").description("인증을 위한 JWT")),
                     requestFields(
                             fieldWithPath("petFoodId").description("식품 id").type(JsonFieldType.NUMBER),
                             fieldWithPath("rating").description("리뷰 별점").type(JsonFieldType.NUMBER),
@@ -125,9 +122,10 @@ public class ReviewControllerTest extends AcceptanceTest {
         @Test
         void 없는_식품에_대해_리뷰를_생성하면_404_반환() {
             // given
+            var token = jwtProvider.create("1");
             var 요청_준비 = given(spec)
-                    .queryParam("memberId", 1L)
-                    .body(리뷰_생성_요청(123456789L))
+                    .header("Authorization", "Bearer " + token)
+                    .body(리뷰_생성_요청(잘못된_id))
                     .contentType(JSON)
                     .filter(API_예외응답_문서_생성());
 
@@ -141,9 +139,9 @@ public class ReviewControllerTest extends AcceptanceTest {
         }
 
         private RestDocumentationFilter API_예외응답_문서_생성() {
-            return document("리뷰 생성 - 실패(없는 식품)", 문서_정보.responseSchema(에러_응답_형식));
+            return document("리뷰 생성 - 실패(없는 식품)", 문서_정보.responseSchema(에러_응답_형식),
+                    requestHeaders(headerWithName("Authorization").description("인증을 위한 JWT")));
         }
-
     }
 
     @Nested
@@ -159,15 +157,16 @@ public class ReviewControllerTest extends AcceptanceTest {
         @Test
         void 리뷰를_성공적으로_수정하면_204_반환() {
             // given
+            var token = jwtProvider.create("1");
             var 요청_준비 = given(spec)
-                    .queryParam("memberId", 1L)
+                    .header("Authorization", "Bearer " + token)
                     .body(리뷰_수정_요청())
                     .contentType(JSON)
                     .filter(리뷰_수정_API_문서_생성());
 
             // when
             var 응답 = 요청_준비.when()
-                    .pathParam("reviewId", 1)
+                    .pathParam("reviewId", reviewId)
                     .put("/reviews/{reviewId}");
 
             // then
@@ -178,6 +177,7 @@ public class ReviewControllerTest extends AcceptanceTest {
         private RestDocumentationFilter 리뷰_수정_API_문서_생성() {
             return document("리뷰 수정 - 성공",
                     문서_정보.requestSchema(요청_형식).responseSchema(성공_응답_형식),
+                    requestHeaders(headerWithName("Authorization").description("인증을 위한 JWT")),
                     pathParameters(parameterWithName("reviewId").description("리뷰 id")),
                     requestFields(
                             fieldWithPath("rating").description("리뷰 별점").type(JsonFieldType.NUMBER),
@@ -191,15 +191,16 @@ public class ReviewControllerTest extends AcceptanceTest {
         @Test
         void 리뷰를_쓴_사람이_아닌_멤버가_리뷰를_수정하면_403_반환() {
             // given
+            var notOwnerToken = jwtProvider.create("2");
             var 요청_준비 = given(spec)
-                    .queryParam("memberId", 2L)
-                    .body(리뷰_생성_요청(123456789L))
+                    .header("Authorization", "Bearer " + notOwnerToken)
+                    .body(리뷰_생성_요청(petFoodId))
                     .contentType(JSON)
                     .filter(API_예외응답_문서_생성());
 
             // when
             var 응답 = 요청_준비.when()
-                    .pathParam("reviewId", 1)
+                    .pathParam("reviewId", reviewId)
                     .put("/reviews/{reviewId}");
 
             // then
@@ -208,10 +209,15 @@ public class ReviewControllerTest extends AcceptanceTest {
         }
 
         private RestDocumentationFilter API_예외응답_문서_생성() {
-            return document("리뷰 수정 - 실패(Forbidden)", 문서_정보.responseSchema(에러_응답_형식));
+            return document("리뷰 수정 - 실패(Forbidden)",
+                    문서_정보.responseSchema(에러_응답_형식),
+                    requestHeaders(headerWithName("Authorization").description("인증을 위한 JWT"))
+            );
         }
 
     }
+
+
 
     @Nested
     @DisplayName("리뷰 삭제 API")
@@ -225,15 +231,16 @@ public class ReviewControllerTest extends AcceptanceTest {
         @Test
         void 리뷰를_성공적으로_삭제하면_204_반환() {
             // given
+            var token = jwtProvider.create("1");
             var 요청_준비 = given(spec)
-                    .queryParam("memberId", 1L)
+                    .header("Authorization", "Bearer " + token)
                     .body(리뷰_수정_요청())
                     .contentType(JSON)
                     .filter(리뷰_삭제_API_문서_생성());
 
             // when
             var 응답 = 요청_준비.when()
-                    .pathParam("reviewId", 1)
+                    .pathParam("reviewId", reviewId)
                     .delete("/reviews/{reviewId}");
 
             // then
@@ -244,22 +251,24 @@ public class ReviewControllerTest extends AcceptanceTest {
         private RestDocumentationFilter 리뷰_삭제_API_문서_생성() {
             return document("리뷰 삭제 - 성공",
                     문서_정보.responseSchema(성공_응답_형식),
-                    pathParameters(parameterWithName("reviewId").description("리뷰 id"))
+                    pathParameters(parameterWithName("reviewId").description("리뷰 id")),
+                    requestHeaders(headerWithName("Authorization").description("인증을 위한 JWT"))
             );
         }
 
         @Test
         void 리뷰를_쓴_사람이_아닌_멤버가_리뷰를_삭제하면_403_반환() {
             // given
+            var notOwnerToken = jwtProvider.create("2");
             var 요청_준비 = given(spec)
-                    .queryParam("memberId", 2L)
-                    .body(리뷰_생성_요청(123456789L))
+                    .header("Authorization", "Bearer " + notOwnerToken)
+                    .body(리뷰_생성_요청(petFoodId))
                     .contentType(JSON)
                     .filter(API_예외응답_문서_생성());
 
             // when
             var 응답 = 요청_준비.when()
-                    .pathParam("reviewId", 1)
+                    .pathParam("reviewId", reviewId)
                     .delete("/reviews/{reviewId}");
 
             // then
@@ -268,7 +277,8 @@ public class ReviewControllerTest extends AcceptanceTest {
         }
 
         private RestDocumentationFilter API_예외응답_문서_생성() {
-            return document("리뷰 삭제 - 실패(Forbidden)", 문서_정보.responseSchema(에러_응답_형식));
+            return document("리뷰 삭제 - 실패(Forbidden)", 문서_정보.responseSchema(에러_응답_형식),
+                    requestHeaders(headerWithName("Authorization").description("인증을 위한 JWT")));
         }
 
     }

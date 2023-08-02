@@ -5,6 +5,8 @@ import java.net.URI;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import zipgo.auth.presentation.Auth;
+import zipgo.auth.presentation.dto.AuthDto;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -28,10 +30,10 @@ public class ReviewController {
 
     @PostMapping("/reviews")
     public ResponseEntity<Void> create(
-            Long memberId,
+            @Auth AuthDto authDto,
             @RequestBody @Valid CreateReviewRequest createReviewRequest
     ) {
-        Long reviewId = reviewService.createReview(memberId, createReviewRequest);
+        Long reviewId = reviewService.createReview(authDto.id(), createReviewRequest);
         return ResponseEntity.created(URI.create("/reviews/" + reviewId)).build();
     }
 
@@ -46,20 +48,20 @@ public class ReviewController {
 
     @PutMapping("/reviews/{reviewId}")
     public ResponseEntity<Void> update(
-            Long memberId,
+            @Auth AuthDto authDto,
             @PathVariable Long reviewId,
             @RequestBody @Valid UpdateReviewRequest updateReviewRequest
     ) {
-        reviewService.updateReview(memberId, reviewId, updateReviewRequest);
+        reviewService.updateReview(authDto.id(), reviewId, updateReviewRequest);
         return ResponseEntity.noContent().build();
     }
 
     @DeleteMapping("/reviews/{reviewId}")
     public ResponseEntity<Void> delete(
-            Long memberId,
+            @Auth AuthDto authDto,
             @PathVariable Long reviewId
     ) {
-        reviewService.deleteReview(memberId, reviewId);
+        reviewService.deleteReview(authDto.id(), reviewId);
         return ResponseEntity.noContent().build();
     }
 

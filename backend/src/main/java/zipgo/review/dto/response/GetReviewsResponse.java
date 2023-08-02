@@ -20,8 +20,7 @@ public record GetReviewsResponse(
     public static GetReviewsResponse from(Review review) {
         return new GetReviewsResponse(
                 review.getId(),
-                //TODO 소셜로그인에서 이름 추가되면 리팩터링 예정
-                "작성자",
+                review.getMember().getName(),
                 review.getRating(),
                 review.getCreatedAt().format(ofPattern("yyyy-MM-dd")),
                 review.getComment(),
@@ -33,7 +32,7 @@ public record GetReviewsResponse(
 
     private static List<String> getAdverseReactions(Review review) {
         return review.getAdverseReactions().stream()
-                .map(AdverseReaction::getName)
+                .map(adverseReaction -> adverseReaction.getAdverseReactionType().getDescription())
                 .toList();
     }
 

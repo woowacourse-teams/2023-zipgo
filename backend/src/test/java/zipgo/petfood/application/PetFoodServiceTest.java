@@ -23,7 +23,6 @@ import static zipgo.petfood.domain.fixture.PetFoodFixture.키워드_있는_식�
 
 @Transactional
 @SpringBootTest
-
 @SuppressWarnings("NonAsciiCharacters")
 @DisplayNameGeneration(DisplayNameGenerator.ReplaceUnderscores.class)
 class PetFoodServiceTest {

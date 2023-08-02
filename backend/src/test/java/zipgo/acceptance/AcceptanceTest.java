@@ -8,12 +8,14 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayNameGeneration;
 import org.junit.jupiter.api.DisplayNameGenerator;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.server.LocalServerPort;
 import org.springframework.restdocs.RestDocumentationContextProvider;
 import org.springframework.restdocs.RestDocumentationExtension;
 import org.springframework.test.context.jdbc.Sql;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
+import zipgo.auth.util.JwtProvider;
 
 import static com.epages.restdocs.apispec.Schema.schema;
 import static org.springframework.restdocs.operation.preprocess.Preprocessors.prettyPrint;
@@ -31,6 +33,9 @@ public abstract class AcceptanceTest {
 
     @LocalServerPort
     private int port;
+
+    @Autowired
+    protected JwtProvider jwtProvider;
 
     @BeforeEach
     void setUp() {

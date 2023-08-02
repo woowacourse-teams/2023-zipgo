@@ -28,6 +28,7 @@ import zipgo.auth.exception.AuthException;
 import zipgo.common.entity.BaseTimeEntity;
 import zipgo.member.domain.Member;
 import zipgo.petfood.domain.PetFood;
+import zipgo.review.domain.type.AdverseReactionType;
 import zipgo.review.domain.type.StoolCondition;
 import zipgo.review.domain.type.TastePreference;
 
@@ -72,7 +73,7 @@ public class Review extends BaseTimeEntity {
 
     public void addAdverseReactions(List<String> adverseReactionNames) {
         List<AdverseReaction> adverseReactions = adverseReactionNames.stream()
-                .map(AdverseReaction::new)
+                .map(name -> new AdverseReaction(AdverseReactionType.from(name)))
                 .toList();
 
         for (AdverseReaction adverseReaction : adverseReactions) {

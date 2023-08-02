@@ -141,7 +141,8 @@ class ReviewServiceTest extends ServiceTest {
         Member 멤버 = memberRepository.save(무민());
         petFoodRepository.save(식품);
         Review 리뷰 = reviewRepository.save(혹평_리뷰_생성(멤버, 식품,
-                List.of(눈물_이상반응().getName(), 먹고_토_이상반응().getName())));
+                List.of(눈물_이상반응().getAdverseReactionType().getDescription(),
+                        먹고_토_이상반응().getAdverseReactionType().getDescription())));
 
         //when
         reviewService.updateReview(멤버.getId(), 리뷰.getId(), 리뷰_수정_요청());
@@ -176,7 +177,7 @@ class ReviewServiceTest extends ServiceTest {
         Member 멤버 = memberRepository.save(무민());
         petFoodRepository.save(식품);
         Review 리뷰 = reviewRepository.save(혹평_리뷰_생성(멤버, 식품,
-                List.of(눈물_이상반응().getName(), 먹고_토_이상반응().getName())));
+                List.of(눈물_이상반응().getAdverseReactionType().getDescription(), 먹고_토_이상반응().getAdverseReactionType().getDescription())));
 
         //when
         reviewService.deleteReview(멤버.getId(), 리뷰.getId());

@@ -19,15 +19,15 @@ values (1, 1, '[고집] 돌아온 배배',
         'https://github.com/woowacourse-teams/2023-zipgo',
         'https://avatars.githubusercontent.com/u/76938931?v=4', true, true, null, '말미잘');
 
-insert into member DEFAULT VALUES;
-insert into member DEFAULT VALUES;
+insert into member(name, email) values('무민', 'moomin@gmail.com');
+insert into member(name, email) values('무민2', 'moomin2@gmail.com');
 
 insert into review(member_id, pet_food_id, rating, comment, taste_preference, stool_condition, created_at)
 values (1, 1, 5, '우리 아이랑 너무 잘 맞아요!', 'EATS_VERY_WELL', 'SOFT_MOIST', '2023-07-28');
 insert into review(member_id, pet_food_id, rating, comment, taste_preference, stool_condition, created_at)
 values (1, 1, 1, '우리 아이가 한 입 먹고 더 안 먹어요 ㅡ.ㅡ 책임지세요.', 'NOT_AT_ALL', 'DIARRHEA', '2023-07-28');
 
-insert into adverse_reaction(name, review_id)
-values ('눈물이 나요', 2);
-insert into adverse_reaction(name, review_id)
-values ('먹고 토해요', 2);
+insert into adverse_reaction(adverse_reaction_type, review_id)
+values ('TEARS', 2);
+insert into adverse_reaction(adverse_reaction_type, review_id)
+values ('VOMITING', 2);
