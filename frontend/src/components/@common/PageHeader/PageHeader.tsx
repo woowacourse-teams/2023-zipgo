@@ -15,7 +15,7 @@ const PageHeader = (pageHeaderProps: PageHeaderProps) => {
   const navigate = useNavigate();
 
   const onClickBackButton = () => {
-    onClick || navigate('/');
+    onClick ? onClick() : navigate('/');
   };
 
   const scrollPosition = useCurrentScroll();

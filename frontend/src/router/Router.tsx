@@ -22,15 +22,15 @@ export const router = createBrowserRouter([
         element: <Login />,
       },
       {
-        path: 'pet-food/:petFoodId',
+        path: '/pet-food/:petFoodId',
         element: <FoodDetail />,
       },
       {
-        path: 'pet-foods/:petFoodId/reviews/write',
+        path: '/pet-food/:petFoodId/reviews/write',
         element: <ReviewStarRating />,
       },
       {
-        path: 'pet-foods/:petFoodId/reviews/write/:rating/detail/:isEditMode',
+        path: '/pet-food/:petFoodId/reviews/write/:rating/detail/:isEditMode',
         element: <ReviewAddition />,
       },
     ],

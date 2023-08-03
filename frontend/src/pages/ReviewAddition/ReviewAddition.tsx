@@ -1,8 +1,7 @@
-import { useEffect } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { styled } from 'styled-components';
 
-import BackIcon from '@/assets/svg/back_btn.svg';
+import PageHeader from '@/components/@common/PageHeader/PageHeader';
 import Template from '@/components/@common/Template';
 import FoodInfoInReviewForm from '@/components/Review/ReviewForm/FoodInfoInReviewForm/FoodInfoInReviewForm';
 import ReviewForm from '@/components/Review/ReviewForm/ReviewForm';
@@ -34,10 +33,8 @@ const ReviewAddition = () => {
 
   return (
     <Template.WithoutHeader footer={false}>
+      <PageHeader onClick={goBack} />
       <Container>
-        <BackButton type="button" aria-label="뒤로가기" onClick={goBack}>
-          <img src={BackIcon} alt="" />
-        </BackButton>
         <FoodInfoWrapper>
           <FoodInfoInReviewForm name={name} rating={Number(rating)} imageUrl={imageUrl} />
         </FoodInfoWrapper>
@@ -63,16 +60,6 @@ const Container = styled.div`
   width: 100vw;
   height: 100vh;
   padding: 2rem;
-`;
-
-const BackButton = styled.button`
-  all: unset;
-
-  cursor: pointer;
-
-  position: absolute;
-  top: 6.8rem;
-  left: 2rem;
 `;
 
 const FoodInfoWrapper = styled.div`

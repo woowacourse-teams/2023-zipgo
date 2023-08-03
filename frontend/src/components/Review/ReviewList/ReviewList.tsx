@@ -3,6 +3,7 @@ import { styled } from 'styled-components';
 
 import WriteIcon from '@/assets/svg/write_btn.svg';
 import { useValidParams } from '@/hooks/@common/useValidParams';
+import { useFoodDetailQuery } from '@/hooks/query/food';
 import { useReviewListQuery } from '@/hooks/query/review';
 
 import ReviewItem from '../ReviewItem/ReviewItem';
@@ -11,20 +12,37 @@ const ReviewList = () => {
   const navigate = useNavigate();
   const { petFoodId } = useValidParams(['petFoodId']);
   const { reviewList } = useReviewListQuery({ petFoodId });
+  const { foodData } = useFoodDetailQuery({ petFoodId });
 
-  if (!reviewList) throw new Error('리뷰 목록을 불러오지 못했습니다.');
+  if (!reviewList) throw new Error('리뷰 리스트를 찾을 수 없습니다.');
 
   return (
     <ReviewListContainer>
-      {reviewList.map(review => (
-        <ReviewItemWrapper key={review.id}>
-          <ReviewItem {...review} />
-        </ReviewItemWrapper>
-      ))}
+      {Boolean(reviewList.length) ? (
+        reviewList.map(review => (
+          <ReviewItemWrapper key={review.id}>
+            <ReviewItem {...review} />
+          </ReviewItemWrapper>
+        ))
+      ) : (
+        <NoReviewText>
+          아직 리뷰가 없어요.
+          <br />
+          해당 식품의 첫 번째 리뷰어가 되어보세요!
+        </NoReviewText>
+      )}
       <ReviewAddButton
         type="button"
         aria-label="리뷰 작성"
-        onClick={() => navigate(`/pet-foods/${petFoodId}/reviews/write`)}
+        onClick={() =>
+          navigate(`/pet-food/${petFoodId}/reviews/write`, {
+            state: {
+              petFoodId: foodData?.id,
+              name: foodData?.name,
+              imageUrl: foodData?.imageUrl,
+            },
+          })
+        }
       >
         <WriteIconImage src={WriteIcon} alt="" />
       </ReviewAddButton>
@@ -33,6 +51,17 @@ const ReviewList = () => {
 };
 
 export default ReviewList;
+
+const NoReviewText = styled.p`
+  margin-top: 6rem;
+
+  font-size: 1.3rem;
+  font-weight: 400;
+  line-height: 1.7rem;
+  color: ${({ theme }) => theme.color.grey300};
+  text-align: center;
+  letter-spacing: -0.05rem;
+`;
 
 const ReviewListContainer = styled.ul`
   all: unset;
@@ -55,7 +84,7 @@ const ReviewAddButton = styled.button`
 
   position: fixed;
   right: 1.6rem;
-  bottom: 3.2rem;
+  bottom: 12rem;
 
   display: flex;
   justify-content: center;
@@ -71,7 +100,7 @@ const ReviewAddButton = styled.button`
 
   background-color: ${({ theme }) => theme.color.primary};
   border-radius: 50%;
-  box-shadow: 0 4px 4px rgb(0 0 0 / 25%);
+  box-shadow: 0 0 2rem rgb(62 94 142 / 50%);
 `;
 
 const WriteIconImage = styled.img`

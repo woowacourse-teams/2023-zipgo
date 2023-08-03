@@ -1,4 +1,5 @@
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
+import { useNavigate } from 'react-router-dom';
 
 import { deleteReview, getReviews, postReview, putReview } from '@/apis/review';
 import { Parameter } from '@/types/common/utility';
@@ -20,7 +21,7 @@ export const useReviewListQuery = (payload: Parameter<typeof getReviews>) => {
 export const useAddReviewMutation = () => {
   const queryClient = useQueryClient();
 
-  const { mutate: addReview, ...addReviewRestMutation } = useMutation({
+  const { mutateAsync: addReview, ...addReviewRestMutation } = useMutation({
     mutationFn: postReview,
     onSuccess: () => {
       queryClient.invalidateQueries([QUERY_KEY.reviewList]);
@@ -33,7 +34,7 @@ export const useAddReviewMutation = () => {
 export const useEditReviewMutation = () => {
   const queryClient = useQueryClient();
 
-  const { mutate: editReview, ...editReviewRestMutation } = useMutation({
+  const { mutateAsync: editReview, ...editReviewRestMutation } = useMutation({
     mutationFn: putReview,
     onSuccess: () => {
       queryClient.invalidateQueries([QUERY_KEY.reviewList]);
