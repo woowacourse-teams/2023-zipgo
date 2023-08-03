@@ -45,6 +45,8 @@ const FunctionalityFilterListLayout = styled.ul`
 const FunctionalityFilterItem = styled.li<{
   $selected: boolean;
 }>`
+  cursor: pointer;
+
   display: flex;
   gap: 0.4rem;
   align-items: center;

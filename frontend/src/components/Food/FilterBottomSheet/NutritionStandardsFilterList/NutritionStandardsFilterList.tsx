@@ -25,7 +25,7 @@ const NutritionStandardsFilterList = (props: NutritionStandardsFilterListProps) 
             aria-checked={selected}
             $selected={selected}
           >
-            <span>🇧🇯</span>
+            <span>{nation === '미국' ? '🇺🇸' : '🇪🇺'}</span>
             <span>{nation}</span>
             {selected && <span>✔</span>}
           </NutritionStandardsFilterItem>

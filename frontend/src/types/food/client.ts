@@ -7,6 +7,7 @@ export type Food = {
 };
 
 export type FoodDetail = Food & {
+  name: string;
   rating: number;
   reviewCount: number;
   primaryIngredients: string[];

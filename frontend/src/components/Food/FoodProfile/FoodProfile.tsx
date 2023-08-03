@@ -6,13 +6,13 @@ import type { FoodDetail } from '@/types/food/client';
 type FoodProfileProps = FoodDetail;
 
 const FoodProfile = (foodProfileProps: FoodProfileProps) => {
-  const { foodName, imageUrl, rating, brand } = foodProfileProps;
+  const { name, imageUrl, rating, brand } = foodProfileProps;
 
   return (
     <FoodProfileWrapper>
       <FoodImg alt="식품 이미지" src={imageUrl} aria-label={`${name} 이미지`} />
       <BrandName aria-label={brand.name}>{brand.name}</BrandName>
-      <FoodName aria-label={`식품 이름 ${name}`}>{foodName}</FoodName>
+      <FoodName aria-label={`식품 이름 ${name}`}>{name}</FoodName>
       <StarRatingDisplay rating={rating} size="large" displayRating />
     </FoodProfileWrapper>
   );

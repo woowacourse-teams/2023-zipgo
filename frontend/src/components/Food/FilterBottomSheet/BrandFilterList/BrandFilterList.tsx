@@ -47,6 +47,8 @@ const BrandFilterListLayout = styled.ul`
 const BrandFilterListItem = styled.li<{
   $selected: boolean;
 }>`
+  cursor: pointer;
+
   display: flex;
   flex-direction: column;
   gap: 0.8rem;

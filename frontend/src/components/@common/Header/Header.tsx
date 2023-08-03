@@ -14,7 +14,7 @@ export default Header;
 
 const HeaderContainer = styled.header`
   position: absolute;
-  z-index: 9999;
+  z-index: 999;
   top: 0;
   left: 0;
 
