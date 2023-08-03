@@ -22,7 +22,7 @@ public class WebConfig implements WebMvcConfigurer {
     private static final String ALLOWED_METHODS = "*";
     private static final String MAIN_SERVER_DOMAIN = "https://zipgo.pet";
     private static final String MAIN_SERVER_WWW_DOMAIN = "https://www.zipgo.pet";
-    private static final String FRONTEND_LOCALHOST = "https://localhost:3000";
+    private static final String FRONTEND_LOCALHOST = "http://localhost:3000";
 
     private final AuthInterceptor authInterceptor;
     private final JwtProvider jwtProvider;
