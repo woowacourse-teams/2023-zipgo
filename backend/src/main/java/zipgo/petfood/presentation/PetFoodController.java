@@ -1,8 +1,5 @@
 package zipgo.petfood.presentation;
 
-import static java.net.URLDecoder.decode;
-import static java.util.Collections.EMPTY_LIST;
-
 import io.jsonwebtoken.lang.Strings;
 import java.io.UnsupportedEncodingException;
 import java.util.Arrays;
@@ -21,6 +18,9 @@ import zipgo.petfood.presentation.dto.FilterMetadataResponse;
 import zipgo.petfood.presentation.dto.FilterResponse;
 import zipgo.petfood.presentation.dto.GetPetFoodResponse;
 import zipgo.petfood.presentation.dto.GetPetFoodsResponse;
+
+import static java.net.URLDecoder.decode;
+import static java.util.Collections.EMPTY_LIST;
 
 @RestController
 @RequiredArgsConstructor
@@ -55,10 +55,8 @@ public class PetFoodController {
 
     @GetMapping("/{id}")
     public ResponseEntity<GetPetFoodResponse> getPetFood(@PathVariable Long id) {
-        PetFood foundPetFood = petFoodQueryService.getPetFoodBy(id);
-        int reviewCount = foundPetFood.countReviews();
-        double ratingAverage = foundPetFood.calculateRatingAverage();
-        return ResponseEntity.ok(GetPetFoodResponse.of(foundPetFood, ratingAverage, reviewCount));
+        GetPetFoodResponse petFoodResponse = petFoodQueryService.getPetFoodResponse(id);
+        return ResponseEntity.ok(petFoodResponse);
     }
 
     @GetMapping("/filters")

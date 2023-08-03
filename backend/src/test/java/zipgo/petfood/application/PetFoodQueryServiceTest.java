@@ -170,20 +170,6 @@ class PetFoodQueryServiceTest {
     class 상세_조회 {
 
         @Test
-        void 아이디로_식품을_조회할_수_있다() {
-            // given
-            Brand 브랜드 = brandRepository.findAll().get(0);
-            PetFood 테스트용_식품 = 키워드_없이_식품_초기화(브랜드);
-            Long 아이디 = petFoodRepository.save(테스트용_식품).getId();
-
-            // when
-            PetFood 조회된_식품 = petFoodQueryService.getPetFoodBy(아이디);
-
-            // then
-            assertThat(조회된_식품).isEqualTo(테스트용_식품);
-        }
-
-        @Test
         void 식품_상세조회할수_있다() {
             //given
             Brand 브랜드 = brandRepository.findAll().get(0);

@@ -83,10 +83,6 @@ public class PetFoodQueryService {
         return petFoodQueryRepository.findPetFoods(keyword, brand, primaryIngredients);
     }
 
-    public PetFood getPetFoodBy(Long id) {
-        return petFoodRepository.getById(id);
-    }
-
     public FilterResponse getMetadataForFilter() {
         List<Brand> brands = brandRepository.findAll();
 
