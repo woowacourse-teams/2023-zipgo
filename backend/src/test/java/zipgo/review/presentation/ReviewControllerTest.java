@@ -69,14 +69,14 @@ public class ReviewControllerTest extends AcceptanceTest {
                     문서_정보.responseSchema(성공_응답_형식),
                     pathParameters(parameterWithName("id").description("식품 id")),
                     responseFields(
-                            fieldWithPath("[].id").description("리뷰 id").type(JsonFieldType.NUMBER),
-                            fieldWithPath("[].reviewerName").description("리뷰 작성자 이름").type(JsonFieldType.STRING),
-                            fieldWithPath("[].rating").description("리뷰 별점").type(JsonFieldType.NUMBER),
-                            fieldWithPath("[].date").description("리뷰 생성일").type(JsonFieldType.STRING),
-                            fieldWithPath("[].comment").description("리뷰 코멘트").type(JsonFieldType.STRING),
-                            fieldWithPath("[].tastePreference").description("기호성").type(JsonFieldType.STRING),
-                            fieldWithPath("[].stoolCondition").description("대변 상태").type(JsonFieldType.STRING),
-                            fieldWithPath("[].adverseReactions").description("이상 반응들").type(JsonFieldType.ARRAY)
+                            fieldWithPath("reviews[].id").description("리뷰 id").type(JsonFieldType.NUMBER),
+                            fieldWithPath("reviews[].reviewerName").description("리뷰 작성자 이름").type(JsonFieldType.STRING),
+                            fieldWithPath("reviews[].rating").description("리뷰 별점").type(JsonFieldType.NUMBER),
+                            fieldWithPath("reviews[].date").description("리뷰 생성일").type(JsonFieldType.STRING),
+                            fieldWithPath("reviews[].comment").description("리뷰 코멘트").type(JsonFieldType.STRING),
+                            fieldWithPath("reviews[].tastePreference").description("기호성").type(JsonFieldType.STRING),
+                            fieldWithPath("reviews[].stoolCondition").description("대변 상태").type(JsonFieldType.STRING),
+                            fieldWithPath("reviews[].adverseReactions").description("이상 반응들").type(JsonFieldType.ARRAY)
                     ));
         }
 

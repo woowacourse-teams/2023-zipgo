@@ -19,6 +19,7 @@ import zipgo.review.application.ReviewService;
 import zipgo.review.domain.Review;
 import zipgo.review.dto.request.CreateReviewRequest;
 import zipgo.review.dto.request.UpdateReviewRequest;
+import zipgo.review.dto.response.GetReviewResponse;
 import zipgo.review.dto.response.GetReviewsResponse;
 
 @RestController
@@ -39,18 +40,19 @@ public class ReviewController {
 
     //TODO petFoodId 쿼러파라미터로 변경
     @GetMapping("/pet-foods/{petFoodId}/reviews")
-    public ResponseEntity<List<GetReviewsResponse>> getAllReviews(@PathVariable Long petFoodId) {
+    public ResponseEntity<GetReviewsResponse> getAllReviews(@PathVariable Long petFoodId) {
         List<Review> reviews = reviewQueryService.getAllReviews(petFoodId);
-        List<GetReviewsResponse> reviewsResponses = reviews.stream()
-                .map(GetReviewsResponse::from)
+        List<GetReviewResponse> reviewsResponses = reviews.stream()
+                .map(GetReviewResponse::from)
                 .toList();
-        return ResponseEntity.ok(reviewsResponses);
+
+        return ResponseEntity.ok(GetReviewsResponse.from(reviewsResponses));
     }
 
     @GetMapping("/reviews/{id}")
-    public ResponseEntity<GetReviewsResponse> getReview(@PathVariable Long id) {
+    public ResponseEntity<GetReviewResponse> getReview(@PathVariable Long id) {
         Review review = reviewQueryService.getReview(id);
-        return ResponseEntity.ok(GetReviewsResponse.from(review));
+        return ResponseEntity.ok(GetReviewResponse.from(review));
     }
 
     @PutMapping("/reviews/{reviewId}")
