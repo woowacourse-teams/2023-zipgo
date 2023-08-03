@@ -45,6 +45,8 @@ const MainIngredientsFilterListLayout = styled.ul`
 const IngredientFilterItem = styled.li<{
   $selected: boolean;
 }>`
+  cursor: pointer;
+
   display: flex;
   gap: 0.4rem;
   align-items: center;
