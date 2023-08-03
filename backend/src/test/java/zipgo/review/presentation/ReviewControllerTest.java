@@ -71,7 +71,6 @@ public class ReviewControllerTest extends AcceptanceTest {
                     responseFields(
                             fieldWithPath("reviews[].id").description("리뷰 id").type(JsonFieldType.NUMBER),
                             fieldWithPath("reviews[].reviewerName").description("리뷰 작성자 이름").type(JsonFieldType.STRING),
-                            fieldWithPath("reviews[].reviewerProfileImgUrl").description("리뷰 작성자 사진").type(JsonFieldType.STRING),
                             fieldWithPath("reviews[].rating").description("리뷰 별점").type(JsonFieldType.NUMBER),
                             fieldWithPath("reviews[].date").description("리뷰 생성일").type(JsonFieldType.STRING),
                             fieldWithPath("reviews[].comment").description("리뷰 코멘트").type(JsonFieldType.STRING),
@@ -116,7 +115,6 @@ public class ReviewControllerTest extends AcceptanceTest {
                     responseFields(
                             fieldWithPath("id").description("리뷰 id").type(JsonFieldType.NUMBER),
                             fieldWithPath("reviewerName").description("리뷰 작성자 이름").type(JsonFieldType.STRING),
-                            fieldWithPath("reviewerProfileImgUrl").description("리뷰 작성자 사진").type(JsonFieldType.STRING),
                             fieldWithPath("rating").description("리뷰 별점").type(JsonFieldType.NUMBER),
                             fieldWithPath("date").description("리뷰 생성일").type(JsonFieldType.STRING),
                             fieldWithPath("comment").description("리뷰 코멘트").type(JsonFieldType.STRING),

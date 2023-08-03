@@ -8,7 +8,6 @@ import zipgo.review.domain.Review;
 public record GetReviewResponse(
         Long id,
         String reviewerName,
-        String reviewerProfileImgUrl,
         int rating,
         String date,
         String comment,
@@ -21,7 +20,6 @@ public record GetReviewResponse(
         return new GetReviewResponse(
                 review.getId(),
                 review.getMember().getName(),
-                review.getMember().getProfileImgUrl(),
                 review.getRating(),
                 review.getCreatedAt().format(ofPattern("yyyy-MM-dd")),
                 review.getComment(),
