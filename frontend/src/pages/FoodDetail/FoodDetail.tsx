@@ -27,7 +27,7 @@ const FoodDetail = () => {
 
   if (!foodData) throw new Error('식품 상세 페이지를 불러오지 못했습니다.');
 
-  const { foodName, hasStandard, primaryIngredients, brand, functionality, purchaseUrl } = foodData;
+  const { name, hasStandard, primaryIngredients, brand, functionality, purchaseUrl } = foodData;
 
   usePageTitle(`집사의 고민 - ${name}`);
 
@@ -54,7 +54,7 @@ const FoodDetail = () => {
 
   return (
     <>
-      <PageHeader title={foodName} />
+      <PageHeader title={name} />
 
       <FoodDetailWrapper>
         <FoodProfileContainer>
