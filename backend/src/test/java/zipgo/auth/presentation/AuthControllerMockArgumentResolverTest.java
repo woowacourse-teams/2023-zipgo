@@ -74,14 +74,13 @@ class AuthControllerMockArgumentResolverTest {
                 .andDo(문서_생성());
 
         // then
-        var 응답 = 요청.andExpect(status().isOk());
+        요청.andExpect(status().isOk());
     }
-
 
     private RestDocumentationResultHandler 문서_생성() {
         var 응답_형식 = Schema.schema("AuthResponse");
-        var 문서_정보 = resourceDetails().summary("사용자 정보 확인")
-                .description("토큰을 서버로 보내 사용자 정보를 받습니다.")
+        var 문서_정보 = resourceDetails().summary("사용자 정보 조회하기")
+                .description("토큰이 가진 사용자 정보를 받습니다.")
                 .responseSchema(응답_형식);
 
         return MockMvcRestDocumentationWrapper.document("사용자 정보 확인",

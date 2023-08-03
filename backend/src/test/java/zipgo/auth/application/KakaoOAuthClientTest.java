@@ -38,55 +38,47 @@ class KakaoOAuthClientTest {
     @InjectMocks
     private KakaoOAuthClient kakaoOAuthClient;
 
-    @Test
-    void accessToken_을_가져올_수_있다() {
-        // given
-        var 토큰_요청 = 토큰_요청_생성();
-        var 응답 = ResponseEntity.ok(
-                new KakaoTokenResponse("accessToken", null, null, null, null, null)
-        );
-        when(restTemplate.exchange(KAKAO_ACCESS_TOKEN_URI, POST, 토큰_요청, KakaoTokenResponse.class))
-                .thenReturn(응답);
+    @Nested
+    class 카카오서버_성공_응답 {
 
-        // when
-        String accessToken = kakaoOAuthClient.getAccessToken("authCode");
+        @Test
+        void accessToken_을_가져올_수_있다() {
+            // given
+            var 토큰_요청 = 토큰_요청_생성();
+            var 응답 = ResponseEntity.ok(
+                    new KakaoTokenResponse("accessToken", null, null, null, null, null)
+            );
+            when(restTemplate.exchange(KAKAO_ACCESS_TOKEN_URI, POST, 토큰_요청, KakaoTokenResponse.class))
+                    .thenReturn(응답);
 
-        // then
-        assertThat(accessToken).isEqualTo("accessToken");
-    }
+            // when
+            String accessToken = kakaoOAuthClient.getAccessToken("authCode");
 
-    private HttpEntity<MultiValueMap<String, String>> 토큰_요청_생성() {
-        HttpHeaders header = kakaoOAuthClient.createRequestHeader();
-        MultiValueMap<String, String> body = kakaoOAuthClient.createRequestBodyWithAuthCode("authCode");
-        return new HttpEntity<>(body, header);
-    }
+            // then
+            assertThat(accessToken).isEqualTo("accessToken");
+        }
 
-    @Test
-    void 사용자_상세_정보를_가져올_수_있다() {
-        // given
-        var 요청 = createRequestHeaderWithToken();
-        var 응답 = ResponseEntity.ok(KakaoMemberResponse.builder().build());
-        when(restTemplate.exchange(KAKAO_USER_INFO_URI, GET, 요청, KakaoMemberResponse.class))
-                .thenReturn(응답);
+        @Test
+        void 사용자_정보를_가져올_수_있다() {
+            // given
+            var 정보_요청 = 사용자_정보_요청_생성();
+            var 응답 = ResponseEntity.ok(KakaoMemberResponse.builder().build());
+            when(restTemplate.exchange(KAKAO_USER_INFO_URI, GET, 정보_요청, KakaoMemberResponse.class))
+                    .thenReturn(응답);
 
-        // when
-        OAuthMemberResponse oAuthMemberResponse = kakaoOAuthClient.getMember("accessToken");
+            // when
+            OAuthMemberResponse oAuthMemberResponse = kakaoOAuthClient.getMember("accessToken");
 
-        // then
-        assertThat(oAuthMemberResponse).isNotNull();
-    }
-
-    private HttpEntity<HttpHeaders> createRequestHeaderWithToken() {
-        HttpHeaders headers = new HttpHeaders();
-        headers.setBearerAuth("accessToken");
-        return new HttpEntity<>(headers);
+            // then
+            assertThat(oAuthMemberResponse).isNotNull();
+        }
     }
 
     @Nested
-    class 카카오서버_실패응답 {
+    class 카카오서버_실패_응답 {
 
         @Test
-        void 토큰요청시_실패응답을_받으면_예외가_발생한다() {
+        void 토큰_요청시_실패응답을_받으면_예외가_발생한다() {
             // given
             var 요청 = 토큰_요청_생성();
             when(restTemplate.exchange(
@@ -105,7 +97,7 @@ class KakaoOAuthClientTest {
         @Test
         void 사용자_정보_요청시_실패응답을_받으면_예외가_발생한다() {
             // given
-            var 요청 = createRequestHeaderWithToken();
+            var 요청 = 사용자_정보_요청_생성();
             when(restTemplate.exchange(
                     KAKAO_USER_INFO_URI,
                     GET,
@@ -119,6 +111,18 @@ class KakaoOAuthClientTest {
                     .hasMessageContaining("카카오 사용자 정보를 가져오는 중 에러가 발생");
         }
 
+    }
+
+    private HttpEntity<MultiValueMap<String, String>> 토큰_요청_생성() {
+        HttpHeaders header = kakaoOAuthClient.createRequestHeader();
+        MultiValueMap<String, String> body = kakaoOAuthClient.createRequestBodyWithAuthCode("authCode");
+        return new HttpEntity<>(body, header);
+    }
+
+    private HttpEntity<HttpHeaders> 사용자_정보_요청_생성() {
+        HttpHeaders headers = new HttpHeaders();
+        headers.setBearerAuth("accessToken");
+        return new HttpEntity<>(headers);
     }
 
 }
