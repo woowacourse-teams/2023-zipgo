@@ -51,20 +51,6 @@ const ReviewItem = (reviewItemProps: ReviewItemProps) => {
     confirm('정말 삭제하시곘어요?') && removeReviewMutation.removeReview({ reviewId: id });
   };
 
-  const onClickEditButton = () => {
-    navigate(`/pet-foods/${petFoodId}/reviews/write`, {
-      state: {
-        isEditMode: true,
-        userRating: rating,
-        reviewDetail: { reviewId: id, tastePreference, stoolCondition, adverseReactions, comment },
-      },
-    });
-  };
-
-  const onClickRemoveButton = () => {
-    removeReviewMutation.removeReview({ reviewId: id });
-  };
-
   return (
     <div>
       <ReviewHeader>

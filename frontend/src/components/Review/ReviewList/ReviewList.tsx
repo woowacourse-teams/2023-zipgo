@@ -107,8 +107,3 @@ const WriteIconImage = styled.img`
   border-radius: 50%;
   box-shadow: 0 0 40px rgb(62 94 142 / 50%);
 `;
-
-const WriteIconImage = styled.img`
-  border-radius: 50%;
-  box-shadow: 0 0 40px rgb(62 94 142 / 50%);
-`;
