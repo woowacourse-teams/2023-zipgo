@@ -24,9 +24,19 @@ export const STOOL_CONDITIONS = [
 ] as const;
 
 export const ADVERSE_REACTIONS = [
+  '없어요',
   '털이 푸석해요',
   '먹고 토해요',
   '눈물이 나요',
   '몸을 긁어요',
   '발을 핥아요',
+] as const;
+
+export const SATISFACTION_MESSAGES = [
+  '',
+  '발전의 여지가 있어요!',
+  '잠재력을 가지고 있어요!',
+  '괜찮은데 더 좋아질 수 있어요!',
+  '정말 좋았어요!',
+  '만족도 최고예요!🔥',
 ] as const;

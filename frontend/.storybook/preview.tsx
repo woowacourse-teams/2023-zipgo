@@ -3,6 +3,10 @@ import GlobalStyle from '../src/components/@common/GlobalStyle';
 import { ThemeProvider } from 'styled-components';
 import theme from '../src/styles/theme';
 import React from 'react';
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+import { MemoryRouter } from 'react-router-dom';
+
+const queryClient = new QueryClient();
 
 const customViewports = {
   defaultDevice: {
@@ -60,10 +64,14 @@ const preview: Preview = {
 
   decorators: [
     Story => (
-      <ThemeProvider theme={theme}>
-        <GlobalStyle />
-        <Story />
-      </ThemeProvider>
+      <MemoryRouter initialEntries={['/']}>
+        <QueryClientProvider client={queryClient}>
+          <ThemeProvider theme={theme}>
+            <GlobalStyle />
+            <Story />
+          </ThemeProvider>
+        </QueryClientProvider>
+      </MemoryRouter>
     ),
   ],
 };

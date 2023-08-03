@@ -16,4 +16,4 @@ type Review = {
   adverseReactions: AdverseReaction[];
 };
 
-export type { Review };
+export type { AdverseReaction, Review, StoolCondition, TastePreference };

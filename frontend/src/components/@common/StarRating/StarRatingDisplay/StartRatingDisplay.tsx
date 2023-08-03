@@ -33,7 +33,7 @@ const StartWrapper = styled.div`
 
 const StarContainer = styled.div`
   display: flex;
-  gap: 0.3rem;
+  gap: 0.4rem;
   align-items: center;
 `;
 

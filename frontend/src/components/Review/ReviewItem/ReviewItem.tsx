@@ -1,19 +1,22 @@
 import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import styled, { css } from 'styled-components';
 
-import VerticalDotsIcon from '@/assets/svg/vertical_dots_icon.svg';
 import StarRatingDisplay from '@/components/@common/StarRating/StarRatingDisplay/StartRatingDisplay';
 import {
   COMMENT_VISIABLE_LINE_LIMIT,
   PROFILE_DEFAULT_IMG_URL,
   REACTIONS,
 } from '@/constants/review';
+import { useValidParams } from '@/hooks/@common/useValidParams';
+import { useRemoveReviewMutation } from '@/hooks/query/review';
 import { Review } from '@/types/review/client';
 
 interface ReviewItemProps extends Review {}
 
 const ReviewItem = (reviewItemProps: ReviewItemProps) => {
   const {
+    id,
     profileImageUrl = PROFILE_DEFAULT_IMG_URL,
     reviewerName,
     rating,
@@ -24,18 +27,42 @@ const ReviewItem = (reviewItemProps: ReviewItemProps) => {
     comment,
   } = reviewItemProps;
 
+  const navigate = useNavigate();
+  const { petFoodId } = useValidParams(['petFoodId']);
+  const { removeReviewMutation } = useRemoveReviewMutation();
   const [isCommentExpanded, setIsCommentExpanded] = useState(false);
+
+  const onClickEditButton = () => {
+    navigate(`/pet-foods/${petFoodId}/reviews/write`, {
+      state: {
+        isEditMode: true,
+        userRating: rating,
+        reviewDetail: { reviewId: id, tastePreference, stoolCondition, adverseReactions, comment },
+      },
+    });
+  };
+
+  const onClickRemoveButton = () => {
+    removeReviewMutation.removeReview({ reviewId: id });
+  };
 
   return (
     <div>
       <ReviewHeader>
-        <ReviewerImageWrapper>
-          <ReviewerImage src={profileImageUrl} alt={`${reviewerName} 프로필`} />
-        </ReviewerImageWrapper>
-        <ReviewerName>{reviewerName}</ReviewerName>
-        <ReviewEditButton type="button">
-          <img src={VerticalDotsIcon} alt="" />
-        </ReviewEditButton>
+        <ReviewImageAndNameContainer>
+          <ReviewerImageWrapper>
+            <ReviewerImage src={profileImageUrl} alt={`${reviewerName} 프로필`} />
+          </ReviewerImageWrapper>
+          <ReviewerName>{reviewerName}</ReviewerName>
+        </ReviewImageAndNameContainer>
+        <ButtonContainer>
+          <TextButton type="button" aria-label="리뷰 수정" onClick={onClickEditButton}>
+            수정
+          </TextButton>
+          <TextButton type="button" aria-label="리뷰 삭제" onClick={onClickRemoveButton}>
+            삭제
+          </TextButton>
+        </ButtonContainer>
       </ReviewHeader>
       <RatingContainer>
         <StarRatingDisplay rating={rating} size="small" />
@@ -52,9 +79,7 @@ const ReviewItem = (reviewItemProps: ReviewItemProps) => {
         </Reaction>
         <Reaction key={REACTIONS.ADVERSE_REACTION}>
           <ReactionTitle>{REACTIONS.ADVERSE_REACTION}</ReactionTitle>
-          <ReactionContent>
-            {Boolean(adverseReactions.length) ? adverseReactions.join(', ') : REACTIONS.NOTHING}
-          </ReactionContent>
+          <ReactionContent>{adverseReactions.join(', ')}</ReactionContent>
         </Reaction>
       </Reactions>
       <Comment isExpanded={isCommentExpanded}>{comment}</Comment>
@@ -77,9 +102,15 @@ const ReviewHeader = styled.div`
 
   display: flex;
   align-items: center;
+  justify-content: space-between;
 
   height: 5rem;
   margin-bottom: 1.6rem;
+`;
+
+const ReviewImageAndNameContainer = styled.div`
+  display: flex;
+  align-items: center;
 `;
 
 const ReviewerImageWrapper = styled.div`
@@ -111,13 +142,18 @@ const ReviewerName = styled.p`
   color: ${({ theme }) => theme.color.grey500};
 `;
 
-const ReviewEditButton = styled.button`
+const ButtonContainer = styled.div`
+  display: flex;
+  gap: 0.8rem;
+`;
+
+const TextButton = styled.button`
   all: unset;
 
   cursor: pointer;
 
-  position: absolute;
-  right: 0;
+  font-size: 1.4rem;
+  color: ${({ theme }) => theme.color.grey400};
 `;
 
 const RatingContainer = styled.div`
