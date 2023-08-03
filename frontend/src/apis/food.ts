@@ -8,12 +8,8 @@ import {
 import { GetFoodDetailReq } from '../types/food/remote';
 import { client } from '.';
 
-export const getFoodList = async ({ keyword }: GetFoodListReq) => {
-  const { data } = await client.get<GetFoodListRes>('/pet-foods', {
-    params: {
-      keyword: Boolean(keyword.length) ? keyword.join(',') : undefined,
-    },
-  });
+export const getFoodList = async (payload: GetFoodListReq) => {
+  const { data } = await client.get<GetFoodListRes>('/pet-foods', {});
 
   return data;
 };

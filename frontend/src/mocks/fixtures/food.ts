@@ -68,10 +68,63 @@ const getFoodDetail = (): GetFoodDetailRes => ({
 const getFoodListFilterMeta = (): GetFoodListFilterMetaRes => ({
   keywords: ['nutritionStandard', 'mainIngredients', 'brands', 'functionalities'],
   filters: {
-    nutritionStandard: [],
-    mainIngredients: [],
-    brands: [],
-    functionalities: [],
+    nutritionStandard: [
+      {
+        id: 1,
+        nation: '미국',
+      },
+      {
+        id: 2,
+        nation: '유럽',
+      },
+    ],
+    mainIngredients: [
+      {
+        id: 1,
+        ingredients: '닭고기',
+      },
+      {
+        id: 12,
+        ingredients: '소고기',
+      },
+      {
+        id: 13,
+        ingredients: '돼지고기',
+      },
+      {
+        id: 14,
+        ingredients: '쌀고기',
+      },
+      {
+        id: 15,
+        ingredients: '보리',
+      },
+      {
+        id: 16,
+        ingredients: '귀리',
+      },
+      {
+        id: 17,
+        ingredients: '오리',
+      },
+      {
+        id: 18,
+        ingredients: '칠면조',
+      },
+    ],
+    brands: [
+      {
+        id: 1,
+        brandName: '오리젠',
+        brandUrl: 'url',
+      },
+    ],
+    functionalities: [
+      {
+        id: 1,
+        functionality: '기능성',
+      },
+    ],
   },
 });
 
