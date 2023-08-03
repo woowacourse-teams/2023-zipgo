@@ -147,12 +147,12 @@ jacocoTestCoverageVerification {
 openapi3 {
     servers = [
             {
-                url = "http://localhost:8080"
-                description = "로컬 서버"
+                url = "https://api.zipgo.pet"
+                description = "개발 서버"
             },
             {
-                url = "http://3.39.240.11:8080"
-                description = "개발 서버"
+                url = "http://localhost:8080"
+                description = "로컬 서버"
             }
     ]
     title = "집사의고민 API Docs"
