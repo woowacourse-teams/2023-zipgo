@@ -21,7 +21,7 @@ const ReviewItem = (reviewItemProps: ReviewItemProps) => {
   );
   const {
     id,
-    profileImageUrl = profileImgUrl ?? PROFILE_DEFAULT_IMG_URL,
+    profileImageUrl = PROFILE_DEFAULT_IMG_URL,
     reviewerName,
     rating,
     date,
