@@ -1,10 +1,5 @@
 package zipgo.petfood.domain.repository;
 
-import static org.springframework.util.StringUtils.hasText;
-import static zipgo.brand.domain.QBrand.brand;
-import static zipgo.petfood.domain.QKeyword.keyword;
-import static zipgo.petfood.domain.QPetFood.petFood;
-
 import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import java.util.List;
@@ -13,6 +8,11 @@ import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 import zipgo.petfood.domain.PetFood;
 import zipgo.petfood.domain.PrimaryIngredients;
+
+import static org.springframework.util.StringUtils.hasText;
+import static zipgo.brand.domain.QBrand.brand;
+import static zipgo.petfood.domain.QKeyword.keyword;
+import static zipgo.petfood.domain.QPetFood.petFood;
 
 @Repository
 @RequiredArgsConstructor

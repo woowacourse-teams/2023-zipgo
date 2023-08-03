@@ -1,21 +1,5 @@
 package zipgo.review.application;
 
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.Assertions.assertThatThrownBy;
-import static org.junit.jupiter.api.Assertions.assertAll;
-import static zipgo.brand.domain.fixture.BrandFixture.식품_브랜드_생성하기;
-import static zipgo.petfood.domain.fixture.PetFoodFixture.키워드_없이_식품_초기화;
-import static zipgo.review.domain.type.StoolCondition.SOFT_MOIST;
-import static zipgo.review.domain.type.StoolCondition.UNCERTAIN;
-import static zipgo.review.domain.type.TastePreference.EATS_MODERATELY;
-import static zipgo.review.domain.type.TastePreference.EATS_VERY_WELL;
-import static zipgo.review.fixture.AdverseReactionFixture.눈물_이상반응;
-import static zipgo.review.fixture.AdverseReactionFixture.먹고_토_이상반응;
-import static zipgo.review.fixture.MemberFixture.무민;
-import static zipgo.review.fixture.ReviewFixture.리뷰_생성_요청;
-import static zipgo.review.fixture.ReviewFixture.리뷰_수정_요청;
-import static zipgo.review.fixture.ReviewFixture.혹평_리뷰_생성;
-
 import java.util.ArrayList;
 import java.util.List;
 import org.junit.jupiter.api.Test;
@@ -35,6 +19,22 @@ import zipgo.review.dto.request.CreateReviewRequest;
 import zipgo.review.exception.ReviewException;
 import zipgo.review.exception.StoolConditionException;
 import zipgo.review.exception.TastePreferenceException;
+
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
+import static org.junit.jupiter.api.Assertions.assertAll;
+import static zipgo.brand.domain.fixture.BrandFixture.식품_브랜드_생성하기;
+import static zipgo.petfood.domain.fixture.PetFoodFixture.키워드_없이_식품_초기화;
+import static zipgo.review.domain.type.StoolCondition.SOFT_MOIST;
+import static zipgo.review.domain.type.StoolCondition.UNCERTAIN;
+import static zipgo.review.domain.type.TastePreference.EATS_MODERATELY;
+import static zipgo.review.domain.type.TastePreference.EATS_VERY_WELL;
+import static zipgo.review.fixture.AdverseReactionFixture.눈물_이상반응;
+import static zipgo.review.fixture.AdverseReactionFixture.먹고_토_이상반응;
+import static zipgo.review.fixture.MemberFixture.무민;
+import static zipgo.review.fixture.ReviewFixture.리뷰_생성_요청;
+import static zipgo.review.fixture.ReviewFixture.리뷰_수정_요청;
+import static zipgo.review.fixture.ReviewFixture.혹평_리뷰_생성;
 
 class ReviewServiceTest extends ServiceTest {
 
@@ -177,7 +177,8 @@ class ReviewServiceTest extends ServiceTest {
         Member 멤버 = memberRepository.save(무민());
         petFoodRepository.save(식품);
         Review 리뷰 = reviewRepository.save(혹평_리뷰_생성(멤버, 식품,
-                List.of(눈물_이상반응().getAdverseReactionType().getDescription(), 먹고_토_이상반응().getAdverseReactionType().getDescription())));
+                List.of(눈물_이상반응().getAdverseReactionType().getDescription(),
+                        먹고_토_이상반응().getAdverseReactionType().getDescription())));
 
         //when
         reviewService.deleteReview(멤버.getId(), 리뷰.getId());

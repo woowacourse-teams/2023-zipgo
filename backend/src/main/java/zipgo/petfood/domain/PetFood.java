@@ -1,7 +1,5 @@
 package zipgo.petfood.domain;
 
-import static jakarta.persistence.FetchType.LAZY;
-
 import jakarta.persistence.Column;
 import jakarta.persistence.Embedded;
 import jakarta.persistence.Entity;
@@ -19,6 +17,8 @@ import lombok.EqualsAndHashCode.Include;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import zipgo.brand.domain.Brand;
+
+import static jakarta.persistence.FetchType.LAZY;
 
 @Entity
 @Getter

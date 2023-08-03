@@ -1,8 +1,5 @@
 package zipgo.petfood.infra.persist;
 
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.assertAll;
-
 import java.util.List;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,6 +10,9 @@ import org.springframework.test.context.jdbc.Sql;
 import zipgo.common.config.QueryDslTestConfig;
 import zipgo.petfood.domain.PetFood;
 import zipgo.petfood.domain.repository.PetFoodQueryRepository;
+
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.assertAll;
 
 @DataJpaTest
 @Import(QueryDslTestConfig.class)
@@ -37,7 +37,8 @@ class PetFoodRepositoryImplTest {
         assertAll(
                 () -> assertThat(petFoods).extracting(petFood -> petFood.getKeyword().getName()).contains(keyword),
                 () -> assertThat(petFoods).extracting(petFood -> petFood.getBrand().getName()).contains(brand),
-                () -> assertThat(petFoods).extracting(petFood -> petFood.getPrimaryIngredients()).contains(List.of(primaryIngredients)),
+                () -> assertThat(petFoods).extracting(petFood -> petFood.getPrimaryIngredients())
+                        .contains(List.of(primaryIngredients)),
                 () -> assertThat(petFoods).hasSize(1)
         );
     }

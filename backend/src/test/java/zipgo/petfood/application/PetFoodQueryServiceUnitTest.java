@@ -1,11 +1,5 @@
 package zipgo.petfood.application;
 
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.assertAll;
-import static org.mockito.Mockito.when;
-import static zipgo.brand.domain.fixture.BrandFixture.식품_브랜드_생성하기;
-import static zipgo.petfood.domain.fixture.PetFoodFixture.키워드_있는_식품_초기화;
-
 import java.util.List;
 import org.junit.jupiter.api.DisplayNameGeneration;
 import org.junit.jupiter.api.DisplayNameGenerator.ReplaceUnderscores;
@@ -21,6 +15,12 @@ import zipgo.petfood.domain.PetFood;
 import zipgo.petfood.domain.repository.PetFoodQueryRepository;
 import zipgo.petfood.domain.repository.PetFoodRepository;
 import zipgo.petfood.presentation.dto.FilterResponse;
+
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.assertAll;
+import static org.mockito.Mockito.when;
+import static zipgo.brand.domain.fixture.BrandFixture.식품_브랜드_생성하기;
+import static zipgo.petfood.domain.fixture.PetFoodFixture.키워드_있는_식품_초기화;
 
 @ExtendWith(MockitoExtension.class)
 @DisplayNameGeneration(ReplaceUnderscores.class)
