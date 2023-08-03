@@ -1,11 +1,19 @@
 package zipgo.acceptance;
 
+import com.epages.restdocs.apispec.ResourceSnippetDetails;
+import com.epages.restdocs.apispec.Schema;
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Nested;
+import org.junit.jupiter.api.Test;
+import org.springframework.restdocs.payload.JsonFieldType;
+import org.springframework.restdocs.restassured.RestDocumentationFilter;
+import org.springframework.test.context.jdbc.Sql;
+
 import static com.epages.restdocs.apispec.RestAssuredRestDocumentationWrapper.document;
 import static com.epages.restdocs.apispec.RestAssuredRestDocumentationWrapper.resourceDetails;
 import static com.epages.restdocs.apispec.Schema.schema;
 import static io.restassured.RestAssured.given;
 import static io.restassured.http.ContentType.JSON;
-import static java.util.Collections.EMPTY_LIST;
 import static org.springframework.http.HttpStatus.BAD_REQUEST;
 import static org.springframework.http.HttpStatus.NOT_FOUND;
 import static org.springframework.http.HttpStatus.OK;
@@ -17,16 +25,6 @@ import static org.springframework.restdocs.payload.PayloadDocumentation.fieldWit
 import static org.springframework.restdocs.payload.PayloadDocumentation.responseFields;
 import static org.springframework.restdocs.request.RequestDocumentation.parameterWithName;
 import static org.springframework.restdocs.request.RequestDocumentation.pathParameters;
-
-import com.epages.restdocs.apispec.ResourceSnippetDetails;
-import com.epages.restdocs.apispec.Schema;
-import java.util.List;
-import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Nested;
-import org.junit.jupiter.api.Test;
-import org.springframework.restdocs.payload.JsonFieldType;
-import org.springframework.restdocs.restassured.RestDocumentationFilter;
-import org.springframework.test.context.jdbc.Sql;
 
 public class PetFoodAcceptanceTest extends AcceptanceTest {
 

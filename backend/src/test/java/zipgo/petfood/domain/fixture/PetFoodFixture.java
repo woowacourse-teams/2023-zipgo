@@ -1,7 +1,5 @@
 package zipgo.petfood.domain.fixture;
 
-import static zipgo.petfood.domain.PrimaryIngredients.builder;
-
 import java.util.List;
 import zipgo.brand.domain.Brand;
 import zipgo.petfood.domain.Functionality;
@@ -9,6 +7,8 @@ import zipgo.petfood.domain.HasStandard;
 import zipgo.petfood.domain.Keyword;
 import zipgo.petfood.domain.PetFood;
 import zipgo.petfood.domain.PrimaryIngredients;
+
+import static zipgo.petfood.domain.PrimaryIngredients.builder;
 
 public class PetFoodFixture {
 
@@ -19,6 +19,8 @@ public class PetFoodFixture {
                 .purchaseLink("https://avatars.githubusercontent.com/u/94087228?v=4")
                 .brand(brand)
                 .hasStandard(HasStandard.builder().build())
+                .functionality(Functionality.builder().build())
+                .primaryIngredients(PrimaryIngredients.builder().build())
                 .build();
     }
 
@@ -41,6 +43,7 @@ public class PetFoodFixture {
                 .imageUrl("imageUrl")
                 .purchaseLink("purchaseLink")
                 .brand(brand)
+                .functionality(Functionality.builder().build())
                 .primaryIngredients(builder().primaryIngredients(List.of("닭고기", "쌀", "귀리", "보리")).build())
                 .hasStandard(HasStandard.builder().build())
                 .build();

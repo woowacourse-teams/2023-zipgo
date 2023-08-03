@@ -1,7 +1,5 @@
 package zipgo.petfood.application;
 
-import static java.util.Arrays.asList;
-
 import java.util.Collection;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -15,6 +13,9 @@ import zipgo.petfood.domain.PetFood;
 import zipgo.petfood.domain.repository.PetFoodQueryRepository;
 import zipgo.petfood.domain.repository.PetFoodRepository;
 import zipgo.petfood.presentation.dto.FilterResponse;
+import zipgo.petfood.presentation.dto.GetPetFoodResponse;
+
+import static java.util.Arrays.asList;
 
 @Service
 @RequiredArgsConstructor
@@ -102,6 +103,12 @@ public class PetFoodQueryService {
                 .toList();
 
         return FilterResponse.from(brands, primaryIngredients, functionalities);
+    }
+
+    public GetPetFoodResponse getPetFoodResponse(Long id) {
+        PetFood petfood = petFoodRepository.getById(id);
+
+        return GetPetFoodResponse.of(petfood, petfood.calculateRatingAverage(), petfood.countReviews());
     }
 
 }

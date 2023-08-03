@@ -10,9 +10,11 @@ import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
+import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.test.context.jdbc.Sql;
 import zipgo.brand.domain.Brand;
 import zipgo.brand.domain.repository.BrandRepository;
+import zipgo.petfood.domain.HasStandard;
 import zipgo.petfood.domain.Keyword;
 import zipgo.petfood.domain.PetFood;
 import zipgo.petfood.exception.PetFoodException;
@@ -20,6 +22,7 @@ import zipgo.petfood.exception.PetFoodException;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.junit.jupiter.api.Assertions.assertAll;
+import static zipgo.petfood.domain.PrimaryIngredients.builder;
 import static zipgo.petfood.domain.fixture.PetFoodFixture.식품_초기화;
 import static zipgo.petfood.domain.fixture.PetFoodFixture.키워드_없이_식품_초기화;
 import static zipgo.petfood.domain.fixture.PetFoodFixture.키워드_있는_식품_초기화;
@@ -37,6 +40,9 @@ class PetFoodRepositoryTest {
 
     @Autowired
     private BrandRepository brandRepository;
+
+    @Autowired
+    private JdbcTemplate jdbcTemplate;
 
     @PersistenceContext
     private EntityManager entityManager;
@@ -116,6 +122,28 @@ class PetFoodRepositoryTest {
         //then
         assertThat(조회한_식품.getPrimaryIngredients())
                 .contains("닭고기", "쌀", "귀리", "보리");
+    }
+
+    @Test
+    void 기능성에_null을_저장하면_빈_문자열을_저장한다() {
+        //when
+        Brand 브랜드 = 브랜드_조회하기();
+        PetFood petFood = PetFood.builder()
+                .name("이름이다")
+                .imageUrl("imageUrl")
+                .purchaseLink("purchaseLink")
+                .brand(브랜드)
+                .functionality(null)
+                .primaryIngredients(builder().primaryIngredients(List.of("닭고기", "쌀", "귀리", "보리")).build())
+                .hasStandard(HasStandard.builder().build())
+                .build();
+
+        Long 아이디 = petFoodRepository.save(petFood).getId();
+
+        //then
+        String db에_저장된_문자열 = jdbcTemplate.queryForObject("select functionality from pet_food where id = ?",
+                (rs, rowNum) -> rs.getString("functionality"), 아이디);
+        assertThat(db에_저장된_문자열).isBlank();
     }
 
     @Test

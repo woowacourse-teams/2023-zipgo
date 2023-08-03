@@ -1,11 +1,5 @@
 package zipgo.petfood.application;
 
-import static java.util.Collections.EMPTY_LIST;
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.assertAll;
-import static zipgo.petfood.domain.fixture.PetFoodFixture.키워드_없이_식품_초기화;
-import static zipgo.petfood.domain.fixture.PetFoodFixture.키워드_있는_식품_초기화;
-
 import java.util.List;
 import org.junit.jupiter.api.DisplayNameGeneration;
 import org.junit.jupiter.api.DisplayNameGenerator;
@@ -23,6 +17,13 @@ import zipgo.petfood.domain.PetFood;
 import zipgo.petfood.domain.repository.KeywordRepository;
 import zipgo.petfood.domain.repository.PetFoodRepository;
 import zipgo.petfood.presentation.dto.FilterResponse;
+import zipgo.petfood.presentation.dto.GetPetFoodResponse;
+
+import static java.util.Collections.EMPTY_LIST;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.assertAll;
+import static zipgo.petfood.domain.fixture.PetFoodFixture.키워드_없이_식품_초기화;
+import static zipgo.petfood.domain.fixture.PetFoodFixture.키워드_있는_식품_초기화;
 
 @SpringBootTest
 @SuppressWarnings("NonAsciiCharacters")
@@ -162,6 +163,51 @@ class PetFoodQueryServiceTest {
             // then
             assertThat(petFoods.size()).isEqualTo(petFoodRepository.findAll().size());
         }
+
+    }
+
+    @Nested
+    class 상세_조회 {
+
+        @Test
+        void 아이디로_식품을_조회할_수_있다() {
+            // given
+            Brand 브랜드 = brandRepository.findAll().get(0);
+            PetFood 테스트용_식품 = 키워드_없이_식품_초기화(브랜드);
+            Long 아이디 = petFoodRepository.save(테스트용_식품).getId();
+
+            // when
+            PetFood 조회된_식품 = petFoodQueryService.getPetFoodBy(아이디);
+
+            // then
+            assertThat(조회된_식품).isEqualTo(테스트용_식품);
+        }
+
+        @Test
+        void 식품_상세조회할수_있다() {
+            //given
+            Brand 브랜드 = brandRepository.findAll().get(0);
+            PetFood 테스트용_식품 = 키워드_없이_식품_초기화(브랜드);
+            Long 아이디 = petFoodRepository.save(테스트용_식품).getId();
+
+            //when
+            GetPetFoodResponse 응답 = petFoodQueryService.getPetFoodResponse(아이디);
+
+            //then
+            assertThat(응답.id()).isEqualTo(테스트용_식품.getId());
+            assertThat(응답.name()).isEqualTo(테스트용_식품.getName());
+            assertThat(응답.imageUrl()).isEqualTo(테스트용_식품.getImageUrl());
+            assertThat(응답.purchaseUrl()).isEqualTo(테스트용_식품.getPurchaseLink());
+            assertThat(응답.brand().name()).isEqualTo(브랜드.getName());
+            assertThat(응답.brand().foundedYear()).isEqualTo(브랜드.getFoundedYear());
+            assertThat(응답.brand().nation()).isEqualTo(브랜드.getNation());
+            assertThat(응답.rating()).isEqualTo(0);
+            assertThat(응답.reviewCount()).isEqualTo(0);
+            assertThat(응답.hasStandard().hasEuStandard()).isTrue();
+            assertThat(응답.hasStandard().hasUsStandard()).isTrue();
+            assertThat(응답.functionality()).containsAll(테스트용_식품.getFunctionality());
+        }
+
     }
 
     @Test
@@ -198,19 +244,6 @@ class PetFoodQueryServiceTest {
         assertThat(responses).hasSize(0);
     }
 
-    @Test
-    void 아이디로_식품을_조회할_수_있다() {
-        // given
-        Brand 브랜드 = brandRepository.findAll().get(0);
-        PetFood 테스트용_식품 = 키워드_없이_식품_초기화(브랜드);
-        Long 아이디 = petFoodRepository.save(테스트용_식품).getId();
-
-        // when
-        PetFood 조회된_식품 = petFoodQueryService.getPetFoodBy(아이디);
-
-        // then
-        assertThat(조회된_식품).isEqualTo(테스트용_식품);
-    }
 
     @Test
 //    @Disabled("230802 메타데이터 API 요구사항 변경사항 반영 전 비활성화")
