@@ -17,24 +17,24 @@ import MainIngredientsFilterList from './MainIngredientsFilterList/MainIngredien
 import NutritionStandardsFilterList from './NutritionStandardsFilterList/NutritionStandardsFilterList';
 
 const FilterBottomSheet = () => (
-  <Dialog>
-    <Dialog.Trigger asChild>
-      <DialogTrigger type="button">
-        <img src={SettingsIcon} alt="필터 버튼 아이콘" />
-        <span>필터</span>
-      </DialogTrigger>
-    </Dialog.Trigger>
-    <Dialog.Portal>
-      <Dialog.BackDrop />
-      <QueryBoundary>
-        <FoodFilterProvider>
+  <QueryBoundary>
+    <FoodFilterProvider>
+      <Dialog>
+        <Dialog.Trigger asChild>
+          <DialogTrigger type="button">
+            <img src={SettingsIcon} alt="필터 버튼 아이콘" />
+            <span>필터</span>
+          </DialogTrigger>
+        </Dialog.Trigger>
+        <Dialog.Portal>
+          <Dialog.BackDrop />
           <Dialog.Content asChild>
             {({ openHandler }) => <KeywordContent toggleDialog={openHandler} />}
           </Dialog.Content>
-        </FoodFilterProvider>
-      </QueryBoundary>
-    </Dialog.Portal>
-  </Dialog>
+        </Dialog.Portal>
+      </Dialog>
+    </FoodFilterProvider>
+  </QueryBoundary>
 );
 
 interface KeywordContentProps {
@@ -61,9 +61,9 @@ const KeywordContent = (props: KeywordContentProps) => {
       )
       .slice(0, -1);
 
-    navigate(`${process.env.PUBLIC_URL}${queryString}`);
     resetSelectedFilterList();
     toggleDialog();
+    navigate(`${process.env.PUBLIC_URL}${queryString}`);
   };
 
   const getFilterListByKeyword = (keyword: KeywordEn) => {
