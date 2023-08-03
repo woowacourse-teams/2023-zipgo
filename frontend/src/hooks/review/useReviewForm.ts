@@ -11,6 +11,7 @@ export const ACTION_TYPES = {
   SET_TASTE_PREFERENCE: 'setTastePreference',
   SET_STOOL_CONDITION: 'setStoolCondition',
   SET_ADVERSE_REACTIONS: 'setAdverseReactions',
+  SET_ADVERSE_REACTIONS_DEFAULT: 'setAdverseReactionsDefault',
 } as const;
 
 type Action =
@@ -19,10 +20,8 @@ type Action =
   | { type: 'setComment'; comment: string }
   | { type: 'setTastePreference'; tastePreference: TastePreference }
   | { type: 'setStoolCondition'; stoolCondition: StoolCondition }
-  | {
-      type: 'setAdverseReactions';
-      adverseReaction: AdverseReaction;
-    };
+  | { type: 'setAdverseReactionsDefault'; adverseReactions: AdverseReaction[] }
+  | { type: 'setAdverseReactions'; adverseReaction: AdverseReaction };
 
 const reducer = (state: PostReviewReq, action: Action): PostReviewReq => {
   if (action.type === ACTION_TYPES.SET_PET_FOOD_ID) {
@@ -38,6 +37,10 @@ const reducer = (state: PostReviewReq, action: Action): PostReviewReq => {
 
   if (action.type === ACTION_TYPES.SET_STOOL_CONDITION) {
     return { ...state, stoolCondition: action.stoolCondition };
+  }
+
+  if (action.type === ACTION_TYPES.SET_ADVERSE_REACTIONS_DEFAULT) {
+    return { ...state, adverseReactions: action.adverseReactions };
   }
 
   if (action.type === ACTION_TYPES.SET_ADVERSE_REACTIONS) {

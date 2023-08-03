@@ -50,17 +50,14 @@ const ReviewForm = (reviewFormProps: ReviewFormProps) => {
         stoolCondition: reviewDetail.stoolCondition,
       });
 
-      reviewDetail.adverseReactions.forEach(adverseReactionData => {
-        reviewDispatch({
-          type: ACTION_TYPES.SET_ADVERSE_REACTIONS,
-          adverseReaction: adverseReactionData,
-        });
+      reviewDispatch({
+        type: ACTION_TYPES.SET_ADVERSE_REACTIONS_DEFAULT,
+        adverseReactions: reviewDetail.adverseReactions,
       });
 
       reviewDispatch({ type: ACTION_TYPES.SET_COMMENT, comment: reviewDetail.comment });
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [isEditMode, reviewDetail, reviewDispatch]);
 
   return (
     <ReviewFormContainer onSubmit={onSubmitReview}>
