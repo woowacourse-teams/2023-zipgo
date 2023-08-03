@@ -42,16 +42,7 @@ public class PetFoodAcceptanceTest extends AcceptanceTest {
         @Test
         void 필터를_지정하지_않고_요청한다() {
             // given
-            String 브랜드 = "";
-            String 영양기준 = "";
-            String 기능성 = "";
-            String 주단백질원 = "";
-
             var 요청_준비 = given(spec)
-                    .queryParam("brandsName", 브랜드)
-                    .queryParam("nutrientStandards", 영양기준)
-                    .queryParam("functionalities", 기능성)
-                    .queryParam("mainIngredients", 주단백질원)
                     .filter(성공_API_문서_생성("식품 필터링 없이 조회 - 성공(전체 조회)"));
 
             // when

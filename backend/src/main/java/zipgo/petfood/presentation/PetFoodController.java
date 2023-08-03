@@ -1,12 +1,10 @@
 package zipgo.petfood.presentation;
 
-import static java.net.URLDecoder.*;
+import static java.net.URLDecoder.decode;
 import static java.util.Collections.EMPTY_LIST;
 
 import io.jsonwebtoken.lang.Strings;
 import java.io.UnsupportedEncodingException;
-import java.net.URLDecoder;
-import java.net.URLEncoder;
 import java.util.Arrays;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
@@ -33,23 +31,24 @@ public class PetFoodController {
 
     @GetMapping
     public ResponseEntity<GetPetFoodsResponse> getPetFoods(
-            @RequestParam String brandsName,
-            @RequestParam String nutrientStandards,
-            @RequestParam String functionalities,
-            @RequestParam String mainIngredients
+            @RequestParam(required = false) String brandsName,
+            @RequestParam(required = false) String nutrientStandards,
+            @RequestParam(required = false) String functionalities,
+            @RequestParam(required = false) String mainIngredients
     ) throws UnsupportedEncodingException {
         List<PetFood> petFoods = petFoodQueryService.getPetFoods(
-                convertStringsToCollection(decode(brandsName, "UTF-8")),
-                convertStringsToCollection(decode(nutrientStandards, "UTF-8")),
-                convertStringsToCollection(decode(mainIngredients, "UTF-8")),
-                convertStringsToCollection(decode(functionalities, "UTF-8"))
+                convertStringsToCollection(brandsName),
+                convertStringsToCollection(nutrientStandards),
+                convertStringsToCollection(mainIngredients),
+                convertStringsToCollection(functionalities)
         );
         return ResponseEntity.ok(GetPetFoodsResponse.from(petFoods));
     }
 
-    private List<String> convertStringsToCollection(String values) {
+    private List<String> convertStringsToCollection(String values) throws UnsupportedEncodingException {
         if (Strings.hasText(values)) {
-            return Arrays.asList(values.split(","));
+            String decodedValues = decode(values, "UTF-8");
+            return Arrays.asList(decodedValues.split(","));
         }
         return EMPTY_LIST;
     }
