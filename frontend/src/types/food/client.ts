@@ -1,6 +1,7 @@
 export type Food = {
   id: number;
-  name: string;
+  brandName: string;
+  foodName: string;
   imageUrl: string;
   purchaseUrl: string;
 };

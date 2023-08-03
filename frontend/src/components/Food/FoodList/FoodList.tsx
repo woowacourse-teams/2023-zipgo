@@ -5,7 +5,7 @@ import { Food } from '@/types/food/client';
 import FoodItem from '../FoodItem/FoodItem';
 
 interface FoodListProps {
-  foodListData: Pick<Food, 'id' | 'name' | 'imageUrl' | 'purchaseUrl'>[];
+  foodListData: Food[];
 }
 
 const FoodList = (foodListProps: FoodListProps) => {
