@@ -38,7 +38,7 @@ const ReviewList = () => {
           navigate(`/pet-food/${petFoodId}/reviews/write`, {
             state: {
               petFoodId: foodData?.id,
-              name: foodData?.foodName,
+              name: foodData?.name,
               imageUrl: foodData?.imageUrl,
             },
           })
