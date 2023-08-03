@@ -1,12 +1,5 @@
 package zipgo.petfood.domain.repository;
 
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.Assertions.assertThatThrownBy;
-import static org.junit.jupiter.api.Assertions.assertAll;
-import static zipgo.petfood.domain.fixture.PetFoodFixture.식품_초기화;
-import static zipgo.petfood.domain.fixture.PetFoodFixture.키워드_없이_식품_초기화;
-import static zipgo.petfood.domain.fixture.PetFoodFixture.키워드_있는_식품_초기화;
-
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
 import java.util.List;
@@ -23,6 +16,13 @@ import zipgo.brand.domain.repository.BrandRepository;
 import zipgo.petfood.domain.Keyword;
 import zipgo.petfood.domain.PetFood;
 import zipgo.petfood.exception.PetFoodException;
+
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
+import static org.junit.jupiter.api.Assertions.assertAll;
+import static zipgo.petfood.domain.fixture.PetFoodFixture.식품_초기화;
+import static zipgo.petfood.domain.fixture.PetFoodFixture.키워드_없이_식품_초기화;
+import static zipgo.petfood.domain.fixture.PetFoodFixture.키워드_있는_식품_초기화;
 
 @DataJpaTest
 @SuppressWarnings("NonAsciiCharacters")
@@ -123,6 +123,16 @@ class PetFoodRepositoryTest {
     void 기능성이_null이면_빈_리스트로_가져온다() {
         //when
         PetFood 기능성이_없는_식품 = petFoodRepository.getById(100L);
+
+        //then
+        assertThat(기능성이_없는_식품.getFunctionality()).isEmpty();
+    }
+
+    @Test
+    @Sql("classpath:insert-empty-functionality.sql")
+    void 기능성이_빈문자열이면_빈_리스트로_가져온다() {
+        //when
+        PetFood 기능성이_없는_식품 = petFoodRepository.getById(1234555L);
 
         //then
         assertThat(기능성이_없는_식품.getFunctionality()).isEmpty();
