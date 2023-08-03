@@ -22,10 +22,19 @@ const PageHeader = (pageHeaderProps: PageHeaderProps) => {
 
   return (
     <HeaderWrapper $scrollPosition={scrollPosition}>
-      <BackButtonWrapper onClick={onClickBackButton}>
-        <BackBtnImage src={BackBtnIcon} alt="뒤로가기" />
+      <BackButtonWrapper
+        type="button"
+        onClick={onClickBackButton}
+        role="button"
+        aria-label="뒤로가기"
+      >
+        <BackBtnImage src={BackBtnIcon} alt="뒤로가기 아이콘" />
       </BackButtonWrapper>
-      {title && <Title $scrollPosition={scrollPosition}>{title}</Title>}
+      {title && (
+        <Title $scrollPosition={scrollPosition} aria-label={title}>
+          {title}
+        </Title>
+      )}
     </HeaderWrapper>
   );
 };
@@ -49,15 +58,19 @@ const HeaderWrapper = styled.header<BackButtonStyleProps>`
   height: 8rem;
   padding: 1.6rem;
 
-  background-color: ${({ $scrollPosition, theme }) =>
-    $scrollPosition > 300 ? theme.color.white : 'transparent'};
+  background-color: ${({ $scrollPosition }) =>
+    `rgba(255,255,255, ${($scrollPosition - 250) / 50})`};
+  box-shadow: ${({ $scrollPosition }) =>
+    `0 0.2rem 1.4rem 0 rgba(0, 0, 0, ${
+      $scrollPosition > 280 ? '0.15' : ($scrollPosition - 250) / 200
+    })`};
 
   transition: all 150ms ease-in-out;
-  ${({ $scrollPosition, theme }) =>
-    $scrollPosition > 300 && 'box-shadow: 0px 2px 14px 0px rgba(0, 0, 0, 0.15);'};
 `;
 
 const BackButtonWrapper = styled.button`
+  cursor: pointer;
+
   position: absolute;
   top: 2rem;
   left: 2rem;
@@ -82,7 +95,6 @@ const BackBtnImage = styled.img`
 
 const Title = styled.h1<BackButtonStyleProps>`
   overflow: hidden;
-  display: ${({ $scrollPosition }) => ($scrollPosition > 300 ? 'box' : 'none')};
 
   max-width: 60%;
   height: 2rem;
@@ -94,6 +106,8 @@ const Title = styled.h1<BackButtonStyleProps>`
   text-overflow: ellipsis;
   letter-spacing: -0.05rem;
   white-space: nowrap;
+
+  opacity: ${({ $scrollPosition }) => ($scrollPosition - 250) / 50};
 
   transition: all 150ms ease-in-out;
 `;
