@@ -7,10 +7,12 @@ interface CheckboxProps extends ComponentPropsWithoutRef<'input'> {
 }
 
 const Checkbox = (props: PropsWithChildren<CheckboxProps>) => {
-  const { asChild, child, ...restProps } = getValidProps(props);
+  const { resolveChildren, ...restProps } = getValidProps(props);
 
-  if (asChild) {
-    return cloneElement(child, {
+  const resolved = resolveChildren({});
+
+  if (resolved.asChild) {
+    return cloneElement(resolved.child, {
       ...restProps,
       type: 'checkbox',
     });

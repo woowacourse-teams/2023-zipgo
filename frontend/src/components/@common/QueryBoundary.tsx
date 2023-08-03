@@ -9,7 +9,7 @@ interface QueryBoundaryProps {
 }
 
 const QueryBoundary = (props: PropsWithChildren<QueryBoundaryProps>) => {
-  const { children, errorFallback, loadingFallback } = props;
+  const { children, errorFallback, loadingFallback = null } = props;
 
   return (
     <QueryErrorResetBoundary>

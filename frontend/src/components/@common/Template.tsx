@@ -63,6 +63,8 @@ export default Template;
 const Layout = styled.div`
   position: relative;
 
+  overflow-y: scroll;
+
   width: 100vw;
   min-height: calc(var(--vh, 1vh) * 100);
 `;
@@ -74,8 +76,6 @@ const Container = styled.div<
     }
   | { isFixedHeader?: never; headerHeight?: never }
 >`
-  position: absolute;
-
   width: 100%;
   height: 100%;
   min-height: calc((var(--vh, 1vh) * 100));
