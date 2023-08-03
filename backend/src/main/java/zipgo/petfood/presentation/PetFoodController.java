@@ -1,8 +1,12 @@
 package zipgo.petfood.presentation;
 
+import static java.net.URLDecoder.*;
 import static java.util.Collections.EMPTY_LIST;
 
 import io.jsonwebtoken.lang.Strings;
+import java.io.UnsupportedEncodingException;
+import java.net.URLDecoder;
+import java.net.URLEncoder;
 import java.util.Arrays;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
@@ -33,12 +37,12 @@ public class PetFoodController {
             @RequestParam String nutrientStandards,
             @RequestParam String functionalities,
             @RequestParam String mainIngredients
-    ) {
+    ) throws UnsupportedEncodingException {
         List<PetFood> petFoods = petFoodQueryService.getPetFoods(
-                convertStringsToCollection(brandsName),
-                convertStringsToCollection(nutrientStandards),
-                convertStringsToCollection(mainIngredients),
-                convertStringsToCollection(functionalities)
+                convertStringsToCollection(decode(brandsName, "UTF-8")),
+                convertStringsToCollection(decode(nutrientStandards, "UTF-8")),
+                convertStringsToCollection(decode(mainIngredients, "UTF-8")),
+                convertStringsToCollection(decode(functionalities, "UTF-8"))
         );
         return ResponseEntity.ok(GetPetFoodsResponse.from(petFoods));
     }
