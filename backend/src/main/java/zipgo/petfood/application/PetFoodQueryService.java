@@ -27,12 +27,12 @@ public class PetFoodQueryService {
 
     public List<PetFood> getPetFoods(
             List<String> brandsName,
-            List<String> nutrientStandards,
+            List<String> nutritionStandards,
             List<String> primaryIngredientList,
             List<String> functionalityList
     ) {
         return petFoodRepository.findAll().stream()
-                .filter(petFood -> isValidStandard(nutrientStandards, petFood.getHasStandard())
+                .filter(petFood -> isValidStandard(nutritionStandards, petFood.getHasStandard())
                         && isContainBrandsName(brandsName, petFood.getBrand().getName())
                         && isContainMainIngredients(petFood.getPrimaryIngredients(), primaryIngredientList)
                         && isContainFunctionalities(petFood.getFunctionality(), functionalityList))
