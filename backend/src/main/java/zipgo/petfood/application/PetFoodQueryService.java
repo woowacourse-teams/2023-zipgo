@@ -26,24 +26,24 @@ public class PetFoodQueryService {
     private final PetFoodQueryRepository petFoodQueryRepository;
 
     public List<PetFood> getPetFoods(
-            List<Long> brandIds,
+            List<String> brandsName,
             List<String> nutrientStandards,
             List<String> primaryIngredientList,
             List<String> functionalityList
     ) {
         return petFoodRepository.findAll().stream()
                 .filter(petFood -> isValidStandard(nutrientStandards, petFood.getHasStandard())
-                        && isContainBrandIds(brandIds, petFood.getBrand().getId())
+                        && isContainBrandsName(brandsName, petFood.getBrand().getName())
                         && isContainMainIngredients(petFood.getPrimaryIngredients(), primaryIngredientList)
                         && isContainFunctionalities(petFood.getFunctionality(), functionalityList))
                 .collect(Collectors.toList());
     }
 
-    private boolean isContainBrandIds(List<Long> brandIds, Long brandId) {
-        if (brandIds.isEmpty()) {
+    private boolean isContainBrandsName(List<String> brandsName, String brandName) {
+        if (brandsName.isEmpty()) {
             return true;
         }
-        return brandIds.contains(brandId);
+        return brandsName.contains(brandName);
     }
 
     private boolean isValidStandard(List<String> nutrientStandards, HasStandard hasStandard) {

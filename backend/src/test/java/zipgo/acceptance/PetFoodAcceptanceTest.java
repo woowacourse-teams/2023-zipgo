@@ -42,13 +42,13 @@ public class PetFoodAcceptanceTest extends AcceptanceTest {
         @Test
         void 필터를_지정하지_않고_요청한다() {
             // given
-            List<Long> 브랜드 = EMPTY_LIST;
-            List<String> 영양기준 = EMPTY_LIST;
-            List<String> 기능성 = EMPTY_LIST;
-            List<String> 주단백질원 = EMPTY_LIST;
+            String 브랜드 = "";
+            String 영양기준 = "";
+            String 기능성 = "";
+            String 주단백질원 = "";
 
             var 요청_준비 = given(spec)
-                    .queryParam("brandIds", 브랜드)
+                    .queryParam("brandsName", 브랜드)
                     .queryParam("nutrientStandards", 영양기준)
                     .queryParam("functionalities", 기능성)
                     .queryParam("mainIngredients", 주단백질원)
@@ -66,13 +66,13 @@ public class PetFoodAcceptanceTest extends AcceptanceTest {
         @Test
         void 필터를_지정해서_요청한다() {
             // given
-            List<Long> 브랜드 = List.of(1L);
-            List<String> 영양기준 = List.of("유럽");
-            List<String> 기능성 = List.of("튼튼");
-            List<String> 주단백질원 = List.of("닭고기");
+            String 브랜드 = "오리젠";
+            String 영양기준 = "유럽";
+            String 기능성 = "튼튼";
+            String 주단백질원 = "닭고기";
 
             var 요청_준비 = given(spec)
-                    .queryParam("brandIds", 브랜드)
+                    .queryParam("brandsName", 브랜드)
                     .queryParam("nutrientStandards", 영양기준)
                     .queryParam("functionalities", 기능성)
                     .queryParam("mainIngredients", 주단백질원)

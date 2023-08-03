@@ -54,7 +54,7 @@ class PetFoodQueryServiceTest {
         void 브랜드를_만족하는_식품만_반환한다() {
             // when
             List<PetFood> petFoods = petFoodQueryService.getPetFoods(
-                    List.of(2L),
+                    List.of("퓨리나"),
                     EMPTY_LIST,
                     EMPTY_LIST,
                     EMPTY_LIST
@@ -130,7 +130,7 @@ class PetFoodQueryServiceTest {
         void 모든_필터를_만족하는_식품만_반환한다() {
             // when
             List<PetFood> petFoods = petFoodQueryService.getPetFoods(
-                    List.of(1L),
+                    List.of("오리젠"),
                     List.of("유럽"),
                     List.of("닭고기"),
                     List.of("튼튼")

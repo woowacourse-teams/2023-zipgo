@@ -2,6 +2,8 @@ package zipgo.petfood.presentation;
 
 import static java.util.Collections.EMPTY_LIST;
 
+import io.jsonwebtoken.lang.Strings;
+import java.util.Arrays;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -27,32 +29,25 @@ public class PetFoodController {
 
     @GetMapping
     public ResponseEntity<GetPetFoodsResponse> getPetFoods(
-            @RequestParam List<Long> brandIds,
-            @RequestParam List<String> nutrientStandards,
-            @RequestParam List<String> functionalities,
-            @RequestParam List<String> mainIngredients
-            ) {
+            @RequestParam String brandsName,
+            @RequestParam String nutrientStandards,
+            @RequestParam String functionalities,
+            @RequestParam String mainIngredients
+    ) {
         List<PetFood> petFoods = petFoodQueryService.getPetFoods(
-                convertBrandIds(brandIds),
-                convertNullCollection(nutrientStandards),
-                convertNullCollection(mainIngredients),
-                convertNullCollection(functionalities)
+                convertStringsToCollection(brandsName),
+                convertStringsToCollection(nutrientStandards),
+                convertStringsToCollection(mainIngredients),
+                convertStringsToCollection(functionalities)
         );
         return ResponseEntity.ok(GetPetFoodsResponse.from(petFoods));
     }
 
-    private List<Long> convertBrandIds(List<Long> brandIds) {
-        if (brandIds == null) {
-            brandIds = EMPTY_LIST;
+    private List<String> convertStringsToCollection(String values) {
+        if (Strings.hasText(values)) {
+            return Arrays.asList(values.split(","));
         }
-        return brandIds;
-    }
-
-    private List<String> convertNullCollection(List<String> collections) {
-        if (collections == null) {
-            collections = EMPTY_LIST;
-        }
-        return collections;
+        return EMPTY_LIST;
     }
 
     @GetMapping("/{id}")
