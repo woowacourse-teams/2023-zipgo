@@ -2,12 +2,9 @@ import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import styled, { css } from 'styled-components';
 
+import DogIcon from '@/assets/svg/dog_icon.svg';
 import StarRatingDisplay from '@/components/@common/StarRating/StarRatingDisplay/StartRatingDisplay';
-import {
-  COMMENT_VISIABLE_LINE_LIMIT,
-  PROFILE_DEFAULT_IMG_URL,
-  REACTIONS,
-} from '@/constants/review';
+import { COMMENT_VISIABLE_LINE_LIMIT, REACTIONS } from '@/constants/review';
 import { useValidParams } from '@/hooks/@common/useValidParams';
 import { useFoodDetailQuery } from '@/hooks/query/food';
 import { useRemoveReviewMutation } from '@/hooks/query/review';
@@ -21,7 +18,7 @@ const ReviewItem = (reviewItemProps: ReviewItemProps) => {
   );
   const {
     id,
-    profileImageUrl = PROFILE_DEFAULT_IMG_URL,
+    profileImageUrl = DogIcon,
     reviewerName,
     rating,
     date,
