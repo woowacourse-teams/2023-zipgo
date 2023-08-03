@@ -5,10 +5,7 @@ export type Food = {
   purchaseUrl: string;
   rating: number;
   reviewCount: number;
-  proteinSource: {
-    primary: string[];
-    secondary: string[];
-  };
+  primaryIngredients: string[];
   hasStandard: {
     us: boolean;
     eu: boolean;
