@@ -2,13 +2,16 @@ import { useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { styled } from 'styled-components';
 
-import BackIcon from '@/assets/svg/back_btn.svg';
+import PageHeader from '@/components/@common/PageHeader/PageHeader';
 import StarRatingInput from '@/components/@common/StarRating/StarRatingInput/StarRatingInput';
 import Template from '@/components/@common/Template';
 import { AdverseReaction, StoolCondition, TastePreference } from '@/types/review/client';
 
 interface LocationState {
   state: {
+    petFoodId: number;
+    name: string;
+    imageUrl: string;
     isEditMode: boolean;
     userRating: number;
     reviewDetail: {
@@ -24,20 +27,20 @@ interface LocationState {
 const ReviewStarRating = () => {
   const navigate = useNavigate();
   const location = useLocation() as LocationState;
-  const { isEditMode = false, userRating = 0, reviewDetail } = { ...location.state };
+  const {
+    petFoodId,
+    name,
+    imageUrl,
+    isEditMode = false,
+    userRating = 0,
+    reviewDetail,
+  } = { ...location.state };
   const [rating, setRating] = useState(userRating);
-
-  const { petFoodId, name, imageUrl } = {
-    // 식품상세 api 연동 전 임시 데이터..
-    petFoodId: 1,
-    name: '퓨리나 프로플랜 민감한 장건강 12kg',
-    imageUrl: 'https://www.purinapetcare.co.kr/data/files/e3469d6a8936e6416891b97bdbd7c708.png',
-  };
 
   const onMouseDownStar = (selectedRating: number) => setRating(selectedRating);
 
   const onClickStar = (selectedRating: number) => {
-    navigate(`/pet-foods/${petFoodId}/reviews/write/${selectedRating}/detail/${isEditMode}`, {
+    navigate(`/pet-food/${petFoodId}/reviews/write/${selectedRating}/detail/${isEditMode}`, {
       state: { petFoodId, name, imageUrl, reviewDetail },
     });
   };
@@ -46,10 +49,8 @@ const ReviewStarRating = () => {
 
   return (
     <Template.WithoutHeader footer={false}>
+      <PageHeader onClick={goBack} />
       <Container>
-        <BackButton type="button" aria-label="뒤로가기" onClick={goBack}>
-          <img src={BackIcon} alt="" />
-        </BackButton>
         <FoodImageWrapper>
           <FoodImage src={imageUrl} alt={`${name}`} />
         </FoodImageWrapper>
@@ -77,16 +78,6 @@ const Container = styled.div`
 
   width: 100vw;
   height: 100vh;
-`;
-
-const BackButton = styled.button`
-  all: unset;
-
-  cursor: pointer;
-
-  position: fixed;
-  top: 6.8rem;
-  left: 2rem;
 `;
 
 const FoodImage = styled.img`
@@ -126,6 +117,7 @@ const FoodName = styled.p`
   font-weight: 600;
   line-height: 1.7rem;
   color: ${({ theme }) => theme.color.grey400};
+  text-align: center;
   text-overflow: ellipsis;
   letter-spacing: -0.5px;
   word-break: break-word;

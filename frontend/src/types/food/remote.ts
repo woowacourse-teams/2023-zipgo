@@ -5,5 +5,11 @@ export interface GetFoodListReq {
 }
 
 export interface GetFoodListRes {
-  foodList: Food[];
+  petFoods: Pick<Food, 'id' | 'name' | 'imageUrl' | 'purchaseUrl'>[];
 }
+
+export interface GetFoodDetailReq {
+  petFoodId: string;
+}
+
+export interface GetFoodDetailRes extends Food {}

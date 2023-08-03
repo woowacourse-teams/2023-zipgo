@@ -4,6 +4,7 @@ const color = {
   secondary: '#7DA3C2',
   warning: '#E73846',
   blue: '#D0E6F9',
+  lightRed: '#FFDBDE',
 
   white: '#FFFFFF',
   grey250: '#C7CFD7',

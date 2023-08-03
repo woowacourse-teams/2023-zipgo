@@ -6,18 +6,21 @@ import FilterSwitch from '@/components/@common/FilterSwitch/FilterSwitch';
 import Header from '@/components/@common/Header/Header';
 import Template from '@/components/@common/Template';
 import FoodList from '@/components/Food/FoodList/FoodList';
-import useFoodListQuery from '@/hooks/query/food';
+import usePageTitle from '@/hooks/@common/usePageTitle';
+import { useFoodListQuery } from '@/hooks/query/food';
 
 const Landing = () => {
   const [keyword, setKeyword] = useState<string[]>([]);
   const { foodList, refetch } = useFoodListQuery({ keyword });
+
+  usePageTitle('집사의 고민');
 
   const onToggle = ({ target: { checked } }: ChangeEvent<HTMLInputElement>) =>
     setKeyword(checked ? ['diet'] : []);
 
   useEffect(() => {
     refetch();
-  }, [keyword]);
+  }, [keyword, refetch]);
 
   if (!foodList) return null;
 
@@ -28,9 +31,9 @@ const Landing = () => {
           <BannerText>
             <TitleContainer>
               <BannerSubTitle>
-                다이어트가 필요한
+                사료 선택이 어려운
                 <br />
-                당신의 강아지를 위해
+                초보 집사들을 위해
               </BannerSubTitle>
               <BannerTitle>집사의 고민</BannerTitle>
             </TitleContainer>

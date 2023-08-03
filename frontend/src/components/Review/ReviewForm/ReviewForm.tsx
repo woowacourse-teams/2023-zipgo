@@ -1,4 +1,5 @@
 import { FormEvent, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { styled } from 'styled-components';
 
 import Label from '@/components/@common/Label/Label';
@@ -26,16 +27,23 @@ const ReviewForm = (reviewFormProps: ReviewFormProps) => {
   const { addReviewMutation } = useAddReviewMutation();
   const { editReviewMutation } = useEditReviewMutation();
 
+  const navigate = useNavigate();
+
   const onSubmitReview = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
     if (isEditMode && reviewDetail) {
-      editReviewMutation.editReview({ reviewId: reviewDetail.reviewId, ...review });
-
+      editReviewMutation.editReview({ reviewId: reviewDetail.reviewId, ...review }).then(() => {
+        alert('리뷰 수정이 완료되었습니다.');
+        navigate(`/pet-food/${petFoodId}`);
+      });
       return;
     }
 
-    addReviewMutation.addReview(review);
+    addReviewMutation.addReview(review).then(() => {
+      alert('리뷰 작성이 완료되었습니다.');
+      navigate(`/pet-food/${petFoodId}`);
+    });
   };
 
   useEffect(() => {
@@ -132,7 +140,7 @@ const ReviewForm = (reviewFormProps: ReviewFormProps) => {
           }}
         />
       </DetailReviewContainer>
-      <SubmitButton>작성 완료</SubmitButton>
+      <SubmitButton type="submit">작성 완료</SubmitButton>
     </ReviewFormContainer>
   );
 };

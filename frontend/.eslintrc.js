@@ -43,6 +43,9 @@ module.exports = {
     'no-unused-expressions': 'off',
     'react/no-array-index-key': 'off',
     'react/destructuring-assignment': 'off',
+    'react/jsx-curly-newline': 'off',
+    'no-alert': 'off',
+    'no-restricted-globals': 'off',
 
     'react/jsx-props-no-spreading': 'off',
     'react/react-in-jsx-scope': 'off',

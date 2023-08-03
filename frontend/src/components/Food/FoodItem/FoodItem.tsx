@@ -1,14 +1,15 @@
+import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 
 import { Food } from '@/types/food/client';
 
-interface FoodItemProps extends Food {}
+interface FoodItemProps extends Pick<Food, 'name' | 'imageUrl' | 'purchaseUrl' | 'id'> {}
 
 const FoodItem = (foodItemProps: FoodItemProps) => {
-  const { name, imageUrl, purchaseUrl } = foodItemProps;
+  const { name, imageUrl, purchaseUrl, id } = foodItemProps;
 
   return (
-    <FoodItemWrapper href={purchaseUrl}>
+    <FoodItemWrapper to={`pet-food/${id}`}>
       <FoodImageWrapper>
         <FoodImage src={imageUrl} alt="Food image" />
       </FoodImageWrapper>
@@ -32,7 +33,7 @@ const FoodImage = styled.img`
   transition: all 200ms ease;
 `;
 
-const FoodItemWrapper = styled.a`
+const FoodItemWrapper = styled(Link)`
   display: flex;
   flex-direction: column;
   align-items: flex-start;

@@ -57,7 +57,7 @@
     "html-webpack-plugin": "^5.5.3",
     "husky": ">=7",
     "lint-staged": ">=10",
-    "msw": "^1.2.2",
+    "msw": "^1.2.3",
     "pinst": ">=2",
     "postcss": "^8.4.26",
     "postcss-styled-syntax": "^0.4.0",

@@ -1,7 +1,7 @@
 import { createBrowserRouter, RouterProvider } from 'react-router-dom';
 
 import App from '@/App';
-import ReviewList from '@/components/Review/ReviewList/ReviewList';
+import FoodDetail from '@/pages/FoodDetail/FoodDetail';
 import Landing from '@/pages/Landing/Landing';
 import Login from '@/pages/Login/Login';
 import ReviewAddition from '@/pages/ReviewAddition/ReviewAddition';
@@ -22,15 +22,15 @@ export const router = createBrowserRouter([
         element: <Login />,
       },
       {
-        path: 'pet-foods/:petFoodId/reviews',
-        element: <ReviewList />,
+        path: '/pet-food/:petFoodId',
+        element: <FoodDetail />,
       },
       {
-        path: 'pet-foods/:petFoodId/reviews/write',
+        path: '/pet-food/:petFoodId/reviews/write',
         element: <ReviewStarRating />,
       },
       {
-        path: 'pet-foods/:petFoodId/reviews/write/:rating/detail/:isEditMode',
+        path: '/pet-food/:petFoodId/reviews/write/:rating/detail/:isEditMode',
         element: <ReviewAddition />,
       },
     ],
