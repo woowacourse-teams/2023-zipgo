@@ -40,16 +40,13 @@ class AuthControllerTest {
     private MockMvc mockMvc;
 
     @MockBean
-    private AuthService authService;
-
-    @MockBean
     private MemberQueryService memberQueryService;
 
     @MockBean
     private JwtProvider jwtProvider;
 
     @MockBean
-    private JwtArgumentResolver jwtArgumentResolver;
+    private AuthService authService;
 
     @Test
     void 소셜_로그인을_한다() throws Exception {
@@ -67,13 +64,13 @@ class AuthControllerTest {
                 .andDo(소셜_로그인_문서_생성());
 
         // then
-        var 응답 = 요청.andExpect(status().isOk());
+        요청.andExpect(status().isOk());
     }
 
     private RestDocumentationResultHandler 소셜_로그인_문서_생성() {
         var 응답_형식 = Schema.schema("TokenResponse");
-        var 문서_정보 = resourceDetails().summary("로그인 성공")
-                .description("소셜 로그인을 시도합니다")
+        var 문서_정보 = resourceDetails().summary("소셜 로그인")
+                .description("소셜 로그인을 합니다")
                 .responseSchema(응답_형식);
 
         return MockMvcRestDocumentationWrapper.document("소셜 로그인 성공",
