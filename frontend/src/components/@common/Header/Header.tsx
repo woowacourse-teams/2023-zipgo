@@ -11,6 +11,7 @@ const Header = () => (
 export default Header;
 
 const HeaderContainer = styled.header`
+  position: relative;
   z-index: 9999;
 
   width: 100vw;
