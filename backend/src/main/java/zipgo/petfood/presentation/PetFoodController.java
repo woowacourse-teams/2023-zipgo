@@ -38,7 +38,6 @@ public class PetFoodController {
                 convertNullCollection(mainIngredients),
                 convertNullCollection(functionalities)
         );
-        System.out.println("petFoods = " + petFoods);
         return ResponseEntity.ok(GetPetFoodsResponse.from(petFoods));
     }
 

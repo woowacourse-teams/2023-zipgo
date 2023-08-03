@@ -35,7 +35,7 @@ public class PetFoodQueryService {
                 .filter(petFood -> isValidStandard(nutrientStandards, petFood.getHasStandard())
                         && isContainBrandIds(brandIds, petFood.getBrand().getId())
                         && isContainMainIngredients(petFood.getPrimaryIngredients(), primaryIngredientList)
-                        && isContainFunctionalities(petFood.getId(), petFood.getFunctionality(), functionalityList))
+                        && isContainFunctionalities(petFood.getFunctionality(), functionalityList))
                 .collect(Collectors.toList());
     }
 
@@ -66,26 +66,16 @@ public class PetFoodQueryService {
         if (primaryIngredientList.isEmpty()) {
             return true;
         }
-        List<String> allPrimaryIngredients = primaryIngredients.stream()
-                .map(primaryIngredient -> asList(primaryIngredient.split(",")))
-                .flatMap(Collection::stream)
-                .toList();
-
         return primaryIngredientList.stream()
-                .anyMatch(it -> allPrimaryIngredients.contains(it));
+                .anyMatch(it -> primaryIngredients.contains(it));
     }
 
-    private static boolean isContainFunctionalities(Long petFoodId, List<String> functionalities, List<String> functionalityList) {
+    private static boolean isContainFunctionalities(List<String> functionalities, List<String> functionalityList) {
         if (functionalityList.isEmpty()) {
             return true;
         }
-        List<String> allFunctionalities = functionalities.stream()
-                .map(it -> asList(it.split(",")))
-                .flatMap(Collection::stream)
-                .toList();
-
         return functionalities.stream()
-                .anyMatch(it -> allFunctionalities.contains(it));
+                .anyMatch(it -> functionalities.contains(it));
     }
 
     public List<PetFood> getPetFoodByDynamicValue(String keyword, String brand, String primaryIngredients) {
