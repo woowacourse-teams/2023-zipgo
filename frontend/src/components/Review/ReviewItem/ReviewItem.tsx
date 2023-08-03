@@ -16,8 +16,8 @@ import { Review } from '@/types/review/client';
 interface ReviewItemProps extends Review {}
 
 const ReviewItem = (reviewItemProps: ReviewItemProps) => {
-  const { profileImgUrl } = JSON.parse(
-    localStorage.getItem('userInfo') ?? JSON.stringify({ profileImageUrl: null }),
+  const { name, profileImgUrl } = JSON.parse(
+    localStorage.getItem('userInfo') ?? JSON.stringify({ profileImageUrl: null, name: '노아이즈' }),
   );
   const {
     id,
@@ -64,12 +64,16 @@ const ReviewItem = (reviewItemProps: ReviewItemProps) => {
           <ReviewerName>{reviewerName}</ReviewerName>
         </ReviewImageAndNameContainer>
         <ButtonContainer>
-          <TextButton type="button" aria-label="리뷰 수정" onClick={onClickEditButton}>
-            수정
-          </TextButton>
-          <TextButton type="button" aria-label="리뷰 삭제" onClick={onClickRemoveButton}>
-            삭제
-          </TextButton>
+          {name === reviewerName && (
+            <>
+              <TextButton type="button" aria-label="리뷰 수정" onClick={onClickEditButton}>
+                수정
+              </TextButton>
+              <TextButton type="button" aria-label="리뷰 삭제" onClick={onClickRemoveButton}>
+                삭제
+              </TextButton>
+            </>
+          )}
         </ButtonContainer>
       </ReviewHeader>
       <RatingContainer>
