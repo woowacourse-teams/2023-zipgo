@@ -41,6 +41,7 @@ const BrandFilterListLayout = styled.ul`
   display: flex;
   flex-wrap: wrap;
   gap: 0.8rem;
+  justify-content: space-between;
 `;
 
 const BrandFilterListItem = styled.li<{
@@ -50,9 +51,8 @@ const BrandFilterListItem = styled.li<{
   flex-direction: column;
   gap: 0.8rem;
   align-items: center;
-  justify-content: center;
 
-  width: 11.6rem;
+  width: 10.6rem;
   height: 13.8rem;
   padding: 0.9rem 0.8rem;
 
@@ -69,8 +69,8 @@ const BrandFilterListItem = styled.li<{
 `;
 
 const BrandFilterLogo = styled.img`
-  min-width: 9rem;
-  min-height: 9rem;
+  width: 9rem;
+  height: 9rem;
 
   border-radius: 20px;
 `;
