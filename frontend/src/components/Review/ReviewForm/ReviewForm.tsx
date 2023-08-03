@@ -37,7 +37,6 @@ const ReviewForm = (reviewFormProps: ReviewFormProps) => {
         alert('리뷰 수정이 완료되었습니다.');
         navigate(`/pet-food/${petFoodId}`);
       });
-
       return;
     }
 
