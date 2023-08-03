@@ -19,8 +19,8 @@ values (1, 1, '[고집] 돌아온 배배',
         'https://github.com/woowacourse-teams/2023-zipgo',
         'https://avatars.githubusercontent.com/u/76938931?v=4', true, true, '튼튼,짱짱', '말미잘');
 
-insert into member(name, email) values('무민', 'moomin@gmail.com');
-insert into member(name, email) values('무민2', 'moomin2@gmail.com');
+insert into member(name, email, profile_img_url) values('무민', 'moomin@gmail.com', '프로필사진1');
+insert into member(name, email, profile_img_url) values('무민2', 'moomin2@gmail.com', '프로필사진2');
 
 insert into review(member_id, pet_food_id, rating, comment, taste_preference, stool_condition, created_at)
 values (1, 1, 5, '우리 아이랑 너무 잘 맞아요!', 'EATS_VERY_WELL', 'SOFT_MOIST', '2023-07-28');

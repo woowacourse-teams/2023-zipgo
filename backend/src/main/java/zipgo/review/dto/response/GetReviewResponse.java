@@ -23,8 +23,8 @@ public record GetReviewResponse(
                 review.getRating(),
                 review.getCreatedAt().format(ofPattern("yyyy-MM-dd")),
                 review.getComment(),
-                review.getStoolCondition().getDescription(),
                 review.getTastePreference().getDescription(),
+                review.getStoolCondition().getDescription(),
                 getAdverseReactions(review)
         );
     }
