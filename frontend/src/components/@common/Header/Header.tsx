@@ -3,12 +3,16 @@ import { styled } from 'styled-components';
 
 import ZipgoLogo from '@/assets/svg/zipgo_logo_light.svg';
 
-const Header = () => (
-  <HeaderContainer>
-    <img src={ZipgoLogo} alt="집사의고민 로고" />
-    <LinkButton to="login">로그인</LinkButton>
-  </HeaderContainer>
-);
+const Header = () => {
+  const authData = localStorage.getItem('auth');
+
+  return (
+    <HeaderContainer>
+      <img src={ZipgoLogo} alt="집사의고민 로고" />
+      {authData === null && <LinkButton to="login">로그인</LinkButton>}
+    </HeaderContainer>
+  );
+};
 
 export default Header;
 
