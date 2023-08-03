@@ -1,5 +1,5 @@
 /* eslint-disable react/no-array-index-key */
-import { useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { styled } from 'styled-components';
 
 import Button from '@/components/@common/Button/Button';
@@ -13,6 +13,7 @@ import NutritionStandardBlock, {
   State,
 } from '@/components/Food/NutritionStandardBlock/NutritionStandardBlock';
 import ReviewList from '@/components/Review/ReviewList/ReviewList';
+import usePageTitle from '@/hooks/@common/usePageTitle';
 import { useValidParams } from '@/hooks/@common/useValidParams';
 import { useFoodDetailQuery } from '@/hooks/query/food';
 
@@ -26,11 +27,30 @@ const FoodDetail = () => {
 
   if (!foodData) throw new Error('식품 상세 페이지를 불러오지 못했습니다.');
 
-  const { name, hasStandard, proteinSource, brand, functionality, purchaseUrl } = foodData;
+  const { name, hasStandard, primaryIngredients, brand, functionality, purchaseUrl } = foodData;
+
+  usePageTitle(`집사의 고민 - ${name}`);
 
   const onClickPurchaseButton = () => {
     window.open(purchaseUrl, '_blank');
   };
+
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === 'ArrowRight' && pageIndex < 1) {
+        navigationRef.current?.snapToNext();
+      }
+
+      if (e.key === 'ArrowLeft' && pageIndex > 0) {
+        navigationRef.current?.snapToPrev();
+      }
+    };
+
+    window.addEventListener('keydown', handleKeyDown);
+    return () => {
+      window.removeEventListener('keydown', handleKeyDown);
+    };
+  }, [pageIndex]);
 
   return (
     <>
@@ -56,15 +76,15 @@ const FoodDetail = () => {
               </NutritionStandard>
             </InfoBlock>
             <InfoBlock headText="주원료">
-              <NutritionText>
-                {`${[...proteinSource.primary, ...proteinSource.secondary].join(', ')}`}
-              </NutritionText>
+              <NutritionText>{`${primaryIngredients.join(', ')}`}</NutritionText>
             </InfoBlock>
             <InfoBlock headText="기능성">
               <FunctionalList>
-                {functionality.map((functional, index) => (
-                  <Label key={index} text={functional} />
-                ))}
+                {Boolean(functionality.length) ? (
+                  functionality.map((functional, index) => <Label key={index} text={functional} />)
+                ) : (
+                  <NutritionText>특별한 기능성이 없어요.</NutritionText>
+                )}
               </FunctionalList>
             </InfoBlock>
             <InfoBlock headText="브랜드 정보를 꼭 확인하세요!">
