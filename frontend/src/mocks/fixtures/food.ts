@@ -66,12 +66,12 @@ const getFoodDetail = (): GetFoodDetailRes => ({
 });
 
 const getFoodListFilterMeta = (): GetFoodListFilterMetaRes => ({
-  keywords: ['nutritionStandard', 'mainIngredients', 'brands', 'functionality'],
+  keywords: ['nutritionStandard', 'mainIngredients', 'brands', 'functionalities'],
   filters: {
     nutritionStandard: [],
     mainIngredients: [],
     brands: [],
-    functionality: [],
+    functionalities: [],
   },
 });
 

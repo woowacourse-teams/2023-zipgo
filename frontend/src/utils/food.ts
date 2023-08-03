@@ -1,4 +1,4 @@
-import { keywordsEn, keywordsKo } from '@/constants/food';
+import { KEYWORD_EN, KEYWORDS_KO } from '@/constants/food';
 import { KeywordEn, KeywordKo } from '@/types/food/client';
 
 interface FromKoToEn {
@@ -19,12 +19,12 @@ export const translateKeyword = ({
   to = 'ko',
 }: FromKoToEn | FromEnToKo) => {
   if (from === 'ko') {
-    const index = keywordsKo.findIndex(keyword => keyword === targetKeyword);
+    const index = KEYWORDS_KO.findIndex(keyword => keyword === targetKeyword);
 
-    return keywordsEn[index];
+    return KEYWORD_EN[index];
   }
 
-  const index = keywordsEn.findIndex(keyword => keyword === targetKeyword);
+  const index = KEYWORD_EN.findIndex(keyword => keyword === targetKeyword);
 
-  return keywordsKo[index];
+  return KEYWORDS_KO[index];
 };
