@@ -62,7 +62,7 @@ const Layout = styled.div`
   align-items: center;
 
   width: 100%;
-  height: 100%;
+  min-height: calc(var(--vh, 1vh) * 100);
 `;
 
 const IntroContainer = styled.section`
