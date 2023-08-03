@@ -68,7 +68,7 @@ const KeywordContent = (props: KeywordContentProps) => {
 
   const getFilterListByKeyword = (keyword: KeywordEn) => {
     switch (keyword) {
-      case 'nutritionStandard':
+      case 'nutritionStandards':
         return <NutritionStandardsFilterList filterList={filterList[keyword]} />;
 
       case 'mainIngredients':

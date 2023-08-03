@@ -66,9 +66,9 @@ const getFoodDetail = (): GetFoodDetailRes => ({
 });
 
 const getFoodListFilterMeta = (): GetFoodListFilterMetaRes => ({
-  keywords: ['nutritionStandard', 'mainIngredients', 'brands', 'functionalities'],
+  keywords: ['nutritionStandards', 'mainIngredients', 'brands', 'functionalities'],
   filters: {
-    nutritionStandard: [
+    nutritionStandards: [
       {
         id: 1,
         nation: '미국',

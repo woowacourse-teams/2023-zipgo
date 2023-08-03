@@ -16,7 +16,7 @@ export const useFoodListFilter = (initialSelectedFilterList: Record<KeywordEn, S
 
   const resetSelectedFilterList = () => {
     setSelectedFilterList({
-      nutritionStandard: new Set(),
+      nutritionStandards: new Set(),
       mainIngredients: new Set(),
       brands: new Set(),
       functionalities: new Set(),

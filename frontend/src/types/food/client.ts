@@ -25,7 +25,8 @@ export type Brand = {
   hasResearchCenter: boolean;
   hasResidentVet: boolean;
 };
-export type NutritionStandard = 'nutritionStandard';
+
+export type NutritionStandards = 'nutritionStandards';
 
 export type MainIngredients = 'mainIngredients';
 
@@ -35,14 +36,14 @@ export type Functionality = 'functionalities';
 
 export type KeywordsKo = ['영양기준', '주원료', '브랜드', '기능성'];
 
-export type KeywordsEn = [NutritionStandard, MainIngredients, Brands, Functionality];
+export type KeywordsEn = [NutritionStandards, MainIngredients, Brands, Functionality];
 
 export type KeywordKo = KeywordsKo[number];
 
 export type KeywordEn = KeywordsEn[number];
 
 export type Filters = {
-  nutritionStandard: NutritionStandardsFilter[];
+  nutritionStandards: NutritionStandardsFilter[];
   mainIngredients: MainIngredientsFilter[];
   brands: BrandFilter[];
   functionalities: FunctionalityFilter[];

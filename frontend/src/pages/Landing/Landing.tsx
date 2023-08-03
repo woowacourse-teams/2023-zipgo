@@ -12,7 +12,7 @@ import { KeywordEn } from '@/types/food/client';
 
 const Landing = () => {
   const queries = useValidQueryString<KeywordEn>([
-    'nutritionStandard',
+    'nutritionStandards',
     'mainIngredients',
     'brands',
     'functionalities',

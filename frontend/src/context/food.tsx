@@ -9,7 +9,7 @@ import { getValidProps, PropsWithRenderProps } from '@/utils/compound';
 export type SelectedFilterList = Record<KeywordEn, Set<string>>;
 
 const initialSelectedFilterList: SelectedFilterList = {
-  nutritionStandard: new Set(),
+  nutritionStandards: new Set(),
   mainIngredients: new Set(),
   brands: new Set(),
   functionalities: new Set(),
