@@ -30,7 +30,7 @@ const FoodListWrapper = styled.div`
 
 const FoodListContainer = styled.div`
   display: grid;
-  grid-gap: 0.4rem 2rem;
+  grid-gap: 2rem;
   grid-template-columns: repeat(2, calc((100% - 2rem) / 2));
   place-items: center;
   justify-content: center;
