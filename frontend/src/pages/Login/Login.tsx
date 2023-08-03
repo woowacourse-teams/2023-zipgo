@@ -1,13 +1,32 @@
+import { useIsMutating } from '@tanstack/react-query';
+import { useEffect } from 'react';
+import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 
 import ZipgoBanner from '@/assets/png/landing_banner.png';
 import KakaoSymbol from '@/assets/svg/kakao_symbol.svg';
 import ZipgoLogo from '@/assets/svg/zipgo_logo_dark.svg';
 import Template from '@/components/@common/Template';
+import { KAKAO_HREF } from '@/constants/auth';
 import { useAuth } from '@/hooks/auth';
+import useValidQueryString from '@/hooks/common/useValidQueryString';
 
 const Login = () => {
-  const { getKakaoAuth } = useAuth();
+  const {
+    code,
+    error,
+    error_description: errorDescription,
+  } = useValidQueryString(['code', 'error', 'error_description']);
+  const { loginZipgo } = useAuth();
+  const isMutating = useIsMutating({ mutationKey: ['test'] });
+
+  useEffect(() => {
+    if (error) throw new Error(errorDescription);
+
+    if (code) {
+      loginZipgo({ code });
+    }
+  }, [code, error, errorDescription]);
 
   return (
     <Template.WithoutHeader>
@@ -23,10 +42,12 @@ const Login = () => {
             여기까지.
           </Intro>
         </IntroContainer>
-        <KakaoLoginButton type="button" onClick={getKakaoAuth}>
-          <img src={KakaoSymbol} alt="카카오 심볼" />
-          <span>카카오 로그인</span>
-        </KakaoLoginButton>
+        <Link to={KAKAO_HREF}>
+          <KakaoLoginButton type="button">
+            <img src={KakaoSymbol} alt="카카오 심볼" />
+            <span>카카오 로그인</span>
+          </KakaoLoginButton>
+        </Link>
       </Layout>
     </Template.WithoutHeader>
   );
