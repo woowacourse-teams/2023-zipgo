@@ -9,7 +9,7 @@ public record FilterMetadataResponse(
 
     public static FilterMetadataResponse of(FilterResponse filterResponse) {
         return new FilterMetadataResponse(
-                List.of("영양기준", "주원료", "브랜드", "기능성"),
+                List.of("nutritionStandards", "mainIngredients", "brands", "functionalities"),
                 filterResponse
         );
     }
