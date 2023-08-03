@@ -7,20 +7,25 @@ import Header from '@/components/@common/Header/Header';
 import Template from '@/components/@common/Template';
 import FoodList from '@/components/Food/FoodList/FoodList';
 import usePageTitle from '@/hooks/@common/usePageTitle';
+import useValidQueryString from '@/hooks/common/useValidQueryString';
 import { useFoodListQuery } from '@/hooks/query/food';
+import { KeywordEn } from '@/types/food/client';
 
 const Landing = () => {
-  const [keyword, setKeyword] = useState<string[]>([]);
-  const { foodList, refetch } = useFoodListQuery({ keyword });
+  const queries = useValidQueryString<KeywordEn>([
+    'nutritionStandard',
+    'mainIngredients',
+    'brands',
+    'functionalities',
+  ]);
+
+  const { foodList, refetch } = useFoodListQuery(queries);
 
   usePageTitle('집사의 고민');
 
-  const onToggle = ({ target: { checked } }: ChangeEvent<HTMLInputElement>) =>
-    setKeyword(checked ? ['diet'] : []);
-
   useEffect(() => {
     refetch();
-  }, [keyword, refetch]);
+  }, Object.values(queries));
 
   if (!foodList) return null;
 
@@ -41,7 +46,6 @@ const Landing = () => {
           <BannerImg src={ZipgoBanner} />
         </BannerSection>
         <ToggleBox>
-          <FilterSwitch id="filter" onChange={onToggle} />
           <ToggleLabel htmlFor="filter">다이어트 특화 식품 보기</ToggleLabel>
         </ToggleBox>
         <ListSection>

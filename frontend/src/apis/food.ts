@@ -9,7 +9,14 @@ import { GetFoodDetailReq } from '../types/food/remote';
 import { client } from '.';
 
 export const getFoodList = async (payload: GetFoodListReq) => {
-  const { data } = await client.get<GetFoodListRes>('/pet-foods', {});
+  const params = Object.entries(payload).reduce(
+    (acc, [key, value]) => (value ? { ...acc, [key]: value } : acc),
+    {},
+  );
+
+  const { data } = await client.get<GetFoodListRes>('/pet-foods', {
+    params,
+  });
 
   return data;
 };
@@ -21,7 +28,7 @@ export const getFoodDetail = async ({ petFoodId }: GetFoodDetailReq) => {
 };
 
 export const getFoodListFilterMeta = async () => {
-  const { data } = await client.get<GetFoodListFilterMetaRes>('/api/v1/foodListFilterMeta');
+  const { data } = await client.get<GetFoodListFilterMetaRes>('/pet-foods/filters');
 
   return data;
 };
