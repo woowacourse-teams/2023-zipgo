@@ -12,6 +12,7 @@ const usePageTitle = (initialTitle: string) => {
   };
 
   useEffect(updateTitle, [title]);
+
   return setTitle;
 };
 
