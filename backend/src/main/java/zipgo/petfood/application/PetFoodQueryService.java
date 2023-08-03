@@ -46,7 +46,7 @@ public class PetFoodQueryService {
         return brandIds.contains(brandId);
     }
 
-    private static boolean isValidStandard(List<String> nutrientStandards, HasStandard hasStandard) {
+    private boolean isValidStandard(List<String> nutrientStandards, HasStandard hasStandard) {
         if (nutrientStandards.isEmpty()) {
             return true;
         }
@@ -62,7 +62,7 @@ public class PetFoodQueryService {
         return isValid;
     }
 
-    private static boolean isContainMainIngredients(List<String> primaryIngredients, List<String> primaryIngredientList) {
+    private boolean isContainMainIngredients(List<String> primaryIngredients, List<String> primaryIngredientList) {
         if (primaryIngredientList.isEmpty()) {
             return true;
         }
@@ -70,7 +70,7 @@ public class PetFoodQueryService {
                 .anyMatch(it -> primaryIngredients.contains(it));
     }
 
-    private static boolean isContainFunctionalities(List<String> functionalities, List<String> functionalityList) {
+    private boolean isContainFunctionalities(List<String> functionalities, List<String> functionalityList) {
         if (functionalityList.isEmpty()) {
             return true;
         }

@@ -41,14 +41,14 @@ public class PetFoodController {
         return ResponseEntity.ok(GetPetFoodsResponse.from(petFoods));
     }
 
-    private static List<Long> convertBrandIds(List<Long> brandIds) {
+    private List<Long> convertBrandIds(List<Long> brandIds) {
         if (brandIds == null) {
             brandIds = EMPTY_LIST;
         }
         return brandIds;
     }
 
-    private static List<String> convertNullCollection(List<String> collections) {
+    private List<String> convertNullCollection(List<String> collections) {
         if (collections == null) {
             collections = EMPTY_LIST;
         }
