@@ -26,16 +26,16 @@ const ReviewForm = (reviewFormProps: ReviewFormProps) => {
   const { addReviewMutation } = useAddReviewMutation();
   const { editReviewMutation } = useEditReviewMutation();
 
-  const onSubmitReview = async (e: FormEvent<HTMLFormElement>) => {
+  const onSubmitReview = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
     if (isEditMode && reviewDetail) {
-      await editReviewMutation.editReview({ reviewId: reviewDetail.reviewId, ...review });
+      editReviewMutation.editReview({ reviewId: reviewDetail.reviewId, ...review });
 
       return;
     }
 
-    await addReviewMutation.addReview(review);
+    addReviewMutation.addReview(review);
   };
 
   useEffect(() => {
