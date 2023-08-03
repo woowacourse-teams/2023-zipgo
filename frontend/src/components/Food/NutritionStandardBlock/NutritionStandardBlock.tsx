@@ -18,17 +18,19 @@ interface NutritionStandardBlockProps {
 const NutritionStandardBlock = (nutritionStandardBlockProps: NutritionStandardBlockProps) => {
   const { state, satisfied } = nutritionStandardBlockProps;
 
+  const isUs = state === State.us;
+
   return (
     <NutritionStandardBlockWrapper>
       <StandardInfo>
-        <img src={state === State.us ? USFlag : EUFlag} alt="국기" />
+        <img src={isUs ? USFlag : EUFlag} alt={isUs ? '미국' : '유럽'} />
         <StateText>{state}</StateText>
       </StandardInfo>
       <Label
         text={satisfied ? '충족' : '불충족'}
         hasBorder={false}
         backgroundColor={satisfied ? theme.color.blue : theme.color.lightRed}
-        textColor={!satisfied ? theme.color.warning : theme.color.primary}
+        textColor={satisfied ? theme.color.primary : theme.color.warning}
         width={6}
         fontSize={1.3}
         fontWeight={700}
