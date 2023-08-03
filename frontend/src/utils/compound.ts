@@ -10,10 +10,10 @@ export type PropsWithRenderProps<P = unknown, R extends object = object> = Omit<
   children?: ReactNode | ((payload: R) => JSX.Element);
 } & AsChild;
 
-type WithAsChild<P> = Omit<P, 'children'> & {
+type WithAsChild<P> = PropsWithChildren<{
   asChild: true;
   child: ReactElement<P>;
-};
+}>;
 
 type WithoutAsChild = PropsWithChildren<{
   asChild: false;
@@ -40,7 +40,7 @@ export function getValidProps<P, R extends object>(
     if (asChild) {
       const child = getValidChild<P>(resolvedChildren);
 
-      if (child) return { asChild, child };
+      if (child) return { asChild, child, children: resolvedChildren };
     }
 
     return { asChild: false, child: null, children: resolvedChildren };
