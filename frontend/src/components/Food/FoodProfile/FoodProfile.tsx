@@ -10,9 +10,9 @@ const FoodProfile = (foodProfileProps: FoodProfileProps) => {
 
   return (
     <FoodProfileWrapper>
-      <FoodImg alt="식품 이미지" src={imageUrl} />
-      <BrandName>{brand.name}</BrandName>
-      <FoodName>{name}</FoodName>
+      <FoodImg alt="식품 이미지" src={imageUrl} aria-label={`${name} 이미지`} />
+      <BrandName aria-label={brand.name}>{brand.name}</BrandName>
+      <FoodName aria-label={`식품 이름 ${name}`}>{name}</FoodName>
       <StarRatingDisplay rating={rating} size="large" displayRating />
     </FoodProfileWrapper>
   );
