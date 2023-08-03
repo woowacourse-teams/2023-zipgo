@@ -127,6 +127,7 @@ export default FilterBottomSheet;
 
 const Layout = styled.div`
   position: fixed;
+  z-index: 1001;
   bottom: 0;
 
   display: flex;

@@ -108,6 +108,8 @@ const BackDrop = (props: PropsWithChildren<BackDropProps>) => {
 };
 
 const DefaultBackDrop = styled.div`
+  z-index: 1000;
+
   ${({ theme }) => theme.componentStyle.backDrop}
 `;
 
