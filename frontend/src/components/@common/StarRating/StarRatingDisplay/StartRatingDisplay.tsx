@@ -12,18 +12,18 @@ const StarRatingDisplay = (starRatingDisplayProps: StarRatingDisplayProps) => {
   const { rating, size = 'medium' } = starRatingDisplayProps;
 
   return (
-    <StarContainer>
+    <StarContainer aria-label={`만족도 ${rating}점`}>
       {Array.from({ length: 5 }, (_, index) => {
         const imageUrl = index < Math.floor(rating) ? FilledStarIcon : EmptyStarIcon;
-        return <Star size={size} key={index} src={imageUrl} alt={`만족도 ${rating}점`} />;
+        return <Star size={size} key={index} src={imageUrl} alt="" />;
       })}
     </StarContainer>
   );
 };
 
 const StarContainer = styled.div`
-  display: inline-block;
-  gap: 0.3rem;
+  display: flex;
+  gap: 0.4rem;
 `;
 
 const Star = styled.img<{ size: 'small' | 'medium' | 'large' }>`

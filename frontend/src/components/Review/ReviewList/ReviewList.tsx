@@ -1,11 +1,14 @@
+import { useNavigate } from 'react-router-dom';
 import { styled } from 'styled-components';
 
+import WriteIcon from '@/assets/svg/write_btn.svg';
 import { useValidParams } from '@/hooks/@common/useValidParams';
-import useReviewListQuery from '@/hooks/query/review';
+import { useReviewListQuery } from '@/hooks/query/review';
 
 import ReviewItem from '../ReviewItem/ReviewItem';
 
 const ReviewList = () => {
+  const navigate = useNavigate();
   const { petFoodId } = useValidParams(['petFoodId']);
   const { reviewList } = useReviewListQuery({ petFoodId });
 
@@ -18,8 +21,12 @@ const ReviewList = () => {
           <ReviewItem {...review} />
         </ReviewItemWrapper>
       ))}
-      <ReviewAddButton type="button" aria-label="리뷰 추가">
-        +
+      <ReviewAddButton
+        type="button"
+        aria-label="리뷰 작성"
+        onClick={() => navigate(`/pet-foods/${petFoodId}/reviews/write`)}
+      >
+        <WriteIconImage src={WriteIcon} alt="" />
       </ReviewAddButton>
     </ReviewListContainer>
   );
@@ -46,7 +53,7 @@ const ReviewAddButton = styled.button`
 
   cursor: pointer;
 
-  position: absolute;
+  position: fixed;
   right: 1.6rem;
   bottom: 3.2rem;
 
@@ -65,4 +72,9 @@ const ReviewAddButton = styled.button`
   background-color: ${({ theme }) => theme.color.primary};
   border-radius: 50%;
   box-shadow: 0 4px 4px rgb(0 0 0 / 25%);
+`;
+
+const WriteIconImage = styled.img`
+  border-radius: 50%;
+  box-shadow: 0 0 40px rgb(62 94 142 / 50%);
 `;
