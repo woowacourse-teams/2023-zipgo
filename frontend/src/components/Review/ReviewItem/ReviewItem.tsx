@@ -16,9 +16,12 @@ import { Review } from '@/types/review/client';
 interface ReviewItemProps extends Review {}
 
 const ReviewItem = (reviewItemProps: ReviewItemProps) => {
+  const { profileImgUrl } = JSON.parse(
+    localStorage.getItem('userInfo') ?? JSON.stringify({ profileImageUrl: null }),
+  );
   const {
     id,
-    profileImageUrl = PROFILE_DEFAULT_IMG_URL,
+    profileImageUrl = profileImgUrl ?? PROFILE_DEFAULT_IMG_URL,
     reviewerName,
     rating,
     date,
