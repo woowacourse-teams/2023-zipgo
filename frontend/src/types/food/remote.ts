@@ -1,8 +1,6 @@
-import { Filters, Food, FoodDetail, KeywordsEn } from './client';
+import { Filters, Food, FoodDetail, KeywordEn, KeywordsEn } from './client';
 
-export interface GetFoodListReq {
-  keyword: string[];
-}
+export interface GetFoodListReq extends Record<KeywordEn, string | undefined> {}
 
 export interface GetFoodListRes {
   petFoods: Food[];

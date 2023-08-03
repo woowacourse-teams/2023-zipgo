@@ -41,7 +41,8 @@ export const useFoodListFilterMetaQuery = () => {
   });
 
   return {
-    ...data,
     ...restQuery,
+    keywords: data?.keywords,
+    filterList: data?.filters,
   };
 };
