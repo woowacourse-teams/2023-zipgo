@@ -31,14 +31,14 @@ public class PetFoodController {
 
     @GetMapping
     public ResponseEntity<GetPetFoodsResponse> getPetFoods(
-            @RequestParam(required = false) String brandsName,
-            @RequestParam(required = false) String nutrientStandards,
+            @RequestParam(required = false) String brands,
+            @RequestParam(required = false) String nutritionStandards,
             @RequestParam(required = false) String functionalities,
             @RequestParam(required = false) String mainIngredients
     ) throws UnsupportedEncodingException {
         List<PetFood> petFoods = petFoodQueryService.getPetFoods(
-                convertStringsToCollection(brandsName),
-                convertStringsToCollection(nutrientStandards),
+                convertStringsToCollection(brands),
+                convertStringsToCollection(nutritionStandards),
                 convertStringsToCollection(mainIngredients),
                 convertStringsToCollection(functionalities)
         );
