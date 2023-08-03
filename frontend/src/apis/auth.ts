@@ -3,7 +3,11 @@ import { LoginKakaoAuthRes, LoginZipgoAuthReq, LoginZipgoAuthRes } from '@/types
 import { client } from '.';
 
 export const loginZipgoAuth = async ({ code }: LoginZipgoAuthReq) => {
-  const { data } = await client.post<LoginZipgoAuthRes>('/login/zipgo', { code });
+  const { data } = await client.post<LoginZipgoAuthRes>('/auth/login', null, {
+    params: {
+      code,
+    },
+  });
 
   return data;
 };
