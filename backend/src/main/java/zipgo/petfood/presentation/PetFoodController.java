@@ -1,13 +1,20 @@
 package zipgo.petfood.presentation;
 
+import static java.net.URLDecoder.*;
+import static java.util.Collections.EMPTY_LIST;
+
+import io.jsonwebtoken.lang.Strings;
+import java.io.UnsupportedEncodingException;
+import java.net.URLDecoder;
+import java.net.URLEncoder;
+import java.util.Arrays;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import zipgo.brand.domain.Brand;
 import zipgo.petfood.application.PetFoodQueryService;
@@ -16,7 +23,6 @@ import zipgo.petfood.presentation.dto.FilterMetadataResponse;
 import zipgo.petfood.presentation.dto.FilterResponse;
 import zipgo.petfood.presentation.dto.GetPetFoodResponse;
 import zipgo.petfood.presentation.dto.GetPetFoodsResponse;
-import zipgo.petfood.presentation.dto.PetFoodSelectRequest;
 
 @RestController
 @RequiredArgsConstructor
@@ -25,14 +31,27 @@ public class PetFoodController {
 
     private final PetFoodQueryService petFoodQueryService;
 
-    @PostMapping
-    public ResponseEntity<GetPetFoodsResponse> getPetFoods(@RequestBody PetFoodSelectRequest request) {
-        List<PetFood> petFoods = petFoodQueryService.getPetFoodByDynamicValue(
-                request.keyword(),
-                request.brand(),
-                request.primaryIngredients()
+    @GetMapping
+    public ResponseEntity<GetPetFoodsResponse> getPetFoods(
+            @RequestParam String brandsName,
+            @RequestParam String nutrientStandards,
+            @RequestParam String functionalities,
+            @RequestParam String mainIngredients
+    ) throws UnsupportedEncodingException {
+        List<PetFood> petFoods = petFoodQueryService.getPetFoods(
+                convertStringsToCollection(decode(brandsName, "UTF-8")),
+                convertStringsToCollection(decode(nutrientStandards, "UTF-8")),
+                convertStringsToCollection(decode(mainIngredients, "UTF-8")),
+                convertStringsToCollection(decode(functionalities, "UTF-8"))
         );
         return ResponseEntity.ok(GetPetFoodsResponse.from(petFoods));
+    }
+
+    private List<String> convertStringsToCollection(String values) {
+        if (Strings.hasText(values)) {
+            return Arrays.asList(values.split(","));
+        }
+        return EMPTY_LIST;
     }
 
     @GetMapping("/{id}")
