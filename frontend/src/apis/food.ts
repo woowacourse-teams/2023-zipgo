@@ -4,7 +4,7 @@ import { GetFoodDetailReq } from '../types/food/remote';
 import { client } from '.';
 
 export const getFoodList = async ({ keyword }: GetFoodListReq) => {
-  const { data } = await client.post<GetFoodListRes>('/pet-foods', {
+  const { data } = await client.get<GetFoodListRes>('/pet-foods', {
     params: {
       keyword: Boolean(keyword.length) ? keyword.join(',') : undefined,
     },
