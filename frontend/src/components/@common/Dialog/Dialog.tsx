@@ -4,7 +4,7 @@ import { createPortal } from 'react-dom';
 import { styled } from 'styled-components';
 
 import DialogProvider, { useDialogContext } from '@/context/Dialog/DialogContext';
-import { getValidProps } from '@/utils/compound';
+import { getValidProps, PropsWithRenderProps } from '@/utils/compound';
 import { composeEventHandlers } from '@/utils/dom';
 
 export interface DialogProps {
@@ -111,11 +111,11 @@ const DefaultBackDrop = styled.div`
   ${({ theme }) => theme.componentStyle.backDrop}
 `;
 
-const Content = (props: PropsWithChildren<ContentProps>) => {
+const Content = (props: PropsWithRenderProps<ContentProps, { openHandler: VoidFunction }>) => {
   const { resolveChildren, ...restProps } = getValidProps(props);
-  const { isOpened } = useDialogContext();
+  const { isOpened, openHandler } = useDialogContext();
 
-  const resolved = resolveChildren({});
+  const resolved = resolveChildren({ openHandler });
 
   const contentA11y = {
     role: 'dialog',
