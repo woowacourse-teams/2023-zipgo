@@ -25,3 +25,4 @@ oauth:
   kakao:
     client-id: this1-is2-zipgo3-test4-client5-id7
     redirect-uri: test-redirect-uri
+    client-secret: my_secret

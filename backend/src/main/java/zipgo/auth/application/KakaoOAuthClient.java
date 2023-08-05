@@ -33,6 +33,9 @@ public class KakaoOAuthClient implements OAuthClient {
 
     @Value("${oauth.kakao.redirect-uri}")
     private String redirectUri;
+
+    @Value("${oauth.kakao.client-secret}")
+    private String clientSecret;
     private final RestTemplate restTemplate;
 
     @Override
@@ -57,6 +60,7 @@ public class KakaoOAuthClient implements OAuthClient {
         body.add("grant_type", GRANT_TYPE);
         body.add("client_id", clientId);
         body.add("redirect_uri", redirectUri);
+        body.add("client_secret", clientSecret);
         body.add("code", authCode);
         return new LinkedMultiValueMap<>(body);
     }

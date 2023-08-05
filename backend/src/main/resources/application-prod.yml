@@ -28,6 +28,7 @@ oauth:
   kakao:
     client-id: ${CLIENT_ID}
     redirect-uri: ${REDIRECT_URI}
+    client-secret: ${CLIENT_SECRET}
 
 ---
 # jwt
