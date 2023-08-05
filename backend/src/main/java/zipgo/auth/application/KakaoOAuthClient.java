@@ -66,9 +66,8 @@ public class KakaoOAuthClient implements OAuthClient {
     }
 
     private ResponseEntity<KakaoTokenResponse> getKakaoToken(HttpEntity<MultiValueMap<String, String>> request) {
-        ResponseEntity<KakaoTokenResponse> exchange;
         try {
-            exchange = restTemplate.exchange(
+            return restTemplate.exchange(
                     ACCESS_TOKEN_URI,
                     POST,
                     request,
@@ -77,7 +76,6 @@ public class KakaoOAuthClient implements OAuthClient {
         } catch (HttpClientErrorException e) {
             throw new AuthException.KakaoNotFound("카카오 토큰을 가져오는 중 에러가 발생했습니다.", e);
         }
-        return exchange;
     }
 
     @Override
@@ -96,9 +94,8 @@ public class KakaoOAuthClient implements OAuthClient {
     }
 
     private ResponseEntity<KakaoMemberResponse> getKakaoMember(HttpEntity<HttpHeaders> request) {
-        ResponseEntity<KakaoMemberResponse> response;
-        try {
-            response = restTemplate.exchange(
+            try {
+                return restTemplate.exchange(
                     USER_INFO_URI,
                     GET,
                     request,
@@ -107,7 +104,6 @@ public class KakaoOAuthClient implements OAuthClient {
         } catch (HttpClientErrorException e) {
             throw new AuthException.KakaoNotFound("카카오 사용자 정보를 가져오는 중 에러가 발생했습니다", e);
         }
-        return response;
     }
 
 }
