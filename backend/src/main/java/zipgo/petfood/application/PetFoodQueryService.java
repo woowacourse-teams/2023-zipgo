@@ -24,7 +24,8 @@ public class PetFoodQueryService {
             List<String> primaryIngredientList,
             List<String> functionalityList
     ) {
-        return petFoodQueryRepository.findPetFoods(brandsName, nutritionStandards, primaryIngredientList, functionalityList);
+        return petFoodQueryRepository.findPetFoods(brandsName, nutritionStandards, primaryIngredientList,
+                functionalityList);
     }
 
     public PetFood getPetFoodBy(Long id) {

@@ -38,7 +38,7 @@ class PetFoodQueryServiceUnitTest {
 //        // when
 //        FilterResponse metadataForFilter = petFoodQueryService.getMetadataForFilter();
 
-        // then
+    // then
 //        assertAll(
 //                () -> assertThat(metadataForFilter.brands().get(0).brandName()).isEqualTo(식품_브랜드_리스트.get(0).getName()),
 //                () -> assertThat(metadataForFilter.mainIngredients()).contains("닭고기", "쌀", "말미잘"),

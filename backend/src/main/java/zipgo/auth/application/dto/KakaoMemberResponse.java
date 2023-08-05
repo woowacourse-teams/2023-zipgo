@@ -24,8 +24,10 @@ public class KakaoMemberResponse implements OAuthMemberResponse {
     @AllArgsConstructor
     @JsonIgnoreProperties(ignoreUnknown = true)
     public static class KakaoAccount {
+
         private Profile profile;
         private String email;
+
     }
 
     @Getter
@@ -34,9 +36,11 @@ public class KakaoMemberResponse implements OAuthMemberResponse {
     @AllArgsConstructor
     @JsonIgnoreProperties(ignoreUnknown = true)
     public static class Profile {
+
         private String nickname;
         @JsonProperty("thumbnail_image_url")
         private String picture;
+
     }
 
     @Override

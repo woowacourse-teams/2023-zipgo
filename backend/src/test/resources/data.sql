@@ -1,7 +1,8 @@
 INSERT INTO brand(name, image_url, nation, founded_year, has_research_center, has_resident_vet)
 VALUES ('오리젠', 'https://intl.acana.com/wp-content/themes/acana2019/img/logo.png',
         '미국', 1985, true, true),
-       ('퓨리나', 'https://www.nestle.com/sites/default/files/styles/brand_logo/public/purina-logo-square-2023.png?h=a7e6d17b&itok=k6CCv7Sr',
+       ('퓨리나',
+        'https://www.nestle.com/sites/default/files/styles/brand_logo/public/purina-logo-square-2023.png?h=a7e6d17b&itok=k6CCv7Sr',
         '미국', 1985, true, true);
 
 
@@ -31,9 +32,10 @@ values ('닭고기', 1),
        ('닭고기', 3),
        ('말미잘', 4);
 
-insert into member(name, email, profile_img_url) values('무민', 'moomin@gmail.com', '민무사진');
-insert into member(name, email, profile_img_url) values('무민2', 'mooooomin22222@gmail.com', '민무사진2');
-
+insert into member(name, email, profile_img_url)
+values ('무민', 'moomin@gmail.com', '프로필사진1');
+insert into member(name, email, profile_img_url)
+values ('무민2', 'moomin2@gmail.com', '프로필사진2');
 
 insert into review(member_id, pet_food_id, rating, comment, taste_preference, stool_condition, created_at)
 values (1, 1, 5, '우리 아이랑 너무 잘 맞아요!', 'EATS_VERY_WELL', 'SOFT_MOIST', '2023-07-28');

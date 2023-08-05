@@ -60,7 +60,7 @@ class AuthControllerTest {
 
         // when
         var 요청 = mockMvc.perform(post("/auth/login")
-                .param("code", "인가_코드"))
+                        .param("code", "인가_코드"))
                 .andDo(소셜_로그인_문서_생성());
 
         // then

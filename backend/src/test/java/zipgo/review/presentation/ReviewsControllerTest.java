@@ -193,6 +193,7 @@ public class ReviewsControllerTest extends AcceptanceTest {
             return document("리뷰 생성 - 실패(없는 식품)", 문서_정보.responseSchema(에러_응답_형식),
                     requestHeaders(headerWithName("Authorization").description("인증을 위한 JWT")));
         }
+
     }
 
     @Nested
@@ -267,7 +268,6 @@ public class ReviewsControllerTest extends AcceptanceTest {
         }
 
     }
-
 
 
     @Nested

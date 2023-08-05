@@ -72,6 +72,7 @@ class KakaoOAuthClientTest {
             // then
             assertThat(oAuthMemberResponse).isNotNull();
         }
+
     }
 
     @Nested
