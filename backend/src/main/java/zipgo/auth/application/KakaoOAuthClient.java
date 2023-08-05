@@ -22,8 +22,8 @@ import static org.springframework.http.MediaType.APPLICATION_FORM_URLENCODED;
 @Component
 public class KakaoOAuthClient implements OAuthClient {
 
-    public static final String KAKAO_ACCESS_TOKEN_URI = "https://kauth.kakao.com/oauth/token";
-    public static final String KAKAO_USER_INFO_URI = "https://kapi.kakao.com/v2/user/me";
+    public static final String ACCESS_TOKEN_URI = "https://kauth.kakao.com/oauth/token";
+    public static final String USER_INFO_URI = "https://kapi.kakao.com/v2/user/me";
     public static final String GRANT_TYPE = "authorization_code";
 
     private final String clientId;
@@ -69,7 +69,7 @@ public class KakaoOAuthClient implements OAuthClient {
         ResponseEntity<KakaoTokenResponse> exchange;
         try {
             exchange = restTemplate.exchange(
-                    KAKAO_ACCESS_TOKEN_URI,
+                    ACCESS_TOKEN_URI,
                     POST,
                     request,
                     KakaoTokenResponse.class
@@ -99,7 +99,7 @@ public class KakaoOAuthClient implements OAuthClient {
         ResponseEntity<KakaoMemberResponse> response;
         try {
             response = restTemplate.exchange(
-                    KAKAO_USER_INFO_URI,
+                    USER_INFO_URI,
                     GET,
                     request,
                     KakaoMemberResponse.class

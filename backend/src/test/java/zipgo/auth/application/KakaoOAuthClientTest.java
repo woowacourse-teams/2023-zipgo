@@ -28,8 +28,8 @@ import static org.springframework.http.HttpMethod.GET;
 import static org.springframework.http.HttpMethod.POST;
 import static org.springframework.http.MediaType.APPLICATION_FORM_URLENCODED;
 import static zipgo.auth.application.KakaoOAuthClient.GRANT_TYPE;
-import static zipgo.auth.application.KakaoOAuthClient.KAKAO_ACCESS_TOKEN_URI;
-import static zipgo.auth.application.KakaoOAuthClient.KAKAO_USER_INFO_URI;
+import static zipgo.auth.application.KakaoOAuthClient.ACCESS_TOKEN_URI;
+import static zipgo.auth.application.KakaoOAuthClient.USER_INFO_URI;
 
 @ExtendWith(MockitoExtension.class)
 @SuppressWarnings("NonAsciiCharacters")
@@ -63,7 +63,7 @@ class KakaoOAuthClientTest {
             var 응답 = ResponseEntity.ok(
                     new KakaoTokenResponse("accessToken", null, null, null, null, null)
             );
-            when(restTemplate.exchange(KAKAO_ACCESS_TOKEN_URI, POST, 토큰_요청, KakaoTokenResponse.class))
+            when(restTemplate.exchange(ACCESS_TOKEN_URI, POST, 토큰_요청, KakaoTokenResponse.class))
                     .thenReturn(응답);
 
             // when
@@ -78,7 +78,7 @@ class KakaoOAuthClientTest {
             // given
             var 정보_요청 = 사용자_정보_요청_생성();
             var 응답 = ResponseEntity.ok(KakaoMemberResponse.builder().build());
-            when(restTemplate.exchange(KAKAO_USER_INFO_URI, GET, 정보_요청, KakaoMemberResponse.class))
+            when(restTemplate.exchange(USER_INFO_URI, GET, 정보_요청, KakaoMemberResponse.class))
                     .thenReturn(응답);
 
             // when
@@ -97,7 +97,7 @@ class KakaoOAuthClientTest {
             // given
             var 요청 = 토큰_요청_생성();
             when(restTemplate.exchange(
-                    KAKAO_ACCESS_TOKEN_URI,
+                    ACCESS_TOKEN_URI,
                     POST,
                     요청,
                     KakaoTokenResponse.class
@@ -114,7 +114,7 @@ class KakaoOAuthClientTest {
             // given
             var 요청 = 사용자_정보_요청_생성();
             when(restTemplate.exchange(
-                    KAKAO_USER_INFO_URI,
+                    USER_INFO_URI,
                     GET,
                     요청,
                     KakaoMemberResponse.class
