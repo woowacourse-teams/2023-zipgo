@@ -1,24 +1,17 @@
 package zipgo.auth.application;
 
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.Assertions.assertThatThrownBy;
-import static org.mockito.Mockito.when;
-import static org.springframework.http.HttpMethod.GET;
-import static org.springframework.http.HttpMethod.POST;
-import static zipgo.auth.application.KakaoOAuthClient.KAKAO_ACCESS_TOKEN_URI;
-import static zipgo.auth.application.KakaoOAuthClient.KAKAO_USER_INFO_URI;
-
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayNameGeneration;
 import org.junit.jupiter.api.DisplayNameGenerator;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
+import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.RestTemplate;
@@ -26,6 +19,17 @@ import zipgo.auth.application.dto.KakaoMemberResponse;
 import zipgo.auth.application.dto.KakaoTokenResponse;
 import zipgo.auth.application.dto.OAuthMemberResponse;
 import zipgo.auth.exception.AuthException;
+import zipgo.common.config.KakaoCredentials;
+
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
+import static org.mockito.Mockito.when;
+import static org.springframework.http.HttpMethod.GET;
+import static org.springframework.http.HttpMethod.POST;
+import static org.springframework.http.MediaType.APPLICATION_FORM_URLENCODED;
+import static zipgo.auth.application.KakaoOAuthClient.GRANT_TYPE;
+import static zipgo.auth.application.KakaoOAuthClient.KAKAO_ACCESS_TOKEN_URI;
+import static zipgo.auth.application.KakaoOAuthClient.KAKAO_USER_INFO_URI;
 
 @ExtendWith(MockitoExtension.class)
 @SuppressWarnings("NonAsciiCharacters")
@@ -35,8 +39,19 @@ class KakaoOAuthClientTest {
     @Mock
     private RestTemplate restTemplate;
 
-    @InjectMocks
-    private KakaoOAuthClient kakaoOAuthClient;
+    @Mock
+    private KakaoCredentials kakaoCredentials;
+
+    private OAuthClient kakaoOAuthClient;
+
+    @BeforeEach
+    void setUp() {
+        when(kakaoCredentials.getClientId()).thenReturn("clientId");
+        when(kakaoCredentials.getClientSecret()).thenReturn("clientSecret");
+        when(kakaoCredentials.getRedirectUri()).thenReturn("redirectUri");
+
+        kakaoOAuthClient = new KakaoOAuthClient(kakaoCredentials, restTemplate);
+    }
 
     @Nested
     class 카카오서버_성공_응답 {
@@ -114,8 +129,16 @@ class KakaoOAuthClientTest {
     }
 
     private HttpEntity<MultiValueMap<String, String>> 토큰_요청_생성() {
-        HttpHeaders header = kakaoOAuthClient.createRequestHeader();
-        MultiValueMap<String, String> body = kakaoOAuthClient.createRequestBodyWithAuthCode("authCode");
+        HttpHeaders header = new HttpHeaders();
+        header.setContentType(APPLICATION_FORM_URLENCODED);
+
+        MultiValueMap<String, String> body = new LinkedMultiValueMap<>();
+        body.add("grant_type", GRANT_TYPE);
+        body.add("client_id", "clientId");
+        body.add("redirect_uri", "redirectUri");
+        body.add("client_secret", "clientSecret");
+        body.add("code", "authCode");
+
         return new HttpEntity<>(body, header);
     }
 
