@@ -1,19 +1,20 @@
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 
-import { Food } from '@/types/food/client';
+import { Food, FoodDetail } from '@/types/food/client';
 
-interface FoodItemProps extends Pick<Food, 'name' | 'imageUrl' | 'purchaseUrl' | 'id'> {}
+interface FoodItemProps extends Food {}
 
 const FoodItem = (foodItemProps: FoodItemProps) => {
-  const { name, imageUrl, purchaseUrl, id } = foodItemProps;
+  const { foodName, brandName, imageUrl, id } = foodItemProps;
 
   return (
     <FoodItemWrapper to={`pet-food/${id}`}>
       <FoodImageWrapper>
         <FoodImage src={imageUrl} alt="Food image" />
       </FoodImageWrapper>
-      <FoodName>{name}</FoodName>
+      <BrandName>{brandName}</BrandName>
+      <FoodName>{foodName}</FoodName>
     </FoodItemWrapper>
   );
 };
@@ -63,11 +64,22 @@ const FoodImageWrapper = styled.div`
   border-radius: 14%;
 `;
 
+const BrandName = styled.span`
+  margin-top: 1.6rem;
+
+  font-size: 1.4rem;
+  font-weight: 600;
+  font-style: normal;
+  line-height: 17px;
+  color: ${({ theme }) => theme.color.grey400};
+  letter-spacing: -0.5px;
+`;
+
 const FoodName = styled.p`
   overflow: hidden;
   display: -webkit-box;
 
-  margin: 1.6rem 0;
+  margin: 1rem 0;
 
   font-family: Pretendard, sans-serif;
   font-size: 1.4rem;

@@ -69,7 +69,7 @@ const FoodDetail = () => {
         />
         {pageIndex === 0 && (
           <FoodDetailInfoWrapper>
-            <InfoBlock headText="기존 충족 여부">
+            <InfoBlock headText="기준 충족 여부">
               <NutritionStandard>
                 <NutritionStandardBlock state={State.us} satisfied={hasStandard.us} />
                 <NutritionStandardBlock state={State.eu} satisfied={hasStandard.eu} />

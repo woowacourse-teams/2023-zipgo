@@ -2,12 +2,9 @@ import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import styled, { css } from 'styled-components';
 
+import DogIcon from '@/assets/svg/dog_icon.svg';
 import StarRatingDisplay from '@/components/@common/StarRating/StarRatingDisplay/StartRatingDisplay';
-import {
-  COMMENT_VISIABLE_LINE_LIMIT,
-  PROFILE_DEFAULT_IMG_URL,
-  REACTIONS,
-} from '@/constants/review';
+import { COMMENT_VISIABLE_LINE_LIMIT, REACTIONS } from '@/constants/review';
 import { useValidParams } from '@/hooks/@common/useValidParams';
 import { useFoodDetailQuery } from '@/hooks/query/food';
 import { useRemoveReviewMutation } from '@/hooks/query/review';
@@ -16,9 +13,12 @@ import { Review } from '@/types/review/client';
 interface ReviewItemProps extends Review {}
 
 const ReviewItem = (reviewItemProps: ReviewItemProps) => {
+  const { name, profileImgUrl } = JSON.parse(
+    localStorage.getItem('userInfo') ?? JSON.stringify({ profileImageUrl: null, name: '노아이즈' }),
+  );
   const {
     id,
-    profileImageUrl = PROFILE_DEFAULT_IMG_URL,
+    profileImageUrl = DogIcon,
     reviewerName,
     rating,
     date,
@@ -38,7 +38,7 @@ const ReviewItem = (reviewItemProps: ReviewItemProps) => {
     navigate(`/pet-food/${petFoodId}/reviews/write`, {
       state: {
         petFoodId: foodData?.id,
-        name: foodData?.name,
+        name: foodData?.foodName,
         imageUrl: foodData?.imageUrl,
         isEditMode: true,
         userRating: rating,
@@ -61,12 +61,16 @@ const ReviewItem = (reviewItemProps: ReviewItemProps) => {
           <ReviewerName>{reviewerName}</ReviewerName>
         </ReviewImageAndNameContainer>
         <ButtonContainer>
-          <TextButton type="button" aria-label="리뷰 수정" onClick={onClickEditButton}>
-            수정
-          </TextButton>
-          <TextButton type="button" aria-label="리뷰 삭제" onClick={onClickRemoveButton}>
-            삭제
-          </TextButton>
+          {name === reviewerName && (
+            <>
+              <TextButton type="button" aria-label="리뷰 수정" onClick={onClickEditButton}>
+                수정
+              </TextButton>
+              <TextButton type="button" aria-label="리뷰 삭제" onClick={onClickRemoveButton}>
+                삭제
+              </TextButton>
+            </>
+          )}
         </ButtonContainer>
       </ReviewHeader>
       <RatingContainer>

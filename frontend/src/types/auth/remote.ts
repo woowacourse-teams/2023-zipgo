@@ -18,6 +18,10 @@ export interface LoginZipgoAuthReq {
 
 export interface LoginZipgoAuthRes {
   accessToken: string;
+  authResponse: {
+    name: string;
+    profileImgUrl: string;
+  };
 }
 
 export interface LoginKakaoAuthReq {

@@ -15,7 +15,7 @@ module.exports = {
       '/^border/': ['px', '%'],
       '/^padding|^gap|^margin|^font/': ['%', 'rem', 'em'],
     },
-    'unit-allowed-list': ['%', 'deg', 'px', 'rem', 'ms', 'vw', 'vh'],
+    'unit-allowed-list': ['%', 'deg', 'px', 'rem', 'ms', 'vw', 'vh', 's'],
 
     'order/order': [
       'custom-properties',
