@@ -3,6 +3,7 @@ package zipgo.petfood.application;
 import static java.util.Collections.EMPTY_LIST;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertAll;
+import static zipgo.brand.domain.fixture.BrandFixture.*;
 import static zipgo.petfood.domain.fixture.PetFoodFixture.키워드_없이_식품_초기화;
 import static zipgo.petfood.domain.fixture.PetFoodFixture.키워드_있는_식품_초기화;
 
@@ -217,7 +218,7 @@ class PetFoodQueryServiceTest {
     void 필터링에_필요한_식품_데이터를_조회한다() {
         // given
         Keyword keyword = keywordRepository.save(new Keyword(1L, "diet"));
-        Brand brand = brandRepository.save(BrandFixture.식품_브랜드_생성하기());
+        Brand brand = brandRepository.save(식품_브랜드_생성하기());
         petFoodRepository.save(키워드_있는_식품_초기화(keyword, brand));
 
         // when

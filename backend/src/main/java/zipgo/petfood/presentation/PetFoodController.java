@@ -60,7 +60,13 @@ public class PetFoodController {
 
     @GetMapping("/filters")
     public ResponseEntity<FilterMetadataResponse> getFilterMetadata() {
-//        FilterResponse filter = petFoodQueryService.getMetadataForFilter();
+        FilterResponse filter = petFoodQueryService.getMetadataForFilter();
+        FilterMetadataResponse response = FilterMetadataResponse.of(filter);
+        return ResponseEntity.ok().body(response);
+    }
+
+    @GetMapping("/filters/test")
+    public ResponseEntity<FilterMetadataResponse> getFilterMetadataTest() {
         FilterMetadataResponse metadata = buildMetadata();
         return ResponseEntity.ok().body(metadata);
     }
