@@ -1,7 +1,5 @@
 package zipgo.auth.application;
 
-import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
@@ -14,6 +12,7 @@ import zipgo.auth.application.dto.KakaoMemberResponse;
 import zipgo.auth.application.dto.KakaoTokenResponse;
 import zipgo.auth.application.dto.OAuthMemberResponse;
 import zipgo.auth.exception.AuthException;
+import zipgo.common.config.KakaoCredentials;
 
 import static java.util.Objects.requireNonNull;
 import static org.springframework.http.HttpMethod.GET;
@@ -21,22 +20,23 @@ import static org.springframework.http.HttpMethod.POST;
 import static org.springframework.http.MediaType.APPLICATION_FORM_URLENCODED;
 
 @Component
-@RequiredArgsConstructor
 public class KakaoOAuthClient implements OAuthClient {
 
     public static final String KAKAO_ACCESS_TOKEN_URI = "https://kauth.kakao.com/oauth/token";
     public static final String KAKAO_USER_INFO_URI = "https://kapi.kakao.com/v2/user/me";
     public static final String GRANT_TYPE = "authorization_code";
 
-    @Value("${oauth.kakao.client-id}")
-    private String clientId;
-
-    @Value("${oauth.kakao.redirect-uri}")
-    private String redirectUri;
-
-    @Value("${oauth.kakao.client-secret}")
-    private String clientSecret;
+    private final String clientId;
+    private final String redirectUri;
+    private final String clientSecret;
     private final RestTemplate restTemplate;
+
+    public KakaoOAuthClient(KakaoCredentials kakaoCredentials, RestTemplate restTemplate) {
+        this.clientId = kakaoCredentials.getClientId();
+        this.redirectUri = kakaoCredentials.getRedirectUri();
+        this.clientSecret = kakaoCredentials.getClientSecret();
+        this.restTemplate = restTemplate;
+    }
 
     @Override
     public String getAccessToken(String authCode) {
@@ -49,13 +49,13 @@ public class KakaoOAuthClient implements OAuthClient {
         return requireNonNull(requireNonNull(kakaoTokenResponse.getBody())).accessToken();
     }
 
-    HttpHeaders createRequestHeader() {
+    private HttpHeaders createRequestHeader() {
         HttpHeaders header = new HttpHeaders();
         header.setContentType(APPLICATION_FORM_URLENCODED);
         return new HttpHeaders(header);
     }
 
-    MultiValueMap<String, String> createRequestBodyWithAuthCode(String authCode) {
+    private MultiValueMap<String, String> createRequestBodyWithAuthCode(String authCode) {
         MultiValueMap<String, String> body = new LinkedMultiValueMap<>();
         body.add("grant_type", GRANT_TYPE);
         body.add("client_id", clientId);
@@ -74,7 +74,7 @@ public class KakaoOAuthClient implements OAuthClient {
                     request,
                     KakaoTokenResponse.class
             );
-        } catch (HttpClientErrorException | NullPointerException e) {
+        } catch (HttpClientErrorException e) {
             throw new AuthException.KakaoNotFound("카카오 토큰을 가져오는 중 에러가 발생했습니다.", e);
         }
         return exchange;
