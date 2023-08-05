@@ -1,6 +1,5 @@
 package zipgo.auth.application;
 
-import java.util.Objects;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpEntity;
@@ -16,6 +15,7 @@ import zipgo.auth.application.dto.KakaoTokenResponse;
 import zipgo.auth.application.dto.OAuthMemberResponse;
 import zipgo.auth.exception.AuthException;
 
+import static java.util.Objects.requireNonNull;
 import static org.springframework.http.HttpMethod.GET;
 import static org.springframework.http.HttpMethod.POST;
 import static org.springframework.http.MediaType.APPLICATION_FORM_URLENCODED;
@@ -43,7 +43,7 @@ public class KakaoOAuthClient implements OAuthClient {
 
         ResponseEntity<KakaoTokenResponse> kakaoTokenResponse = getKakaoToken(request);
 
-        return Objects.requireNonNull(kakaoTokenResponse.getBody()).accessToken();
+        return requireNonNull(requireNonNull(kakaoTokenResponse.getBody())).accessToken();
     }
 
     HttpHeaders createRequestHeader() {

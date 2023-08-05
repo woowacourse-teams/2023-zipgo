@@ -73,8 +73,6 @@ class AuthServiceTest {
     private void 카카오_토큰_받기_성공() {
         when(oAuthClient.getAccessToken("코드"))
                 .thenReturn("토큰");
-
-        카카오_응답();
         when(oAuthClient.getMember("토큰"))
                 .thenReturn(카카오_응답());
     }
