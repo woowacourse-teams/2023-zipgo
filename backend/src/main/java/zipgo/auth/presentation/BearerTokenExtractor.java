@@ -1,24 +1,22 @@
 package zipgo.auth.presentation;
 
-import static org.springframework.http.HttpHeaders.AUTHORIZATION;
-
 import jakarta.servlet.http.HttpServletRequest;
+import lombok.NoArgsConstructor;
 import zipgo.auth.exception.AuthException;
 
+import static lombok.AccessLevel.PRIVATE;
+import static org.springframework.http.HttpHeaders.AUTHORIZATION;
+
+@NoArgsConstructor(access = PRIVATE)
 public class BearerTokenExtractor {
 
     private static final String BEARER_TYPE = "Bearer ";
     private static final String BEARER_JWT_REGEX = "^Bearer [A-Za-z0-9-_=]+\\.[A-Za-z0-9-_=]+\\.?[A-Za-z0-9-_.+/=]*$";
 
-    private BearerTokenExtractor() {
-    }
-
     public static String extract(HttpServletRequest request) {
         String authorization = request.getHeader(AUTHORIZATION);
         validate(authorization);
-        String token = authorization.replace(BEARER_TYPE, "").trim();
-
-        return token;
+        return authorization.replace(BEARER_TYPE, "").trim();
     }
 
     private static void validate(String authorization) {
