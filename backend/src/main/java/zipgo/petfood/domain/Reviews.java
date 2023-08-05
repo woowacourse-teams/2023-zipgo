@@ -17,7 +17,7 @@ import lombok.NoArgsConstructor;
 @EqualsAndHashCode
 @NoArgsConstructor
 @AllArgsConstructor
-public class Review {
+public class Reviews {
 
     @Default
     @OneToMany(mappedBy = "petFood")

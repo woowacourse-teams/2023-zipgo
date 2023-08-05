@@ -31,7 +31,7 @@ import static zipgo.review.fixture.ReviewFixture.리뷰_생성_요청;
 import static zipgo.review.fixture.ReviewFixture.리뷰_수정_요청;
 
 
-public class ReviewControllerTest extends AcceptanceTest {
+public class ReviewsControllerTest extends AcceptanceTest {
 
     private Long petFoodId = 1L;
     private Long reviewId = 1L;

@@ -47,7 +47,7 @@ public class PetFood {
     private HasStandard hasStandard;
 
     @Embedded
-    private Review review;
+    private Reviews reviews;
 
     @ManyToOne(fetch = LAZY, optional = false)
     private Brand brand;
@@ -61,11 +61,11 @@ public class PetFood {
     private List<Functionality> functionalities = new ArrayList<>();
 
     public double calculateRatingAverage() {
-        return review.calculateRatingAverage();
+        return reviews.calculateRatingAverage();
     }
 
     public int countReviews() {
-        return review.countReviews();
+        return reviews.countReviews();
     }
 
     public void addPrimaryIngredient(PrimaryIngredient primaryIngredient) {

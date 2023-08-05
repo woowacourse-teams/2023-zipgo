@@ -36,7 +36,7 @@ import static zipgo.review.fixture.ReviewFixture.리뷰_생성_요청;
 import static zipgo.review.fixture.ReviewFixture.리뷰_수정_요청;
 import static zipgo.review.fixture.ReviewFixture.혹평_리뷰_생성;
 
-class ReviewServiceTest extends ServiceTest {
+class ReviewsServiceTest extends ServiceTest {
 
     @Autowired
     private PetFoodRepository petFoodRepository;
