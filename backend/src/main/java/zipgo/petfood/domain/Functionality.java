@@ -33,7 +33,7 @@ public class Functionality {
 
     public void changePetFood(PetFood petFood) {
         this.petFood = petFood;
-        this.petFood.getFunctionalities().add(this);
+        this.petFood.addFunctionality(this);
     }
 
 }

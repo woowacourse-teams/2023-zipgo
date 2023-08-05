@@ -33,7 +33,7 @@ public class PrimaryIngredient {
 
     public void changePetFood(PetFood petFood) {
         this.petFood = petFood;
-        petFood.getPrimaryIngredients().add(this);
+        this.petFood.addPrimaryIngredient(this);
     }
 
 }

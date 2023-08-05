@@ -68,4 +68,12 @@ public class PetFood {
         return review.countReviews();
     }
 
+    public void addPrimaryIngredient(PrimaryIngredient primaryIngredient) {
+        this.primaryIngredients.add(primaryIngredient);
+    }
+
+    public void addFunctionality(Functionality functionality) {
+        this.functionalities.add(functionality);
+    }
+
 }
