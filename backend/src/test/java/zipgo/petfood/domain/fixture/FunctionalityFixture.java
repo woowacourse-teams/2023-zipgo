@@ -2,9 +2,6 @@ package zipgo.petfood.domain.fixture;
 
 import zipgo.petfood.domain.Functionality;
 import zipgo.petfood.domain.PetFood;
-import zipgo.petfood.domain.PrimaryIngredient;
-
-import static zipgo.petfood.domain.Functionality.*;
 
 public class FunctionalityFixture {
 

@@ -15,7 +15,7 @@ spring:
     database-platform: org.hibernate.dialect.MySQL57Dialect
     generate-ddl: true
     hibernate:
-      ddl-auto: none
+      ddl-auto: create
     properties:
       hibernate:
         format_sql: true

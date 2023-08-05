@@ -3,7 +3,7 @@ package zipgo.petfood.domain.fixture;
 import zipgo.petfood.domain.PetFood;
 import zipgo.petfood.domain.PrimaryIngredient;
 
-import static zipgo.petfood.domain.PrimaryIngredient.*;
+import static zipgo.petfood.domain.PrimaryIngredient.builder;
 
 public class PrimaryIngredientFixture {
 

@@ -1,5 +1,6 @@
 package zipgo.common.config;
 
+import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.method.support.HandlerMethodArgumentResolver;
@@ -9,8 +10,6 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 import zipgo.auth.presentation.AuthInterceptor;
 import zipgo.auth.presentation.JwtArgumentResolver;
 import zipgo.auth.util.JwtProvider;
-
-import java.util.List;
 
 import static org.springframework.http.HttpHeaders.LOCATION;
 

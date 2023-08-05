@@ -1,12 +1,6 @@
 package zipgo.auth.application;
 
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.mockito.Mockito.when;
-import static zipgo.member.domain.fixture.MemberFixture.식별자_없는_멤버;
-import static zipgo.member.domain.fixture.MemberFixture.식별자_있는_멤버;
-
 import java.util.Optional;
-
 import org.junit.jupiter.api.DisplayNameGeneration;
 import org.junit.jupiter.api.DisplayNameGenerator;
 import org.junit.jupiter.api.Test;
@@ -17,6 +11,11 @@ import zipgo.auth.application.dto.KakaoMemberResponse;
 import zipgo.auth.util.JwtProvider;
 import zipgo.member.domain.Member;
 import zipgo.member.domain.repository.MemberRepository;
+
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.Mockito.when;
+import static zipgo.member.domain.fixture.MemberFixture.식별자_없는_멤버;
+import static zipgo.member.domain.fixture.MemberFixture.식별자_있는_멤버;
 
 @SpringBootTest
 @SuppressWarnings("NonAsciiCharacters")

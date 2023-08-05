@@ -1,9 +1,16 @@
 package zipgo.petfood.presentation;
 
 import io.jsonwebtoken.lang.Strings;
+import java.io.UnsupportedEncodingException;
+import java.util.Arrays;
+import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
 import zipgo.brand.domain.Brand;
 import zipgo.petfood.application.PetFoodQueryService;
 import zipgo.petfood.domain.PetFood;
@@ -11,10 +18,6 @@ import zipgo.petfood.presentation.dto.FilterMetadataResponse;
 import zipgo.petfood.presentation.dto.FilterResponse;
 import zipgo.petfood.presentation.dto.GetPetFoodResponse;
 import zipgo.petfood.presentation.dto.GetPetFoodsResponse;
-
-import java.io.UnsupportedEncodingException;
-import java.util.Arrays;
-import java.util.List;
 
 import static java.net.URLDecoder.decode;
 import static java.util.Collections.EMPTY_LIST;
@@ -33,7 +36,7 @@ public class PetFoodController {
             @RequestParam(required = false) String functionalities,
             @RequestParam(required = false) String mainIngredients
     ) throws UnsupportedEncodingException {
-        List<PetFood> petFoods = petFoodQueryService.getPetFoods(
+        List<PetFood> petFoods = petFoodQueryService.getPetFoodsByFilters(
                 convertStringsToCollection(brands),
                 convertStringsToCollection(nutritionStandards),
                 convertStringsToCollection(mainIngredients),
@@ -60,13 +63,7 @@ public class PetFoodController {
 
     @GetMapping("/filters")
     public ResponseEntity<FilterMetadataResponse> getFilterMetadata() {
-        FilterResponse filter = petFoodQueryService.getMetadataForFilter();
-        FilterMetadataResponse response = FilterMetadataResponse.of(filter);
-        return ResponseEntity.ok().body(response);
-    }
-
-    @GetMapping("/filters/test")
-    public ResponseEntity<FilterMetadataResponse> getFilterMetadataTest() {
+//        FilterResponse filter = petFoodQueryService.getMetadataForFilter();
         FilterMetadataResponse metadata = buildMetadata();
         return ResponseEntity.ok().body(metadata);
     }

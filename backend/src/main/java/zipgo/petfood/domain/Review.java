@@ -10,7 +10,6 @@ import lombok.Builder.Default;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import zipgo.review.domain.Review;
 
 @Getter
 @Builder
@@ -18,11 +17,11 @@ import zipgo.review.domain.Review;
 @EqualsAndHashCode
 @NoArgsConstructor
 @AllArgsConstructor
-public class Reviews {
+public class Review {
 
     @Default
     @OneToMany(mappedBy = "petFood")
-    private List<Review> reviews = new ArrayList<>();
+    private List<zipgo.review.domain.Review> reviews = new ArrayList<>();
 
     public double calculateRatingAverage() {
         double average = reviews.stream()

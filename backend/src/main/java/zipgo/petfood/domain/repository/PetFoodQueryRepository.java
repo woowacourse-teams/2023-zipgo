@@ -1,10 +1,5 @@
 package zipgo.petfood.domain.repository;
 
-import static org.springframework.util.StringUtils.hasText;
-import static zipgo.brand.domain.QBrand.brand;
-import static zipgo.petfood.domain.QKeyword.keyword;
-import static zipgo.petfood.domain.QPetFood.petFood;
-
 import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import java.util.List;
@@ -12,7 +7,11 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 import zipgo.petfood.domain.PetFood;
-import zipgo.petfood.domain.PrimaryIngredients;
+
+import static zipgo.brand.domain.QBrand.brand;
+import static zipgo.petfood.domain.QFunctionality.functionality;
+import static zipgo.petfood.domain.QPetFood.petFood;
+import static zipgo.petfood.domain.QPrimaryIngredient.primaryIngredient;
 
 @Repository
 @RequiredArgsConstructor
@@ -21,41 +20,46 @@ public class PetFoodQueryRepository {
 
     private final JPAQueryFactory queryFactory;
 
-    public List<PetFood> findPetFoods(String keywordName, String brandName, String primaryIngredients) {
+    public List<PetFood> findPetFoods(
+            List<String> brandsName,
+            List<String> nutritionStandards,
+            List<String> primaryIngredientList,
+            List<String> functionalityList
+    ) {
         return queryFactory
                 .selectFrom(petFood)
-                .join(petFood.keyword, keyword)
-                .fetchJoin()
                 .join(petFood.brand, brand)
                 .fetchJoin()
+                .join(petFood.primaryIngredients, primaryIngredient)
+                .fetchJoin()
+                .join(petFood.functionalities, functionality)
                 .where(
-                        equalsKeyword(keywordName),
-                        equalsBrand(brandName),
-                        equalsPrimaryIngredients(primaryIngredients)
+                        isContainBrand(brandsName),
+                        isContainPrimaryIngredients(primaryIngredientList),
+                        isContainFunctionalities(functionalityList)
                 )
                 .fetch();
     }
 
-    private BooleanExpression equalsKeyword(String keywordName) {
-        if (hasText(keywordName)) {
-            return keyword.name.eq(keywordName);
+    private BooleanExpression isContainBrand(List<String> brandsName) {
+        if (brandsName.isEmpty()) {
+            return null;
         }
-        return null;
+        return petFood.brand.name.in(brandsName);
     }
 
-    private BooleanExpression equalsBrand(String brandName) {
-        if (hasText(brandName)) {
-            return brand.name.eq(brandName);
+    private BooleanExpression isContainPrimaryIngredients(List<String> primaryIngredientList) {
+        if (primaryIngredientList.isEmpty()) {
+            return null;
         }
-        return null;
+        return petFood.primaryIngredients.any().name.in(primaryIngredientList);
     }
 
-    private BooleanExpression equalsPrimaryIngredients(String primaryIngredients) {
-        if (hasText(primaryIngredients)) {
-            PrimaryIngredients request = new PrimaryIngredients(List.of(primaryIngredients));
-            return petFood.primaryIngredients.in(request);
+    private BooleanExpression isContainFunctionalities(List<String> functionalityList) {
+        if (functionalityList.isEmpty()) {
+            return null;
         }
-        return null;
+        return petFood.functionalities.any().name.in(functionalityList);
     }
 
 }
