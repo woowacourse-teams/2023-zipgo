@@ -15,13 +15,11 @@ import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.RestTemplate;
-import zipgo.auth.application.OAuthClient;
-import zipgo.auth.infra.kakao.dto.KakaoMemberResponse;
-import zipgo.auth.infra.kakao.dto.KakaoTokenResponse;
 import zipgo.auth.application.dto.OAuthMemberResponse;
 import zipgo.auth.exception.AuthException;
-import zipgo.auth.infra.kakao.KakaoOAuthClient;
-import zipgo.common.config.KakaoCredentials;
+import zipgo.auth.infra.kakao.dto.KakaoMemberResponse;
+import zipgo.auth.infra.kakao.dto.KakaoTokenResponse;
+import zipgo.auth.infra.kakao.config.KakaoCredentials;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
@@ -29,8 +27,8 @@ import static org.mockito.Mockito.when;
 import static org.springframework.http.HttpMethod.GET;
 import static org.springframework.http.HttpMethod.POST;
 import static org.springframework.http.MediaType.APPLICATION_FORM_URLENCODED;
-import static zipgo.auth.infra.kakao.KakaoOAuthClient.GRANT_TYPE;
 import static zipgo.auth.infra.kakao.KakaoOAuthClient.ACCESS_TOKEN_URI;
+import static zipgo.auth.infra.kakao.KakaoOAuthClient.GRANT_TYPE;
 import static zipgo.auth.infra.kakao.KakaoOAuthClient.USER_INFO_URI;
 
 @ExtendWith(MockitoExtension.class)
@@ -41,17 +39,11 @@ class KakaoOAuthClientTest {
     @Mock
     private RestTemplate restTemplate;
 
-    @Mock
-    private KakaoCredentials kakaoCredentials;
-
-    private OAuthClient kakaoOAuthClient;
+    private KakaoOAuthClient kakaoOAuthClient;
 
     @BeforeEach
-    void setUp() {
-        when(kakaoCredentials.getClientId()).thenReturn("clientId");
-        when(kakaoCredentials.getClientSecret()).thenReturn("clientSecret");
-        when(kakaoCredentials.getRedirectUri()).thenReturn("redirectUri");
-
+    public void setUp() {
+        KakaoCredentials kakaoCredentials = new KakaoCredentials("clientId", "redirectUri", "clientSecret");
         kakaoOAuthClient = new KakaoOAuthClient(kakaoCredentials, restTemplate);
     }
 

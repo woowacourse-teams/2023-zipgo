@@ -1,5 +1,6 @@
 package zipgo.auth.infra.kakao;
 
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
@@ -13,7 +14,7 @@ import zipgo.auth.application.dto.OAuthMemberResponse;
 import zipgo.auth.exception.AuthException;
 import zipgo.auth.infra.kakao.dto.KakaoMemberResponse;
 import zipgo.auth.infra.kakao.dto.KakaoTokenResponse;
-import zipgo.common.config.KakaoCredentials;
+import zipgo.auth.infra.kakao.config.KakaoCredentials;
 
 import static java.util.Objects.requireNonNull;
 import static org.springframework.http.HttpMethod.GET;
@@ -21,23 +22,15 @@ import static org.springframework.http.HttpMethod.POST;
 import static org.springframework.http.MediaType.APPLICATION_FORM_URLENCODED;
 
 @Component
+@RequiredArgsConstructor
 public class KakaoOAuthClient implements OAuthClient {
 
     public static final String ACCESS_TOKEN_URI = "https://kauth.kakao.com/oauth/token";
     public static final String USER_INFO_URI = "https://kapi.kakao.com/v2/user/me";
     public static final String GRANT_TYPE = "authorization_code";
 
-    private final String clientId;
-    private final String redirectUri;
-    private final String clientSecret;
+    private final KakaoCredentials kakaoCredentials;
     private final RestTemplate restTemplate;
-
-    public KakaoOAuthClient(KakaoCredentials kakaoCredentials, RestTemplate restTemplate) {
-        this.clientId = kakaoCredentials.getClientId();
-        this.redirectUri = kakaoCredentials.getRedirectUri();
-        this.clientSecret = kakaoCredentials.getClientSecret();
-        this.restTemplate = restTemplate;
-    }
 
     @Override
     public String getAccessToken(String authCode) {
@@ -59,9 +52,9 @@ public class KakaoOAuthClient implements OAuthClient {
     private MultiValueMap<String, String> createRequestBodyWithAuthCode(String authCode) {
         MultiValueMap<String, String> body = new LinkedMultiValueMap<>();
         body.add("grant_type", GRANT_TYPE);
-        body.add("client_id", clientId);
-        body.add("redirect_uri", redirectUri);
-        body.add("client_secret", clientSecret);
+        body.add("client_id", kakaoCredentials.getClientId());
+        body.add("redirect_uri", kakaoCredentials.getRedirectUri());
+        body.add("client_secret", kakaoCredentials.getClientSecret());
         body.add("code", authCode);
         return new LinkedMultiValueMap<>(body);
     }
