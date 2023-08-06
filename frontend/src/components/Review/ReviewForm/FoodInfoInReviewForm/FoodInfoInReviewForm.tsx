@@ -2,23 +2,28 @@ import { styled } from 'styled-components';
 
 import StarRatingDisplay from '@/components/@common/StarRating/StarRatingDisplay/StartRatingDisplay';
 import { SATISFACTION_MESSAGES } from '@/constants/review';
+import { useFoodDetailQuery } from '@/hooks/query/food';
 
 interface FoodInfoInReviewFormProps {
-  name: string;
+  petFoodId: number;
   rating: number;
-  imageUrl: string;
 }
 
 const FoodInfoInReviewForm = (foodInfoInReviewFormProps: FoodInfoInReviewFormProps) => {
-  const { name, rating, imageUrl } = foodInfoInReviewFormProps;
+  const { petFoodId, rating } = foodInfoInReviewFormProps;
+  const { foodData } = useFoodDetailQuery({ petFoodId: String(petFoodId) });
+
+  if (!foodData) {
+    throw new Error('죄송합니다, 해당 식품 정보를 찾을 수 없습니다.');
+  }
 
   return (
     <FoodInfoInReviewContainer>
       <FoodImageWrapper>
-        <FoodImage src={imageUrl} alt={`${name}`} />
+        <FoodImage src={foodData.imageUrl} alt={`${foodData.name}`} />
       </FoodImageWrapper>
       <div>
-        <FoodName>{name}</FoodName>
+        <FoodName>{foodData.name}</FoodName>
         <StarRatingDisplay rating={rating} />
         <Caption>{SATISFACTION_MESSAGES[rating]}</Caption>
       </div>

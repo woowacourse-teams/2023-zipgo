@@ -3,7 +3,6 @@ import { styled } from 'styled-components';
 
 import WriteIcon from '@/assets/svg/write_btn.svg';
 import { useValidParams } from '@/hooks/@common/useValidParams';
-import { useFoodDetailQuery } from '@/hooks/query/food';
 import { useReviewListQuery } from '@/hooks/query/review';
 
 import ReviewItem from '../ReviewItem/ReviewItem';
@@ -12,7 +11,6 @@ const ReviewList = () => {
   const navigate = useNavigate();
   const { petFoodId } = useValidParams(['petFoodId']);
   const { reviewList } = useReviewListQuery({ petFoodId });
-  const { foodData } = useFoodDetailQuery({ petFoodId });
 
   const authData = localStorage.getItem('auth');
 
@@ -37,15 +35,7 @@ const ReviewList = () => {
         <ReviewAddButton
           type="button"
           aria-label="리뷰 작성"
-          onClick={() =>
-            navigate(`/pet-food/${petFoodId}/reviews/write`, {
-              state: {
-                petFoodId: foodData?.id,
-                name: foodData?.name,
-                imageUrl: foodData?.imageUrl,
-              },
-            })
-          }
+          onClick={() => navigate(`/pet-food/${petFoodId}/reviews/write`)}
         >
           <WriteIconImage src={WriteIcon} alt="" />
         </ReviewAddButton>
