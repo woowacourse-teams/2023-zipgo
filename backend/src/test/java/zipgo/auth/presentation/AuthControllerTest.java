@@ -16,7 +16,7 @@ import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.web.servlet.MockMvc;
 import zipgo.auth.application.AuthService;
 import zipgo.auth.exception.AuthException;
-import zipgo.auth.util.JwtProvider;
+import zipgo.auth.support.JwtProvider;
 import zipgo.member.application.MemberQueryService;
 
 import static com.epages.restdocs.apispec.RestAssuredRestDocumentationWrapper.resourceDetails;

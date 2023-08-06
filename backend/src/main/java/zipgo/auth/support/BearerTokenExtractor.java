@@ -1,4 +1,4 @@
-package zipgo.auth.presentation;
+package zipgo.auth.support;
 
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.NoArgsConstructor;

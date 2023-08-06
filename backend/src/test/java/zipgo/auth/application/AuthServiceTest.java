@@ -14,7 +14,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import zipgo.auth.application.dto.KakaoMemberResponse;
-import zipgo.auth.util.JwtProvider;
+import zipgo.auth.support.JwtProvider;
 import zipgo.member.domain.Member;
 import zipgo.member.domain.repository.MemberRepository;
 

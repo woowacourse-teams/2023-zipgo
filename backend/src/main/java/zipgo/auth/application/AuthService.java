@@ -4,7 +4,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import zipgo.auth.application.dto.OAuthMemberResponse;
-import zipgo.auth.util.JwtProvider;
+import zipgo.auth.support.JwtProvider;
 import zipgo.member.domain.Member;
 import zipgo.member.domain.repository.MemberRepository;
 

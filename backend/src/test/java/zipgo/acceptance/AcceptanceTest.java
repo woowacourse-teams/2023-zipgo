@@ -19,7 +19,7 @@ import org.springframework.restdocs.RestDocumentationContextProvider;
 import org.springframework.restdocs.RestDocumentationExtension;
 import org.springframework.test.context.jdbc.Sql;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
-import zipgo.auth.util.JwtProvider;
+import zipgo.auth.support.JwtProvider;
 
 @SuppressWarnings("NonAsciiCharacters")
 @Sql(scripts = {"classpath:truncate.sql", "classpath:data.sql"})

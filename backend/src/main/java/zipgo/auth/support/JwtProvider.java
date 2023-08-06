@@ -1,4 +1,4 @@
-package zipgo.auth.util;
+package zipgo.auth.support;
 
 
 import static io.jsonwebtoken.security.Keys.hmacShaKeyFor;
