@@ -5,6 +5,10 @@ import theme from '../src/styles/theme';
 import React from 'react';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { MemoryRouter } from 'react-router-dom';
+import { initialize, mswDecorator } from 'msw-storybook-addon';
+import handlers from '../src/mocks/handlers';
+
+initialize(); // msw-storybook-addon
 
 const queryClient = new QueryClient();
 
@@ -37,6 +41,9 @@ const customViewports = {
 const preview: Preview = {
   parameters: {
     actions: { argTypesRegex: '^[A-Z].*' },
+    msw: {
+      handlers: [...handlers],
+    },
     controls: {
       matchers: {
         color: /(background|color)$/i,
@@ -73,6 +80,7 @@ const preview: Preview = {
         </QueryClientProvider>
       </MemoryRouter>
     ),
+    mswDecorator, // msw-storybook-addon
   ],
 };
 

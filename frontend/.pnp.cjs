@@ -76,6 +76,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["husky", "npm:8.0.3"],\
             ["lint-staged", "npm:13.2.3"],\
             ["msw", "virtual:d9650954c7f1725ea712d2e40695de9ea5d1c0fa9b89379134c62909d440d91b03d6c37e2823804a3404472b90a5bec73c82193190dd3c4db4c9e9edd75db91e#npm:1.2.3"],\
+            ["msw-storybook-addon", "virtual:d9650954c7f1725ea712d2e40695de9ea5d1c0fa9b89379134c62909d440d91b03d6c37e2823804a3404472b90a5bec73c82193190dd3c4db4c9e9edd75db91e#npm:1.8.0"],\
             ["pinst", "npm:3.0.0"],\
             ["postcss", "npm:8.4.26"],\
             ["postcss-styled-syntax", "virtual:d9650954c7f1725ea712d2e40695de9ea5d1c0fa9b89379134c62909d440d91b03d6c37e2823804a3404472b90a5bec73c82193190dd3c4db4c9e9edd75db91e#npm:0.4.0"],\
@@ -14057,6 +14058,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["husky", "npm:8.0.3"],\
             ["lint-staged", "npm:13.2.3"],\
             ["msw", "virtual:d9650954c7f1725ea712d2e40695de9ea5d1c0fa9b89379134c62909d440d91b03d6c37e2823804a3404472b90a5bec73c82193190dd3c4db4c9e9edd75db91e#npm:1.2.3"],\
+            ["msw-storybook-addon", "virtual:d9650954c7f1725ea712d2e40695de9ea5d1c0fa9b89379134c62909d440d91b03d6c37e2823804a3404472b90a5bec73c82193190dd3c4db4c9e9edd75db91e#npm:1.8.0"],\
             ["pinst", "npm:3.0.0"],\
             ["postcss", "npm:8.4.26"],\
             ["postcss-styled-syntax", "virtual:d9650954c7f1725ea712d2e40695de9ea5d1c0fa9b89379134c62909d440d91b03d6c37e2823804a3404472b90a5bec73c82193190dd3c4db4c9e9edd75db91e#npm:0.4.0"],\
@@ -17018,6 +17020,29 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           "packagePeers": [\
             "@types/typescript",\
             "typescript"\
+          ],\
+          "linkType": "HARD"\
+        }]\
+      ]],\
+      ["msw-storybook-addon", [\
+        ["npm:1.8.0", {\
+          "packageLocation": "./.yarn/cache/msw-storybook-addon-npm-1.8.0-62c7737ede-14d7ab064f.zip/node_modules/msw-storybook-addon/",\
+          "packageDependencies": [\
+            ["msw-storybook-addon", "npm:1.8.0"]\
+          ],\
+          "linkType": "SOFT"\
+        }],\
+        ["virtual:d9650954c7f1725ea712d2e40695de9ea5d1c0fa9b89379134c62909d440d91b03d6c37e2823804a3404472b90a5bec73c82193190dd3c4db4c9e9edd75db91e#npm:1.8.0", {\
+          "packageLocation": "./.yarn/__virtual__/msw-storybook-addon-virtual-abec2b56ac/0/cache/msw-storybook-addon-npm-1.8.0-62c7737ede-14d7ab064f.zip/node_modules/msw-storybook-addon/",\
+          "packageDependencies": [\
+            ["msw-storybook-addon", "virtual:d9650954c7f1725ea712d2e40695de9ea5d1c0fa9b89379134c62909d440d91b03d6c37e2823804a3404472b90a5bec73c82193190dd3c4db4c9e9edd75db91e#npm:1.8.0"],\
+            ["@types/msw", null],\
+            ["is-node-process", "npm:1.2.0"],\
+            ["msw", "virtual:d9650954c7f1725ea712d2e40695de9ea5d1c0fa9b89379134c62909d440d91b03d6c37e2823804a3404472b90a5bec73c82193190dd3c4db4c9e9edd75db91e#npm:1.2.3"]\
+          ],\
+          "packagePeers": [\
+            "@types/msw",\
+            "msw"\
           ],\
           "linkType": "HARD"\
         }]\

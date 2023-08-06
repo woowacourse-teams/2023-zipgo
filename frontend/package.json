@@ -58,6 +58,7 @@
     "husky": ">=7",
     "lint-staged": ">=10",
     "msw": "^1.2.3",
+    "msw-storybook-addon": "^1.8.0",
     "pinst": ">=2",
     "postcss": "^8.4.26",
     "postcss-styled-syntax": "^0.4.0",
