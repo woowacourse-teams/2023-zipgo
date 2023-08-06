@@ -10,6 +10,7 @@ import { AdverseReaction, StoolCondition, TastePreference } from '@/types/review
 
 interface LocationState {
   state: {
+    selectedRating: number;
     reviewDetail: {
       reviewId: number;
       tastePreference: TastePreference;
@@ -22,9 +23,9 @@ interface LocationState {
 
 const ReviewAddition = () => {
   const navigate = useNavigate();
-  const { petFoodId, rating, isEditMode } = useValidParams(['petFoodId', 'rating', 'isEditMode']);
+  const { petFoodId, isEditMode } = useValidParams(['petFoodId', 'isEditMode']);
   const location = useLocation() as LocationState;
-  const { reviewDetail } = { ...location.state };
+  const { selectedRating, reviewDetail } = { ...location.state };
 
   const goBack = () => navigate(-1);
 
@@ -33,11 +34,11 @@ const ReviewAddition = () => {
       <PageHeader onClick={goBack} />
       <Container>
         <FoodInfoWrapper>
-          <FoodInfoInReviewForm petFoodId={Number(petFoodId)} rating={Number(rating)} />
+          <FoodInfoInReviewForm petFoodId={Number(petFoodId)} rating={selectedRating} />
         </FoodInfoWrapper>
         <ReviewForm
           petFoodId={Number(petFoodId)}
-          rating={Number(rating)}
+          rating={selectedRating}
           isEditMode={isEditMode === 'true'}
           reviewDetail={reviewDetail}
         />

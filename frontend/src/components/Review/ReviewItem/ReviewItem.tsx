@@ -36,7 +36,7 @@ const ReviewItem = (reviewItemProps: ReviewItemProps) => {
     navigate(`/pet-food/${petFoodId}/reviews/write`, {
       state: {
         isEditMode: true,
-        userRating: rating,
+        selectedRating: rating,
         reviewDetail: { reviewId: id, tastePreference, stoolCondition, adverseReactions, comment },
       },
     });

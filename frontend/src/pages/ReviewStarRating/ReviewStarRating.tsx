@@ -12,7 +12,7 @@ import { AdverseReaction, StoolCondition, TastePreference } from '@/types/review
 interface LocationState {
   state: {
     isEditMode: boolean;
-    userRating: number;
+    selectedRating: number;
     reviewDetail: {
       reviewId: number;
       tastePreference: TastePreference;
@@ -26,16 +26,16 @@ interface LocationState {
 const ReviewStarRating = () => {
   const navigate = useNavigate();
   const location = useLocation() as LocationState;
-  const { isEditMode = false, userRating = 0, reviewDetail } = { ...location.state };
+  const { isEditMode = false, selectedRating = 0, reviewDetail } = { ...location.state };
   const { petFoodId } = useValidParams(['petFoodId']);
   const { foodData } = useFoodDetailQuery({ petFoodId });
-  const [rating, setRating] = useState(userRating);
+  const [rating, setRating] = useState(selectedRating);
 
   const onMouseDownStar = (selectedRating: number) => setRating(selectedRating);
 
   const onClickStar = (selectedRating: number) => {
-    navigate(`/pet-food/${petFoodId}/reviews/write/${selectedRating}/detail/${isEditMode}`, {
-      state: { reviewDetail },
+    navigate(`/pet-food/${petFoodId}/reviews/write/detail/${isEditMode}`, {
+      state: { reviewDetail, selectedRating },
     });
   };
 
