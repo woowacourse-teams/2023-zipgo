@@ -1,10 +1,21 @@
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
-import { useNavigate } from 'react-router-dom';
 
-import { deleteReview, getReviews, postReview, putReview } from '@/apis/review';
+import { deleteReview, getReview, getReviews, postReview, putReview } from '@/apis/review';
 import { Parameter } from '@/types/common/utility';
 
-const QUERY_KEY = { reviewList: 'reviewList' };
+const QUERY_KEY = { reviewItem: 'reviewItem', reviewList: 'reviewList' };
+
+export const useReviewItemQuery = (payload: Parameter<typeof getReview>) => {
+  const { data, ...restQuery } = useQuery({
+    queryKey: [QUERY_KEY.reviewItem],
+    queryFn: () => getReview(payload),
+  });
+
+  return {
+    reviewItem: data,
+    ...restQuery,
+  };
+};
 
 export const useReviewListQuery = (payload: Parameter<typeof getReviews>) => {
   const { data, ...restQuery } = useQuery({

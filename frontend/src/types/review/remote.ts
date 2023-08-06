@@ -1,5 +1,11 @@
 import { AdverseReaction, Review, StoolCondition, TastePreference } from './client';
 
+interface GetReviewReq {
+  reviewId: number;
+}
+
+interface GetReviewRes extends Review {}
+
 interface GetReviewsReq {
   petFoodId: string;
 }
@@ -34,6 +40,8 @@ interface DeleteReviewRes {}
 export type {
   DeleteReviewReq,
   DeleteReviewRes,
+  GetReviewReq,
+  GetReviewRes,
   GetReviewsReq,
   GetReviewsRes,
   PostReviewReq,
