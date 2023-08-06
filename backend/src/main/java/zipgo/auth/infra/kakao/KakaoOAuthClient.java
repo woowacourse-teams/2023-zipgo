@@ -1,4 +1,4 @@
-package zipgo.auth.application;
+package zipgo.auth.infra.kakao;
 
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
@@ -8,10 +8,11 @@ import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.RestTemplate;
-import zipgo.auth.application.dto.KakaoMemberResponse;
-import zipgo.auth.application.dto.KakaoTokenResponse;
+import zipgo.auth.application.OAuthClient;
 import zipgo.auth.application.dto.OAuthMemberResponse;
 import zipgo.auth.exception.AuthException;
+import zipgo.auth.infra.kakao.dto.KakaoMemberResponse;
+import zipgo.auth.infra.kakao.dto.KakaoTokenResponse;
 import zipgo.common.config.KakaoCredentials;
 
 import static java.util.Objects.requireNonNull;

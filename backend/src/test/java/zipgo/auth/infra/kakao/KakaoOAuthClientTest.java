@@ -1,4 +1,4 @@
-package zipgo.auth.application;
+package zipgo.auth.infra.kakao;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayNameGeneration;
@@ -15,10 +15,12 @@ import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.RestTemplate;
-import zipgo.auth.application.dto.KakaoMemberResponse;
-import zipgo.auth.application.dto.KakaoTokenResponse;
+import zipgo.auth.application.OAuthClient;
+import zipgo.auth.infra.kakao.dto.KakaoMemberResponse;
+import zipgo.auth.infra.kakao.dto.KakaoTokenResponse;
 import zipgo.auth.application.dto.OAuthMemberResponse;
 import zipgo.auth.exception.AuthException;
+import zipgo.auth.infra.kakao.KakaoOAuthClient;
 import zipgo.common.config.KakaoCredentials;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -27,9 +29,9 @@ import static org.mockito.Mockito.when;
 import static org.springframework.http.HttpMethod.GET;
 import static org.springframework.http.HttpMethod.POST;
 import static org.springframework.http.MediaType.APPLICATION_FORM_URLENCODED;
-import static zipgo.auth.application.KakaoOAuthClient.GRANT_TYPE;
-import static zipgo.auth.application.KakaoOAuthClient.ACCESS_TOKEN_URI;
-import static zipgo.auth.application.KakaoOAuthClient.USER_INFO_URI;
+import static zipgo.auth.infra.kakao.KakaoOAuthClient.GRANT_TYPE;
+import static zipgo.auth.infra.kakao.KakaoOAuthClient.ACCESS_TOKEN_URI;
+import static zipgo.auth.infra.kakao.KakaoOAuthClient.USER_INFO_URI;
 
 @ExtendWith(MockitoExtension.class)
 @SuppressWarnings("NonAsciiCharacters")
