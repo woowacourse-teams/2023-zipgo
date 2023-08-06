@@ -7,26 +7,19 @@ import StarRatingInput from '@/components/@common/StarRating/StarRatingInput/Sta
 import Template from '@/components/@common/Template';
 import { useValidParams } from '@/hooks/@common/useValidParams';
 import { useFoodDetailQuery } from '@/hooks/query/food';
-import { AdverseReaction, StoolCondition, TastePreference } from '@/types/review/client';
 
 interface LocationState {
   state: {
-    isEditMode: boolean;
-    selectedRating: number;
-    reviewDetail: {
-      reviewId: number;
-      tastePreference: TastePreference;
-      stoolCondition: StoolCondition;
-      adverseReactions: AdverseReaction[];
-      comment: string;
-    };
+    selectedRating?: number;
+    isEditMode?: boolean;
+    reviewId?: number;
   };
 }
 
 const ReviewStarRating = () => {
   const navigate = useNavigate();
   const location = useLocation() as LocationState;
-  const { isEditMode = false, selectedRating = 0, reviewDetail } = { ...location.state };
+  const { selectedRating = 0, isEditMode = false, reviewId = -1 } = { ...location.state };
   const { petFoodId } = useValidParams(['petFoodId']);
   const { foodData } = useFoodDetailQuery({ petFoodId });
   const [rating, setRating] = useState(selectedRating);
@@ -34,8 +27,8 @@ const ReviewStarRating = () => {
   const onMouseDownStar = (selectedRating: number) => setRating(selectedRating);
 
   const onClickStar = (selectedRating: number) => {
-    navigate(`/pet-food/${petFoodId}/reviews/write/detail/${isEditMode}`, {
-      state: { reviewDetail, selectedRating },
+    navigate(`/pet-food/${petFoodId}/reviews/write/detail`, {
+      state: { selectedRating, isEditMode, reviewId },
     });
   };
 

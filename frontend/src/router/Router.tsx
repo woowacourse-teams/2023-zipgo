@@ -30,7 +30,7 @@ export const router = createBrowserRouter([
         element: <ReviewStarRating />,
       },
       {
-        path: '/pet-food/:petFoodId/reviews/write/detail/:isEditMode',
+        path: '/pet-food/:petFoodId/reviews/write/detail',
         element: <ReviewAddition />,
       },
     ],

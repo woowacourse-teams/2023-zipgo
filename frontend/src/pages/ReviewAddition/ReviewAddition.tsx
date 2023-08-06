@@ -6,26 +6,20 @@ import Template from '@/components/@common/Template';
 import FoodInfoInReviewForm from '@/components/Review/ReviewForm/FoodInfoInReviewForm/FoodInfoInReviewForm';
 import ReviewForm from '@/components/Review/ReviewForm/ReviewForm';
 import { useValidParams } from '@/hooks/@common/useValidParams';
-import { AdverseReaction, StoolCondition, TastePreference } from '@/types/review/client';
 
 interface LocationState {
   state: {
     selectedRating: number;
-    reviewDetail: {
-      reviewId: number;
-      tastePreference: TastePreference;
-      stoolCondition: StoolCondition;
-      adverseReactions: AdverseReaction[];
-      comment: string;
-    };
+    isEditMode: boolean;
+    reviewId: number;
   };
 }
 
 const ReviewAddition = () => {
   const navigate = useNavigate();
-  const { petFoodId, isEditMode } = useValidParams(['petFoodId', 'isEditMode']);
+  const { petFoodId } = useValidParams(['petFoodId']);
   const location = useLocation() as LocationState;
-  const { selectedRating, reviewDetail } = { ...location.state };
+  const { selectedRating, isEditMode, reviewId } = { ...location.state };
 
   const goBack = () => navigate(-1);
 
@@ -39,8 +33,8 @@ const ReviewAddition = () => {
         <ReviewForm
           petFoodId={Number(petFoodId)}
           rating={selectedRating}
-          isEditMode={isEditMode === 'true'}
-          reviewDetail={reviewDetail}
+          isEditMode={isEditMode}
+          reviewId={reviewId}
         />
       </Container>
     </Template.WithoutHeader>
