@@ -105,8 +105,8 @@ class KakaoOAuthClientTest {
 
             // expect
             assertThatThrownBy(() -> kakaoOAuthClient.getAccessToken("authCode"))
-                    .isInstanceOf(AuthException.KakaoNotFound.class)
-                    .hasMessageContaining("카카오 토큰을 가져오는 중 에러가 발생했습니다");
+                    .isInstanceOf(AuthException.ResourceNotFound.class)
+                    .hasMessageContaining("카카오 토큰을 가져오는 데 실패했습니다.");
         }
 
         @Test
@@ -122,8 +122,8 @@ class KakaoOAuthClientTest {
 
             // expect
             assertThatThrownBy(() -> kakaoOAuthClient.getMember("accessToken"))
-                    .isInstanceOf(AuthException.KakaoNotFound.class)
-                    .hasMessageContaining("카카오 사용자 정보를 가져오는 중 에러가 발생");
+                    .isInstanceOf(AuthException.ResourceNotFound.class)
+                    .hasMessageContaining("카카오 사용자 정보를 가져오는 데 실패했습니다");
         }
 
     }

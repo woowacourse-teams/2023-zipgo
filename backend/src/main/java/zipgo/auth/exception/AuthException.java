@@ -2,9 +2,9 @@ package zipgo.auth.exception;
 
 public class AuthException extends RuntimeException {
 
-    public static class KakaoNotFound extends AuthException {
+    public static class ResourceNotFound extends AuthException {
 
-        public KakaoNotFound(String message, Throwable cause) {
+        public ResourceNotFound(String message, Throwable cause) {
             super(message, cause);
         }
 

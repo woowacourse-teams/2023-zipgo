@@ -74,7 +74,7 @@ public class KakaoOAuthClient implements OAuthClient {
                     KakaoTokenResponse.class
             );
         } catch (HttpClientErrorException e) {
-            throw new AuthException.KakaoNotFound("카카오 토큰을 가져오는 중 에러가 발생했습니다.", e);
+            throw new AuthException.ResourceNotFound("카카오 토큰을 가져오는 데 실패했습니다.", e);
         }
     }
 
@@ -102,7 +102,7 @@ public class KakaoOAuthClient implements OAuthClient {
                     KakaoMemberResponse.class
             );
         } catch (HttpClientErrorException e) {
-            throw new AuthException.KakaoNotFound("카카오 사용자 정보를 가져오는 중 에러가 발생했습니다", e);
+            throw new AuthException.ResourceNotFound("카카오 사용자 정보를 가져오는 데 실패했습니다.", e);
         }
     }
 

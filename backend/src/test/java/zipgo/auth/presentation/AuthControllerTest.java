@@ -1,15 +1,5 @@
 package zipgo.auth.presentation;
 
-import static com.epages.restdocs.apispec.RestAssuredRestDocumentationWrapper.resourceDetails;
-import static org.mockito.Mockito.when;
-import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.post;
-import static org.springframework.restdocs.payload.PayloadDocumentation.fieldWithPath;
-import static org.springframework.restdocs.payload.PayloadDocumentation.responseFields;
-import static org.springframework.restdocs.request.RequestDocumentation.parameterWithName;
-import static org.springframework.restdocs.request.RequestDocumentation.queryParameters;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
-import static zipgo.member.domain.fixture.MemberFixture.식별자_있는_멤버;
-
 import com.epages.restdocs.apispec.MockMvcRestDocumentationWrapper;
 import com.epages.restdocs.apispec.Schema;
 import org.junit.jupiter.api.DisplayNameGeneration;
@@ -25,8 +15,19 @@ import org.springframework.restdocs.mockmvc.RestDocumentationResultHandler;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.web.servlet.MockMvc;
 import zipgo.auth.application.AuthService;
+import zipgo.auth.exception.AuthException;
 import zipgo.auth.util.JwtProvider;
 import zipgo.member.application.MemberQueryService;
+
+import static com.epages.restdocs.apispec.RestAssuredRestDocumentationWrapper.resourceDetails;
+import static org.mockito.Mockito.when;
+import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.post;
+import static org.springframework.restdocs.payload.PayloadDocumentation.fieldWithPath;
+import static org.springframework.restdocs.payload.PayloadDocumentation.responseFields;
+import static org.springframework.restdocs.request.RequestDocumentation.parameterWithName;
+import static org.springframework.restdocs.request.RequestDocumentation.queryParameters;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import static zipgo.member.domain.fixture.MemberFixture.식별자_있는_멤버;
 
 @AutoConfigureRestDocs
 @ExtendWith(SpringExtension.class)
@@ -65,6 +66,19 @@ class AuthControllerTest {
 
         // then
         요청.andExpect(status().isOk());
+    }
+
+    @Test
+    void 자원_서버의_토큰을_가져오는데_실패하면_예외가_발생한다() throws Exception {
+        when(authService.createToken("인가_코드"))
+                .thenThrow(AuthException.ResourceNotFound.class);
+
+        // when
+        var 요청 = mockMvc.perform(post("/auth/login")
+                        .param("code", "인가_코드"));
+
+        // then
+        요청.andExpect(status().isNotFound());
     }
 
     private RestDocumentationResultHandler 소셜_로그인_문서_생성() {
