@@ -2619,6 +2619,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@remix-run/router@npm:1.7.2":
+  version: 1.7.2
+  resolution: "@remix-run/router@npm:1.7.2"
+  checksum: ea43bb662f1f5c93965989b1667fb6e8a301cb69c44341ee92c81cb15ea685b494168e5905593b5777d59058f1455b4b58083d5b895f04382e49362e420d7af4
+  languageName: node
+  linkType: hard
+
 "@sinclair/typebox@npm:^0.27.8":
   version: 0.27.8
   resolution: "@sinclair/typebox@npm:0.27.8"
@@ -6275,6 +6282,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"compare-versions@npm:^6.0.0":
+  version: 6.0.0
+  resolution: "compare-versions@npm:6.0.0"
+  checksum: bf2fa355b2139cbdb0576f2f0328c112dd3c2eb808eff8b70b808b3ed05f8a40b8317c323ff4797a6a5a7ab32d508876749584c626ee5840dc0119361afffc4d
+  languageName: node
+  linkType: hard
+
 "compressible@npm:~2.0.16":
   version: 2.0.18
   resolution: "compressible@npm:2.0.18"
@@ -8326,9 +8340,11 @@ __metadata:
     react: ^18.2.0
     react-dom: ^18.2.0
     react-refresh: ^0.14.0
+    react-router: ^6.14.2
     react-router-dom: ^6.14.1
     serve: ^14.2.0
     storybook: ^7.0.24
+    storybook-addon-react-router-v6: ^2.0.2
     styled-components: ^6.0.4
     styled-normalize: ^8.0.7
     stylelint: ^15.10.1
@@ -12215,7 +12231,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"react-inspector@npm:^6.0.0":
+"react-inspector@npm:6.0.2, react-inspector@npm:^6.0.0":
   version: 6.0.2
   resolution: "react-inspector@npm:6.0.2"
   peerDependencies:
@@ -12287,6 +12303,17 @@ __metadata:
   peerDependencies:
     react: ">=16.8"
   checksum: 16f3d108e0f833bfee447192e3f40bd6731b8b11d42ca6925443ec8aeb157a889fe8ece67baf690f75f0d146d0a212656f9216fcc2df6fd3a2bd263108ed0abb
+  languageName: node
+  linkType: hard
+
+"react-router@npm:^6.14.2":
+  version: 6.14.2
+  resolution: "react-router@npm:6.14.2"
+  dependencies:
+    "@remix-run/router": 1.7.2
+  peerDependencies:
+    react: ">=16.8"
+  checksum: 7507bf5732b3a8ddbd901c2061216eebca73e194449bff58acc1445171e22bdda36b455b8af066e467748ebfb5875b3c0a565941c46af65c6f653a6ed0dc4fe4
   languageName: node
   linkType: hard
 
@@ -13390,6 +13417,33 @@ __metadata:
   version: 2.14.2
   resolution: "store2@npm:2.14.2"
   checksum: 6f270fc5bab99b63f45fcc7bd8b99c2714b4adf880f557ed7ffb5ed3987131251165bccde425a00928aaf044870aee79ddeef548576d093c68703ed2edec45d7
+  languageName: node
+  linkType: hard
+
+"storybook-addon-react-router-v6@npm:^2.0.2":
+  version: 2.0.2
+  resolution: "storybook-addon-react-router-v6@npm:2.0.2"
+  dependencies:
+    compare-versions: ^6.0.0
+    react-inspector: 6.0.2
+  peerDependencies:
+    "@storybook/blocks": ^7.0.0
+    "@storybook/channels": ^7.0.0
+    "@storybook/components": ^7.0.0
+    "@storybook/core-events": ^7.0.0
+    "@storybook/manager-api": ^7.0.0
+    "@storybook/preview-api": ^7.0.0
+    "@storybook/theming": ^7.0.0
+    react: ^16.8.0 || ^17.0.0 || ^18.0.0
+    react-dom: ^16.8.0 || ^17.0.0 || ^18.0.0
+    react-router: ^6.4.0
+    react-router-dom: ^6.4.0
+  peerDependenciesMeta:
+    react:
+      optional: true
+    react-dom:
+      optional: true
+  checksum: 6b0cd38c54be9a85441735a25d575eea2f73fa49ecc0d79bdc0b32c5bfecca05a3f8aea81319bc162e85b1df50cbeb560f4fd4318556842234750258027c0377
   languageName: node
   linkType: hard
 

@@ -4,8 +4,8 @@ import { ThemeProvider } from 'styled-components';
 import theme from '../src/styles/theme';
 import React from 'react';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
-import { MemoryRouter } from 'react-router-dom';
 import { initialize, mswDecorator } from 'msw-storybook-addon';
+import { withRouter } from 'storybook-addon-react-router-v6';
 import handlers from '../src/mocks/handlers';
 
 initialize(); // msw-storybook-addon
@@ -71,16 +71,15 @@ const preview: Preview = {
 
   decorators: [
     Story => (
-      <MemoryRouter initialEntries={['/']}>
-        <QueryClientProvider client={queryClient}>
-          <ThemeProvider theme={theme}>
-            <GlobalStyle />
-            <Story />
-          </ThemeProvider>
-        </QueryClientProvider>
-      </MemoryRouter>
+      <QueryClientProvider client={queryClient}>
+        <ThemeProvider theme={theme}>
+          <GlobalStyle />
+          <Story />
+        </ThemeProvider>
+      </QueryClientProvider>
     ),
     mswDecorator, // msw-storybook-addon
+    withRouter,
   ],
 };
 
