@@ -22,7 +22,7 @@ public class AuthService {
         OAuthMemberResponse oAuthMemberResponse = oAuthClient.getMember(accessToken);
 
         Member member = memberRepository.findByEmail(oAuthMemberResponse.getEmail())
-                .orElse(memberRepository.save(oAuthMemberResponse.toMember()));
+                .orElseGet(() -> memberRepository.save(oAuthMemberResponse.toMember()));
 
         return jwtProvider.create(String.valueOf(member.getId()));
     }
