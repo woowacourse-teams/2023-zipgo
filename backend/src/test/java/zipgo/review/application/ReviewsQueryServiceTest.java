@@ -71,7 +71,7 @@ class ReviewsQueryServiceTest extends QueryServiceTest {
     }
 
     private Brand 브랜드_조회하기() {
-        return brandRepository.save(BrandFixture.아카나());
+        return brandRepository.save(BrandFixture.아카나_식품_브랜드_생성());
     }
 
     @Test

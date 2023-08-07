@@ -17,9 +17,9 @@ import zipgo.petfood.domain.repository.PrimaryIngredientRepository;
 import static java.util.Collections.EMPTY_LIST;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertAll;
-import static zipgo.brand.domain.fixture.BrandFixture.아카나;
-import static zipgo.brand.domain.fixture.BrandFixture.오리젠;
-import static zipgo.brand.domain.fixture.BrandFixture.퓨리나;
+import static zipgo.brand.domain.fixture.BrandFixture.아카나_식품_브랜드_생성;
+import static zipgo.brand.domain.fixture.BrandFixture.오리젠_식품_브랜드_생성;
+import static zipgo.brand.domain.fixture.BrandFixture.퓨리나_식품_브랜드_생성;
 import static zipgo.petfood.domain.fixture.FunctionalityFixture.기능성_다이어트;
 import static zipgo.petfood.domain.fixture.FunctionalityFixture.기능성_짱짱;
 import static zipgo.petfood.domain.fixture.FunctionalityFixture.기능성_튼튼;
@@ -49,9 +49,9 @@ class PetFoodQueryServiceTest extends QueryServiceTest {
 
     @BeforeEach
     void setUp() {
-        Brand 아카나 = brandRepository.save(아카나());
-        Brand 오리젠 = brandRepository.save(오리젠());
-        Brand 퓨리나 = brandRepository.save(퓨리나());
+        Brand 아카나 = brandRepository.save(아카나_식품_브랜드_생성());
+        Brand 오리젠 = brandRepository.save(오리젠_식품_브랜드_생성());
+        Brand 퓨리나 = brandRepository.save(퓨리나_식품_브랜드_생성());
 
         PetFood 모든_영양기준_만족_식품 = petFoodRepository.save(모든_영양기준_만족_식품(아카나));
         PetFood 미국_영양기준_만족_식품 = petFoodRepository.save(미국_영양기준_만족_식품(오리젠));

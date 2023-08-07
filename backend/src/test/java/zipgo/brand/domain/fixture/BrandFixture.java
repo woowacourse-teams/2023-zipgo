@@ -4,7 +4,7 @@ import zipgo.brand.domain.Brand;
 
 public class BrandFixture {
 
-    public static Brand 오리젠() {
+    public static Brand 오리젠_식품_브랜드_생성() {
         return Brand.builder()
                 .name("오리젠")
                 .imageUrl(
@@ -16,7 +16,7 @@ public class BrandFixture {
                 .build();
     }
 
-    public static Brand 퓨리나() {
+    public static Brand 퓨리나_식품_브랜드_생성() {
         return Brand.builder()
                 .name("퓨리나")
                 .imageUrl(
@@ -28,7 +28,7 @@ public class BrandFixture {
                 .build();
     }
 
-    public static Brand 아카나() {
+    public static Brand 아카나_식품_브랜드_생성() {
         return Brand.builder()
                 .name("아카나")
                 .imageUrl("https://intl.acana.com/wp-content/themes/acana2019/img/logo.png")
@@ -39,7 +39,7 @@ public class BrandFixture {
                 .build();
     }
 
-    public static Brand 인스팅트() {
+    public static Brand 인스팅트_식품_브랜드_생성() {
         return Brand.builder()
                 .name("인스팅트")
                 .imageUrl("https://instinctpetfood.com/wp-content/uploads/2021/08/instinct-logo.jpg")

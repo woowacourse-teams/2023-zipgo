@@ -23,7 +23,7 @@ import zipgo.review.exception.TastePreferenceException;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.junit.jupiter.api.Assertions.assertAll;
-import static zipgo.brand.domain.fixture.BrandFixture.아카나;
+import static zipgo.brand.domain.fixture.BrandFixture.아카나_식품_브랜드_생성;
 import static zipgo.petfood.domain.fixture.PetFoodFixture.모든_영양기준_만족_식품;
 import static zipgo.review.domain.type.StoolCondition.SOFT_MOIST;
 import static zipgo.review.domain.type.StoolCondition.UNCERTAIN;
@@ -80,7 +80,7 @@ class ReviewsServiceTest extends ServiceTest {
     }
 
     private Brand 브랜드_조회하기() {
-        return brandRepository.save(아카나());
+        return brandRepository.save(아카나_식품_브랜드_생성());
     }
 
     @Test
