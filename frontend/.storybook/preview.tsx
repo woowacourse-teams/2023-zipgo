@@ -2,7 +2,7 @@ import type { Preview } from '@storybook/react';
 import GlobalStyle from '../src/components/@common/GlobalStyle';
 import { ThemeProvider } from 'styled-components';
 import theme from '../src/styles/theme';
-import React from 'react';
+import React, { Suspense } from 'react';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { initialize, mswDecorator } from 'msw-storybook-addon';
 import { withRouter } from 'storybook-addon-react-router-v6';
@@ -10,7 +10,18 @@ import handlers from '../src/mocks/handlers';
 
 initialize(); // msw-storybook-addon
 
-const queryClient = new QueryClient();
+const queryClient = new QueryClient({
+  defaultOptions: {
+    queries: {
+      suspense: true,
+      retry: false,
+      useErrorBoundary: true,
+    },
+    mutations: {
+      useErrorBoundary: true,
+    },
+  },
+});
 
 const customViewports = {
   defaultDevice: {
@@ -74,7 +85,9 @@ const preview: Preview = {
       <QueryClientProvider client={queryClient}>
         <ThemeProvider theme={theme}>
           <GlobalStyle />
-          <Story />
+          <Suspense fallback={<div>Loading...</div>}>
+            <Story />
+          </Suspense>
         </ThemeProvider>
       </QueryClientProvider>
     ),
