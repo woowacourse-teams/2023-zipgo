@@ -1,8 +1,5 @@
 package zipgo.petfood.domain;
 
-import static java.util.Collections.emptyList;
-import static org.assertj.core.api.Assertions.assertThat;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Stream;
@@ -13,6 +10,9 @@ import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
 import org.junit.jupiter.params.provider.ValueSource;
 import zipgo.review.domain.Review;
+
+import static java.util.Collections.emptyList;
+import static org.assertj.core.api.Assertions.assertThat;
 
 @SuppressWarnings("NonAsciiCharacters")
 @DisplayNameGeneration(DisplayNameGenerator.ReplaceUnderscores.class)
@@ -44,8 +44,9 @@ class ReviewsTest {
                 Arguments.of(emptyList(), 0),
                 Arguments.of(List.of(1, 2, 3, 4, 5), 3.0),
                 Arguments.of(List.of(2, 3, 3, 5, 5), 3.6),
-                Arguments.of(List.of(1, 2, 4), (double) 7 / 3),
-                Arguments.of(List.of(4, 4, 4, 5, 5), 4.4)
+                Arguments.of(List.of(1, 2, 4), 2.3),
+                Arguments.of(List.of(4, 4, 4, 5, 5), 4.4),
+                Arguments.of(List.of(1, 2, 5), 2.7)
         );
     }
 

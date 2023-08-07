@@ -25,10 +25,11 @@ public class Reviews {
     private List<Review> reviews = new ArrayList<>();
 
     public double calculateRatingAverage() {
-        return reviews.stream()
+        double average = reviews.stream()
                 .mapToInt(review -> review.getRating())
                 .average()
                 .orElse(0);
+        return Math.round(average * 10) / 10.0;
     }
 
     public int countReviews() {
