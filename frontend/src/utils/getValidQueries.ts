@@ -4,7 +4,7 @@ export const getValidQueries = <T extends string>(search: string, queryKeys: Rea
   search
     .replace(/^\?/, '')
     .split('&')
-    .reduce<Record<T, string | undefined>>((queries, keyValue, _, search) => {
+    .reduce<Partial<Record<T, string>>>((queries, keyValue, _, search) => {
       const [key, value] = keyValue.split('=');
       const includes = getArrayMutationMethod(queryKeys, 'includes');
 
