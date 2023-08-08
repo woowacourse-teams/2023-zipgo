@@ -43,7 +43,7 @@ export const routerPath = {
 export const generateQueryString = (keyValue: QueryStringProperty) =>
   Object.entries(keyValue)
     .reduce((queryString, [key, value]) => {
-      const queryValue = Array.isArray(value) ? value.join() : JSON.stringify(value);
+      const queryValue = Array.isArray(value) ? value.join() : value;
 
       if (queryValue) {
         return `${queryString}${key}=${queryValue}&`;
