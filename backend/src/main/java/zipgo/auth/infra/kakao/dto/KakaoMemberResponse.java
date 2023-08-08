@@ -28,6 +28,7 @@ public class KakaoMemberResponse implements OAuthMemberResponse {
 
         private Profile profile;
         private String email;
+
     }
 
     @Getter
@@ -68,4 +69,3 @@ public class KakaoMemberResponse implements OAuthMemberResponse {
     }
 
 }
-
