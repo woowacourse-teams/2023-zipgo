@@ -1,6 +1,6 @@
 import { Filters, Food, FoodDetail, KeywordEn, KeywordsEn } from './client';
 
-export interface GetFoodListReq extends Record<KeywordEn, string | undefined> {}
+export interface GetFoodListReq extends Partial<Record<KeywordEn, string>> {}
 
 export interface GetFoodListRes {
   petFoods: Food[];
