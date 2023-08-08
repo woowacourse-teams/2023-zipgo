@@ -29,6 +29,10 @@ public class Reviews {
                 .mapToInt(review -> review.getRating())
                 .average()
                 .orElse(0);
+        return roundToOneDecimal(average);
+    }
+
+    private double roundToOneDecimal(double average) {
         return Math.round(average * 10) / 10.0;
     }
 

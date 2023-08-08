@@ -31,7 +31,7 @@ class ReviewsTest {
         assertThat(계산_결과).isEqualTo(예상_결과);
     }
 
-    private Reviews 별점으로_리뷰만들기(final List<Integer> 별점_리스트) {
+    private Reviews 별점으로_리뷰만들기(List<Integer> 별점_리스트) {
         List<Review> 리뷰 = 별점_리스트.stream()
                 .map(별점 -> Review.builder().rating(별점).build())
                 .toList();
