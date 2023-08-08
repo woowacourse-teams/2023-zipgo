@@ -27,14 +27,15 @@ import static org.mockito.Mockito.when;
 import static org.springframework.http.HttpMethod.GET;
 import static org.springframework.http.HttpMethod.POST;
 import static org.springframework.http.MediaType.APPLICATION_FORM_URLENCODED;
-import static zipgo.auth.infra.kakao.KakaoOAuthClient.ACCESS_TOKEN_URI;
-import static zipgo.auth.infra.kakao.KakaoOAuthClient.GRANT_TYPE;
-import static zipgo.auth.infra.kakao.KakaoOAuthClient.USER_INFO_URI;
 
 @ExtendWith(MockitoExtension.class)
 @SuppressWarnings("NonAsciiCharacters")
 @DisplayNameGeneration(DisplayNameGenerator.ReplaceUnderscores.class)
 class KakaoOAuthClientTest {
+
+    private static final String ACCESS_TOKEN_URI = "https://kauth.kakao.com/oauth/token";
+    private static final String USER_INFO_URI = "https://kapi.kakao.com/v2/user/me";
+    private static final String GRANT_TYPE = "authorization_code";
 
     @Mock
     private RestTemplate restTemplate;
@@ -87,7 +88,7 @@ class KakaoOAuthClientTest {
     class 카카오서버_실패_응답 {
 
         @Test
-        void 토큰_요청시_실패응답을_받으면_예외가_발생한다() {
+        void 토큰_요청시_실패_응답을_받으면_예외가_발생한다() {
             // given
             var 요청 = 토큰_요청_생성();
             when(restTemplate.exchange(
@@ -104,7 +105,7 @@ class KakaoOAuthClientTest {
         }
 
         @Test
-        void 사용자_정보_요청시_실패응답을_받으면_예외가_발생한다() {
+        void 사용자_정보_요청시_실패_응답을_받으면_예외가_발생한다() {
             // given
             var 요청 = 사용자_정보_요청_생성();
             when(restTemplate.exchange(
