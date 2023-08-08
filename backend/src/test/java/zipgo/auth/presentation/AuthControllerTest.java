@@ -61,7 +61,7 @@ class AuthControllerTest {
 
         // when
         var 요청 = mockMvc.perform(post("/auth/login")
-                .param("code", "인가_코드"))
+                        .param("code", "인가_코드"))
                 .andDo(소셜_로그인_문서_생성());
 
         // then
@@ -70,12 +70,13 @@ class AuthControllerTest {
 
     @Test
     void 자원_서버의_토큰을_가져오는데_실패하면_예외가_발생한다() throws Exception {
+        // given
         when(authService.createToken("인가_코드"))
                 .thenThrow(AuthException.ResourceNotFound.class);
 
         // when
         var 요청 = mockMvc.perform(post("/auth/login")
-                        .param("code", "인가_코드"));
+                .param("code", "인가_코드"));
 
         // then
         요청.andExpect(status().isNotFound());
