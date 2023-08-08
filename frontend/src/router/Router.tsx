@@ -7,9 +7,11 @@ import Login from '@/pages/Login/Login';
 import ReviewAddition from '@/pages/ReviewAddition/ReviewAddition';
 import ReviewStarRating from '@/pages/ReviewStarRating/ReviewStarRating';
 
+import { PATH } from './routes';
+
 export const router = createBrowserRouter([
   {
-    path: '/',
+    path: PATH.HOME,
     element: <App />,
     errorElement: <div>error</div>,
     children: [
@@ -18,19 +20,19 @@ export const router = createBrowserRouter([
         element: <Landing />,
       },
       {
-        path: 'login',
+        path: PATH.LOGIN,
         element: <Login />,
       },
       {
-        path: '/pet-food/:petFoodId',
+        path: PATH.FOOD_DETAIL,
         element: <FoodDetail />,
       },
       {
-        path: '/pet-food/:petFoodId/reviews/write',
+        path: PATH.REVIEW_STAR_RATING,
         element: <ReviewStarRating />,
       },
       {
-        path: '/pet-food/:petFoodId/reviews/write/:rating/detail/:isEditMode',
+        path: PATH.REVIEW_ADDITION,
         element: <ReviewAddition />,
       },
     ],
