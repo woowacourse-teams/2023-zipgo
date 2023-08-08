@@ -6,7 +6,7 @@ export const useFoodListFilter = (initialSelectedFilterList: Record<KeywordEn, S
   const [selectedFilterList, setSelectedFilterList] = useState(initialSelectedFilterList);
 
   const toggleFilter = (keyword: KeywordEn, filter: string) => {
-    const targetFilterList = selectedFilterList[keyword];
+    const targetFilterList = structuredClone(selectedFilterList)[keyword];
     const selected = targetFilterList.has(filter);
 
     selected ? targetFilterList.delete(filter) : targetFilterList.add(filter);
