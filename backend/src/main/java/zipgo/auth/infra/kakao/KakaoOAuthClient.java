@@ -12,9 +12,9 @@ import org.springframework.web.client.RestTemplate;
 import zipgo.auth.application.OAuthClient;
 import zipgo.auth.application.dto.OAuthMemberResponse;
 import zipgo.auth.exception.AuthException;
+import zipgo.auth.infra.kakao.config.KakaoCredentials;
 import zipgo.auth.infra.kakao.dto.KakaoMemberResponse;
 import zipgo.auth.infra.kakao.dto.KakaoTokenResponse;
-import zipgo.auth.infra.kakao.config.KakaoCredentials;
 
 import static java.util.Objects.requireNonNull;
 import static org.springframework.http.HttpMethod.GET;
@@ -46,7 +46,7 @@ public class KakaoOAuthClient implements OAuthClient {
     private HttpHeaders createRequestHeader() {
         HttpHeaders header = new HttpHeaders();
         header.setContentType(APPLICATION_FORM_URLENCODED);
-        return new HttpHeaders(header);
+        return header;
     }
 
     private MultiValueMap<String, String> createRequestBodyWithAuthCode(String authCode) {
@@ -56,7 +56,7 @@ public class KakaoOAuthClient implements OAuthClient {
         body.add("redirect_uri", kakaoCredentials.getRedirectUri());
         body.add("client_secret", kakaoCredentials.getClientSecret());
         body.add("code", authCode);
-        return new LinkedMultiValueMap<>(body);
+        return body;
     }
 
     private ResponseEntity<KakaoTokenResponse> getKakaoToken(HttpEntity<MultiValueMap<String, String>> request) {

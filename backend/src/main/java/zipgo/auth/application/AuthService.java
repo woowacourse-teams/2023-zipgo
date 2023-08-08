@@ -2,6 +2,7 @@ package zipgo.auth.application;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import zipgo.auth.application.dto.OAuthMemberResponse;
 import zipgo.auth.support.JwtProvider;
 import zipgo.member.domain.Member;
@@ -15,6 +16,7 @@ public class AuthService {
     private final JwtProvider jwtProvider;
     private final MemberRepository memberRepository;
 
+    @Transactional
     public String createToken(String authCode) {
         String accessToken = oAuthClient.getAccessToken(authCode);
         OAuthMemberResponse oAuthMemberResponse = oAuthClient.getMember(accessToken);
