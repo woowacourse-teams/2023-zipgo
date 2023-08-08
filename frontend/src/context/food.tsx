@@ -8,7 +8,7 @@ import { getValidProps, PropsWithRenderProps } from '@/utils/compound';
 
 export type SelectedFilterList = Record<KeywordEn, Set<string>>;
 
-const initialSelectedFilterList: SelectedFilterList = {
+export const initialSelectedFilterList: SelectedFilterList = {
   nutritionStandards: new Set(),
   mainIngredients: new Set(),
   brands: new Set(),
@@ -17,10 +17,12 @@ const initialSelectedFilterList: SelectedFilterList = {
 
 const FoodFilterContext = createContext<{
   selectedFilterList: SelectedFilterList;
+  parsedSelectedFilterList: Partial<Record<keyof SelectedFilterList, string[]>>;
   toggleFilter(keyword: KeywordEn, filter: string): void;
   resetSelectedFilterList: VoidFunction;
 }>({
   selectedFilterList: initialSelectedFilterList,
+  parsedSelectedFilterList: {},
   toggleFilter: () => {},
   resetSelectedFilterList: () => {},
 });
@@ -32,14 +34,19 @@ export const FoodFilterProvider = (
 ) => {
   const { resolveChildren } = getValidProps(props);
 
-  const { selectedFilterList, toggleFilter, resetSelectedFilterList } =
-    useFoodListFilter(initialSelectedFilterList);
+  const { selectedFilterList, parsedSelectedFilterList, toggleFilter, resetSelectedFilterList } =
+    useFoodListFilter();
 
   const { children } = resolveChildren({ selectedFilterList });
 
   const filterContextValue = useMemo(
-    () => ({ selectedFilterList, toggleFilter, resetSelectedFilterList }),
-    [selectedFilterList, toggleFilter, resetSelectedFilterList],
+    () => ({
+      selectedFilterList,
+      parsedSelectedFilterList,
+      toggleFilter,
+      resetSelectedFilterList,
+    }),
+    [selectedFilterList],
   );
 
   return (
