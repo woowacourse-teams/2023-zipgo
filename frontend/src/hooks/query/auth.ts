@@ -5,6 +5,7 @@ import { useNavigate } from 'react-router-dom';
 
 import { client } from '@/apis';
 import { loginKakaoAuth, loginZipgoAuth, logoutKaKaoAuth } from '@/apis/auth';
+import { routerPath } from '@/router/routes';
 
 const QUERY_KEY = { kakaoAuth: 'kakaoAuth' };
 
@@ -28,8 +29,8 @@ export const useAuthMutation = () => {
 
   const { mutate: loginZipgo, ...loginRestMutation } = useMutation({
     mutationFn: loginZipgoAuth,
-    onSuccess() {
-      navigate('/');
+    onSuccess({ accessToken, authResponse }) {
+      navigate(routerPath.home());
     },
   });
 

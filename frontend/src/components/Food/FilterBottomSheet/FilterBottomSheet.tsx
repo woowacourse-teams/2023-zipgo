@@ -1,3 +1,4 @@
+import { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import styled, { css } from 'styled-components';
 
@@ -7,6 +8,7 @@ import QueryBoundary from '@/components/@common/QueryBoundary';
 import Tabs from '@/components/@common/Tabs/Tabs';
 import { FoodFilterProvider, useFoodFilterContext } from '@/context/food';
 import { useFoodListFilterMetaQuery } from '@/hooks/query/food';
+import { generateQueryString, routerPath } from '@/router/routes';
 import type { KeywordEn } from '@/types/food/client';
 import { translateKeyword } from '@/utils/food';
 import { getComputedStyleOfSC } from '@/utils/styled-components';
@@ -46,24 +48,22 @@ const KeywordContent = (props: KeywordContentProps) => {
 
   const { keywords, filterList } = useFoodListFilterMetaQuery();
 
-  const { selectedFilterList, resetSelectedFilterList } = useFoodFilterContext();
+  const { parsedSelectedFilterList, resetSelectedFilterList } = useFoodFilterContext();
 
   const navigate = useNavigate();
+
+  useEffect(
+    () => () => {
+      resetSelectedFilterList();
+    },
+    [],
+  );
 
   if (!keywords || !filterList) return null;
 
   const confirm = () => {
-    const queryString = Object.entries(selectedFilterList)
-      .reduce(
-        (queryString, [keyword, filterList]) =>
-          `${queryString}${filterList.size ? `${keyword}=${Array.from(filterList).join()}&` : ''}`,
-        '?',
-      )
-      .slice(0, -1);
-
-    resetSelectedFilterList();
     toggleDialog();
-    navigate(`${process.env.PUBLIC_URL}${queryString}`);
+    navigate(`${routerPath.home()}${generateQueryString(parsedSelectedFilterList)}`);
   };
 
   const getFilterListByKeyword = (keyword: KeywordEn) => {

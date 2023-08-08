@@ -5,6 +5,7 @@ import { styled } from 'styled-components';
 import PageHeader from '@/components/@common/PageHeader/PageHeader';
 import StarRatingInput from '@/components/@common/StarRating/StarRatingInput/StarRatingInput';
 import Template from '@/components/@common/Template';
+import { routerPath } from '@/router/routes';
 import { AdverseReaction, StoolCondition, TastePreference } from '@/types/review/client';
 
 interface LocationState {
@@ -40,12 +41,12 @@ const ReviewStarRating = () => {
   const onMouseDownStar = (selectedRating: number) => setRating(selectedRating);
 
   const onClickStar = (selectedRating: number) => {
-    navigate(`/pet-food/${petFoodId}/reviews/write/${selectedRating}/detail/${isEditMode}`, {
+    navigate(routerPath.reviewAddition({ petFoodId, rating, isEditMode }), {
       state: { petFoodId, name, imageUrl, reviewDetail },
     });
   };
 
-  const goBack = () => navigate(-1);
+  const goBack = () => navigate(routerPath.back);
 
   return (
     <Template.WithoutHeader footer={false}>

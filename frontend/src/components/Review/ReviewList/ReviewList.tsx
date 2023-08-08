@@ -5,6 +5,7 @@ import WriteIcon from '@/assets/svg/write_btn.svg';
 import { useValidParams } from '@/hooks/@common/useValidParams';
 import { useFoodDetailQuery } from '@/hooks/query/food';
 import { useReviewListQuery } from '@/hooks/query/review';
+import { routerPath } from '@/router/routes';
 
 import ReviewItem from '../ReviewItem/ReviewItem';
 
@@ -38,7 +39,7 @@ const ReviewList = () => {
           type="button"
           aria-label="리뷰 작성"
           onClick={() =>
-            navigate(`/pet-food/${petFoodId}/reviews/write`, {
+            navigate(routerPath.reviewStarRating({ petFoodId }), {
               state: {
                 petFoodId: foodData?.id,
                 name: foodData?.name,
