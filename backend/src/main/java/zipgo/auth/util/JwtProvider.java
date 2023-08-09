@@ -1,9 +1,6 @@
 package zipgo.auth.util;
 
 
-import static io.jsonwebtoken.security.Keys.hmacShaKeyFor;
-import static java.nio.charset.StandardCharsets.UTF_8;
-
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.Jws;
@@ -16,6 +13,9 @@ import javax.crypto.SecretKey;
 import org.springframework.stereotype.Component;
 import zipgo.auth.exception.AuthException;
 import zipgo.common.config.JwtCredentials;
+
+import static io.jsonwebtoken.security.Keys.hmacShaKeyFor;
+import static java.nio.charset.StandardCharsets.UTF_8;
 
 @Component
 public class JwtProvider {

@@ -1,8 +1,5 @@
 package zipgo.member.application;
 
-import static org.assertj.core.api.Assertions.assertThat;
-import static zipgo.member.domain.fixture.MemberFixture.식별자_없는_멤버;
-
 import org.junit.jupiter.api.DisplayNameGeneration;
 import org.junit.jupiter.api.DisplayNameGenerator;
 import org.junit.jupiter.api.Test;
@@ -11,6 +8,9 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.transaction.annotation.Transactional;
 import zipgo.member.domain.Member;
 import zipgo.member.domain.repository.MemberRepository;
+
+import static org.assertj.core.api.Assertions.assertThat;
+import static zipgo.member.domain.fixture.MemberFixture.식별자_없는_멤버;
 
 @Transactional
 @SpringBootTest

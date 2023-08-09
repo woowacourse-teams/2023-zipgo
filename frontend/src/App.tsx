@@ -5,6 +5,7 @@ import { ThemeProvider } from 'styled-components';
 import GlobalStyle from '@/components/@common/GlobalStyle';
 import theme from '@/styles/theme';
 
+import AxiosInterceptors from './components/@common/AxiosInterceptors/AxiosInterceptors';
 import { setScreenSize } from './utils/setScreenSize';
 
 const App = () => {
@@ -27,7 +28,9 @@ const App = () => {
   return (
     <ThemeProvider theme={theme}>
       <GlobalStyle />
-      <Outlet />
+      <AxiosInterceptors>
+        <Outlet />
+      </AxiosInterceptors>
     </ThemeProvider>
   );
 };

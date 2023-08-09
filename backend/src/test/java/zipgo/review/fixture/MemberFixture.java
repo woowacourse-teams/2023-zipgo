@@ -5,7 +5,7 @@ import zipgo.member.domain.Member;
 public class MemberFixture {
 
     public static Member 무민() {
-        return Member.builder().name("무민").build();
+        return Member.builder().email("moomin@moomin.com").profileImgUrl("무민사진").name("무민").build();
     }
 
 }
