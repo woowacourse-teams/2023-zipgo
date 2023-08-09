@@ -8,7 +8,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
 import zipgo.brand.domain.Brand;
 import zipgo.brand.domain.repository.BrandRepository;
-import zipgo.common.service.QueryServiceTest;
 import zipgo.common.service.ServiceTest;
 import zipgo.petfood.domain.PetFood;
 import zipgo.petfood.domain.repository.FunctionalityRepository;

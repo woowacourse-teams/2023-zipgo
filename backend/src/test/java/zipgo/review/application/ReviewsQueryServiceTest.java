@@ -13,7 +13,6 @@ import zipgo.petfood.domain.PetFood;
 import zipgo.petfood.domain.repository.PetFoodRepository;
 import zipgo.review.domain.Review;
 import zipgo.review.domain.repository.ReviewRepository;
-import zipgo.review.fixture.AdverseReactionFixture;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertAll;
@@ -21,7 +20,6 @@ import static zipgo.petfood.domain.fixture.PetFoodFixture.모든_영양기준_�
 import static zipgo.review.domain.type.AdverseReactionType.NONE;
 import static zipgo.review.domain.type.StoolCondition.SOFT_MOIST;
 import static zipgo.review.domain.type.TastePreference.EATS_VERY_WELL;
-import static zipgo.review.fixture.AdverseReactionFixture.*;
 import static zipgo.review.fixture.AdverseReactionFixture.눈물_이상반응;
 import static zipgo.review.fixture.AdverseReactionFixture.먹고_토_이상반응;
 import static zipgo.review.fixture.MemberFixture.무민;

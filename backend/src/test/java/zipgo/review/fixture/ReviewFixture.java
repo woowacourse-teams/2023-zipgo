@@ -4,9 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 import zipgo.member.domain.Member;
 import zipgo.petfood.domain.PetFood;
-import zipgo.review.domain.AdverseReaction;
 import zipgo.review.domain.Review;
-import zipgo.review.domain.type.AdverseReactionType;
 import zipgo.review.dto.request.CreateReviewRequest;
 import zipgo.review.dto.request.UpdateReviewRequest;
 
