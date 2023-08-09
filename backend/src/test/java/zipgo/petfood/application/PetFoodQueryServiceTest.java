@@ -9,6 +9,7 @@ import org.springframework.transaction.annotation.Transactional;
 import zipgo.brand.domain.Brand;
 import zipgo.brand.domain.repository.BrandRepository;
 import zipgo.common.service.QueryServiceTest;
+import zipgo.common.service.ServiceTest;
 import zipgo.petfood.domain.PetFood;
 import zipgo.petfood.domain.repository.FunctionalityRepository;
 import zipgo.petfood.domain.repository.PetFoodRepository;
@@ -30,7 +31,7 @@ import static zipgo.petfood.domain.fixture.PrimaryIngredientFixture.원재료_�
 import static zipgo.petfood.domain.fixture.PrimaryIngredientFixture.원재료_돼지고기_식품;
 import static zipgo.petfood.domain.fixture.PrimaryIngredientFixture.원재료_소고기_식품;
 
-class PetFoodQueryServiceTest extends QueryServiceTest {
+class PetFoodQueryServiceTest extends ServiceTest {
 
     @Autowired
     private PetFoodQueryService petFoodQueryService;
@@ -88,19 +89,19 @@ class PetFoodQueryServiceTest extends QueryServiceTest {
             );
         }
 
-//        @Test
-//        void 영양_기준을_만족하는_식품만_반환한다() {
-//            // when
-//            List<PetFood> petFoods = petFoodQueryService.getPetFoodsByFilters(
-//                    EMPTY_LIST,
-//                    List.of("유럽"),
-//                    EMPTY_LIST,
-//                    EMPTY_LIST
-//            );
-//
-//            // then
-//            assertThat(petFoods).hasSize(2);
-//        }
+        @Test
+        void 영양_기준을_만족하는_식품만_반환한다() {
+            // when
+            List<PetFood> petFoods = petFoodQueryService.getPetFoodsByFilters(
+                    EMPTY_LIST,
+                    List.of("유럽"),
+                    EMPTY_LIST,
+                    EMPTY_LIST
+            );
+
+            // then
+            assertThat(petFoods).hasSize(2);
+        }
 
         @Test
         void 주원료를_만족하는_식품만_반환한다() {

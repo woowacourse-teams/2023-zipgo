@@ -22,7 +22,7 @@ public class PetFoodQueryRepository {
 
     public List<PetFood> findPetFoods(
             List<String> brandsName,
-            List<String> nutritionStandards,
+            List<String> standards,
             List<String> primaryIngredientList,
             List<String> functionalityList
     ) {
@@ -35,6 +35,7 @@ public class PetFoodQueryRepository {
                 .join(petFood.functionalities, functionality)
                 .where(
                         isContainBrand(brandsName),
+                        isMeetStandardCondition(standards),
                         isContainPrimaryIngredients(primaryIngredientList),
                         isContainFunctionalities(functionalityList)
                 )
@@ -46,6 +47,21 @@ public class PetFoodQueryRepository {
             return null;
         }
         return petFood.brand.name.in(brandsName);
+    }
+
+    private BooleanExpression isMeetStandardCondition(List<String> standards) {
+        if (standards.isEmpty()) {
+            return null;
+        }
+        for (String standard : standards) {
+            if (standard.equals("미국")) {
+                return petFood.hasStandard.unitedStates.isTrue();
+            }
+            if (standard.equals("유럽")) {
+                return petFood.hasStandard.europe.isTrue();
+            }
+        }
+        return null;
     }
 
     private BooleanExpression isContainPrimaryIngredients(List<String> primaryIngredientList) {
