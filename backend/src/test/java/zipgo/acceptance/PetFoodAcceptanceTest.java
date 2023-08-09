@@ -26,6 +26,7 @@ import static org.springframework.restdocs.payload.PayloadDocumentation.fieldWit
 import static org.springframework.restdocs.payload.PayloadDocumentation.responseFields;
 import static org.springframework.restdocs.request.RequestDocumentation.parameterWithName;
 import static org.springframework.restdocs.request.RequestDocumentation.pathParameters;
+import static org.springframework.restdocs.request.RequestDocumentation.queryParameters;
 
 public class PetFoodAcceptanceTest extends AcceptanceTest {
 
@@ -81,7 +82,14 @@ public class PetFoodAcceptanceTest extends AcceptanceTest {
         private RestDocumentationFilter 성공_API_문서_생성(String name) {
             return document(name,
                     API_정보.responseSchema(성공_응답_형식),
+                    queryParameters(
+                            parameterWithName("brands").description("브랜드(optional)").optional(),
+                            parameterWithName("nutritionStandards").description("영양기준(optional)").optional(),
+                            parameterWithName("functionalities").description("기능성(optional)").optional(),
+                            parameterWithName("mainIngredients").description("주영양소(optional)").optional()
+                    ),
                     responseFields(
+                            fieldWithPath("totalCount").description("전체 식품 개수").type(JsonFieldType.NUMBER),
                             fieldWithPath("petFoods").description("반려동물 식품 리스트").type(JsonFieldType.ARRAY),
                             fieldWithPath("petFoods[].id").description("식품 id").type(JsonFieldType.NUMBER),
                             fieldWithPath("petFoods[].imageUrl").description("식품 이미지 url").type(JsonFieldType.STRING),
