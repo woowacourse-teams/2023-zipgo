@@ -1,4 +1,9 @@
 ---
+# port
+server:
+  port: 8081
+
+---
 # database
 spring:
   datasource:
