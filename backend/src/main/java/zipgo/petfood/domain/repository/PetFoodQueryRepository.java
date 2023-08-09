@@ -4,6 +4,8 @@ import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 import zipgo.petfood.domain.PetFood;
@@ -20,13 +22,23 @@ public class PetFoodQueryRepository {
 
     private final JPAQueryFactory queryFactory;
 
-    public List<PetFood> findPetFoods(
+    public PageImpl<PetFood> findPetFoods(
             List<String> brandsName,
             List<String> standards,
             List<String> primaryIngredientList,
-            List<String> functionalityList
+            List<String> functionalityList,
+            Long lastPetFoodId,
+            Pageable pageable
     ) {
-        return queryFactory
+        List<PetFood> petFoods = getPetFoods(brandsName, standards, primaryIngredientList,
+                functionalityList, lastPetFoodId, pageable);
+        Long count = getCount(brandsName, standards, primaryIngredientList, functionalityList);
+
+        return new PageImpl<>(petFoods, pageable, count);
+    }
+
+    private List<PetFood> getPetFoods(List<String> brandsName, List<String> standards, List<String> primaryIngredientList, List<String> functionalityList, Long lastPetFoodId, Pageable pageable) {
+        List<PetFood> petFoods = queryFactory
                 .selectFrom(petFood)
                 .join(petFood.brand, brand)
                 .fetchJoin()
@@ -34,12 +46,23 @@ public class PetFoodQueryRepository {
                 .fetchJoin()
                 .join(petFood.functionalities, functionality)
                 .where(
+                        isLessThan(lastPetFoodId),
                         isContainBrand(brandsName),
                         isMeetStandardCondition(standards),
                         isContainPrimaryIngredients(primaryIngredientList),
                         isContainFunctionalities(functionalityList)
                 )
+                .orderBy(petFood.id.desc())
+                .limit(pageable.getPageSize())
                 .fetch();
+        return petFoods;
+    }
+
+    private BooleanExpression isLessThan(Long lastPetFoodId) {
+        if (lastPetFoodId == null) {
+            return null;
+        }
+        return petFood.id.lt(lastPetFoodId);
     }
 
     private BooleanExpression isContainBrand(List<String> brandsName) {
@@ -76,6 +99,22 @@ public class PetFoodQueryRepository {
             return null;
         }
         return petFood.functionalities.any().name.in(functionalityList);
+    }
+
+    private Long getCount(List<String> brandsName, List<String> standards, List<String> primaryIngredientList, List<String> functionalityList) {
+        return queryFactory
+                .select(petFood.count())
+                .from(petFood)
+                .join(petFood.brand, brand)
+                .join(petFood.primaryIngredients, primaryIngredient)
+                .join(petFood.functionalities, functionality)
+                .where(
+                        isContainBrand(brandsName),
+                        isMeetStandardCondition(standards),
+                        isContainPrimaryIngredients(primaryIngredientList),
+                        isContainFunctionalities(functionalityList)
+                )
+                .fetchOne();
     }
 
 }

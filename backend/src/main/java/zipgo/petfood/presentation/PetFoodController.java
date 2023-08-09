@@ -5,6 +5,8 @@ import java.io.UnsupportedEncodingException;
 import java.util.Arrays;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -34,15 +36,19 @@ public class PetFoodController {
             @RequestParam(required = false) String brands,
             @RequestParam(required = false) String nutritionStandards,
             @RequestParam(required = false) String functionalities,
-            @RequestParam(required = false) String mainIngredients
+            @RequestParam(required = false) String mainIngredients,
+            @RequestParam(required = false) Long lastPetFoodId,
+            Pageable pageable
     ) throws UnsupportedEncodingException {
-        List<PetFood> petFoods = petFoodQueryService.getPetFoodsByFilters(
+        PageImpl<PetFood> petFoods = petFoodQueryService.getPetFoodsByFilters(
                 convertStringsToCollection(brands),
                 convertStringsToCollection(nutritionStandards),
                 convertStringsToCollection(mainIngredients),
-                convertStringsToCollection(functionalities)
+                convertStringsToCollection(functionalities),
+                lastPetFoodId,
+                pageable
         );
-        return ResponseEntity.ok(GetPetFoodsResponse.from(petFoods));
+        return ResponseEntity.ok(GetPetFoodsResponse.from(petFoods.getNumberOfElements(), petFoods.getContent()));
     }
 
     private List<String> convertStringsToCollection(String values) throws UnsupportedEncodingException {
