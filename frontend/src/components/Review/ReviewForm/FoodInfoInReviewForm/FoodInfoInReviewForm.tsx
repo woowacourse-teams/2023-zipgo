@@ -13,9 +13,7 @@ const FoodInfoInReviewForm = (foodInfoInReviewFormProps: FoodInfoInReviewFormPro
   const { petFoodId, rating } = foodInfoInReviewFormProps;
   const { foodData } = useFoodDetailQuery({ petFoodId: String(petFoodId) });
 
-  if (!foodData) {
-    throw new Error('죄송합니다, 해당 식품 정보를 찾을 수 없습니다.');
-  }
+  if (!foodData) return null;
 
   return (
     <FoodInfoInReviewContainer>

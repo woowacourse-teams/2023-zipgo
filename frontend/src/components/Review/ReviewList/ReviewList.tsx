@@ -13,6 +13,7 @@ const ReviewList = () => {
   const { reviewList } = useReviewListQuery({ petFoodId });
 
   const authData = localStorage.getItem('auth');
+  const goReviewWrite = () => navigate(`/pet-food/${petFoodId}/reviews/write`);
 
   if (!reviewList) throw new Error('리뷰 리스트를 찾을 수 없습니다.');
 
@@ -32,11 +33,7 @@ const ReviewList = () => {
         </NoReviewText>
       )}
       {authData !== null && (
-        <ReviewAddButton
-          type="button"
-          aria-label="리뷰 작성"
-          onClick={() => navigate(`/pet-food/${petFoodId}/reviews/write`)}
-        >
+        <ReviewAddButton type="button" aria-label="리뷰 작성" onClick={goReviewWrite}>
           <WriteIconImage src={WriteIcon} alt="" />
         </ReviewAddButton>
       )}

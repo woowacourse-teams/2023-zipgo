@@ -1,28 +1,16 @@
-import { useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { styled } from 'styled-components';
 
 import PageHeader from '@/components/@common/PageHeader/PageHeader';
 import StarRatingInput from '@/components/@common/StarRating/StarRatingInput/StarRatingInput';
 import Template from '@/components/@common/Template';
-import { useValidParams } from '@/hooks/@common/useValidParams';
-import { useFoodDetailQuery } from '@/hooks/query/food';
-
-interface LocationState {
-  state: {
-    selectedRating?: number;
-    isEditMode?: boolean;
-    reviewId?: number;
-  };
-}
+import { useReviewStarRating } from '@/hooks/review/useReviewStarRating';
 
 const ReviewStarRating = () => {
   const navigate = useNavigate();
-  const location = useLocation() as LocationState;
-  const { selectedRating = 0, isEditMode = false, reviewId = -1 } = { ...location.state };
-  const { petFoodId } = useValidParams(['petFoodId']);
-  const { foodData } = useFoodDetailQuery({ petFoodId });
-  const [rating, setRating] = useState(selectedRating);
+  const location = useLocation();
+  const { petFoodId, foodData, isEditMode, reviewId, rating, setRating } =
+    useReviewStarRating(location);
 
   const onMouseDownStar = (selectedRating: number) => setRating(selectedRating);
 
