@@ -44,6 +44,7 @@ public class PetFoodAcceptanceTest extends AcceptanceTest {
         void 필터를_지정하지_않고_요청한다() {
             // given
             var 요청_준비 = given(spec)
+                    .queryParam("size", 20)
                     .filter(성공_API_문서_생성("식품 필터링 없이 조회 - 성공(전체 조회)"));
 
             // when
@@ -68,6 +69,7 @@ public class PetFoodAcceptanceTest extends AcceptanceTest {
                     .queryParam("nutritionStandards", 영양기준)
                     .queryParam("functionalities", 기능성)
                     .queryParam("mainIngredients", 주단백질원)
+                    .queryParam("size", 20)
                     .filter(성공_API_문서_생성("식품 필터링 조회 - 성공"));
 
             // when
@@ -86,7 +88,9 @@ public class PetFoodAcceptanceTest extends AcceptanceTest {
                             parameterWithName("brands").description("브랜드(optional)").optional(),
                             parameterWithName("nutritionStandards").description("영양기준(optional)").optional(),
                             parameterWithName("functionalities").description("기능성(optional)").optional(),
-                            parameterWithName("mainIngredients").description("주영양소(optional)").optional()
+                            parameterWithName("mainIngredients").description("주영양소(optional)").optional(),
+                            parameterWithName("lastPetFoodId").description("마지막식품Id(제일 처음에 null)").optional(),
+                            parameterWithName("size").description("식품 페이징 사이즈")
                     ),
                     responseFields(
                             fieldWithPath("totalCount").description("전체 식품 개수").type(JsonFieldType.NUMBER),
