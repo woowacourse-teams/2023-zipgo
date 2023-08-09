@@ -1,9 +1,9 @@
 package zipgo.review.dto.response;
 
-import static java.time.format.DateTimeFormatter.ofPattern;
-
 import java.util.List;
 import zipgo.review.domain.Review;
+
+import static java.time.format.DateTimeFormatter.ofPattern;
 
 public record GetReviewResponse(
         Long id,

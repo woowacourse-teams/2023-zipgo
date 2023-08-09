@@ -11,8 +11,8 @@ public enum AdverseReactionType {
     VOMITING("먹고 토해요"),
     TEARS("눈물이 나요"),
     SCRATCHING("몸을 긁어요"),
-    LICKING_PAWS( "발을 핥아요"),
-    NONE( "없어요");
+    LICKING_PAWS("발을 핥아요"),
+    NONE("없어요");
 
     private String description;
 

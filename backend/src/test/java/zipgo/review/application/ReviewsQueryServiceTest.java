@@ -4,6 +4,7 @@ import java.util.List;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import zipgo.brand.domain.Brand;
+import zipgo.brand.domain.fixture.BrandFixture;
 import zipgo.brand.domain.repository.BrandRepository;
 import zipgo.common.service.QueryServiceTest;
 import zipgo.member.domain.Member;
@@ -15,8 +16,7 @@ import zipgo.review.domain.repository.ReviewRepository;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertAll;
-import static zipgo.brand.domain.fixture.BrandFixture.식품_브랜드_생성하기;
-import static zipgo.petfood.domain.fixture.PetFoodFixture.키워드_없이_식품_초기화;
+import static zipgo.petfood.domain.fixture.PetFoodFixture.모든_영양기준_만족_식품;
 import static zipgo.review.domain.type.AdverseReactionType.NONE;
 import static zipgo.review.domain.type.StoolCondition.SOFT_MOIST;
 import static zipgo.review.domain.type.TastePreference.EATS_VERY_WELL;
@@ -26,7 +26,7 @@ import static zipgo.review.fixture.MemberFixture.무민;
 import static zipgo.review.fixture.ReviewFixture.극찬_리뷰_생성;
 import static zipgo.review.fixture.ReviewFixture.혹평_리뷰_생성;
 
-class ReviewQueryServiceTest extends QueryServiceTest {
+class ReviewsQueryServiceTest extends QueryServiceTest {
 
     @Autowired
     private PetFoodRepository petFoodRepository;
@@ -46,11 +46,12 @@ class ReviewQueryServiceTest extends QueryServiceTest {
     @Test
     void getAllReviews() {
         //given
-        PetFood 식품 = 키워드_없이_식품_초기화(브랜드_조회하기());
+        PetFood 식품 = 모든_영양기준_만족_식품(브랜드_조회하기());
         Member 멤버 = memberRepository.save(무민());
         petFoodRepository.save(식품);
         Review 극찬_리뷰 = reviewRepository.save(극찬_리뷰_생성(멤버, 식품, List.of("없어요")));
-        Review 혹평_리뷰_생성 = 혹평_리뷰_생성(멤버, 식품, List.of(눈물_이상반응().getAdverseReactionType().getDescription(), 먹고_토_이상반응().getAdverseReactionType().getDescription()));
+        Review 혹평_리뷰_생성 = 혹평_리뷰_생성(멤버, 식품, List.of(눈물_이상반응().getAdverseReactionType().getDescription(),
+                먹고_토_이상반응().getAdverseReactionType().getDescription()));
         reviewRepository.save(혹평_리뷰_생성);
 
         //when
@@ -70,13 +71,13 @@ class ReviewQueryServiceTest extends QueryServiceTest {
     }
 
     private Brand 브랜드_조회하기() {
-        return brandRepository.save(식품_브랜드_생성하기());
+        return brandRepository.save(BrandFixture.아카나_식품_브랜드_생성());
     }
 
     @Test
     void getReview() {
         //given
-        PetFood 식품 = 키워드_없이_식품_초기화(브랜드_조회하기());
+        PetFood 식품 = 모든_영양기준_만족_식품(브랜드_조회하기());
         Member 멤버 = memberRepository.save(무민());
         petFoodRepository.save(식품);
         Review 극찬_리뷰 = reviewRepository.save(극찬_리뷰_생성(멤버, 식품, List.of("없어요")));

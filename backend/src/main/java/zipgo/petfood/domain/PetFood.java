@@ -1,15 +1,14 @@
 package zipgo.petfood.domain;
 
-import static jakarta.persistence.FetchType.LAZY;
-
 import jakarta.persistence.Column;
 import jakarta.persistence.Embedded;
 import jakarta.persistence.Entity;
-import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToMany;
+import java.util.ArrayList;
 import java.util.List;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
@@ -19,6 +18,8 @@ import lombok.EqualsAndHashCode.Include;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import zipgo.brand.domain.Brand;
+
+import static jakarta.persistence.FetchType.LAZY;
 
 @Entity
 @Getter
@@ -42,23 +43,22 @@ public class PetFood {
     @Column(length = 2048)
     private String imageUrl;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    private Keyword keyword;
-
-    @ManyToOne(fetch = LAZY, optional = false)
-    private Brand brand;
-
-    @Embedded
-    private PrimaryIngredients primaryIngredients;
-
     @Embedded
     private HasStandard hasStandard;
 
     @Embedded
-    private Functionality functionality;
-
-    @Embedded
     private Reviews reviews;
+
+    @ManyToOne(fetch = LAZY, optional = false)
+    private Brand brand;
+
+    @Builder.Default
+    @OneToMany(mappedBy = "petFood")
+    private List<PrimaryIngredient> primaryIngredients = new ArrayList<>();
+
+    @Builder.Default
+    @OneToMany(mappedBy = "petFood")
+    private List<Functionality> functionalities = new ArrayList<>();
 
     public double calculateRatingAverage() {
         return reviews.calculateRatingAverage();
@@ -68,12 +68,12 @@ public class PetFood {
         return reviews.countReviews();
     }
 
-    public List<String> getPrimaryIngredients() {
-        return primaryIngredients.getPrimaryIngredients();
+    public void addPrimaryIngredient(PrimaryIngredient primaryIngredient) {
+        this.primaryIngredients.add(primaryIngredient);
     }
 
-    public List<String> getFunctionality() {
-        return functionality.getFunctionality();
+    public void addFunctionality(Functionality functionality) {
+        this.functionalities.add(functionality);
     }
 
 }

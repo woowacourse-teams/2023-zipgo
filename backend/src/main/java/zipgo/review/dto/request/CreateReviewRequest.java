@@ -31,15 +31,15 @@ public record CreateReviewRequest(
         List<String> adverseReactions
 ) {
 
-        public Review toEntity(Member member, PetFood petFood) {
-                return Review.builder()
-                        .member(member)
-                        .petFood(petFood)
-                        .rating(rating())
-                        .comment(comment)
-                        .tastePreference(TastePreference.from(tastePreference()))
-                        .stoolCondition(StoolCondition.from(stoolCondition()))
-                        .build();
-        }
+    public Review toEntity(Member member, PetFood petFood) {
+        return Review.builder()
+                .member(member)
+                .petFood(petFood)
+                .rating(rating())
+                .comment(comment)
+                .tastePreference(TastePreference.from(tastePreference()))
+                .stoolCondition(StoolCondition.from(stoolCondition()))
+                .build();
+    }
 
 }

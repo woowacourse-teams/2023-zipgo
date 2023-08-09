@@ -1,21 +1,5 @@
 package zipgo.review.application;
 
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.Assertions.assertThatThrownBy;
-import static org.junit.jupiter.api.Assertions.assertAll;
-import static zipgo.brand.domain.fixture.BrandFixture.식품_브랜드_생성하기;
-import static zipgo.petfood.domain.fixture.PetFoodFixture.키워드_없이_식품_초기화;
-import static zipgo.review.domain.type.StoolCondition.SOFT_MOIST;
-import static zipgo.review.domain.type.StoolCondition.UNCERTAIN;
-import static zipgo.review.domain.type.TastePreference.EATS_MODERATELY;
-import static zipgo.review.domain.type.TastePreference.EATS_VERY_WELL;
-import static zipgo.review.fixture.AdverseReactionFixture.눈물_이상반응;
-import static zipgo.review.fixture.AdverseReactionFixture.먹고_토_이상반응;
-import static zipgo.review.fixture.MemberFixture.무민;
-import static zipgo.review.fixture.ReviewFixture.리뷰_생성_요청;
-import static zipgo.review.fixture.ReviewFixture.리뷰_수정_요청;
-import static zipgo.review.fixture.ReviewFixture.혹평_리뷰_생성;
-
 import java.util.ArrayList;
 import java.util.List;
 import org.junit.jupiter.api.Test;
@@ -36,7 +20,23 @@ import zipgo.review.exception.ReviewException;
 import zipgo.review.exception.StoolConditionException;
 import zipgo.review.exception.TastePreferenceException;
 
-class ReviewServiceTest extends ServiceTest {
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
+import static org.junit.jupiter.api.Assertions.assertAll;
+import static zipgo.brand.domain.fixture.BrandFixture.아카나_식품_브랜드_생성;
+import static zipgo.petfood.domain.fixture.PetFoodFixture.모든_영양기준_만족_식품;
+import static zipgo.review.domain.type.StoolCondition.SOFT_MOIST;
+import static zipgo.review.domain.type.StoolCondition.UNCERTAIN;
+import static zipgo.review.domain.type.TastePreference.EATS_MODERATELY;
+import static zipgo.review.domain.type.TastePreference.EATS_VERY_WELL;
+import static zipgo.review.fixture.AdverseReactionFixture.눈물_이상반응;
+import static zipgo.review.fixture.AdverseReactionFixture.먹고_토_이상반응;
+import static zipgo.review.fixture.MemberFixture.무민;
+import static zipgo.review.fixture.ReviewFixture.리뷰_생성_요청;
+import static zipgo.review.fixture.ReviewFixture.리뷰_수정_요청;
+import static zipgo.review.fixture.ReviewFixture.혹평_리뷰_생성;
+
+class ReviewsServiceTest extends ServiceTest {
 
     @Autowired
     private PetFoodRepository petFoodRepository;
@@ -59,7 +59,7 @@ class ReviewServiceTest extends ServiceTest {
     @Test
     void 리뷰를_생성할_수_있다() {
         //given
-        PetFood 식품 = 키워드_없이_식품_초기화(브랜드_조회하기());
+        PetFood 식품 = 모든_영양기준_만족_식품(브랜드_조회하기());
         Member 멤버 = memberRepository.save(무민());
         PetFood 저장된_식품 = petFoodRepository.save(식품);
 
@@ -80,13 +80,13 @@ class ReviewServiceTest extends ServiceTest {
     }
 
     private Brand 브랜드_조회하기() {
-        return brandRepository.save(식품_브랜드_생성하기());
+        return brandRepository.save(아카나_식품_브랜드_생성());
     }
 
     @Test
     void 잘못된_기호성으로_리뷰를_생성할_시_예외_처리() {
         //given
-        PetFood 식품 = 키워드_없이_식품_초기화(브랜드_조회하기());
+        PetFood 식품 = 모든_영양기준_만족_식품(브랜드_조회하기());
         Member 멤버 = memberRepository.save(무민());
         PetFood 저장된_식품 = petFoodRepository.save(식품);
         CreateReviewRequest request = new CreateReviewRequest(
@@ -106,7 +106,7 @@ class ReviewServiceTest extends ServiceTest {
     @Test
     void 잘못된_배변_반응으로_리뷰를_생성할_시_예외_처리() {
         //given
-        PetFood 식품 = 키워드_없이_식품_초기화(브랜드_조회하기());
+        PetFood 식품 = 모든_영양기준_만족_식품(브랜드_조회하기());
         Member 멤버 = memberRepository.save(무민());
         PetFood 저장된_식품 = petFoodRepository.save(식품);
         CreateReviewRequest request = new CreateReviewRequest(
@@ -126,7 +126,7 @@ class ReviewServiceTest extends ServiceTest {
     @Test
     void 잘못된_멤버_아이디로_리뷰를_생성할_시_예외_처리() {
         //given
-        PetFood 식품 = 키워드_없이_식품_초기화(브랜드_조회하기());
+        PetFood 식품 = 모든_영양기준_만족_식품(브랜드_조회하기());
         PetFood 저장된_식품 = petFoodRepository.save(식품);
 
         //when, then
@@ -137,7 +137,7 @@ class ReviewServiceTest extends ServiceTest {
     @Test
     void 리뷰를_수정할_수_있다() {
         //given
-        PetFood 식품 = 키워드_없이_식품_초기화(브랜드_조회하기());
+        PetFood 식품 = 모든_영양기준_만족_식품(브랜드_조회하기());
         Member 멤버 = memberRepository.save(무민());
         petFoodRepository.save(식품);
         Review 리뷰 = reviewRepository.save(혹평_리뷰_생성(멤버, 식품,
@@ -162,7 +162,7 @@ class ReviewServiceTest extends ServiceTest {
     void 잘못된_리뷰_id로_리뷰를_수정하면_예외_처리() {
         //given
         long 잘못된_리뷰_id = 123456789L;
-        키워드_없이_식품_초기화(브랜드_조회하기());
+        모든_영양기준_만족_식품(브랜드_조회하기());
         Member 멤버 = memberRepository.save(무민());
 
         //when, then
@@ -173,11 +173,12 @@ class ReviewServiceTest extends ServiceTest {
     @Test
     void 리뷰를_삭제할_수_있다() {
         //given
-        PetFood 식품 = 키워드_없이_식품_초기화(브랜드_조회하기());
+        PetFood 식품 = 모든_영양기준_만족_식품(브랜드_조회하기());
         Member 멤버 = memberRepository.save(무민());
         petFoodRepository.save(식품);
         Review 리뷰 = reviewRepository.save(혹평_리뷰_생성(멤버, 식품,
-                List.of(눈물_이상반응().getAdverseReactionType().getDescription(), 먹고_토_이상반응().getAdverseReactionType().getDescription())));
+                List.of(눈물_이상반응().getAdverseReactionType().getDescription(),
+                        먹고_토_이상반응().getAdverseReactionType().getDescription())));
 
         //when
         reviewService.deleteReview(멤버.getId(), 리뷰.getId());

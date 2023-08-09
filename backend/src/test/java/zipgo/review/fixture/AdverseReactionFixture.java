@@ -1,9 +1,9 @@
 package zipgo.review.fixture;
 
+import zipgo.review.domain.AdverseReaction;
+
 import static zipgo.review.domain.type.AdverseReactionType.TEARS;
 import static zipgo.review.domain.type.AdverseReactionType.VOMITING;
-
-import zipgo.review.domain.AdverseReaction;
 
 public class AdverseReactionFixture {
 
