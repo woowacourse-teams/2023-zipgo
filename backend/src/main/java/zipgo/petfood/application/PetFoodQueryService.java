@@ -14,7 +14,6 @@ import zipgo.petfood.domain.repository.PetFoodRepository;
 @Transactional(readOnly = true)
 public class PetFoodQueryService {
 
-    private final BrandRepository brandRepository;
     private final PetFoodRepository petFoodRepository;
     private final PetFoodQueryRepository petFoodQueryRepository;
 

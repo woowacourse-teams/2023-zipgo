@@ -31,7 +31,7 @@ import static zipgo.review.fixture.ReviewFixture.리뷰_생성_요청;
 import static zipgo.review.fixture.ReviewFixture.리뷰_수정_요청;
 
 
-public class ReviewsControllerTest extends AcceptanceTest {
+public class ReviewControllerTest extends AcceptanceTest {
 
     private Long petFoodId = 1L;
     private Long reviewId = 1L;
@@ -193,7 +193,6 @@ public class ReviewsControllerTest extends AcceptanceTest {
             return document("리뷰 생성 - 실패(없는 식품)", 문서_정보.responseSchema(에러_응답_형식),
                     requestHeaders(headerWithName("Authorization").description("인증을 위한 JWT")));
         }
-
     }
 
     @Nested
@@ -268,6 +267,7 @@ public class ReviewsControllerTest extends AcceptanceTest {
         }
 
     }
+
 
 
     @Nested
