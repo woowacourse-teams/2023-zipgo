@@ -13,6 +13,7 @@ import zipgo.petfood.domain.PetFood;
 import zipgo.petfood.domain.repository.PetFoodRepository;
 import zipgo.review.domain.Review;
 import zipgo.review.domain.repository.ReviewRepository;
+import zipgo.review.fixture.AdverseReactionFixture;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertAll;
@@ -20,6 +21,7 @@ import static zipgo.petfood.domain.fixture.PetFoodFixture.모든_영양기준_�
 import static zipgo.review.domain.type.AdverseReactionType.NONE;
 import static zipgo.review.domain.type.StoolCondition.SOFT_MOIST;
 import static zipgo.review.domain.type.TastePreference.EATS_VERY_WELL;
+import static zipgo.review.fixture.AdverseReactionFixture.*;
 import static zipgo.review.fixture.AdverseReactionFixture.눈물_이상반응;
 import static zipgo.review.fixture.AdverseReactionFixture.먹고_토_이상반응;
 import static zipgo.review.fixture.MemberFixture.무민;
@@ -49,7 +51,7 @@ class ReviewsQueryServiceTest extends QueryServiceTest {
         PetFood 식품 = 모든_영양기준_만족_식품(브랜드_조회하기());
         Member 멤버 = memberRepository.save(무민());
         petFoodRepository.save(식품);
-        Review 극찬_리뷰 = reviewRepository.save(극찬_리뷰_생성(멤버, 식품));
+        Review 극찬_리뷰 = reviewRepository.save(극찬_리뷰_생성(멤버, 식품, List.of("없어요")));
         Review 혹평_리뷰_생성 = 혹평_리뷰_생성(멤버, 식품, List.of(눈물_이상반응().getAdverseReactionType().getDescription(),
                 먹고_토_이상반응().getAdverseReactionType().getDescription()));
         reviewRepository.save(혹평_리뷰_생성);
@@ -80,7 +82,7 @@ class ReviewsQueryServiceTest extends QueryServiceTest {
         PetFood 식품 = 모든_영양기준_만족_식품(브랜드_조회하기());
         Member 멤버 = memberRepository.save(무민());
         petFoodRepository.save(식품);
-        Review 극찬_리뷰 = reviewRepository.save(극찬_리뷰_생성(멤버, 식품));
+        Review 극찬_리뷰 = reviewRepository.save(극찬_리뷰_생성(멤버, 식품, List.of("")));
 
         //when
         Review review = reviewQueryService.getReview(극찬_리뷰.getId());
