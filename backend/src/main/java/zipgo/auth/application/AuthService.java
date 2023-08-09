@@ -9,6 +9,7 @@ import zipgo.member.domain.Member;
 import zipgo.member.domain.repository.MemberRepository;
 
 @Service
+@Transactional
 @RequiredArgsConstructor
 public class AuthService {
 
@@ -16,7 +17,6 @@ public class AuthService {
     private final JwtProvider jwtProvider;
     private final MemberRepository memberRepository;
 
-    @Transactional
     public String createToken(String authCode) {
         String accessToken = oAuthClient.getAccessToken(authCode);
         OAuthMemberResponse oAuthMemberResponse = oAuthClient.getMember(accessToken);
