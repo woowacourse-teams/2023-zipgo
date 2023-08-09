@@ -82,7 +82,7 @@ class ReviewsQueryServiceTest extends QueryServiceTest {
         PetFood 식품 = 모든_영양기준_만족_식품(브랜드_조회하기());
         Member 멤버 = memberRepository.save(무민());
         petFoodRepository.save(식품);
-        Review 극찬_리뷰 = reviewRepository.save(극찬_리뷰_생성(멤버, 식품, List.of("")));
+        Review 극찬_리뷰 = reviewRepository.save(극찬_리뷰_생성(멤버, 식품, List.of("없어요")));
 
         //when
         Review review = reviewQueryService.getReview(극찬_리뷰.getId());
