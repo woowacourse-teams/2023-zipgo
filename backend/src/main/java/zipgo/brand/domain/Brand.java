@@ -12,6 +12,7 @@ import lombok.EqualsAndHashCode;
 import lombok.EqualsAndHashCode.Include;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import zipgo.common.entity.BaseTimeEntity;
 import zipgo.petfood.domain.PetFood;
 
 import static jakarta.persistence.GenerationType.IDENTITY;
@@ -22,8 +23,8 @@ import static lombok.AccessLevel.PROTECTED;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor(access = PROTECTED)
-@EqualsAndHashCode(onlyExplicitlyIncluded = true)
-public class Brand {
+@EqualsAndHashCode(onlyExplicitlyIncluded = true, callSuper = true)
+public class Brand extends BaseTimeEntity {
 
     @Id
     @Include

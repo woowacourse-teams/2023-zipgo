@@ -18,6 +18,7 @@ import lombok.EqualsAndHashCode.Include;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import zipgo.brand.domain.Brand;
+import zipgo.common.entity.BaseTimeEntity;
 
 import static jakarta.persistence.FetchType.LAZY;
 
@@ -25,9 +26,9 @@ import static jakarta.persistence.FetchType.LAZY;
 @Getter
 @Builder
 @AllArgsConstructor
-@EqualsAndHashCode(onlyExplicitlyIncluded = true)
+@EqualsAndHashCode(onlyExplicitlyIncluded = true, callSuper = true)
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class PetFood {
+public class PetFood extends BaseTimeEntity {
 
     @Id
     @Include
