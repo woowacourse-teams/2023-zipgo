@@ -4,6 +4,7 @@ import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import zipgo.petfood.application.dto.FilterDto;
 import zipgo.petfood.domain.PetFood;
 import zipgo.petfood.domain.repository.PetFoodQueryRepository;
 import zipgo.petfood.domain.repository.PetFoodRepository;
@@ -17,15 +18,18 @@ public class PetFoodQueryService {
     private final PetFoodQueryRepository petFoodQueryRepository;
 
     public List<PetFood> getPetFoodsByFilters(
-            List<String> brandsName,
-            List<String> nutritionStandards,
-            List<String> primaryIngredientList,
-            List<String> functionalityList,
+            FilterDto filterDto,
             Long lastPetFoodId,
             int size
     ) {
-        return petFoodQueryRepository.findPagingPetFoods(brandsName, nutritionStandards, primaryIngredientList,
-                functionalityList, lastPetFoodId, size);
+        return petFoodQueryRepository.findPagingPetFoods(
+                filterDto.brands(),
+                filterDto.nutritionStandards(),
+                filterDto.mainIngredients(),
+                filterDto.functionalities(),
+                lastPetFoodId,
+                size
+        );
     }
 
     public PetFood getPetFoodBy(Long id) {
@@ -33,12 +37,14 @@ public class PetFoodQueryService {
     }
 
     public Long getPetFoodsCountByFilters(
-            List<String> brandsName,
-            List<String> nutritionStandards,
-            List<String> primaryIngredientList,
-            List<String> functionalityList
+            FilterDto filterDto
     ) {
-        return petFoodQueryRepository.getCount(brandsName, nutritionStandards, primaryIngredientList, functionalityList);
+        return petFoodQueryRepository.getCount(
+                filterDto.brands(),
+                filterDto.nutritionStandards(),
+                filterDto.mainIngredients(),
+                filterDto.functionalities()
+        );
     }
 
 //    public FilterResponse getMetadataForFilter() {

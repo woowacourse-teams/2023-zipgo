@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import zipgo.brand.domain.Brand;
 import zipgo.petfood.application.PetFoodQueryService;
+import zipgo.petfood.application.dto.FilterDto;
 import zipgo.petfood.domain.PetFood;
 import zipgo.petfood.presentation.dto.FilterMetadataResponse;
 import zipgo.petfood.presentation.dto.FilterResponse;
@@ -38,20 +39,14 @@ public class PetFoodController {
             @RequestParam(required = false) Long lastPetFoodId,
             @RequestParam(required = false) int size
     ) throws UnsupportedEncodingException {
-        List<PetFood> petFoods = petFoodQueryService.getPetFoodsByFilters(
-                convertStringsToCollection(brands),
-                convertStringsToCollection(nutritionStandards),
-                convertStringsToCollection(mainIngredients),
-                convertStringsToCollection(functionalities),
-                lastPetFoodId,
-                size
-        );
-        Long count = petFoodQueryService.getPetFoodsCountByFilters(
+        FilterDto filterDto = FilterDto.of(
                 convertStringsToCollection(brands),
                 convertStringsToCollection(nutritionStandards),
                 convertStringsToCollection(mainIngredients),
                 convertStringsToCollection(functionalities)
         );
+        List<PetFood> petFoods = petFoodQueryService.getPetFoodsByFilters(filterDto, lastPetFoodId, size);
+        Long count = petFoodQueryService.getPetFoodsCountByFilters(filterDto);
         return ResponseEntity.ok(GetPetFoodsResponse.from(count, petFoods));
     }
 

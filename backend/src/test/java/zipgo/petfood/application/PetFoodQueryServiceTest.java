@@ -9,6 +9,7 @@ import org.springframework.transaction.annotation.Transactional;
 import zipgo.brand.domain.Brand;
 import zipgo.brand.domain.repository.BrandRepository;
 import zipgo.common.service.ServiceTest;
+import zipgo.petfood.application.dto.FilterDto;
 import zipgo.petfood.domain.PetFood;
 import zipgo.petfood.domain.repository.FunctionalityRepository;
 import zipgo.petfood.domain.repository.PetFoodRepository;
@@ -82,10 +83,12 @@ class PetFoodQueryServiceTest extends ServiceTest {
 
             // when
             List<PetFood> petFoods = petFoodQueryService.getPetFoodsByFilters(
-                    List.of("퓨리나"),
-                    EMPTY_LIST,
-                    EMPTY_LIST,
-                    EMPTY_LIST,
+                    FilterDto.of(
+                            List.of("퓨리나"),
+                            EMPTY_LIST,
+                            EMPTY_LIST,
+                            EMPTY_LIST
+                    ),
                     lastPetFoodId,
                     size
             );
@@ -105,10 +108,12 @@ class PetFoodQueryServiceTest extends ServiceTest {
 
             // when
             List<PetFood> petFoods = petFoodQueryService.getPetFoodsByFilters(
-                    List.of("퓨리나"),
-                    EMPTY_LIST,
-                    EMPTY_LIST,
-                    EMPTY_LIST,
+                    FilterDto.of(
+                            List.of("퓨리나"),
+                            EMPTY_LIST,
+                            EMPTY_LIST,
+                            EMPTY_LIST
+                    ),
                     allFoods.get(2).getId(),
                     size
             );
@@ -127,10 +132,12 @@ class PetFoodQueryServiceTest extends ServiceTest {
 
             // when
             List<PetFood> petFoods = petFoodQueryService.getPetFoodsByFilters(
-                    EMPTY_LIST,
-                    List.of("유럽"),
-                    EMPTY_LIST,
-                    EMPTY_LIST,
+                    FilterDto.of(
+                            EMPTY_LIST,
+                            List.of("유럽"),
+                            EMPTY_LIST,
+                            EMPTY_LIST
+                    ),
                     lastPetFoodId,
                     size
             );
@@ -147,10 +154,12 @@ class PetFoodQueryServiceTest extends ServiceTest {
 
             // when
             List<PetFood> petFoods = petFoodQueryService.getPetFoodsByFilters(
-                    EMPTY_LIST,
-                    EMPTY_LIST,
-                    List.of("소고기"),
-                    EMPTY_LIST,
+                    FilterDto.of(
+                            EMPTY_LIST,
+                            EMPTY_LIST,
+                            List.of("소고기"),
+                            EMPTY_LIST
+                    ),
                     lastPetFoodId,
                     size
             );
@@ -171,10 +180,12 @@ class PetFoodQueryServiceTest extends ServiceTest {
 
             // when
             List<PetFood> petFoods = petFoodQueryService.getPetFoodsByFilters(
-                    EMPTY_LIST,
-                    EMPTY_LIST,
-                    EMPTY_LIST,
-                    List.of("튼튼"),
+                    FilterDto.of(
+                            EMPTY_LIST,
+                            EMPTY_LIST,
+                            EMPTY_LIST,
+                            List.of("튼튼")
+                    ),
                     lastPetFoodId,
                     size
             );
@@ -195,10 +206,12 @@ class PetFoodQueryServiceTest extends ServiceTest {
 
             // when
             List<PetFood> petFoods = petFoodQueryService.getPetFoodsByFilters(
-                    List.of("아카나", "오리젠"),
-                    List.of("미국"),
-                    List.of("소고기"),
-                    List.of("튼튼"),
+                    FilterDto.of(
+                            List.of("아카나", "오리젠"),
+                            List.of("미국"),
+                            List.of("소고기"),
+                            List.of("튼튼")
+                    ),
                     lastPetFoodId,
                     size
             );
@@ -223,10 +236,12 @@ class PetFoodQueryServiceTest extends ServiceTest {
 
             // when
             List<PetFood> petFoods = petFoodQueryService.getPetFoodsByFilters(
-                    EMPTY_LIST,
-                    EMPTY_LIST,
-                    EMPTY_LIST,
-                    EMPTY_LIST,
+                    FilterDto.of(
+                            EMPTY_LIST,
+                            EMPTY_LIST,
+                            EMPTY_LIST,
+                            EMPTY_LIST
+                    ),
                     lastPetFoodId,
                     size
             );
@@ -242,10 +257,12 @@ class PetFoodQueryServiceTest extends ServiceTest {
 
             // when
             List<PetFood> petFoods = petFoodQueryService.getPetFoodsByFilters(
-                    EMPTY_LIST,
-                    EMPTY_LIST,
-                    EMPTY_LIST,
-                    EMPTY_LIST,
+                    FilterDto.of(
+                            EMPTY_LIST,
+                            EMPTY_LIST,
+                            EMPTY_LIST,
+                            EMPTY_LIST
+                    ),
                     allFoods.get(1).getId(),
                     size
             );
@@ -266,10 +283,12 @@ class PetFoodQueryServiceTest extends ServiceTest {
 
             // when
             List<PetFood> petFoods = petFoodQueryService.getPetFoodsByFilters(
-                    EMPTY_LIST,
-                    EMPTY_LIST,
-                    EMPTY_LIST,
-                    EMPTY_LIST,
+                    FilterDto.of(
+                            EMPTY_LIST,
+                            EMPTY_LIST,
+                            EMPTY_LIST,
+                            EMPTY_LIST
+                    ),
                     null,
                     size
             );
@@ -302,10 +321,12 @@ class PetFoodQueryServiceTest extends ServiceTest {
     void 필터에_맞는_식품_count_를_반환할_수_있다() {
         // given, when
         Long count = petFoodQueryService.getPetFoodsCountByFilters(
-                EMPTY_LIST,
-                EMPTY_LIST,
-                EMPTY_LIST,
-                EMPTY_LIST
+                FilterDto.of(
+                        EMPTY_LIST,
+                        EMPTY_LIST,
+                        EMPTY_LIST,
+                        EMPTY_LIST
+                )
         );
 
         // then
