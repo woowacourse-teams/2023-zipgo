@@ -119,4 +119,29 @@ class ReviewQueryRepositoryImplTest {
                 .hasMessage("petFoodId는 null이 될 수 없습니다.");
     }
 
+    @Test
+    void 결과가_없는경우_빈리스트를_반환한다() {
+        //given
+        reviewRepository.deleteAll();
+
+        //when
+        List<Review> reviews = reviewQueryRepository.findReviewsBy(1L, 10, null);
+
+        //then
+        assertThat(reviews).isEmpty();
+    }
+
+    @Test
+    void 마지막_리뷰_아이디가_음수일경우_빈리스트를_반환한다() {
+        //given
+        PetFood 식품 = 식품_만들기();
+        리뷰_여러개_생성(식품);
+
+        //when
+        List<Review> reviews = reviewQueryRepository.findReviewsBy(식품.getId(), 10, -1L);
+
+        //then
+        assertThat(reviews).isEmpty();
+    }
+
 }
