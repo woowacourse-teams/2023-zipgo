@@ -90,7 +90,7 @@ public class PetFoodAcceptanceTest extends AcceptanceTest {
                             parameterWithName("functionalities").description("기능성(optional)").optional(),
                             parameterWithName("mainIngredients").description("주영양소(optional)").optional(),
                             parameterWithName("lastPetFoodId").description("마지막식품Id(제일 처음에 null)").optional(),
-                            parameterWithName("size").description("식품 페이징 사이즈")
+                            parameterWithName("size").description("식품 페이징 사이즈").optional()
                     ),
                     responseFields(
                             fieldWithPath("totalCount").description("전체 식품 개수").type(JsonFieldType.NUMBER),
