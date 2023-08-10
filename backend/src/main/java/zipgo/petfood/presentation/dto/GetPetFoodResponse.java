@@ -55,7 +55,8 @@ public record GetPetFoodResponse(
     public record PetFoodBrandResponse(
             String name,
             String imageUrl,
-            String state,
+            @JsonProperty("state")
+            String nation,
             int foundedYear,
             boolean hasResearchCenter,
             boolean hasResidentVet

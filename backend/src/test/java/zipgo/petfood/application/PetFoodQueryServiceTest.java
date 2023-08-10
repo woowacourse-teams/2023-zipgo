@@ -14,6 +14,7 @@ import zipgo.petfood.domain.PetFood;
 import zipgo.petfood.domain.repository.FunctionalityRepository;
 import zipgo.petfood.domain.repository.PetFoodRepository;
 import zipgo.petfood.domain.repository.PrimaryIngredientRepository;
+import zipgo.petfood.presentation.dto.GetPetFoodResponse;
 
 import static java.util.Collections.EMPTY_LIST;
 import static org.assertj.core.api.Assertions.assertThat;
@@ -303,18 +304,33 @@ class PetFoodQueryServiceTest extends ServiceTest {
 
     }
 
-    @Test
-    void 아이디로_식품을_조회할_수_있다() {
-        // given
-        Brand 브랜드 = brandRepository.findAll().get(0);
-        PetFood 테스트용_식품 = 모든_영양기준_만족_식품(브랜드);
-        Long 아이디 = petFoodRepository.save(테스트용_식품).getId();
+    @Nested
+    class 상세_조회 {
 
-        // when
-        PetFood 조회된_식품 = petFoodQueryService.getPetFoodBy(아이디);
+        @Test
+        void 식품_상세조회할수_있다() {
+            //given
+            Brand 브랜드 = brandRepository.findAll().get(0);
+            PetFood 테스트용_식품 = 모든_영양기준_만족_식품(브랜드);
+            Long 아이디 = petFoodRepository.save(테스트용_식품).getId();
 
-        // then
-        assertThat(조회된_식품).isEqualTo(테스트용_식품);
+            //when
+            GetPetFoodResponse 응답 = petFoodQueryService.getPetFoodResponse(아이디);
+
+            //then
+            assertThat(응답.id()).isEqualTo(테스트용_식품.getId());
+            assertThat(응답.name()).isEqualTo(테스트용_식품.getName());
+            assertThat(응답.imageUrl()).isEqualTo(테스트용_식품.getImageUrl());
+            assertThat(응답.purchaseUrl()).isEqualTo(테스트용_식품.getPurchaseLink());
+            assertThat(응답.brand().name()).isEqualTo(브랜드.getName());
+            assertThat(응답.brand().foundedYear()).isEqualTo(브랜드.getFoundedYear());
+            assertThat(응답.brand().nation()).isEqualTo(브랜드.getNation());
+            assertThat(응답.rating()).isEqualTo(0);
+            assertThat(응답.reviewCount()).isEqualTo(0);
+            assertThat(응답.hasStandard().hasEuStandard()).isTrue();
+            assertThat(응답.hasStandard().hasUsStandard()).isTrue();
+        }
+
     }
 
     @Test

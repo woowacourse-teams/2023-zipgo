@@ -60,10 +60,8 @@ public class PetFoodController {
 
     @GetMapping("/{id}")
     public ResponseEntity<GetPetFoodResponse> getPetFood(@PathVariable Long id) {
-        PetFood foundPetFood = petFoodQueryService.getPetFoodBy(id);
-        int reviewCount = foundPetFood.countReviews();
-        double ratingAverage = foundPetFood.calculateRatingAverage();
-        return ResponseEntity.ok(GetPetFoodResponse.of(foundPetFood, ratingAverage, reviewCount));
+        GetPetFoodResponse petFoodResponse = petFoodQueryService.getPetFoodResponse(id);
+        return ResponseEntity.ok(petFoodResponse);
     }
 
     @GetMapping("/filters")

@@ -8,6 +8,7 @@ import zipgo.petfood.application.dto.FilterDto;
 import zipgo.petfood.domain.PetFood;
 import zipgo.petfood.domain.repository.PetFoodQueryRepository;
 import zipgo.petfood.domain.repository.PetFoodRepository;
+import zipgo.petfood.presentation.dto.GetPetFoodResponse;
 
 @Service
 @RequiredArgsConstructor
@@ -32,8 +33,10 @@ public class PetFoodQueryService {
         );
     }
 
-    public PetFood getPetFoodBy(Long id) {
-        return petFoodRepository.getById(id);
+    public GetPetFoodResponse getPetFoodResponse(Long id) {
+        PetFood petfood = petFoodRepository.getById(id);
+
+        return GetPetFoodResponse.of(petfood, petfood.calculateRatingAverage(), petfood.countReviews());
     }
 
     public Long getPetFoodsCountByFilters(
