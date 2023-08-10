@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.context.annotation.Import;
+import org.springframework.data.domain.Pageable;
 import org.springframework.test.context.jdbc.Sql;
 import zipgo.common.config.QueryDslTestConfig;
 import zipgo.petfood.domain.PetFood;
@@ -32,8 +33,8 @@ class PetFoodQueryRepositoryTest {
         List<String> functionalityList = EMPTY_LIST;
 
         // when
-        List<PetFood> petFoods = petFoodQueryRepository.findPetFoods(brandsName, standards, primaryIngredientList,
-                functionalityList);
+        List<PetFood> petFoods = petFoodQueryRepository.findPagingPetFoods(brandsName, standards, primaryIngredientList,
+                functionalityList, 5L , 20);
 
         // then
         Assertions.assertAll(

@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import zipgo.brand.domain.Brand;
 import zipgo.petfood.application.PetFoodQueryService;
+import zipgo.petfood.application.dto.FilterDto;
 import zipgo.petfood.domain.PetFood;
 import zipgo.petfood.presentation.dto.FilterMetadataResponse;
 import zipgo.petfood.presentation.dto.FilterResponse;
@@ -34,15 +35,19 @@ public class PetFoodController {
             @RequestParam(required = false) String brands,
             @RequestParam(required = false) String nutritionStandards,
             @RequestParam(required = false) String functionalities,
-            @RequestParam(required = false) String mainIngredients
+            @RequestParam(required = false) String mainIngredients,
+            @RequestParam(required = false) Long lastPetFoodId,
+            @RequestParam(required = false) int size
     ) throws UnsupportedEncodingException {
-        List<PetFood> petFoods = petFoodQueryService.getPetFoodsByFilters(
+        FilterDto filterDto = FilterDto.of(
                 convertStringsToCollection(brands),
                 convertStringsToCollection(nutritionStandards),
                 convertStringsToCollection(mainIngredients),
                 convertStringsToCollection(functionalities)
         );
-        return ResponseEntity.ok(GetPetFoodsResponse.from(petFoods));
+        List<PetFood> petFoods = petFoodQueryService.getPetFoodsByFilters(filterDto, lastPetFoodId, size);
+        Long count = petFoodQueryService.getPetFoodsCountByFilters(filterDto);
+        return ResponseEntity.ok(GetPetFoodsResponse.from(count, petFoods));
     }
 
     private List<String> convertStringsToCollection(String values) throws UnsupportedEncodingException {
@@ -55,10 +60,8 @@ public class PetFoodController {
 
     @GetMapping("/{id}")
     public ResponseEntity<GetPetFoodResponse> getPetFood(@PathVariable Long id) {
-        PetFood foundPetFood = petFoodQueryService.getPetFoodBy(id);
-        int reviewCount = foundPetFood.countReviews();
-        double ratingAverage = foundPetFood.calculateRatingAverage();
-        return ResponseEntity.ok(GetPetFoodResponse.of(foundPetFood, ratingAverage, reviewCount));
+        GetPetFoodResponse petFoodResponse = petFoodQueryService.getPetFoodResponse(id);
+        return ResponseEntity.ok(petFoodResponse);
     }
 
     @GetMapping("/filters")
