@@ -2,26 +2,33 @@ package zipgo.review.application;
 
 import java.util.List;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.ValueSource;
 import org.springframework.beans.factory.annotation.Autowired;
 import zipgo.brand.domain.Brand;
-import zipgo.brand.domain.fixture.BrandFixture;
 import zipgo.brand.domain.repository.BrandRepository;
 import zipgo.common.service.QueryServiceTest;
 import zipgo.member.domain.Member;
 import zipgo.member.domain.repository.MemberRepository;
 import zipgo.petfood.domain.PetFood;
 import zipgo.petfood.domain.repository.PetFoodRepository;
+import zipgo.review.application.dto.GetReviewQueryDto;
 import zipgo.review.domain.Review;
 import zipgo.review.domain.repository.ReviewRepository;
+import zipgo.review.dto.response.GetReviewResponse;
+import zipgo.review.dto.response.GetReviewsResponse;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.AssertionsForClassTypes.assertThatThrownBy;
 import static org.junit.jupiter.api.Assertions.assertAll;
+import static zipgo.brand.domain.fixture.BrandFixture.아카나_식품_브랜드_생성;
 import static zipgo.petfood.domain.fixture.PetFoodFixture.모든_영양기준_만족_식품;
 import static zipgo.review.domain.type.AdverseReactionType.NONE;
 import static zipgo.review.domain.type.StoolCondition.SOFT_MOIST;
 import static zipgo.review.domain.type.TastePreference.EATS_VERY_WELL;
 import static zipgo.review.fixture.AdverseReactionFixture.눈물_이상반응;
 import static zipgo.review.fixture.AdverseReactionFixture.먹고_토_이상반응;
+import static zipgo.review.fixture.MemberFixture.멤버_이름;
 import static zipgo.review.fixture.MemberFixture.무민;
 import static zipgo.review.fixture.ReviewFixture.극찬_리뷰_생성;
 import static zipgo.review.fixture.ReviewFixture.혹평_리뷰_생성;
@@ -46,7 +53,7 @@ class ReviewQueryServiceTest extends QueryServiceTest {
     @Test
     void 사이즈로_리뷰_목록_조회() {
         //given
-        PetFood 식품 = 모든_영양기준_만족_식품(브랜드_조회하기());
+        PetFood 식품 = petFoodRepository.save(모든_영양기준_만족_식품(브랜드_조회하기()));
         Member 멤버 = memberRepository.save(무민());
         Review 리뷰1 = reviewRepository.save(극찬_리뷰_생성(멤버, 식품, List.of("없어요")));
         Member 멤버2 = memberRepository.save(멤버_이름("무민2"));
@@ -81,7 +88,7 @@ class ReviewQueryServiceTest extends QueryServiceTest {
     }
 
     private Brand 브랜드_조회하기() {
-        return brandRepository.save(BrandFixture.아카나_식품_브랜드_생성());
+        return brandRepository.save(아카나_식품_브랜드_생성());
     }
 
     @Test

@@ -47,8 +47,7 @@ class ReviewQueryRepositoryImplTest {
     @Test
     void 리뷰를_원하는_개수만큼_읽을_수_있다() {
         // given
-        Brand 브랜드 = brandRepository.save(BrandFixture.식품_브랜드_생성하기());
-        PetFood 식품 = petFoodRepository.save(PetFoodFixture.식품_초기화(브랜드));
+        PetFood 식품 = 식품_만들기();
         리뷰_여러개_생성(식품);
 
         // when
@@ -58,10 +57,17 @@ class ReviewQueryRepositoryImplTest {
         assertThat(조회한_리뷰_리스트.size()).isEqualTo(10);
     }
 
+    private PetFood 식품_만들기() {
+        Brand 브랜드 = brandRepository.save(BrandFixture.아카나_식품_브랜드_생성());
+        PetFood 식품 = petFoodRepository.save(PetFoodFixture.모든_영양기준_만족_식품(브랜드));
+        return 식품;
+    }
+
     private void 리뷰_여러개_생성(PetFood 식품) {
         List<Review> 리뷰들 = new ArrayList<>();
         for (int i = 0; i < 20; i++) {
-            Review 리뷰 = ReviewFixture.극찬_리뷰_생성(memberRepository.save(MemberFixture.식별자_없는_멤버()), 식품);
+            Review 리뷰 = ReviewFixture.극찬_리뷰_생성(memberRepository.save(MemberFixture.식별자_없는_멤버("email" + i)), 식품,
+                    List.of("없어요"));
             리뷰들.add(리뷰);
         }
         reviewRepository.saveAll(리뷰들);
@@ -70,7 +76,7 @@ class ReviewQueryRepositoryImplTest {
     @Test
     void 커서보다_아이디가_작은_것들만_조회한다() {
         // given
-        PetFood 식품 = petFoodRepository.save(PetFoodFixture.식품_초기화(brandRepository.save(BrandFixture.식품_브랜드_생성하기())));
+        PetFood 식품 = 식품_만들기();
         리뷰_여러개_생성(식품);
 
         // when
@@ -85,7 +91,7 @@ class ReviewQueryRepositoryImplTest {
     @Test
     void null_이_들어오면_기본값으로_조회한다() {
         // given
-        PetFood 식품 = petFoodRepository.save(PetFoodFixture.식품_초기화(brandRepository.save(BrandFixture.식품_브랜드_생성하기())));
+        PetFood 식품 = 식품_만들기();
         리뷰_여러개_생성(식품);
 
         // when
