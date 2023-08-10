@@ -6,9 +6,9 @@ public class PetException extends RuntimeException {
         super(message);
     }
 
-    public static class AgeBound extends PetException {
+    public static class NotFound extends PetException {
 
-        public AgeBound() {
+        public NotFound() {
             super("분류에 속하지 않는 나이입니다.");
         }
 

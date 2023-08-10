@@ -52,7 +52,7 @@ class AgeGroupTest {
     void 나이_그룹에_속하지_않는_수는_예외가_발생한다(int age) {
         // expect
         assertThatThrownBy(() -> AgeGroup.from(age))
-                .isInstanceOf(PetException.AgeBound.class)
+                .isInstanceOf(PetException.NotFound.class)
                 .hasMessageContaining("분류에 속하지 않는 나이입니다.");
     }
 
