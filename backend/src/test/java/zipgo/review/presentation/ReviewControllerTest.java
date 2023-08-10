@@ -27,6 +27,7 @@ import static io.restassured.RestAssured.given;
 import static io.restassured.http.ContentType.JSON;
 import static org.hamcrest.Matchers.is;
 import static org.hamcrest.Matchers.lessThan;
+import static org.springframework.http.HttpStatus.BAD_REQUEST;
 import static org.springframework.http.HttpStatus.CREATED;
 import static org.springframework.http.HttpStatus.FORBIDDEN;
 import static org.springframework.http.HttpStatus.NOT_FOUND;
@@ -84,26 +85,34 @@ public class ReviewControllerTest extends AcceptanceTest {
             //given
             리뷰_여러개_생성();
 
-            var 요청_준비 = given(spec).contentType(JSON).filter(리뷰_전체_목록_조회_API_문서_생성("리뷰 전체 조회 (size만큼) - 성공"));
+            var 요청_준비 = given(spec).contentType(JSON);
 
             // when
-            var 응답 = 요청_준비.when().queryParam("size", 10).pathParam("id", petFoodId).get("/pet-foods/{id}/reviews");
+            var 응답 = 요청_준비.when()
+                    .queryParam("size", 10)
+                    .pathParam("id", petFoodId).get("/pet-foods/{id}/reviews");
 
             // then
-            응답.then().assertThat().statusCode(OK.value()).assertThat().body("reviews.size()", is(10));
+            응답.then()
+                    .assertThat().statusCode(OK.value())
+                    .assertThat().body("reviews.size()", is(10));
         }
 
         @Test
         void 마지막일_경우() {
             //given
             리뷰_하나빼고_삭제();
-            var 요청_준비 = given(spec).contentType(JSON).filter(리뷰_전체_목록_조회_API_문서_생성("리뷰 전체 조회 (size보다 부족) - 성공"));
+            var 요청_준비 = given(spec).contentType(JSON);
 
             // when
-            var 응답 = 요청_준비.when().queryParam("size", 10).pathParam("id", petFoodId).get("/pet-foods/{id}/reviews");
+            var 응답 = 요청_준비.when()
+                    .queryParam("size", 10)
+                    .pathParam("id", petFoodId).get("/pet-foods/{id}/reviews");
 
             // then
-            응답.then().assertThat().statusCode(OK.value()).assertThat().body("reviews.size()", lessThan(10));
+            응답.then()
+                    .assertThat().statusCode(OK.value())
+                    .assertThat().body("reviews.size()", lessThan(10));
         }
 
         private RestDocumentationFilter 리뷰_전체_목록_조회_API_문서_생성(String uniqueName) {
@@ -135,6 +144,29 @@ public class ReviewControllerTest extends AcceptanceTest {
 
         private void 리뷰_하나빼고_삭제() {
             reviewRepository.deleteAll(reviewRepository.findAll().stream().skip(1).collect(Collectors.toList()));
+        }
+
+        @Test
+        void 사이즈를_0으로_했을_때() {
+            //given
+            var 요청_준비 = given(spec)
+                    .contentType(JSON)
+                    .filter(API_예외응답_문서_생성("실패 - size가 0일 때"));
+
+            // when
+            var 응답 = 요청_준비.when()
+                    .queryParam("size", 0)
+                    .pathParam("id", petFoodId)
+                    .get("/pet-foods/{id}/reviews");
+
+            // then
+            응답.then()
+                    .assertThat().statusCode(BAD_REQUEST.value())
+                    .assertThat().body("message", is("size는 0보다 커야 합니다."));
+        }
+
+        private RestDocumentationFilter API_예외응답_문서_생성(String uniqueName) {
+            return document(uniqueName, 문서_정보.responseSchema(에러_응답_형식));
         }
 
     }
