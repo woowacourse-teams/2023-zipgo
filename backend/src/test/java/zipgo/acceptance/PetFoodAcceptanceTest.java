@@ -1,11 +1,20 @@
 package zipgo.acceptance;
 
+import com.epages.restdocs.apispec.ResourceSnippetDetails;
+import com.epages.restdocs.apispec.Schema;
+import java.util.List;
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Nested;
+import org.junit.jupiter.api.Test;
+import org.springframework.restdocs.payload.JsonFieldType;
+import org.springframework.restdocs.restassured.RestDocumentationFilter;
+import org.springframework.test.context.jdbc.Sql;
+
 import static com.epages.restdocs.apispec.RestAssuredRestDocumentationWrapper.document;
 import static com.epages.restdocs.apispec.RestAssuredRestDocumentationWrapper.resourceDetails;
 import static com.epages.restdocs.apispec.Schema.schema;
 import static io.restassured.RestAssured.given;
 import static io.restassured.http.ContentType.JSON;
-import static java.util.Collections.EMPTY_LIST;
 import static org.springframework.http.HttpStatus.BAD_REQUEST;
 import static org.springframework.http.HttpStatus.NOT_FOUND;
 import static org.springframework.http.HttpStatus.OK;
@@ -18,16 +27,6 @@ import static org.springframework.restdocs.payload.PayloadDocumentation.response
 import static org.springframework.restdocs.request.RequestDocumentation.parameterWithName;
 import static org.springframework.restdocs.request.RequestDocumentation.pathParameters;
 
-import com.epages.restdocs.apispec.ResourceSnippetDetails;
-import com.epages.restdocs.apispec.Schema;
-import java.util.List;
-import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Nested;
-import org.junit.jupiter.api.Test;
-import org.springframework.restdocs.payload.JsonFieldType;
-import org.springframework.restdocs.restassured.RestDocumentationFilter;
-import org.springframework.test.context.jdbc.Sql;
-
 public class PetFoodAcceptanceTest extends AcceptanceTest {
 
     @Nested
@@ -35,6 +34,7 @@ public class PetFoodAcceptanceTest extends AcceptanceTest {
     class GetPetFoods {
 
         private Schema 성공_응답_형식 = schema("GetPetFoodsResponse");
+
         private ResourceSnippetDetails API_정보 = resourceDetails()
                 .summary("식품 전체 조회하기")
                 .description("식품 전체를 조회합니다.");
@@ -57,14 +57,14 @@ public class PetFoodAcceptanceTest extends AcceptanceTest {
         @Test
         void 필터를_지정해서_요청한다() {
             // given
-            String 브랜드 = "오리젠";
-            String 영양기준 = "유럽";
-            String 기능성 = "튼튼";
-            String 주단백질원 = "닭고기";
+            List<String> 브랜드 = List.of("오리젠");
+            List<String> 영양기준 = List.of("유럽");
+            List<String> 기능성 = List.of("튼튼");
+            List<String> 주단백질원 = List.of("닭고기");
 
             var 요청_준비 = given(spec)
-                    .queryParam("brandsName", 브랜드)
-                    .queryParam("nutrientStandards", 영양기준)
+                    .queryParam("brands", 브랜드)
+                    .queryParam("nutritionStandards", 영양기준)
                     .queryParam("functionalities", 기능성)
                     .queryParam("mainIngredients", 주단백질원)
                     .filter(성공_API_문서_생성("식품 필터링 조회 - 성공"));

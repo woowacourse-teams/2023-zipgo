@@ -1,9 +1,5 @@
 package zipgo.common;
 
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.BDDMockito.given;
-
 import io.restassured.RestAssured;
 import io.restassured.response.ExtractableResponse;
 import io.restassured.response.Response;
@@ -15,6 +11,10 @@ import org.springframework.web.HttpMediaTypeNotSupportedException;
 import zipgo.acceptance.AcceptanceTest;
 import zipgo.petfood.presentation.dto.ErrorResponse;
 import zipgo.review.presentation.ReviewController;
+
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.BDDMockito.given;
 
 @DisplayNameGeneration(ReplaceUnderscores.class)
 class GlobalExceptionHandlerTest extends AcceptanceTest {

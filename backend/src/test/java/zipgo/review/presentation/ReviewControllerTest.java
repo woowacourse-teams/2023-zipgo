@@ -1,5 +1,14 @@
 package zipgo.review.presentation;
 
+import com.epages.restdocs.apispec.ResourceSnippetDetails;
+import com.epages.restdocs.apispec.Schema;
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Nested;
+import org.junit.jupiter.api.Test;
+import org.springframework.restdocs.payload.JsonFieldType;
+import org.springframework.restdocs.restassured.RestDocumentationFilter;
+import zipgo.acceptance.AcceptanceTest;
+
 import static com.epages.restdocs.apispec.RestAssuredRestDocumentationWrapper.document;
 import static com.epages.restdocs.apispec.RestAssuredRestDocumentationWrapper.resourceDetails;
 import static com.epages.restdocs.apispec.Schema.schema;
@@ -20,15 +29,6 @@ import static org.springframework.restdocs.request.RequestDocumentation.paramete
 import static org.springframework.restdocs.request.RequestDocumentation.pathParameters;
 import static zipgo.review.fixture.ReviewFixture.리뷰_생성_요청;
 import static zipgo.review.fixture.ReviewFixture.리뷰_수정_요청;
-
-import com.epages.restdocs.apispec.ResourceSnippetDetails;
-import com.epages.restdocs.apispec.Schema;
-import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Nested;
-import org.junit.jupiter.api.Test;
-import org.springframework.restdocs.payload.JsonFieldType;
-import org.springframework.restdocs.restassured.RestDocumentationFilter;
-import zipgo.acceptance.AcceptanceTest;
 
 
 public class ReviewControllerTest extends AcceptanceTest {
@@ -61,6 +61,7 @@ public class ReviewControllerTest extends AcceptanceTest {
             // then
             응답.then()
                     .assertThat().statusCode(OK.value())
+                    .log().all()
                     .assertThat().body("reviews.size()", is(2));
         }
 
@@ -192,6 +193,7 @@ public class ReviewControllerTest extends AcceptanceTest {
             return document("리뷰 생성 - 실패(없는 식품)", 문서_정보.responseSchema(에러_응답_형식),
                     requestHeaders(headerWithName("Authorization").description("인증을 위한 JWT")));
         }
+
     }
 
     @Nested
@@ -266,7 +268,6 @@ public class ReviewControllerTest extends AcceptanceTest {
         }
 
     }
-
 
 
     @Nested

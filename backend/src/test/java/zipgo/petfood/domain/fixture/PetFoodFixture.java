@@ -1,48 +1,40 @@
 package zipgo.petfood.domain.fixture;
 
-import static zipgo.petfood.domain.PrimaryIngredients.builder;
-
-import java.util.List;
 import zipgo.brand.domain.Brand;
-import zipgo.petfood.domain.Functionality;
 import zipgo.petfood.domain.HasStandard;
-import zipgo.petfood.domain.Keyword;
 import zipgo.petfood.domain.PetFood;
-import zipgo.petfood.domain.PrimaryIngredients;
+
+import static zipgo.petfood.domain.PetFood.builder;
 
 public class PetFoodFixture {
 
-    public static PetFood 키워드_없이_식품_초기화(Brand brand) {
-        return PetFood.builder()
-                .name("[고집] 돌아온 배배")
-                .imageUrl("https://github.com/woowacourse-teams/2023-zipgo")
-                .purchaseLink("https://avatars.githubusercontent.com/u/94087228?v=4")
+    public static PetFood 모든_영양기준_만족_식품(Brand brand) {
+        return builder()
+                .name("모든 영양기준 만족 식품")
+                .purchaseLink("https://github.com/wonyongChoi05")
+                .imageUrl("https://github.com/wonyongChoi05/img")
                 .brand(brand)
-                .hasStandard(HasStandard.builder().build())
+                .hasStandard(HasStandard.builder().unitedStates(true).europe(true).build())
                 .build();
     }
 
-    public static PetFood 키워드_있는_식품_초기화(Keyword keyword, Brand brand) {
-        return PetFood.builder()
-                .name("[고집] 돌아온 배배")
-                .imageUrl("https://github.com/woowacourse-teams/2023-zipgo")
-                .purchaseLink("https://avatars.githubusercontent.com/u/94087228?v=4")
-                .keyword(keyword)
-                .functionality(new Functionality(List.of("튼튼,짱짱")))
-                .primaryIngredients(new PrimaryIngredients(List.of("닭고기,쌀", "말미잘")))
-                .hasStandard(HasStandard.builder().europe(false).unitedStates(true).build())
+    public static PetFood 미국_영양기준_만족_식품(Brand brand) {
+        return builder()
+                .name("미국 영양기준 만족 식품")
+                .purchaseLink("https://github.com/wonyongChoi05")
+                .imageUrl("https://github.com/wonyongChoi05/img")
                 .brand(brand)
+                .hasStandard(HasStandard.builder().unitedStates(true).europe(false).build())
                 .build();
     }
 
-    public static PetFood 식품_초기화(Brand brand) {
-        return PetFood.builder()
-                .name("이름이다")
-                .imageUrl("imageUrl")
-                .purchaseLink("purchaseLink")
+    public static PetFood 유럽_영양기준_만족_식품(Brand brand) {
+        return builder()
+                .name("유럽 영양기준 만족 식품")
+                .purchaseLink("https://github.com/wonyongChoi05")
+                .imageUrl("https://github.com/wonyongChoi05/img")
                 .brand(brand)
-                .primaryIngredients(builder().primaryIngredients(List.of("닭고기", "쌀", "귀리", "보리")).build())
-                .hasStandard(HasStandard.builder().build())
+                .hasStandard(HasStandard.builder().unitedStates(false).europe(true).build())
                 .build();
     }
 
