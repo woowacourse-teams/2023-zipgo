@@ -6,6 +6,8 @@ import jakarta.persistence.PersistenceContext;
 import org.springframework.boot.test.context.TestConfiguration;
 import org.springframework.context.annotation.Bean;
 import zipgo.petfood.domain.repository.PetFoodQueryRepository;
+import zipgo.review.domain.repository.ReviewQueryRepository;
+import zipgo.review.domain.repository.ReviewQueryRepositoryImpl;
 
 @TestConfiguration
 public class QueryDslTestConfig {
@@ -21,6 +23,11 @@ public class QueryDslTestConfig {
     @Bean
     public PetFoodQueryRepository petFoodQueryRepository() {
         return new PetFoodQueryRepository(jpaQueryFactory());
+    }
+
+    @Bean
+    public ReviewQueryRepository reviewQueryRepository() {
+        return new ReviewQueryRepositoryImpl(jpaQueryFactory());
     }
 
 }
