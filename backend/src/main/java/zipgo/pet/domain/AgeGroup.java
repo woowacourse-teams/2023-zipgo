@@ -13,12 +13,12 @@ public enum AgeGroup {
     SENIOR(7, 50),
     ;
 
-    private final int start;
-    private final int end;
+    private final int lowerBound;
+    private final int upperBound;
 
     public static AgeGroup from(int age) {
         return Arrays.stream(values())
-                .filter(it -> it.start <= age && age < it.end)
+                .filter(ageGroup -> ageGroup.lowerBound <= age && age < ageGroup.upperBound)
                 .findFirst()
                 .orElseThrow(PetException.AgeBound::new);
     }
