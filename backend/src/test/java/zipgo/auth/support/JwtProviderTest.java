@@ -1,12 +1,10 @@
-package zipgo.auth.util;
+package zipgo.auth.support;
 
 import io.jsonwebtoken.Jwts;
 import java.util.Date;
 import org.junit.jupiter.api.DisplayNameGeneration;
 import org.junit.jupiter.api.DisplayNameGenerator;
 import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
 import zipgo.auth.exception.AuthException;
 import zipgo.common.config.JwtCredentials;
 
@@ -19,14 +17,11 @@ import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 
 @SuppressWarnings("NonAsciiCharacters")
 @DisplayNameGeneration(DisplayNameGenerator.ReplaceUnderscores.class)
-@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 class JwtProviderTest {
 
-    @Autowired
-    private JwtProvider jwtProvider;
+    private static final String TEST_SECRET_KEY = "this1-is2-zipgo3-test4-secret5-key6";
 
-    @Autowired
-    private JwtCredentials jwtCredentials;
+    private final JwtProvider jwtProvider = new JwtProvider(new JwtCredentials(TEST_SECRET_KEY, 100000L));
 
     @Test
     void 토큰을_생성한다() {
@@ -55,8 +50,9 @@ class JwtProviderTest {
     @Test
     void 유효하지_않은_토큰의_형식으로_payload를_조회할_경우_예외가_발생한다() {
         // expect
-        assertThatThrownBy(() -> jwtProvider.getPayload(null))
-                .isInstanceOf(AuthException.class);
+        assertThatThrownBy(() -> jwtProvider.getPayload("형식에맞지않는토큰"))
+                .isInstanceOf(AuthException.class)
+                .hasMessageContaining("JWT 서명이 잘못되었습니다");
     }
 
     @Test
@@ -64,14 +60,15 @@ class JwtProviderTest {
         // given
         Date 지나간_유효기간 = new Date((new Date()).getTime() - 1);
         String 만료된_토큰 = Jwts.builder()
-                .signWith(hmacShaKeyFor(jwtCredentials.getSecretKey().getBytes(UTF_8)), HS256)
+                .signWith(hmacShaKeyFor(TEST_SECRET_KEY.getBytes(UTF_8)), HS256)
                 .setSubject(String.valueOf(1L))
                 .setExpiration(지나간_유효기간)
                 .compact();
 
         // expect
         assertThatThrownBy(() -> jwtProvider.getPayload(만료된_토큰))
-                .isInstanceOf(AuthException.class);
+                .isInstanceOf(AuthException.class)
+                .hasMessageContaining("유효기간이 만료된 토큰입니다");
     }
 
     @Test
@@ -89,7 +86,8 @@ class JwtProviderTest {
 
         // then
         assertThatThrownBy(() -> jwtProvider.getPayload(다른_키로_만든_토큰))
-                .isInstanceOf(AuthException.class);
+                .isInstanceOf(AuthException.class)
+                .hasMessageContaining("토큰의 서명 유효성 검사가 실패했습니다");
     }
 
     @Test
@@ -107,7 +105,7 @@ class JwtProviderTest {
         // given
         JwtProvider 유효기간이_지난_jwtProvider = new JwtProvider(
                 new JwtCredentials(
-                        jwtCredentials.getSecretKey(),
+                        TEST_SECRET_KEY,
                         -99999999999L
                 )
         );
@@ -116,7 +114,8 @@ class JwtProviderTest {
 
         // expect
         assertThatThrownBy(() -> 유효기간이_지난_jwtProvider.validateParseJws(토큰))
-                .isInstanceOf(AuthException.class);
+                .isInstanceOf(AuthException.class)
+                .hasMessageContaining("유효기간이 만료된 토큰입니다");
     }
 
 }

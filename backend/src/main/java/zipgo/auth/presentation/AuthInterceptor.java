@@ -5,7 +5,8 @@ import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.HandlerInterceptor;
-import zipgo.auth.util.JwtProvider;
+import zipgo.auth.support.BearerTokenExtractor;
+import zipgo.auth.support.JwtProvider;
 
 @Component
 @RequiredArgsConstructor

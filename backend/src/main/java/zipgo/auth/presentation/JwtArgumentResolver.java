@@ -10,7 +10,8 @@ import org.springframework.web.context.request.NativeWebRequest;
 import org.springframework.web.method.support.HandlerMethodArgumentResolver;
 import org.springframework.web.method.support.ModelAndViewContainer;
 import zipgo.auth.presentation.dto.AuthDto;
-import zipgo.auth.util.JwtProvider;
+import zipgo.auth.support.BearerTokenExtractor;
+import zipgo.auth.support.JwtProvider;
 
 @Component
 @RequiredArgsConstructor

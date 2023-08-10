@@ -1,6 +1,6 @@
 package zipgo.auth.presentation.dto;
 
-public record AuthDto(
+public record AuthDto (
         Long id
 ) {
 
