@@ -12,7 +12,6 @@ import lombok.NoArgsConstructor;
 
 import static jakarta.persistence.EnumType.STRING;
 
-
 @Getter
 @Builder
 @Embeddable
@@ -22,7 +21,7 @@ import static jakarta.persistence.EnumType.STRING;
 public class Breeds {
 
     @Column(nullable = false)
-    private String name;
+    private String breedsName;
 
     @Enumerated(value = STRING)
     private BreedsSize breedsSize;

@@ -4,7 +4,6 @@ public enum Gender {
 
     MALE,
     FEMALE,
-    // 중성화?
     ;
 
 }

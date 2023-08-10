@@ -2,8 +2,10 @@ package zipgo.pet.domain;
 
 
 import java.util.Arrays;
+import lombok.AllArgsConstructor;
 import zipgo.pet.exception.PetException;
 
+@AllArgsConstructor
 public enum AgeGroup {
 
     PUPPY(0, 1),
@@ -13,11 +15,6 @@ public enum AgeGroup {
 
     private final int start;
     private final int end;
-
-    AgeGroup(int start, int end) {
-        this.start = start;
-        this.end = end;
-    }
 
     public static AgeGroup from(int age) {
         return Arrays.stream(values())
