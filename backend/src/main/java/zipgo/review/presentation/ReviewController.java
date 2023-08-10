@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import zipgo.auth.presentation.Auth;
 import zipgo.auth.presentation.dto.AuthDto;
@@ -40,8 +41,10 @@ public class ReviewController {
 
     //TODO petFoodId 쿼러파라미터로 변경
     @GetMapping("/pet-foods/{petFoodId}/reviews")
-    public ResponseEntity<GetReviewsResponse> getAllReviews(@PathVariable Long petFoodId) {
-        List<Review> reviews = reviewQueryService.getAllReviews(petFoodId);
+    public ResponseEntity<GetReviewsResponse> getAllReviews(@PathVariable Long petFoodId,
+                                                            @RequestParam(defaultValue = "10", required = false) int size,
+                                                            @RequestParam(required = false) Long lastReviewId) {
+        List<Review> reviews = reviewQueryService.getAllReviews(petFoodId, size, lastReviewId);
         List<GetReviewResponse> reviewsResponses = reviews.stream()
                 .map(GetReviewResponse::from)
                 .toList();

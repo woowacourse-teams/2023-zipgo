@@ -2,12 +2,22 @@ package zipgo.review.presentation;
 
 import com.epages.restdocs.apispec.ResourceSnippetDetails;
 import com.epages.restdocs.apispec.Schema;
+import java.util.List;
+import java.util.stream.Collectors;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.restdocs.payload.JsonFieldType;
 import org.springframework.restdocs.restassured.RestDocumentationFilter;
 import zipgo.acceptance.AcceptanceTest;
+import zipgo.member.domain.fixture.MemberFixture;
+import zipgo.member.domain.repository.MemberRepository;
+import zipgo.petfood.domain.PetFood;
+import zipgo.petfood.domain.repository.PetFoodRepository;
+import zipgo.review.domain.Review;
+import zipgo.review.domain.repository.ReviewRepository;
+import zipgo.review.fixture.ReviewFixture;
 
 import static com.epages.restdocs.apispec.RestAssuredRestDocumentationWrapper.document;
 import static com.epages.restdocs.apispec.RestAssuredRestDocumentationWrapper.resourceDetails;
@@ -15,6 +25,7 @@ import static com.epages.restdocs.apispec.Schema.schema;
 import static io.restassured.RestAssured.given;
 import static io.restassured.http.ContentType.JSON;
 import static org.hamcrest.Matchers.is;
+import static org.hamcrest.Matchers.lessThan;
 import static org.springframework.http.HttpStatus.CREATED;
 import static org.springframework.http.HttpStatus.FORBIDDEN;
 import static org.springframework.http.HttpStatus.NOT_FOUND;
@@ -27,6 +38,7 @@ import static org.springframework.restdocs.payload.PayloadDocumentation.requestF
 import static org.springframework.restdocs.payload.PayloadDocumentation.responseFields;
 import static org.springframework.restdocs.request.RequestDocumentation.parameterWithName;
 import static org.springframework.restdocs.request.RequestDocumentation.pathParameters;
+import static org.springframework.restdocs.request.RequestDocumentation.queryParameters;
 import static zipgo.review.fixture.ReviewFixture.리뷰_생성_요청;
 import static zipgo.review.fixture.ReviewFixture.리뷰_수정_요청;
 
@@ -36,6 +48,15 @@ public class ReviewControllerTest extends AcceptanceTest {
     private Long petFoodId = 1L;
     private Long reviewId = 1L;
     private Long 잘못된_id = 123456789L;
+
+    @Autowired
+    private PetFoodRepository petFoodRepository;
+
+    @Autowired
+    private MemberRepository memberRepository;
+
+    @Autowired
+    private ReviewRepository reviewRepository;
 
     @Nested
     @DisplayName("리뷰 전체 목록 조회 API")
@@ -51,7 +72,7 @@ public class ReviewControllerTest extends AcceptanceTest {
             // given
             var 요청_준비 = given(spec)
                     .contentType(JSON)
-                    .filter(리뷰_전체_목록_조회_API_문서_생성());
+                    .filter(리뷰_전체_목록_조회_API_문서_생성("리뷰 전체 조회 - 성공"));
 
             // when
             var 응답 = 요청_준비.when()
@@ -60,14 +81,55 @@ public class ReviewControllerTest extends AcceptanceTest {
 
             // then
             응답.then()
-                    .assertThat().statusCode(OK.value())
-                    .log().all()
-                    .assertThat().body("reviews.size()", is(2));
+                    .assertThat().statusCode(OK.value());
         }
 
-        private RestDocumentationFilter 리뷰_전체_목록_조회_API_문서_생성() {
-            return document("리뷰 전체 조회 - 성공",
+        @Test
+        void 리뷰를_원하는_사이즈만큼_반환() {
+            //given
+            리뷰_여러개_생성();
+
+            var 요청_준비 = given(spec)
+                    .contentType(JSON)
+                    .filter(리뷰_전체_목록_조회_API_문서_생성("리뷰 전체 조회 (size만큼) - 성공"));
+
+            // when
+            var 응답 = 요청_준비.when()
+                    .queryParam("size", 10)
+                    .pathParam("id", petFoodId)
+                    .get("/pet-foods/{id}/reviews");
+
+            // then
+            응답.then()
+                    .assertThat().statusCode(OK.value())
+                    .assertThat().body("reviews.size()", is(10));
+        }
+
+        @Test
+        void 마지막일_경우() {
+            //given
+            리뷰_하나빼고_삭제();
+            var 요청_준비 = given(spec)
+                    .contentType(JSON)
+                    .filter(리뷰_전체_목록_조회_API_문서_생성("리뷰 전체 조회 (size보다 부족) - 성공"));
+
+            // when
+            var 응답 = 요청_준비.when()
+                    .queryParam("size", 10)
+                    .pathParam("id", petFoodId)
+                    .get("/pet-foods/{id}/reviews");
+
+            // then
+            응답.then()
+                    .assertThat().statusCode(OK.value())
+                    .assertThat().body("reviews.size()", lessThan(10));
+        }
+
+        private RestDocumentationFilter 리뷰_전체_목록_조회_API_문서_생성(String uniqueName) {
+            return document(uniqueName,
                     문서_정보.responseSchema(성공_응답_형식),
+                    queryParameters(parameterWithName("size").description("조회하고자 하는 리뷰의 개수").optional(),
+                            parameterWithName("lastReviewId").description("이전 페이지의 마지막 리뷰 id").optional()),
                     pathParameters(parameterWithName("id").description("식품 id")),
                     responseFields(
                             fieldWithPath("reviews[].id").description("리뷰 id").type(JsonFieldType.NUMBER),
@@ -79,6 +141,48 @@ public class ReviewControllerTest extends AcceptanceTest {
                             fieldWithPath("reviews[].stoolCondition").description("대변 상태").type(JsonFieldType.STRING),
                             fieldWithPath("reviews[].adverseReactions").description("이상 반응들").type(JsonFieldType.ARRAY)
                     ));
+        }
+
+        private void 리뷰_여러개_생성() {
+            PetFood 식품 = petFoodRepository.findById(petFoodId).orElseThrow(IllegalArgumentException::new);
+            List<Review> 리뷰들 = List.of(
+                    ReviewFixture.극찬_리뷰_생성(memberRepository.save(MemberFixture.식별자_없는_멤버()), 식품),
+                    ReviewFixture.극찬_리뷰_생성(memberRepository.save(MemberFixture.식별자_없는_멤버()), 식품),
+                    ReviewFixture.극찬_리뷰_생성(memberRepository.save(MemberFixture.식별자_없는_멤버()), 식품),
+                    ReviewFixture.극찬_리뷰_생성(memberRepository.save(MemberFixture.식별자_없는_멤버()), 식품),
+                    ReviewFixture.극찬_리뷰_생성(memberRepository.save(MemberFixture.식별자_없는_멤버()), 식품),
+                    ReviewFixture.극찬_리뷰_생성(memberRepository.save(MemberFixture.식별자_없는_멤버()), 식품),
+                    ReviewFixture.극찬_리뷰_생성(memberRepository.save(MemberFixture.식별자_없는_멤버()), 식품),
+                    ReviewFixture.극찬_리뷰_생성(memberRepository.save(MemberFixture.식별자_없는_멤버()), 식품),
+                    ReviewFixture.극찬_리뷰_생성(memberRepository.save(MemberFixture.식별자_없는_멤버()), 식품),
+                    ReviewFixture.극찬_리뷰_생성(memberRepository.save(MemberFixture.식별자_없는_멤버()), 식품),
+                    ReviewFixture.극찬_리뷰_생성(memberRepository.save(MemberFixture.식별자_없는_멤버()), 식품),
+                    ReviewFixture.극찬_리뷰_생성(memberRepository.save(MemberFixture.식별자_없는_멤버()), 식품),
+                    ReviewFixture.극찬_리뷰_생성(memberRepository.save(MemberFixture.식별자_없는_멤버()), 식품),
+                    ReviewFixture.극찬_리뷰_생성(memberRepository.save(MemberFixture.식별자_없는_멤버()), 식품),
+                    ReviewFixture.극찬_리뷰_생성(memberRepository.save(MemberFixture.식별자_없는_멤버()), 식품),
+                    ReviewFixture.극찬_리뷰_생성(memberRepository.save(MemberFixture.식별자_없는_멤버()), 식품),
+                    ReviewFixture.극찬_리뷰_생성(memberRepository.save(MemberFixture.식별자_없는_멤버()), 식품),
+                    ReviewFixture.극찬_리뷰_생성(memberRepository.save(MemberFixture.식별자_없는_멤버()), 식품),
+                    ReviewFixture.극찬_리뷰_생성(memberRepository.save(MemberFixture.식별자_없는_멤버()), 식품),
+                    ReviewFixture.극찬_리뷰_생성(memberRepository.save(MemberFixture.식별자_없는_멤버()), 식품),
+                    ReviewFixture.극찬_리뷰_생성(memberRepository.save(MemberFixture.식별자_없는_멤버()), 식품),
+                    ReviewFixture.극찬_리뷰_생성(memberRepository.save(MemberFixture.식별자_없는_멤버()), 식품),
+                    ReviewFixture.극찬_리뷰_생성(memberRepository.save(MemberFixture.식별자_없는_멤버()), 식품),
+                    ReviewFixture.극찬_리뷰_생성(memberRepository.save(MemberFixture.식별자_없는_멤버()), 식품),
+                    ReviewFixture.극찬_리뷰_생성(memberRepository.save(MemberFixture.식별자_없는_멤버()), 식품),
+                    ReviewFixture.극찬_리뷰_생성(memberRepository.save(MemberFixture.식별자_없는_멤버()), 식품),
+                    ReviewFixture.극찬_리뷰_생성(memberRepository.save(MemberFixture.식별자_없는_멤버()), 식품),
+                    ReviewFixture.극찬_리뷰_생성(memberRepository.save(MemberFixture.식별자_없는_멤버()), 식품),
+                    ReviewFixture.극찬_리뷰_생성(memberRepository.save(MemberFixture.식별자_없는_멤버()), 식품)
+            );
+            reviewRepository.saveAll(리뷰들);
+        }
+
+        private void 리뷰_하나빼고_삭제() {
+            reviewRepository.deleteAll(reviewRepository.findAll().stream()
+                    .skip(1)
+                    .collect(Collectors.toList()));
         }
 
     }
