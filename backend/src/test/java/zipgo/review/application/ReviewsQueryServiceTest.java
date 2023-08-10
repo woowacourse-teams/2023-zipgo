@@ -26,7 +26,7 @@ import static zipgo.review.fixture.MemberFixture.무민;
 import static zipgo.review.fixture.ReviewFixture.극찬_리뷰_생성;
 import static zipgo.review.fixture.ReviewFixture.혹평_리뷰_생성;
 
-class ReviewsQueryServiceTest extends QueryServiceTest {
+class ReviewQueryServiceTest extends QueryServiceTest {
 
     @Autowired
     private PetFoodRepository petFoodRepository;
@@ -52,10 +52,13 @@ class ReviewsQueryServiceTest extends QueryServiceTest {
         Review 극찬_리뷰 = reviewRepository.save(극찬_리뷰_생성(멤버, 식품, List.of("없어요")));
         Review 혹평_리뷰_생성 = 혹평_리뷰_생성(멤버, 식품, List.of(눈물_이상반응().getAdverseReactionType().getDescription(),
                 먹고_토_이상반응().getAdverseReactionType().getDescription()));
+        Review 극찬_리뷰 = reviewRepository.save(극찬_리뷰_생성(멤버, 식품));
+        Review 혹평_리뷰_생성 = 혹평_리뷰_생성(멤버, 식품, List.of(눈물_이상반응().getAdverseReactionType().getDescription(),
+                먹고_토_이상반응().getAdverseReactionType().getDescription()));
         reviewRepository.save(혹평_리뷰_생성);
 
         //when
-        List<Review> reviews = reviewQueryService.getAllReviews(식품.getId());
+        List<Review> reviews = reviewQueryService.getAllReviews(식품.getId(), 10, null);
         Review 찾은_리뷰 = reviewRepository.findById(극찬_리뷰.getId()).get();
 
         //then
