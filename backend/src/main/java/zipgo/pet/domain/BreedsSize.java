@@ -1,8 +1,10 @@
 package zipgo.pet.domain;
 
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 
 @Getter
+@AllArgsConstructor
 public enum BreedsSize {
 
     SMALL("소형견"),
@@ -11,9 +13,5 @@ public enum BreedsSize {
     ;
 
     private final String value;
-
-    BreedsSize(String value) {
-        this.value = value;
-    }
 
 }

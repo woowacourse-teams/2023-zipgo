@@ -1,7 +1,7 @@
 package zipgo.pet.domain;
 
 import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
+import jakarta.persistence.Embeddable;
 import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
@@ -14,17 +14,19 @@ import lombok.NoArgsConstructor;
 
 import static jakarta.persistence.EnumType.STRING;
 import static jakarta.persistence.GenerationType.IDENTITY;
+import static lombok.EqualsAndHashCode.Include;
 
-@Entity
+
 @Getter
 @Builder
+@Embeddable
 @AllArgsConstructor
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
 public class Breeds {
 
     @Id
-    @EqualsAndHashCode.Include
+    @Include
     @GeneratedValue(strategy = IDENTITY)
     private Long id;
 
