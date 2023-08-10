@@ -5,7 +5,6 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Pageable;
 import org.springframework.transaction.annotation.Transactional;
 import zipgo.brand.domain.Brand;
 import zipgo.brand.domain.repository.BrandRepository;
@@ -33,6 +32,9 @@ import static zipgo.petfood.domain.fixture.PrimaryIngredientFixture.원재료_�
 import static zipgo.petfood.domain.fixture.PrimaryIngredientFixture.원재료_소고기_식품;
 
 class PetFoodQueryServiceTest extends ServiceTest {
+
+    private static final int size = 20;
+
 
     @Autowired
     private PetFoodQueryService petFoodQueryService;
@@ -85,8 +87,8 @@ class PetFoodQueryServiceTest extends ServiceTest {
                     EMPTY_LIST,
                     EMPTY_LIST,
                     lastPetFoodId,
-                    Pageable.ofSize(20)
-            ).getContent();
+                    size
+            );
 
             // then
             assertAll(
@@ -108,8 +110,8 @@ class PetFoodQueryServiceTest extends ServiceTest {
                     EMPTY_LIST,
                     EMPTY_LIST,
                     allFoods.get(2).getId(),
-                    Pageable.ofSize(20)
-            ).getContent();
+                    size
+            );
 
             // then
             assertAll(
@@ -130,8 +132,8 @@ class PetFoodQueryServiceTest extends ServiceTest {
                     EMPTY_LIST,
                     EMPTY_LIST,
                     lastPetFoodId,
-                    Pageable.ofSize(20)
-            ).getContent();
+                    size
+            );
 
             // then
             assertThat(petFoods).hasSize(2);
@@ -150,8 +152,8 @@ class PetFoodQueryServiceTest extends ServiceTest {
                     List.of("소고기"),
                     EMPTY_LIST,
                     lastPetFoodId,
-                    Pageable.ofSize(20)
-            ).getContent();
+                    size
+            );
 
             // then
             assertAll(
@@ -174,8 +176,8 @@ class PetFoodQueryServiceTest extends ServiceTest {
                     EMPTY_LIST,
                     List.of("튼튼"),
                     lastPetFoodId,
-                    Pageable.ofSize(20)
-            ).getContent();
+                    size
+            );
 
             // then
             assertAll(
@@ -198,8 +200,8 @@ class PetFoodQueryServiceTest extends ServiceTest {
                     List.of("소고기"),
                     List.of("튼튼"),
                     lastPetFoodId,
-                    Pageable.ofSize(20)
-            ).getContent();
+                    size
+            );
 
             // then
             assertAll(
@@ -226,8 +228,8 @@ class PetFoodQueryServiceTest extends ServiceTest {
                     EMPTY_LIST,
                     EMPTY_LIST,
                     lastPetFoodId,
-                    Pageable.ofSize(20)
-            ).getContent();
+                    size
+            );
 
             // then
             assertThat(petFoods.size()).isEqualTo(petFoodRepository.findAll().size());
@@ -245,8 +247,8 @@ class PetFoodQueryServiceTest extends ServiceTest {
                     EMPTY_LIST,
                     EMPTY_LIST,
                     allFoods.get(1).getId(),
-                    Pageable.ofSize(20)
-            ).getContent();
+                    size
+            );
 
             // then
             assertThat(petFoods.size()).isEqualTo(1);
@@ -269,8 +271,8 @@ class PetFoodQueryServiceTest extends ServiceTest {
                     EMPTY_LIST,
                     EMPTY_LIST,
                     null,
-                    Pageable.ofSize(20)
-            ).getContent();
+                    size
+            );
 
             // then
             assertThat(petFoods.size()).isEqualTo(20);
@@ -294,6 +296,20 @@ class PetFoodQueryServiceTest extends ServiceTest {
 
         // then
         assertThat(조회된_식품).isEqualTo(테스트용_식품);
+    }
+
+    @Test
+    void 필터에_맞는_식품_count_를_반환할_수_있다() {
+        // given, when
+        Long count = petFoodQueryService.getPetFoodsCountByFilters(
+                EMPTY_LIST,
+                EMPTY_LIST,
+                EMPTY_LIST,
+                EMPTY_LIST
+        );
+
+        // then
+        assertThat(count).isEqualTo(petFoodRepository.findAll().size());
     }
 
 }

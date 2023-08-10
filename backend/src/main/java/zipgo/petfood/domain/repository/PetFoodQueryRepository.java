@@ -4,8 +4,6 @@ import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.domain.PageImpl;
-import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 import zipgo.petfood.domain.PetFood;
@@ -22,23 +20,15 @@ public class PetFoodQueryRepository {
 
     private final JPAQueryFactory queryFactory;
 
-    public PageImpl<PetFood> findPetFoods(
+    public List<PetFood> findPagingPetFoods(
             List<String> brandsName,
             List<String> standards,
             List<String> primaryIngredientList,
             List<String> functionalityList,
             Long lastPetFoodId,
-            Pageable pageable
+            int size
     ) {
-        List<PetFood> petFoods = getPetFoods(brandsName, standards, primaryIngredientList,
-                functionalityList, lastPetFoodId, pageable);
-        Long count = getCount(brandsName, standards, primaryIngredientList, functionalityList);
-
-        return new PageImpl<>(petFoods, pageable, count);
-    }
-
-    private List<PetFood> getPetFoods(List<String> brandsName, List<String> standards, List<String> primaryIngredientList, List<String> functionalityList, Long lastPetFoodId, Pageable pageable) {
-        List<PetFood> petFoods = queryFactory
+        return queryFactory
                 .selectFrom(petFood)
                 .join(petFood.brand, brand)
                 .fetchJoin()
@@ -53,9 +43,8 @@ public class PetFoodQueryRepository {
                         isContainFunctionalities(functionalityList)
                 )
                 .orderBy(petFood.id.desc())
-                .limit(pageable.getPageSize())
+                .limit(size)
                 .fetch();
-        return petFoods;
     }
 
     private BooleanExpression isLessThan(Long lastPetFoodId) {
@@ -101,7 +90,7 @@ public class PetFoodQueryRepository {
         return petFood.functionalities.any().name.in(functionalityList);
     }
 
-    private Long getCount(List<String> brandsName, List<String> standards, List<String> primaryIngredientList, List<String> functionalityList) {
+    public Long getCount(List<String> brandsName, List<String> standards, List<String> primaryIngredientList, List<String> functionalityList) {
         return queryFactory
                 .select(petFood.count())
                 .from(petFood)

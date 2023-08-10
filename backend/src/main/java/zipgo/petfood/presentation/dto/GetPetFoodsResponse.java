@@ -4,11 +4,11 @@ import java.util.List;
 import zipgo.petfood.domain.PetFood;
 
 public record GetPetFoodsResponse(
-        int totalCount,
+        long totalCount,
         List<PetFoodResponse> petFoods
 ) {
 
-    public static GetPetFoodsResponse from(int totalCount, List<PetFood> petFoods) {
+    public static GetPetFoodsResponse from(long totalCount, List<PetFood> petFoods) {
         List<PetFoodResponse> petFoodResponses = petFoods.stream()
                 .map(PetFoodResponse::from)
                 .toList();
