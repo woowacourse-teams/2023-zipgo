@@ -20,8 +20,8 @@ import static jakarta.persistence.EnumType.STRING;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Breeds {
 
-    @Column(nullable = false)
-    private String breedsName;
+    @Column(nullable = false, name = "breeds")
+    private String name;
 
     @Enumerated(value = STRING)
     private BreedsSize breedsSize;

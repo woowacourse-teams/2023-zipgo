@@ -5,11 +5,13 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.OneToOne;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import zipgo.pet.domain.Pet;
 
 import static lombok.AccessLevel.PROTECTED;
 import static lombok.EqualsAndHashCode.Include;
@@ -35,5 +37,8 @@ public class Member {
 
     @Column(nullable = false)
     private String profileImgUrl;
+
+    @OneToOne(mappedBy = "member")
+    private Pet pet;
 
 }
