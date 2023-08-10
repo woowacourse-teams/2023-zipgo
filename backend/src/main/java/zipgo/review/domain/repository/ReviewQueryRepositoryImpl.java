@@ -16,12 +16,22 @@ public class ReviewQueryRepositoryImpl implements ReviewQueryRepository {
     private final JPAQueryFactory queryFactory;
 
     @Override
-    public List<Review> findAllByPetFoodId(Long petFoodId, int size, Long cursor) {
+    public List<Review> findReviewsBy(Long petFoodId, int size, Long lastReviewId) {
+        validate(petFoodId, size);
         return queryFactory.selectFrom(review)
-                .where(equalsPetFoodId(petFoodId), afterThan(cursor))
+                .where(equalsPetFoodId(petFoodId), afterThan(lastReviewId))
                 .orderBy(review.id.desc())
                 .limit(size)
                 .fetch();
+    }
+
+    private void validate(Long petFoodId, int size) {
+        if (petFoodId == null) {
+            throw new IllegalArgumentException("petFoodId는 null이 될 수 없습니다.");
+        }
+        if (size <= 0) {
+            throw new IllegalArgumentException("size는 0보다 커야 합니다.");
+        }
     }
 
     private BooleanExpression equalsPetFoodId(Long petFoodId) {

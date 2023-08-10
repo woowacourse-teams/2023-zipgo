@@ -2,7 +2,6 @@ package zipgo.review.presentation;
 
 import jakarta.validation.Valid;
 import java.net.URI;
-import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -17,6 +16,7 @@ import zipgo.auth.presentation.Auth;
 import zipgo.auth.presentation.dto.AuthDto;
 import zipgo.review.application.ReviewQueryService;
 import zipgo.review.application.ReviewService;
+import zipgo.review.application.dto.GetReviewQueryDto;
 import zipgo.review.domain.Review;
 import zipgo.review.dto.request.CreateReviewRequest;
 import zipgo.review.dto.request.UpdateReviewRequest;
@@ -44,12 +44,10 @@ public class ReviewController {
     public ResponseEntity<GetReviewsResponse> getAllReviews(@PathVariable Long petFoodId,
                                                             @RequestParam(defaultValue = "10", required = false) int size,
                                                             @RequestParam(required = false) Long lastReviewId) {
-        List<Review> reviews = reviewQueryService.getAllReviews(petFoodId, size, lastReviewId);
-        List<GetReviewResponse> reviewsResponses = reviews.stream()
-                .map(GetReviewResponse::from)
-                .toList();
+        GetReviewQueryDto dto = new GetReviewQueryDto(petFoodId, size, lastReviewId);
+        GetReviewsResponse reviews = reviewQueryService.getReviews(dto);
 
-        return ResponseEntity.ok(GetReviewsResponse.from(reviewsResponses));
+        return ResponseEntity.ok(reviews);
     }
 
     @GetMapping("/reviews/{id}")

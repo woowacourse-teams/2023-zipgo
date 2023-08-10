@@ -44,33 +44,40 @@ class ReviewQueryServiceTest extends QueryServiceTest {
     private ReviewQueryService reviewQueryService;
 
     @Test
-    void getAllReviews() {
+    void 사이즈로_리뷰_목록_조회() {
         //given
         PetFood 식품 = 모든_영양기준_만족_식품(브랜드_조회하기());
         Member 멤버 = memberRepository.save(무민());
-        petFoodRepository.save(식품);
-        Review 극찬_리뷰 = reviewRepository.save(극찬_리뷰_생성(멤버, 식품, List.of("없어요")));
-        Review 혹평_리뷰_생성 = 혹평_리뷰_생성(멤버, 식품, List.of(눈물_이상반응().getAdverseReactionType().getDescription(),
-                먹고_토_이상반응().getAdverseReactionType().getDescription()));
-        Review 극찬_리뷰 = reviewRepository.save(극찬_리뷰_생성(멤버, 식품));
-        Review 혹평_리뷰_생성 = 혹평_리뷰_생성(멤버, 식품, List.of(눈물_이상반응().getAdverseReactionType().getDescription(),
-                먹고_토_이상반응().getAdverseReactionType().getDescription()));
-        reviewRepository.save(혹평_리뷰_생성);
+        Review 리뷰1 = reviewRepository.save(극찬_리뷰_생성(멤버, 식품, List.of("없어요")));
+        Member 멤버2 = memberRepository.save(멤버_이름("무민2"));
+        Review 리뷰2 = reviewRepository.save(
+                혹평_리뷰_생성(멤버2, 식품, List.of(눈물_이상반응().getAdverseReactionType().getDescription(),
+                        먹고_토_이상반응().getAdverseReactionType().getDescription())));
+        GetReviewResponse 리뷰1_dto = GetReviewResponse.from(리뷰1);
+        GetReviewResponse 리뷰2_dto = GetReviewResponse.from(리뷰2);
 
         //when
-        List<Review> reviews = reviewQueryService.getAllReviews(식품.getId(), 10, null);
-        Review 찾은_리뷰 = reviewRepository.findById(극찬_리뷰.getId()).get();
+        GetReviewsResponse reviews = reviewQueryService.getReviews(new GetReviewQueryDto(식품.getId(), 2, null));
 
         //then
-        assertAll(
-                () -> assertThat(reviews.size()).isEqualTo(2),
-                () -> assertThat(찾은_리뷰.getMember().getName()).isEqualTo("무민"),
-                () -> assertThat(찾은_리뷰.getRating()).isEqualTo(5),
-                () -> assertThat(찾은_리뷰.getComment()).isEqualTo("우리 아이랑 너무 잘 맞아요!"),
-                () -> assertThat(찾은_리뷰.getTastePreference()).isEqualTo(EATS_VERY_WELL),
-                () -> assertThat(찾은_리뷰.getStoolCondition()).isEqualTo(SOFT_MOIST),
-                () -> assertThat(찾은_리뷰.getAdverseReactions().get(0).getAdverseReactionType()).isEqualTo(NONE)
-        );
+        assertThat(reviews.reviews().size()).isEqualTo(2);
+        assertThat(reviews.reviews().get(0)).usingRecursiveComparison().isEqualTo(리뷰2_dto);
+        assertThat(reviews.reviews().get(1)).usingRecursiveComparison().isEqualTo(리뷰1_dto);
+    }
+
+    @Test
+    void 식품_id가_null이면_예외가_발생한다() {
+        // expect
+        assertThatThrownBy(() -> new GetReviewQueryDto(null, 10, null))
+                .isInstanceOf(IllegalArgumentException.class);
+    }
+
+    @ParameterizedTest
+    @ValueSource(ints = {0, -1, -100, Integer.MAX_VALUE + 1})
+    void size가_0_이하면_예외가_발생한다(int 음수) {
+        // expect
+        assertThatThrownBy(() -> reviewQueryService.getReviews(new GetReviewQueryDto(1L, 음수, null)))
+                .isInstanceOf(IllegalArgumentException.class);
     }
 
     private Brand 브랜드_조회하기() {

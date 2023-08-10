@@ -5,6 +5,6 @@ import zipgo.review.domain.Review;
 
 public interface ReviewQueryRepository {
 
-    List<Review> findAllByPetFoodId(Long petFoodId, int size, Long cursor);
+    List<Review> findReviewsBy(Long petFoodId, int size, Long lastReviewId);
 
 }
