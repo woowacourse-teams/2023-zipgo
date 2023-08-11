@@ -69,15 +69,18 @@ public class ReviewControllerTest extends AcceptanceTest {
                 .description("해당 반려동물 식품에 대한 모든 리뷰를 조회합니다.");
 
         @Test
-        void 리뷰를_조회하면_201_반환() {
+        void 사이즈_없이_리뷰를_조회하면_10개_이하가_온다() {
             // given
+            리뷰_여러개_생성();
             var 요청_준비 = given(spec).contentType(JSON).filter(리뷰_전체_목록_조회_API_문서_생성("리뷰 전체 조회 - 성공"));
 
             // when
             var 응답 = 요청_준비.when().pathParam("id", petFoodId).get("/pet-foods/{id}/reviews");
 
             // then
-            응답.then().assertThat().statusCode(OK.value());
+            응답.then()
+                    .assertThat().statusCode(OK.value())
+                    .assertThat().body("reviews.size()", is(10));
         }
 
         @Test
