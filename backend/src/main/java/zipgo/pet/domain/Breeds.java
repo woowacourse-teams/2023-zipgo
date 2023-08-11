@@ -13,8 +13,8 @@ import lombok.NoArgsConstructor;
 import static jakarta.persistence.EnumType.STRING;
 
 @Getter
-@Embeddable
 @Builder
+@Embeddable
 @EqualsAndHashCode
 @AllArgsConstructor
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
@@ -27,3 +27,4 @@ public class Breeds {
     private BreedsSize breedsSize;
 
 }
+
