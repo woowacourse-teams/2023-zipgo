@@ -37,7 +37,7 @@ public class PetFoodController {
             @RequestParam(required = false) String functionalities,
             @RequestParam(required = false) String mainIngredients,
             @RequestParam(required = false) Long lastPetFoodId,
-            @RequestParam(required = false) int size
+            @RequestParam(defaultValue = "20", required = false) int size
     ) throws UnsupportedEncodingException {
         FilterDto filterDto = FilterDto.of(
                 convertStringsToCollection(brands),
