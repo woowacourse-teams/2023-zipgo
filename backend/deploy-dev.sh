@@ -25,4 +25,4 @@ sudo chmod +x ./zipgo-backend-0.0.1-SNAPSHOT.jar
 sudo nohup java -jar \
 -Dspring.profiles.active=dev \
 -Dspring.config.import=env.properties \
-./develop/zipgo-backend-0.0.1-SNAPSHOT.jar > ~/application.log 2>&1 &
+./zipgo-backend-0.0.1-SNAPSHOT.jar > ~/application.log 2>&1 &
