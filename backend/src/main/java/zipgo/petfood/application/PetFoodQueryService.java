@@ -7,7 +7,9 @@ import org.springframework.transaction.annotation.Transactional;
 import zipgo.brand.domain.Brand;
 import zipgo.brand.domain.repository.BrandRepository;
 import zipgo.petfood.application.dto.FilterDto;
+import zipgo.petfood.domain.Functionality;
 import zipgo.petfood.domain.PetFood;
+import zipgo.petfood.domain.PrimaryIngredient;
 import zipgo.petfood.domain.repository.FunctionalityRepository;
 import zipgo.petfood.domain.repository.PetFoodQueryRepository;
 import zipgo.petfood.domain.repository.PetFoodRepository;
@@ -58,9 +60,9 @@ public class PetFoodQueryService {
 
     public FilterResponse getMetadataForFilter() {
         List<Brand> brands = brandRepository.findAll();
-        List<String> functionalities = functionalityRepository.findDistinctFunctionalities();
-        List<String> primaryIngredients = primaryIngredientRepository.findDistinctPrimaryIngredients();
-        return FilterResponse.from(brands, primaryIngredients, functionalities);
+        List<PrimaryIngredient> primaryIngredients = primaryIngredientRepository.findDistinctPrimaryIngredients();
+        List<Functionality> functionalities = functionalityRepository.findDistinctFunctionalities();
+        return FilterResponse.of(brands, primaryIngredients, functionalities);
     }
 
 }

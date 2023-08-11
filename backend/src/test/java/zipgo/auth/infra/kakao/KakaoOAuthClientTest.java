@@ -17,9 +17,9 @@ import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.RestTemplate;
 import zipgo.auth.application.dto.OAuthMemberResponse;
 import zipgo.auth.exception.AuthException;
+import zipgo.auth.infra.kakao.config.KakaoCredentials;
 import zipgo.auth.infra.kakao.dto.KakaoMemberResponse;
 import zipgo.auth.infra.kakao.dto.KakaoTokenResponse;
-import zipgo.auth.infra.kakao.config.KakaoCredentials;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
@@ -82,6 +82,7 @@ class KakaoOAuthClientTest {
             // then
             assertThat(oAuthMemberResponse).isNotNull();
         }
+
     }
 
     @Nested

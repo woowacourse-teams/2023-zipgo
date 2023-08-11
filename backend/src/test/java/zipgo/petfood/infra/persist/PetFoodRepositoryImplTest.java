@@ -34,7 +34,7 @@ class PetFoodRepositoryImplTest {
 
         // when
         List<PetFood> petFoods = petFoodQueryRepository.findPagingPetFoods(브랜드, 영양기준, 주원료, 기능성,
-                5L , 20);
+                5L, 20);
 
         // then
         assertAll(

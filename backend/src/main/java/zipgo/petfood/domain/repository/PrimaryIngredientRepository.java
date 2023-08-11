@@ -7,7 +7,9 @@ import zipgo.petfood.domain.PrimaryIngredient;
 
 public interface PrimaryIngredientRepository extends JpaRepository<PrimaryIngredient, Long> {
 
-    @Query("select distinct(pi.name) from PrimaryIngredient pi")
-    List<String> findDistinctPrimaryIngredients();
+    @Query("select pi from PrimaryIngredient pi where pi.id in "
+            + "(select min(subpi.id) from PrimaryIngredient subpi group by subpi.name)")
+    List<PrimaryIngredient> findDistinctPrimaryIngredients();
+
 
 }
