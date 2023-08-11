@@ -1,12 +1,12 @@
 package zipgo.pet.domain;
 
 import jakarta.persistence.Column;
-import jakarta.persistence.Embedded;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToOne;
 import java.time.Year;
 import lombok.AccessLevel;
@@ -22,6 +22,7 @@ import static jakarta.persistence.EnumType.STRING;
 import static jakarta.persistence.FetchType.LAZY;
 import static jakarta.persistence.GenerationType.IDENTITY;
 import static lombok.EqualsAndHashCode.Include;
+
 
 @Entity
 @Getter
@@ -46,7 +47,8 @@ public class Pet extends BaseTimeEntity {
     @Column(nullable = false)
     private Year birthYear;
 
-    @Embedded
+    @ManyToOne(fetch = LAZY)
+    @JoinColumn(name = "breeds_id", nullable = false)
     private Breeds breeds;
 
     @Enumerated(value = STRING)
@@ -56,9 +58,5 @@ public class Pet extends BaseTimeEntity {
     private Double weight;
 
     private String imageUrl;
-
-    public int calculateAge() {
-        return Year.now().getValue() - birthYear.getValue();
-    }
 
 }
