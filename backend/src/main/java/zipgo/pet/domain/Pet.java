@@ -1,12 +1,12 @@
 package zipgo.pet.domain;
 
 import jakarta.persistence.Column;
+import jakarta.persistence.Embedded;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToOne;
 import java.time.Year;
 import lombok.AccessLevel;
@@ -47,8 +47,7 @@ public class Pet extends BaseTimeEntity {
     @Column(nullable = false)
     private Year birthYear;
 
-    @ManyToOne(fetch = LAZY)
-    @JoinColumn(name = "breeds_id", nullable = false)
+    @Embedded
     private Breeds breeds;
 
     @Enumerated(value = STRING)
