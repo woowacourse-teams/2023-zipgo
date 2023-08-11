@@ -36,7 +36,8 @@ import static zipgo.petfood.domain.fixture.PetFoodFixture.유럽_영양기준_�
 import static zipgo.petfood.domain.fixture.PrimaryIngredientFixture.원재료_닭고기_식품;
 import static zipgo.petfood.domain.fixture.PrimaryIngredientFixture.원재료_돼지고기_식품;
 import static zipgo.petfood.domain.fixture.PrimaryIngredientFixture.원재료_소고기_식품;
-import static zipgo.petfood.presentation.dto.FilterResponse.*;
+import static zipgo.petfood.presentation.dto.FilterResponse.NutrientStandardResponse;
+import static zipgo.petfood.presentation.dto.FilterResponse.PrimaryIngredientResponse;
 
 class PetFoodQueryServiceTest extends ServiceTest {
 

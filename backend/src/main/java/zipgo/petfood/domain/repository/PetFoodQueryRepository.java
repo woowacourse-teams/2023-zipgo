@@ -90,7 +90,8 @@ public class PetFoodQueryRepository {
         return petFood.functionalities.any().name.in(functionalityList);
     }
 
-    public Long getCount(List<String> brandsName, List<String> standards, List<String> primaryIngredientList, List<String> functionalityList) {
+    public Long getCount(List<String> brandsName, List<String> standards, List<String> primaryIngredientList,
+                         List<String> functionalityList) {
         return queryFactory
                 .select(petFood.count())
                 .from(petFood)

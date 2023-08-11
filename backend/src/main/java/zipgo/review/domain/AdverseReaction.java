@@ -12,6 +12,7 @@ import lombok.Builder;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import zipgo.common.entity.BaseTimeEntity;
 import zipgo.review.domain.type.AdverseReactionType;
 
 import static jakarta.persistence.EnumType.STRING;
@@ -24,8 +25,8 @@ import static lombok.EqualsAndHashCode.Include;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor(access = PROTECTED)
-@EqualsAndHashCode(onlyExplicitlyIncluded = true)
-public class AdverseReaction {
+@EqualsAndHashCode(onlyExplicitlyIncluded = true, callSuper = true)
+public class AdverseReaction extends BaseTimeEntity {
 
     @Id
     @Include

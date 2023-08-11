@@ -7,7 +7,8 @@ import zipgo.petfood.domain.Functionality;
 
 public interface FunctionalityRepository extends JpaRepository<Functionality, Long> {
 
-    @Query("select distinct(f.name) from Functionality f")
-    List<String> findDistinctFunctionalities();
+    @Query("select f from Functionality f where f.id in "
+            + "(select min(subf.id) from Functionality subf group by subf.name)")
+    List<Functionality> findDistinctFunctionalities();
 
 }
