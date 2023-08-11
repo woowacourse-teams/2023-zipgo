@@ -12,12 +12,12 @@ public enum AgeGroup {
     ADULT(1, 7),
     SENIOR(7, 50);
 
-    private final int greaterThan;
-    private final int lessThanOrEqual;
+    private final int greaterThanOrEqual;
+    private final int lessThan;
 
     public static AgeGroup from(int age) {
         return Arrays.stream(values())
-                .filter(ageGroup -> ageGroup.greaterThan <= age && age < ageGroup.lessThanOrEqual)
+                .filter(ageGroup -> ageGroup.greaterThanOrEqual <= age && age < ageGroup.lessThan)
                 .findFirst()
                 .orElseThrow(PetException.NotFound::new);
     }
