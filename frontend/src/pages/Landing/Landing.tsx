@@ -18,7 +18,7 @@ const Landing = () => {
     'functionalities',
   ]);
 
-  const { foodList, refetch } = useFoodListQuery({ ...queries });
+  const { foodList, refetch } = useFoodListQuery(queries);
 
   useEffect(() => {
     refetch();

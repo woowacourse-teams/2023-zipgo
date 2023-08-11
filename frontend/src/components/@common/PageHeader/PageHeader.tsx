@@ -3,6 +3,7 @@ import { styled } from 'styled-components';
 
 import BackBtnIcon from '@/assets/svg/back_btn.svg';
 import useCurrentScroll from '@/hooks/@common/useCurrentScroll';
+import { routerPath } from '@/router/routes';
 
 interface PageHeaderProps {
   onClick?: VoidFunction;
@@ -15,7 +16,7 @@ const PageHeader = (pageHeaderProps: PageHeaderProps) => {
   const navigate = useNavigate();
 
   const onClickBackButton = () => {
-    onClick ? onClick() : navigate('/');
+    onClick ? onClick() : navigate(routerPath.home());
   };
 
   const scrollPosition = useCurrentScroll();

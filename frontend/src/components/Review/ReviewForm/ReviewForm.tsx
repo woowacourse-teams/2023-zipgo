@@ -6,6 +6,7 @@ import Label from '@/components/@common/Label/Label';
 import { ADVERSE_REACTIONS, STOOL_CONDITIONS, TASTE_PREFERENCES } from '@/constants/review';
 import { useAddReviewMutation, useEditReviewMutation } from '@/hooks/query/review';
 import { ACTION_TYPES, useReviewForm } from '@/hooks/review/useReviewForm';
+import { routerPath } from '@/router/routes';
 import { AdverseReaction, StoolCondition, TastePreference } from '@/types/review/client';
 
 interface ReviewFormProps {
@@ -35,14 +36,14 @@ const ReviewForm = (reviewFormProps: ReviewFormProps) => {
     if (isEditMode && reviewDetail) {
       editReviewMutation.editReview({ reviewId: reviewDetail.reviewId, ...review }).then(() => {
         alert('리뷰 수정이 완료되었습니다.');
-        navigate(`/pet-food/${petFoodId}`);
+        navigate(routerPath.foodDetail({ petFoodId }));
       });
       return;
     }
 
     addReviewMutation.addReview(review).then(() => {
       alert('리뷰 작성이 완료되었습니다.');
-      navigate(`/pet-food/${petFoodId}`);
+      navigate(routerPath.foodDetail({ petFoodId }));
     });
   };
 

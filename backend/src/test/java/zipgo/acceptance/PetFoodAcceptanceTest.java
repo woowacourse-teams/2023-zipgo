@@ -233,10 +233,9 @@ public class PetFoodAcceptanceTest extends AcceptanceTest {
 
         private Schema 성공_응답_형식 = schema("FilterMetadataResponse");
 
-        // TODO: 구현 후 문서 수정하기
         private ResourceSnippetDetails 문서_정보 = resourceDetails()
-                .summary("[임시] 필터링 메타데이터 정보 조회하기")
-                .description("필터링에 필요한 메타데이터 정보를 조회합니다. 230802 - 실제 데이터 아님");
+                .summary("필터링 메타데이터 정보 조회하기")
+                .description("필터링에 필요한 메타데이터 정보를 조회합니다.");
 
         @Test
         void 필터링에_필요한_메타데이터를_조회한다() {

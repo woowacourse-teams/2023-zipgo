@@ -1,6 +1,7 @@
 package zipgo.petfood.application;
 
 import java.util.List;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
@@ -14,6 +15,9 @@ import zipgo.petfood.domain.PetFood;
 import zipgo.petfood.domain.repository.FunctionalityRepository;
 import zipgo.petfood.domain.repository.PetFoodRepository;
 import zipgo.petfood.domain.repository.PrimaryIngredientRepository;
+import zipgo.petfood.presentation.dto.FilterResponse;
+import zipgo.petfood.presentation.dto.FilterResponse.BrandResponse;
+import zipgo.petfood.presentation.dto.FilterResponse.FunctionalityResponse;
 import zipgo.petfood.presentation.dto.GetPetFoodResponse;
 
 import static java.util.Collections.EMPTY_LIST;
@@ -32,6 +36,7 @@ import static zipgo.petfood.domain.fixture.PetFoodFixture.유럽_영양기준_�
 import static zipgo.petfood.domain.fixture.PrimaryIngredientFixture.원재료_닭고기_식품;
 import static zipgo.petfood.domain.fixture.PrimaryIngredientFixture.원재료_돼지고기_식품;
 import static zipgo.petfood.domain.fixture.PrimaryIngredientFixture.원재료_소고기_식품;
+import static zipgo.petfood.presentation.dto.FilterResponse.*;
 
 class PetFoodQueryServiceTest extends ServiceTest {
 
@@ -347,6 +352,24 @@ class PetFoodQueryServiceTest extends ServiceTest {
 
         // then
         assertThat(count).isEqualTo(petFoodRepository.findAll().size());
+    }
+
+    @Test
+    void 필터링에_필요한_식품_데이터를_조회한다() {
+        // when
+        FilterResponse metadata = petFoodQueryService.getMetadataForFilter();
+
+        // then
+        Assertions.assertAll(
+                () -> assertThat(metadata.brands()).extracting(BrandResponse::brandName)
+                        .contains("아카나", "오리젠", "퓨리나"),
+                () -> assertThat(metadata.functionalities()).extracting(FunctionalityResponse::functionality)
+                        .contains("튼튼", "짱짱", "다이어트"),
+                () -> assertThat(metadata.mainIngredients()).extracting(PrimaryIngredientResponse::ingredients)
+                        .contains("소고기", "돼지고기", "닭고기"),
+                () -> assertThat(metadata.nutritionStandards()).extracting(NutrientStandardResponse::nation)
+                        .contains("미국", "유럽")
+        );
     }
 
 }

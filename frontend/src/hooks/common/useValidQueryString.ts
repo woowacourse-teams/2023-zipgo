@@ -4,6 +4,6 @@ import { getValidQueries } from '@/utils/getValidQueries';
 
 const useValidQueryString = <T extends string>(
   queryKeys: Readonly<T[]>,
-): Record<T, string | undefined> => getValidQueries(useLocation().search, queryKeys);
+): Partial<Record<T, string>> => getValidQueries(useLocation().search, queryKeys);
 
 export default useValidQueryString;

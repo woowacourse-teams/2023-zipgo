@@ -6,6 +6,7 @@ import Template from '@/components/@common/Template';
 import FoodInfoInReviewForm from '@/components/Review/ReviewForm/FoodInfoInReviewForm/FoodInfoInReviewForm';
 import ReviewForm from '@/components/Review/ReviewForm/ReviewForm';
 import { useValidParams } from '@/hooks/@common/useValidParams';
+import { routerPath } from '@/router/routes';
 import { AdverseReaction, StoolCondition, TastePreference } from '@/types/review/client';
 
 interface LocationState {
@@ -29,7 +30,7 @@ const ReviewAddition = () => {
   const location = useLocation() as LocationState;
   const { petFoodId, name, imageUrl, reviewDetail } = { ...location.state };
 
-  const goBack = () => navigate(-1);
+  const goBack = () => navigate(routerPath.back);
 
   return (
     <Template.WithoutHeader footer={false}>
