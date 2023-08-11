@@ -60,8 +60,8 @@ public class KakaoOAuthClient implements OAuthClient {
     }
 
     private ResponseEntity<KakaoTokenResponse> getKakaoToken(HttpEntity<MultiValueMap<String, String>> request) {
-            try {
-                return restTemplate.exchange(
+        try {
+            return restTemplate.exchange(
                     ACCESS_TOKEN_URI,
                     POST,
                     request,
@@ -88,8 +88,8 @@ public class KakaoOAuthClient implements OAuthClient {
     }
 
     private ResponseEntity<KakaoMemberResponse> getKakaoMember(HttpEntity<HttpHeaders> request) {
-            try {
-                return restTemplate.exchange(
+        try {
+            return restTemplate.exchange(
                     USER_INFO_URI,
                     GET,
                     request,
