@@ -1,4 +1,4 @@
-import { useQuery } from '@tanstack/react-query';
+import { useInfiniteQuery, useQuery } from '@tanstack/react-query';
 
 import { getFoodDetail, getFoodList, getFoodListFilterMeta } from '@/apis/food';
 import { Parameter } from '@/types/common/utility';
@@ -10,14 +10,26 @@ const QUERY_KEY = {
   foodListFilterMeta: 'foodListFilterMeta',
 };
 
-export const useFoodListQuery = (payload: Parameter<typeof getFoodList>) => {
-  const { data, ...restQuery } = useQuery({
+const SIZE_PER_PAGE = 20;
+
+export const useFoodListInfiniteQuery = (payload: Parameter<typeof getFoodList>) => {
+  const { data, ...restQuery } = useInfiniteQuery({
     queryKey: [QUERY_KEY.petFoods],
-    queryFn: () => getFoodList(payload),
+    queryFn: ({ pageParam = { size: String(SIZE_PER_PAGE) } }) => getFoodList(pageParam),
+    getNextPageParam: currentFoodListRes => {
+      const lastFood = currentFoodListRes.petFoods.at(-1);
+      const isLastPage =
+        currentFoodListRes.petFoods.length >= currentFoodListRes.totalCount ||
+        currentFoodListRes.petFoods.length < SIZE_PER_PAGE;
+
+      if (!lastFood || isLastPage) return undefined;
+
+      return { ...payload, lastPetFoodId: String(lastFood.id), size: String(SIZE_PER_PAGE) };
+    },
   });
 
   return {
-    foodList: data?.petFoods,
+    foodList: data?.pages.flatMap(page => page.petFoods),
     ...restQuery,
   };
 };
@@ -39,7 +51,6 @@ export const useFoodListFilterMetaQuery = () => {
     queryKey: [QUERY_KEY.foodListFilterMeta],
     queryFn: getFoodListFilterMeta,
   });
-
   return {
     ...restQuery,
     keywords: data?.keywords,
