@@ -8,6 +8,7 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.OneToOne;
+import java.time.Year;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -43,7 +44,7 @@ public class Pet extends BaseTimeEntity {
     private String name;
 
     @Column(nullable = false)
-    private Integer age;
+    private Year birthYear;
 
     @Embedded
     private Breeds breeds;
@@ -55,5 +56,9 @@ public class Pet extends BaseTimeEntity {
     private Double weight;
 
     private String imageUrl;
+
+    public int calculateAge() {
+        return Year.now().getValue() - birthYear.getValue();
+    }
 
 }
