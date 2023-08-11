@@ -16,6 +16,7 @@ class AgeGroupTest {
 
     @Test
     void 한_살_미만은_PUPPY다() {
+        // given
         int age = 0;
 
         // when
