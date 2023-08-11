@@ -21,8 +21,8 @@ else
     fi
 fi
 
-sudo chmod +x ./zipgo-backend-0.0.1-SNAPSHOT.jar
+sudo chmod +x ~/develop/zipgo-backend-0.0.1-SNAPSHOT.jar
 sudo nohup java -jar \
 -Dspring.profiles.active=dev \
--Dspring.config.import=env.properties \
-./zipgo-backend-0.0.1-SNAPSHOT.jar > ./application.log 2>&1 &
+-Dspring.config.import=file:/home/ubuntu/develop/env.properties \
+~/develop/zipgo-backend-0.0.1-SNAPSHOT.jar > ~/develop/application.log 2>&1 &
