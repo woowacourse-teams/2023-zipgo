@@ -13,6 +13,8 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import zipgo.pet.domain.Pet;
 
+import zipgo.common.entity.BaseTimeEntity;
+
 import static lombok.AccessLevel.PROTECTED;
 import static lombok.EqualsAndHashCode.Include;
 
@@ -21,8 +23,8 @@ import static lombok.EqualsAndHashCode.Include;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor(access = PROTECTED)
-@EqualsAndHashCode(onlyExplicitlyIncluded = true)
-public class Member {
+@EqualsAndHashCode(onlyExplicitlyIncluded = true, callSuper = true)
+public class Member extends BaseTimeEntity {
 
     @Id
     @Include

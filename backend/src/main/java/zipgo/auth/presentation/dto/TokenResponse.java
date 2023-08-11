@@ -2,7 +2,7 @@ package zipgo.auth.presentation.dto;
 
 import zipgo.member.domain.Member;
 
-public record TokenResponse (
+public record TokenResponse(
         String accessToken,
         AuthResponse authResponse
 ) {
