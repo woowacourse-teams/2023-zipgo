@@ -3,7 +3,8 @@ package zipgo.review.application.dto;
 public record GetReviewQueryDto(
         Long petFoodId,
         int size,
-        Long lastReviewId) {
+        Long lastReviewId
+) {
 
     public GetReviewQueryDto {
         if (petFoodId == null) {

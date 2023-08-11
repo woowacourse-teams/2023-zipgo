@@ -44,8 +44,8 @@ public class ReviewController {
     public ResponseEntity<GetReviewsResponse> getAllReviews(@PathVariable Long petFoodId,
                                                             @RequestParam(defaultValue = "10", required = false) int size,
                                                             @RequestParam(required = false) Long lastReviewId) {
-        GetReviewQueryDto dto = new GetReviewQueryDto(petFoodId, size, lastReviewId);
-        GetReviewsResponse reviews = reviewQueryService.getReviews(dto);
+        GetReviewQueryDto reviewQueryDto = new GetReviewQueryDto(petFoodId, size, lastReviewId);
+        GetReviewsResponse reviews = reviewQueryService.getReviews(reviewQueryDto);
 
         return ResponseEntity.ok(reviews);
     }
