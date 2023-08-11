@@ -7,7 +7,6 @@ import org.springframework.data.jpa.repository.config.EnableJpaAuditing;
 import zipgo.auth.infra.kakao.config.KakaoCredentials;
 import zipgo.common.config.JwtCredentials;
 
-@EnableJpaAuditing
 @SpringBootApplication
 @EnableConfigurationProperties({KakaoCredentials.class, JwtCredentials.class})
 public class ZipgoApplication {
