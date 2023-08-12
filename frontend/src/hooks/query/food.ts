@@ -17,12 +17,11 @@ export const useFoodListInfiniteQuery = (payload: Parameter<typeof getFoodList>)
     queryKey: [QUERY_KEY.petFoods],
     queryFn: ({ pageParam = { ...payload, size: String(SIZE_PER_PAGE) } }) =>
       getFoodList(pageParam),
-    getNextPageParam: currentFoodListRes => {
-      const lastFood = currentFoodListRes.petFoods.at(-1);
+    getNextPageParam: (lastFoodListRes, allFoodListRes) => {
+      const lastFood = lastFoodListRes.petFoods.at(-1);
       const isLastPage =
-        currentFoodListRes.petFoods.length >= currentFoodListRes.totalCount ||
-        currentFoodListRes.petFoods.length < SIZE_PER_PAGE;
-
+        allFoodListRes.flatMap(foodListRes => foodListRes.petFoods).length >=
+          lastFoodListRes.totalCount || lastFoodListRes.petFoods.length < SIZE_PER_PAGE;
       if (!lastFood || isLastPage) return undefined;
 
       return { ...payload, lastPetFoodId: String(lastFood.id), size: String(SIZE_PER_PAGE) };
