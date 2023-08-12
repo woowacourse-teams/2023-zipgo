@@ -2,6 +2,7 @@ import { useCallback, useEffect, useRef, useState } from 'react';
 
 import { initialSelectedFilterList, SelectedFilterList } from '@/context/food';
 import type { KeywordEn } from '@/types/food/client';
+import { isEqualObjectWithStringValues } from '@/utils/objectComparator';
 
 import useValidQueryString from './common/useValidQueryString';
 import { useFoodListInfiniteQuery } from './query/food';
@@ -38,7 +39,7 @@ export const useInfiniteFoodListScroll = () => {
     'functionalities',
   ]);
 
-  if (!queries.nutritionStandards) queries.nutritionStandards = '';
+  if (isEqualObjectWithStringValues<KeywordEn>(queries, {})) queries.nutritionStandards = '';
 
   const { foodList, fetchNextPage, hasNextPage, isFetchingNextPage, remove, refetch } =
     useFoodListInfiniteQuery(queries);
