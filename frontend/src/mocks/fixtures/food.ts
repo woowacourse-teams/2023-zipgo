@@ -7,14 +7,14 @@ const getFoodList = (): GetFoodListRes => ({
       id: 1,
       purchaseUrl: 'purchaseUrl',
       imageUrl: 'imageUrl',
-      brandName: '오리젠',
+      brandName: '아카나',
       foodName: '맛난 사료',
     },
     {
       id: 2,
       purchaseUrl: 'purchaseUrl',
       imageUrl: 'imageUrl',
-      brandName: '오리젠',
+      brandName: '아카나',
       foodName: '맛난 사료',
     },
     {
@@ -295,6 +295,11 @@ const getFoodListFilterMeta = (): GetFoodListFilterMetaRes => ({
       {
         id: 1,
         brandName: '오리젠',
+        brandUrl: 'url',
+      },
+      {
+        id: 2,
+        brandName: '아카나',
         brandUrl: 'url',
       },
     ],
