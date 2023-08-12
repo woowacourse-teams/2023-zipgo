@@ -1,7 +1,7 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
 
 import { initialSelectedFilterList, SelectedFilterList } from '@/context/food';
-import type { KeywordEn, KeywordForPaging } from '@/types/food/client';
+import type { KeywordEn } from '@/types/food/client';
 
 import useValidQueryString from './common/useValidQueryString';
 import { useFoodListInfiniteQuery } from './query/food';
@@ -31,16 +31,16 @@ export const useFoodListFilter = () => {
 };
 
 export const useInfiniteFoodListScroll = () => {
-  const queriesForPaging = useValidQueryString<KeywordForPaging>(['lastPetFoodId', 'size']);
-  const queriesForFiltering = useValidQueryString<KeywordEn>([
+  const queries = useValidQueryString<KeywordEn>([
     'nutritionStandards',
     'mainIngredients',
     'brands',
     'functionalities',
   ]);
-  const queries = { ...queriesForPaging, ...queriesForFiltering };
 
-  const { foodList, fetchNextPage, hasNextPage, isFetchingNextPage, refetch } =
+  if (!queries.nutritionStandards) queries.nutritionStandards = '';
+
+  const { foodList, fetchNextPage, hasNextPage, isFetchingNextPage, remove, refetch } =
     useFoodListInfiniteQuery(queries);
 
   const executeFoodListInfiniteQuery = useCallback(
@@ -64,9 +64,10 @@ export const useInfiniteFoodListScroll = () => {
     return () => observer.disconnect();
   }, [executeFoodListInfiniteQuery]);
 
-  // useEffect(() => {
-  //   // refetch();
-  // }, [Object.values(queries)]);
+  useEffect(() => {
+    remove();
+    refetch();
+  }, Object.values(queries));
 
   return { foodList, hasNextPage, refetch, targetRef };
 };
