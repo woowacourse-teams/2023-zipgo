@@ -12,6 +12,7 @@ import lombok.Builder;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import zipgo.common.entity.BaseTimeEntity;
 
 import static jakarta.persistence.FetchType.LAZY;
 import static jakarta.persistence.GenerationType.IDENTITY;
@@ -20,10 +21,10 @@ import static lombok.EqualsAndHashCode.Include;
 @Getter
 @Entity
 @Builder
-@EqualsAndHashCode
 @AllArgsConstructor
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class Breeds {
+@EqualsAndHashCode(onlyExplicitlyIncluded = true, callSuper = false)
+public class Breeds extends BaseTimeEntity {
 
     @Id
     @Include

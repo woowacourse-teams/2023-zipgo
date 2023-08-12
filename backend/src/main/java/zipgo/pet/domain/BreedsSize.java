@@ -11,16 +11,17 @@ import lombok.Builder;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import zipgo.common.entity.BaseTimeEntity;
 
 import static lombok.EqualsAndHashCode.Include;
 
 @Getter
 @Entity
 @Builder
-@EqualsAndHashCode
 @AllArgsConstructor
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class BreedsSize {
+@EqualsAndHashCode(onlyExplicitlyIncluded = true, callSuper = false)
+public class BreedsSize extends BaseTimeEntity {
 
     @Id
     @Include
