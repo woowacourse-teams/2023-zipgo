@@ -36,7 +36,7 @@ public class Breeds extends BaseTimeEntity {
 
     @ManyToOne(fetch = LAZY)
     @JoinColumn(nullable = false)
-    private BreedsSize breedsSize;
+    private PetSize petSize;
 
 }
 
