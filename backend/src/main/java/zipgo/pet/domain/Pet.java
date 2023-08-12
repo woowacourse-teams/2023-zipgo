@@ -38,7 +38,7 @@ public class Pet extends BaseTimeEntity {
 
     @OneToOne(fetch = LAZY)
     @JoinColumn(nullable = false)
-    private Member member;
+    private Member owner;
 
     @Column(nullable = false)
     private String name;
