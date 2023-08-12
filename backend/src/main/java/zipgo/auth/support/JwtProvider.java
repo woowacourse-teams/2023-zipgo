@@ -1,4 +1,4 @@
-package zipgo.auth.util;
+package zipgo.auth.support;
 
 
 import io.jsonwebtoken.Claims;

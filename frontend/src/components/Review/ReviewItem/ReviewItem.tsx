@@ -7,6 +7,7 @@ import StarRatingDisplay from '@/components/@common/StarRating/StarRatingDisplay
 import { COMMENT_VISIABLE_LINE_LIMIT, REACTIONS } from '@/constants/review';
 import { useValidParams } from '@/hooks/@common/useValidParams';
 import { useRemoveReviewMutation } from '@/hooks/query/review';
+import { routerPath } from '@/router/routes';
 import { Review } from '@/types/review/client';
 
 interface ReviewItemProps extends Review {}
@@ -33,7 +34,7 @@ const ReviewItem = (reviewItemProps: ReviewItemProps) => {
   const [isCommentExpanded, setIsCommentExpanded] = useState(false);
 
   const onClickEditButton = () => {
-    navigate(`/pet-food/${petFoodId}/reviews/write`, {
+    navigate(routerPath.reviewStarRating({ petFoodId }), {
       state: {
         selectedRating: rating,
         isEditMode: true,

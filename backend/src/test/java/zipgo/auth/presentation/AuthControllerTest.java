@@ -15,7 +15,8 @@ import org.springframework.restdocs.mockmvc.RestDocumentationResultHandler;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.web.servlet.MockMvc;
 import zipgo.auth.application.AuthService;
-import zipgo.auth.util.JwtProvider;
+import zipgo.auth.exception.AuthException;
+import zipgo.auth.support.JwtProvider;
 import zipgo.member.application.MemberQueryService;
 
 import static com.epages.restdocs.apispec.RestAssuredRestDocumentationWrapper.resourceDetails;
@@ -65,6 +66,20 @@ class AuthControllerTest {
 
         // then
         요청.andExpect(status().isOk());
+    }
+
+    @Test
+    void 자원_서버의_토큰을_가져오는데_실패하면_예외가_발생한다() throws Exception {
+        // given
+        when(authService.createToken("인가_코드"))
+                .thenThrow(AuthException.ResourceNotFound.class);
+
+        // when
+        var 요청 = mockMvc.perform(post("/auth/login")
+                .param("code", "인가_코드"));
+
+        // then
+        요청.andExpect(status().isNotFound());
     }
 
     private RestDocumentationResultHandler 소셜_로그인_문서_생성() {

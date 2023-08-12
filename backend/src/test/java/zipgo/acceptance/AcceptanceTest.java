@@ -15,7 +15,7 @@ import org.springframework.restdocs.RestDocumentationContextProvider;
 import org.springframework.restdocs.RestDocumentationExtension;
 import org.springframework.test.context.jdbc.Sql;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
-import zipgo.auth.util.JwtProvider;
+import zipgo.auth.support.JwtProvider;
 
 import static com.epages.restdocs.apispec.Schema.schema;
 import static org.springframework.restdocs.operation.preprocess.Preprocessors.prettyPrint;

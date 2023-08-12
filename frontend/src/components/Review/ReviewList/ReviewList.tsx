@@ -4,6 +4,7 @@ import { styled } from 'styled-components';
 import WriteIcon from '@/assets/svg/write_btn.svg';
 import { useValidParams } from '@/hooks/@common/useValidParams';
 import { useReviewListQuery } from '@/hooks/query/review';
+import { routerPath } from '@/router/routes';
 
 import ReviewItem from '../ReviewItem/ReviewItem';
 

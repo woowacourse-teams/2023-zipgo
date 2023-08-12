@@ -20,11 +20,13 @@ public class PetFoodQueryRepository {
 
     private final JPAQueryFactory queryFactory;
 
-    public List<PetFood> findPetFoods(
+    public List<PetFood> findPagingPetFoods(
             List<String> brandsName,
             List<String> standards,
             List<String> primaryIngredientList,
-            List<String> functionalityList
+            List<String> functionalityList,
+            Long lastPetFoodId,
+            int size
     ) {
         return queryFactory
                 .selectFrom(petFood)
@@ -34,12 +36,22 @@ public class PetFoodQueryRepository {
                 .fetchJoin()
                 .join(petFood.functionalities, functionality)
                 .where(
+                        isLessThan(lastPetFoodId),
                         isContainBrand(brandsName),
                         isMeetStandardCondition(standards),
                         isContainPrimaryIngredients(primaryIngredientList),
                         isContainFunctionalities(functionalityList)
                 )
+                .orderBy(petFood.id.desc())
+                .limit(size)
                 .fetch();
+    }
+
+    private BooleanExpression isLessThan(Long lastPetFoodId) {
+        if (lastPetFoodId == null) {
+            return null;
+        }
+        return petFood.id.lt(lastPetFoodId);
     }
 
     private BooleanExpression isContainBrand(List<String> brandsName) {
@@ -76,6 +88,23 @@ public class PetFoodQueryRepository {
             return null;
         }
         return petFood.functionalities.any().name.in(functionalityList);
+    }
+
+    public Long getCount(List<String> brandsName, List<String> standards, List<String> primaryIngredientList,
+                         List<String> functionalityList) {
+        return queryFactory
+                .select(petFood.count())
+                .from(petFood)
+                .join(petFood.brand, brand)
+                .join(petFood.primaryIngredients, primaryIngredient)
+                .join(petFood.functionalities, functionality)
+                .where(
+                        isContainBrand(brandsName),
+                        isMeetStandardCondition(standards),
+                        isContainPrimaryIngredients(primaryIngredientList),
+                        isContainFunctionalities(functionalityList)
+                )
+                .fetchOne();
     }
 
 }

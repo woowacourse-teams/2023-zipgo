@@ -4,8 +4,8 @@ import zipgo.auth.application.dto.OAuthMemberResponse;
 
 public interface OAuthClient {
 
-    public String getAccessToken(String authCode);
+    String getAccessToken(String authCode);
 
-    public OAuthMemberResponse getMember(String accessToken);
+    OAuthMemberResponse getMember(String accessToken);
 
 }

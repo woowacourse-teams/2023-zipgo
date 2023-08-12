@@ -32,8 +32,8 @@ class PetFoodQueryRepositoryTest {
         List<String> functionalityList = EMPTY_LIST;
 
         // when
-        List<PetFood> petFoods = petFoodQueryRepository.findPetFoods(brandsName, standards, primaryIngredientList,
-                functionalityList);
+        List<PetFood> petFoods = petFoodQueryRepository.findPagingPetFoods(brandsName, standards, primaryIngredientList,
+                functionalityList, 5L, 20);
 
         // then
         Assertions.assertAll(

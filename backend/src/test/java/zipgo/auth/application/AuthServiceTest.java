@@ -7,8 +7,9 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
-import zipgo.auth.application.dto.KakaoMemberResponse;
-import zipgo.auth.util.JwtProvider;
+import zipgo.auth.infra.kakao.KakaoOAuthClient;
+import zipgo.auth.infra.kakao.dto.KakaoMemberResponse;
+import zipgo.auth.support.JwtProvider;
 import zipgo.member.domain.Member;
 import zipgo.member.domain.repository.MemberRepository;
 
@@ -72,8 +73,6 @@ class AuthServiceTest {
     private void 카카오_토큰_받기_성공() {
         when(oAuthClient.getAccessToken("코드"))
                 .thenReturn("토큰");
-
-        카카오_응답();
         when(oAuthClient.getMember("토큰"))
                 .thenReturn(카카오_응답());
     }

@@ -26,6 +26,7 @@ import static org.springframework.restdocs.payload.PayloadDocumentation.fieldWit
 import static org.springframework.restdocs.payload.PayloadDocumentation.responseFields;
 import static org.springframework.restdocs.request.RequestDocumentation.parameterWithName;
 import static org.springframework.restdocs.request.RequestDocumentation.pathParameters;
+import static org.springframework.restdocs.request.RequestDocumentation.queryParameters;
 
 public class PetFoodAcceptanceTest extends AcceptanceTest {
 
@@ -43,6 +44,7 @@ public class PetFoodAcceptanceTest extends AcceptanceTest {
         void 필터를_지정하지_않고_요청한다() {
             // given
             var 요청_준비 = given(spec)
+                    .queryParam("size", 20)
                     .filter(성공_API_문서_생성("식품 필터링 없이 조회 - 성공(전체 조회)"));
 
             // when
@@ -67,6 +69,7 @@ public class PetFoodAcceptanceTest extends AcceptanceTest {
                     .queryParam("nutritionStandards", 영양기준)
                     .queryParam("functionalities", 기능성)
                     .queryParam("mainIngredients", 주단백질원)
+                    .queryParam("size", 20)
                     .filter(성공_API_문서_생성("식품 필터링 조회 - 성공"));
 
             // when
@@ -81,7 +84,16 @@ public class PetFoodAcceptanceTest extends AcceptanceTest {
         private RestDocumentationFilter 성공_API_문서_생성(String name) {
             return document(name,
                     API_정보.responseSchema(성공_응답_형식),
+                    queryParameters(
+                            parameterWithName("brands").description("브랜드(optional)").optional(),
+                            parameterWithName("nutritionStandards").description("영양기준(optional)").optional(),
+                            parameterWithName("functionalities").description("기능성(optional)").optional(),
+                            parameterWithName("mainIngredients").description("주영양소(optional)").optional(),
+                            parameterWithName("lastPetFoodId").description("마지막식품Id(제일 처음에 null)").optional(),
+                            parameterWithName("size").description("식품 페이징 사이즈").optional()
+                    ),
                     responseFields(
+                            fieldWithPath("totalCount").description("전체 식품 개수").type(JsonFieldType.NUMBER),
                             fieldWithPath("petFoods").description("반려동물 식품 리스트").type(JsonFieldType.ARRAY),
                             fieldWithPath("petFoods[].id").description("식품 id").type(JsonFieldType.NUMBER),
                             fieldWithPath("petFoods[].imageUrl").description("식품 이미지 url").type(JsonFieldType.STRING),
@@ -221,10 +233,9 @@ public class PetFoodAcceptanceTest extends AcceptanceTest {
 
         private Schema 성공_응답_형식 = schema("FilterMetadataResponse");
 
-        // TODO: 구현 후 문서 수정하기
         private ResourceSnippetDetails 문서_정보 = resourceDetails()
-                .summary("[임시] 필터링 메타데이터 정보 조회하기")
-                .description("필터링에 필요한 메타데이터 정보를 조회합니다. 230802 - 실제 데이터 아님");
+                .summary("필터링 메타데이터 정보 조회하기")
+                .description("필터링에 필요한 메타데이터 정보를 조회합니다.");
 
         @Test
         void 필터링에_필요한_메타데이터를_조회한다() {

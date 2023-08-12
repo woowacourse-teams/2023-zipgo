@@ -1,11 +1,10 @@
 package zipgo.auth.application;
 
-import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import zipgo.auth.application.dto.OAuthMemberResponse;
-import zipgo.auth.util.JwtProvider;
+import zipgo.auth.support.JwtProvider;
 import zipgo.member.domain.Member;
 import zipgo.member.domain.repository.MemberRepository;
 
@@ -22,14 +21,10 @@ public class AuthService {
         String accessToken = oAuthClient.getAccessToken(authCode);
         OAuthMemberResponse oAuthMemberResponse = oAuthClient.getMember(accessToken);
 
-        Optional<Member> memberOptional = memberRepository.findByEmail(oAuthMemberResponse.getEmail());
-        if (memberOptional.isPresent()) {
-            return jwtProvider.create(String.valueOf(memberOptional.get().getId()));
-        }
+        Member member = memberRepository.findByEmail(oAuthMemberResponse.getEmail())
+                .orElseGet(() -> memberRepository.save(oAuthMemberResponse.toMember()));
 
-        Member member = oAuthMemberResponse.toMember();
-        Long memberId = memberRepository.save(member).getId();
-        return jwtProvider.create(String.valueOf(memberId));
+        return jwtProvider.create(String.valueOf(member.getId()));
     }
 
 }

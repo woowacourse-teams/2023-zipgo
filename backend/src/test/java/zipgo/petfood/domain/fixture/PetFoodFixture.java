@@ -3,6 +3,7 @@ package zipgo.petfood.domain.fixture;
 import zipgo.brand.domain.Brand;
 import zipgo.petfood.domain.HasStandard;
 import zipgo.petfood.domain.PetFood;
+import zipgo.petfood.domain.Reviews;
 
 import static zipgo.petfood.domain.PetFood.builder;
 
@@ -15,6 +16,7 @@ public class PetFoodFixture {
                 .imageUrl("https://github.com/wonyongChoi05/img")
                 .brand(brand)
                 .hasStandard(HasStandard.builder().unitedStates(true).europe(true).build())
+                .reviews(new Reviews())
                 .build();
     }
 
@@ -25,6 +27,7 @@ public class PetFoodFixture {
                 .imageUrl("https://github.com/wonyongChoi05/img")
                 .brand(brand)
                 .hasStandard(HasStandard.builder().unitedStates(true).europe(false).build())
+                .reviews(new Reviews())
                 .build();
     }
 
@@ -35,6 +38,7 @@ public class PetFoodFixture {
                 .imageUrl("https://github.com/wonyongChoi05/img")
                 .brand(brand)
                 .hasStandard(HasStandard.builder().unitedStates(false).europe(true).build())
+                .reviews(new Reviews())
                 .build();
     }
 

@@ -11,7 +11,7 @@ import zipgo.auth.application.AuthService;
 import zipgo.auth.presentation.dto.AuthDto;
 import zipgo.auth.presentation.dto.AuthResponse;
 import zipgo.auth.presentation.dto.TokenResponse;
-import zipgo.auth.util.JwtProvider;
+import zipgo.auth.support.JwtProvider;
 import zipgo.member.application.MemberQueryService;
 import zipgo.member.domain.Member;
 

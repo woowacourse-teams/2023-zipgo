@@ -10,6 +10,8 @@ import {
   useReviewItemQuery,
 } from '@/hooks/query/review';
 import { ACTION_TYPES, useReviewForm } from '@/hooks/review/useReviewForm';
+import { routerPath } from '@/router/routes';
+import { AdverseReaction, StoolCondition, TastePreference } from '@/types/review/client';
 
 interface ReviewFormProps {
   petFoodId: number;
@@ -33,7 +35,7 @@ const ReviewForm = (reviewFormProps: ReviewFormProps) => {
     if (isEditMode && reviewItem) {
       editReviewMutation.editReview({ reviewId, ...review }).then(() => {
         alert('리뷰 수정이 완료되었습니다.');
-        navigate(`/pet-food/${petFoodId}`);
+        navigate(routerPath.foodDetail({ petFoodId }));
       });
 
       return;
@@ -41,7 +43,7 @@ const ReviewForm = (reviewFormProps: ReviewFormProps) => {
 
     addReviewMutation.addReview(review).then(() => {
       alert('리뷰 작성이 완료되었습니다.');
-      navigate(`/pet-food/${petFoodId}`);
+      navigate(routerPath.foodDetail({ petFoodId }));
     });
   };
 

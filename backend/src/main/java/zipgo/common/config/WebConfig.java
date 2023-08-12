@@ -9,7 +9,7 @@ import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 import zipgo.auth.presentation.AuthInterceptor;
 import zipgo.auth.presentation.JwtArgumentResolver;
-import zipgo.auth.util.JwtProvider;
+import zipgo.auth.support.JwtProvider;
 
 import static org.springframework.http.HttpHeaders.LOCATION;
 
