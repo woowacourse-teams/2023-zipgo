@@ -39,7 +39,7 @@ public class Member extends BaseTimeEntity {
 
     private String profileImgUrl;
 
-    @OneToOne(mappedBy = "member")
+    @OneToOne(mappedBy = "owner")
     private Pet pet;
 
 }
