@@ -1,4 +1,3 @@
-import { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import styled, { css } from 'styled-components';
 
@@ -51,13 +50,6 @@ const KeywordContent = (props: KeywordContentProps) => {
   const { parsedSelectedFilterList, resetSelectedFilterList } = useFoodFilterContext();
 
   const navigate = useNavigate();
-
-  useEffect(
-    () => () => {
-      resetSelectedFilterList();
-    },
-    [],
-  );
 
   if (!keywords || !filterList) return null;
 
