@@ -3,9 +3,7 @@ package zipgo.pet.exception;
 public class PetException extends RuntimeException {
 
     public PetException(String message) {
-
         super(message);
-
     }
 
     public static class NotFound extends PetException {
