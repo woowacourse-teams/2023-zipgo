@@ -16,7 +16,7 @@ import zipgo.auth.presentation.Auth;
 import zipgo.auth.presentation.dto.AuthDto;
 import zipgo.review.application.ReviewQueryService;
 import zipgo.review.application.ReviewService;
-import zipgo.review.application.dto.GetReviewQueryDto;
+import zipgo.review.application.dto.GetReviewQueryRequest;
 import zipgo.review.domain.Review;
 import zipgo.review.dto.request.CreateReviewRequest;
 import zipgo.review.dto.request.UpdateReviewRequest;
@@ -44,7 +44,7 @@ public class ReviewController {
     public ResponseEntity<GetReviewsResponse> getAllReviews(@PathVariable Long petFoodId,
                                                             @RequestParam(defaultValue = "10", required = false) int size,
                                                             @RequestParam(required = false) Long lastReviewId) {
-        GetReviewQueryDto reviewQueryDto = new GetReviewQueryDto(petFoodId, size, lastReviewId);
+        GetReviewQueryRequest reviewQueryDto = new GetReviewQueryRequest(petFoodId, size, lastReviewId);
         GetReviewsResponse reviews = reviewQueryService.getReviews(reviewQueryDto);
 
         return ResponseEntity.ok(reviews);

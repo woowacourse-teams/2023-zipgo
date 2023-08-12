@@ -12,7 +12,7 @@ import zipgo.member.domain.Member;
 import zipgo.member.domain.repository.MemberRepository;
 import zipgo.petfood.domain.PetFood;
 import zipgo.petfood.domain.repository.PetFoodRepository;
-import zipgo.review.application.dto.GetReviewQueryDto;
+import zipgo.review.application.dto.GetReviewQueryRequest;
 import zipgo.review.domain.Review;
 import zipgo.review.domain.repository.ReviewRepository;
 import zipgo.review.dto.response.GetReviewResponse;
@@ -64,7 +64,7 @@ class ReviewQueryServiceTest extends QueryServiceTest {
         GetReviewResponse 리뷰2_dto = GetReviewResponse.from(리뷰2);
 
         //when
-        GetReviewsResponse reviews = reviewQueryService.getReviews(new GetReviewQueryDto(식품.getId(), 2, null));
+        GetReviewsResponse reviews = reviewQueryService.getReviews(new GetReviewQueryRequest(식품.getId(), 2, null));
 
         //then
         assertThat(reviews.reviews().size()).isEqualTo(2);
@@ -75,7 +75,7 @@ class ReviewQueryServiceTest extends QueryServiceTest {
     @Test
     void 식품_id가_null이면_예외가_발생한다() {
         // expect
-        assertThatThrownBy(() -> new GetReviewQueryDto(null, 10, null))
+        assertThatThrownBy(() -> new GetReviewQueryRequest(null, 10, null))
                 .isInstanceOf(IllegalArgumentException.class);
     }
 
@@ -83,7 +83,7 @@ class ReviewQueryServiceTest extends QueryServiceTest {
     @ValueSource(ints = {0, -1, -100, Integer.MAX_VALUE + 1})
     void size가_0_이하면_예외가_발생한다(int 음수) {
         // expect
-        assertThatThrownBy(() -> reviewQueryService.getReviews(new GetReviewQueryDto(1L, 음수, null)))
+        assertThatThrownBy(() -> reviewQueryService.getReviews(new GetReviewQueryRequest(1L, 음수, null)))
                 .isInstanceOf(IllegalArgumentException.class);
     }
 

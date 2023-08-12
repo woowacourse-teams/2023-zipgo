@@ -1,12 +1,12 @@
 package zipgo.review.application.dto;
 
-public record GetReviewQueryDto(
+public record GetReviewQueryRequest(
         Long petFoodId,
         int size,
         Long lastReviewId
 ) {
 
-    public GetReviewQueryDto {
+    public GetReviewQueryRequest {
         if (petFoodId == null) {
             throw new IllegalArgumentException("petFoodId는 null이 될 수 없습니다.");
         }
