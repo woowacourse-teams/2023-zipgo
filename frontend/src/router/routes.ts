@@ -9,7 +9,7 @@ const STATIC: Record<Uppercase<CamelToSnake<keyof typeof generateStaticPath>>, s
 const DYNAMIC: Record<Uppercase<CamelToSnake<keyof typeof generateDynamicPath>>, string> = {
   FOOD_DETAIL: '/pet-food/:petFoodId',
   REVIEW_STAR_RATING: '/pet-food/:petFoodId/reviews/write',
-  REVIEW_ADDITION: '/pet-food/:petFoodId/reviews/write/:rating/detail/:isEditMode',
+  REVIEW_ADDITION: '/pet-food/:petFoodId/reviews/write/detail',
 };
 
 export const PATH = {
@@ -23,9 +23,9 @@ export const generateStaticPath = {
 };
 
 export const generateDynamicPath = {
-  foodDetail: ({ petFoodId }: PathParams<'petFoodId'>) => `/pet-food/:${petFoodId}`,
+  foodDetail: ({ petFoodId }: PathParams<'petFoodId'>) => `/pet-food/${petFoodId}`,
   reviewStarRating: ({ petFoodId }: PathParams<'petFoodId'>) =>
-    `/pet-food/${petFoodId}}/reviews/write`,
+    `/pet-food/${petFoodId}/reviews/write`,
   reviewAddition: ({ petFoodId }: PathParams<'petFoodId'>) =>
     `/pet-food/${petFoodId}/reviews/write/detail`,
 };

@@ -14,7 +14,7 @@ const ReviewList = () => {
   const { reviewList } = useReviewListQuery({ petFoodId });
 
   const authData = localStorage.getItem('auth');
-  const goReviewWrite = () => navigate(`/pet-food/${petFoodId}/reviews/write`);
+  const goReviewWrite = () => navigate(routerPath.reviewStarRating({ petFoodId }));
 
   if (!reviewList) throw new Error('리뷰 리스트를 찾을 수 없습니다.');
 
