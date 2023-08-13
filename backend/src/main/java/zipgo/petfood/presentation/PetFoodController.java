@@ -38,14 +38,14 @@ public class PetFoodController {
             @RequestParam(required = false) Long lastPetFoodId,
             @RequestParam(defaultValue = "20", required = false) int size
     ) throws UnsupportedEncodingException {
-        FilterRequest filterDto = FilterRequest.of(
+        FilterRequest filterRequest = FilterRequest.of(
                 convertStringsToCollection(brands),
                 convertStringsToCollection(nutritionStandards),
                 convertStringsToCollection(mainIngredients),
                 convertStringsToCollection(functionalities)
         );
-        List<PetFood> petFoods = petFoodQueryService.getPetFoodsByFilters(filterDto, lastPetFoodId, size);
-        Long count = petFoodQueryService.getPetFoodsCountByFilters(filterDto);
+        List<PetFood> petFoods = petFoodQueryService.getPetFoodsByFilters(filterRequest, lastPetFoodId, size);
+        Long count = petFoodQueryService.getPetFoodsCountByFilters(filterRequest);
         return ResponseEntity.ok(GetPetFoodsResponse.from(count, petFoods));
     }
 
