@@ -198,7 +198,8 @@ class PetFoodQueryServiceTest extends ServiceTest {
             // then
             assertAll(
                     () -> assertThat(petFoods).hasSize(1),
-                    () -> assertThat(petFoods).extracting(petFood -> petFood.getPetFoodPrimaryIngredients().get(0).getPrimaryIngredient().getName())
+                    () -> assertThat(petFoods).extracting(
+                                    petFood -> petFood.getPetFoodPrimaryIngredients().get(0).getPrimaryIngredient().getName())
                             .isEqualTo(List.of("소고기"))
             );
         }
@@ -224,7 +225,8 @@ class PetFoodQueryServiceTest extends ServiceTest {
             // then
             assertAll(
                     () -> assertThat(petFoods).hasSize(1),
-                    () -> assertThat(petFoods).extracting(petFood -> petFood.getPetFoodFunctionalities().get(0).getFunctionality().getName())
+                    () -> assertThat(petFoods).extracting(
+                                    petFood -> petFood.getPetFoodFunctionalities().get(0).getFunctionality().getName())
                             .isEqualTo(List.of("튼튼"))
             );
         }
@@ -253,9 +255,11 @@ class PetFoodQueryServiceTest extends ServiceTest {
                     () -> assertThat(petFoods).hasSize(1),
                     () -> assertThat(petFoods).extracting(petFood -> petFood.getHasStandard().getEurope())
                             .contains(true),
-                    () -> assertThat(petFoods).extracting(petFood -> petFood.getPetFoodPrimaryIngredients().get(0).getPrimaryIngredient().getName())
+                    () -> assertThat(petFoods).extracting(
+                                    petFood -> petFood.getPetFoodPrimaryIngredients().get(0).getPrimaryIngredient().getName())
                             .isEqualTo(List.of("소고기")),
-                    () -> assertThat(petFoods).extracting(petFood -> petFood.getPetFoodFunctionalities().get(0).getFunctionality().getName())
+                    () -> assertThat(petFoods).extracting(
+                                    petFood -> petFood.getPetFoodFunctionalities().get(0).getFunctionality().getName())
                             .isEqualTo(List.of("튼튼"))
             );
         }
