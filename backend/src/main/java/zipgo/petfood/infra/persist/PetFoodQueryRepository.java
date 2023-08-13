@@ -53,7 +53,7 @@ public class PetFoodQueryRepository {
             List<String> functionalityList
     ) {
         return queryFactory
-                .select(petFood.count())
+                .select(petFood.id.countDistinct())
                 .from(petFood)
                 .join(petFood.brand, brand)
                 .join(petFood.petFoodPrimaryIngredients, petFoodPrimaryIngredient)
