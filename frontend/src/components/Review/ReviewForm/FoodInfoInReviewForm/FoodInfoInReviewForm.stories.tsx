@@ -21,35 +21,35 @@ type Story = StoryObj<typeof FoodInfoInReviewForm>;
 
 export const Score5: Story = {
   args: {
-    petFoodId: 0,
+    petFoodId: 1,
     rating: 5,
   },
 };
 
 export const Score4: Story = {
   args: {
-    petFoodId: 0,
+    petFoodId: 1,
     rating: 4,
   },
 };
 
 export const Score3: Story = {
   args: {
-    petFoodId: 0,
+    petFoodId: 1,
     rating: 3,
   },
 };
 
 export const Score2: Story = {
   args: {
-    petFoodId: 0,
+    petFoodId: 1,
     rating: 2,
   },
 };
 
 export const Score1: Story = {
   args: {
-    petFoodId: 0,
+    petFoodId: 1,
     rating: 1,
   },
 };
