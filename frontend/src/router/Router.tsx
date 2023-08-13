@@ -4,6 +4,8 @@ import App from '@/App';
 import FoodDetail from '@/pages/FoodDetail/FoodDetail';
 import Landing from '@/pages/Landing/Landing';
 import Login from '@/pages/Login/Login';
+import PetProfileAddition from '@/pages/PetProfile/PetProfileAddition';
+import PetProfileNameAddition from '@/pages/PetProfile/PetProfileNameAddition';
 import ReviewAddition from '@/pages/ReviewAddition/ReviewAddition';
 import ReviewStarRating from '@/pages/ReviewStarRating/ReviewStarRating';
 
@@ -34,6 +36,16 @@ export const router = createBrowserRouter([
       {
         path: PATH.REVIEW_ADDITION,
         element: <ReviewAddition />,
+      },
+      {
+        path: PATH.PET_PROFILE_ADDITION,
+        element: <PetProfileAddition />,
+        children: [
+          {
+            index: true,
+            element: <PetProfileNameAddition />,
+          },
+        ],
       },
     ],
   },

@@ -4,6 +4,8 @@ import type { CamelToSnake } from '@/types/common/utility';
 const STATIC: Record<Uppercase<CamelToSnake<keyof typeof generateStaticPath>>, string> = {
   HOME: '/',
   LOGIN: '/login',
+  PET_PROFILE_ADDITION: '/pets/write/',
+  PET_PROFILE_NAME_ADDITION: '/pets/write/name',
 };
 
 const DYNAMIC: Record<Uppercase<CamelToSnake<keyof typeof generateDynamicPath>>, string> = {
@@ -20,6 +22,8 @@ export const PATH = {
 export const generateStaticPath = {
   home: () => STATIC.HOME,
   login: () => STATIC.LOGIN,
+  petProfileAddition: () => STATIC.PET_PROFILE_ADDITION,
+  petProfileNameAddition: () => STATIC.PET_PROFILE_NAME_ADDITION,
 };
 
 export const generateDynamicPath = {
