@@ -26,6 +26,7 @@ import zipgo.review.domain.type.AdverseReactionType;
 import zipgo.review.domain.type.StoolCondition;
 import zipgo.review.domain.type.TastePreference;
 
+import static jakarta.persistence.CascadeType.MERGE;
 import static jakarta.persistence.CascadeType.PERSIST;
 import static jakarta.persistence.CascadeType.REMOVE;
 import static jakarta.persistence.EnumType.STRING;
@@ -73,6 +74,10 @@ public class Review extends BaseTimeEntity {
     @Default
     @OneToMany(mappedBy = "review", orphanRemoval = true, cascade = {PERSIST, REMOVE})
     private List<AdverseReaction> adverseReactions = new ArrayList<>();
+
+    @Default
+    @OneToMany(mappedBy = "review", orphanRemoval = true, cascade = {MERGE, REMOVE})
+    private List<HelpfulReaction> helpfulReactions = new ArrayList<>();
 
     public void addAdverseReactions(List<String> adverseReactionNames) {
         List<AdverseReaction> adverseReactions = adverseReactionNames.stream()
