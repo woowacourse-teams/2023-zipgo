@@ -5,11 +5,14 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.OneToOne;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import zipgo.pet.domain.Pet;
+
 import zipgo.common.entity.BaseTimeEntity;
 
 import static lombok.AccessLevel.PROTECTED;
@@ -31,10 +34,12 @@ public class Member extends BaseTimeEntity {
     @Column(nullable = false)
     private String name;
 
-    @Column(unique = true, nullable = false)
+    @Column(nullable = false)
     private String email;
 
-    @Column(nullable = false)
     private String profileImgUrl;
+
+    @OneToOne(mappedBy = "owner")
+    private Pet pet;
 
 }
