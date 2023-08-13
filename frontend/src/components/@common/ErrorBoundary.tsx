@@ -1,4 +1,4 @@
-import { Component, ReactNode } from 'react';
+import { Component, ErrorInfo, ReactNode } from 'react';
 
 import { ErrorBoundaryState, ErrorBoundaryValue } from '@/types/common/errorBoundary';
 
@@ -6,6 +6,7 @@ interface ErrorBoundaryProps {
   fallback?: ReactNode | ((props: ErrorBoundaryValue) => ReactNode);
   children: ReactNode;
   onReset?: VoidFunction;
+  onError?(error: Error, errorInfo: ErrorInfo): void;
 }
 
 const initialState: ErrorBoundaryState = {
@@ -26,6 +27,10 @@ class ErrorBoundary extends Component<ErrorBoundaryProps, ErrorBoundaryState> {
       hasError: true,
       error,
     };
+  }
+
+  componentDidCatch(error: Error, errorInfo: ErrorInfo): void {
+    this.props.onError?.(error, errorInfo);
   }
 
   reset() {
