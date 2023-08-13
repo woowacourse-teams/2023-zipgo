@@ -1,4 +1,4 @@
-package zipgo.acceptance;
+package zipgo.common.acceptance;
 
 import com.epages.restdocs.apispec.Schema;
 import io.restassured.RestAssured;

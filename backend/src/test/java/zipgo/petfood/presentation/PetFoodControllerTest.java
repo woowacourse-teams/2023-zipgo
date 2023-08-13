@@ -1,4 +1,4 @@
-package zipgo.acceptance;
+package zipgo.petfood.presentation;
 
 import com.epages.restdocs.apispec.ResourceSnippetDetails;
 import com.epages.restdocs.apispec.Schema;
@@ -14,6 +14,7 @@ import org.springframework.restdocs.restassured.RestDocumentationFilter;
 import zipgo.brand.domain.Brand;
 import zipgo.brand.domain.fixture.BrandFixture;
 import zipgo.brand.domain.repository.BrandRepository;
+import zipgo.common.acceptance.AcceptanceTest;
 import zipgo.petfood.domain.PetFood;
 import zipgo.petfood.domain.PrimaryIngredient;
 import zipgo.petfood.domain.fixture.FunctionalityFixture;
@@ -40,7 +41,7 @@ import static org.springframework.restdocs.request.RequestDocumentation.paramete
 import static org.springframework.restdocs.request.RequestDocumentation.pathParameters;
 import static org.springframework.restdocs.request.RequestDocumentation.queryParameters;
 
-public class PetFoodAcceptanceTest extends AcceptanceTest {
+public class PetFoodControllerTest extends AcceptanceTest {
 
     @Autowired
     private BrandRepository brandRepository;
@@ -58,14 +59,10 @@ public class PetFoodAcceptanceTest extends AcceptanceTest {
 
     @BeforeEach
     void setUp() {
-        // 브랜드 저장하기
         Brand 아카나 = brandRepository.save(BrandFixture.아카나_식품_브랜드_생성());
-        // 식품 저장하기
         식품 = petFoodRepository.save(PetFoodFixture.모든_영양기준_만족_식품(아카나));
-        // 기능성 저장하기
         functionalityRepository.save(FunctionalityFixture.기능성_다이어트(식품));
         functionalityRepository.save(FunctionalityFixture.기능성_튼튼(식품));
-        // 주원료 저장하기
         primaryIngredientRepository.save(PrimaryIngredient.builder()
                 .petFood(식품)
                 .name("닭고기")
