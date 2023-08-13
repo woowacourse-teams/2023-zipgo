@@ -1,22 +1,27 @@
+import { useState } from 'react';
 import { Outlet, useNavigate } from 'react-router-dom';
 import { styled } from 'styled-components';
 
 import BackBtnIcon from '@/assets/svg/back_btn.svg';
 import Button from '@/components/@common/Button/Button';
 import Template from '@/components/@common/Template';
+import { PET_PROFILE_ADDITION_STEP } from '@/constants/petProfile';
 import { routerPath } from '@/router/routes';
 
 const PetProfileAddition = () => {
   const navigate = useNavigate();
+  const [step, setStep] = useState(0);
+
   const goBack = () => navigate(routerPath.back);
+  const updateCurrentStep = (step: number) => setStep(step);
 
   return (
     <Template
       staticHeader={() =>
         getPetProfileAdditionHeader({
           title: '반려동물 정보 등록',
-          step: 1,
-          totalStep: 5,
+          step,
+          totalStep: Object.keys(PET_PROFILE_ADDITION_STEP).length,
           onClickBackButton: goBack,
         })
       }
@@ -24,7 +29,7 @@ const PetProfileAddition = () => {
     >
       <Button text="다음" fixed />
       <Content>
-        <Outlet />
+        <Outlet context={{ updateCurrentStep }} />
       </Content>
     </Template>
   );
