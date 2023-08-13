@@ -10,6 +10,12 @@ import zipgo.brand.domain.repository.BrandRepository;
 import zipgo.common.service.QueryServiceTest;
 import zipgo.member.domain.Member;
 import zipgo.member.domain.repository.MemberRepository;
+import zipgo.pet.domain.Breeds;
+import zipgo.pet.domain.Pet;
+import zipgo.pet.domain.PetSize;
+import zipgo.pet.domain.repository.BreedsRepository;
+import zipgo.pet.domain.repository.PetRepository;
+import zipgo.pet.domain.repository.PetSizeRepository;
 import zipgo.petfood.domain.PetFood;
 import zipgo.petfood.domain.repository.PetFoodRepository;
 import zipgo.review.application.dto.GetReviewQueryRequest;
@@ -22,6 +28,9 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThatThrownBy;
 import static org.junit.jupiter.api.Assertions.assertAll;
 import static zipgo.brand.domain.fixture.BrandFixture.아카나_식품_브랜드_생성;
+import static zipgo.pet.domain.fixture.BreedsFixture.견종;
+import static zipgo.pet.domain.fixture.PetFixture.반려동물;
+import static zipgo.pet.domain.fixture.PetSizeFixture.소형견;
 import static zipgo.petfood.domain.fixture.PetFoodFixture.모든_영양기준_만족_식품;
 import static zipgo.review.domain.type.AdverseReactionType.NONE;
 import static zipgo.review.domain.type.StoolCondition.SOFT_MOIST;
@@ -48,18 +57,23 @@ class ReviewQueryServiceTest extends QueryServiceTest {
     private BrandRepository brandRepository;
 
     @Autowired
+    private PetSizeRepository petSizeRepository;
+
+    @Autowired
+    private BreedsRepository breedsRepository;
+
+    @Autowired
+    private PetRepository petRepository;
+
+    @Autowired
     private ReviewQueryService reviewQueryService;
 
     @Test
     void 사이즈로_리뷰_목록_조회() {
         //given
         PetFood 식품 = petFoodRepository.save(모든_영양기준_만족_식품(브랜드_조회하기()));
-        Member 멤버 = memberRepository.save(무민());
-        Review 리뷰1 = reviewRepository.save(극찬_리뷰_생성(멤버, 식품, List.of("없어요")));
-        Member 멤버2 = memberRepository.save(멤버_이름("무민2"));
-        Review 리뷰2 = reviewRepository.save(
-                혹평_리뷰_생성(멤버2, 식품, List.of(눈물_이상반응().getAdverseReactionType().getDescription(),
-                        먹고_토_이상반응().getAdverseReactionType().getDescription())));
+        Review 리뷰1 = 리뷰1_생성(식품);
+        Review 리뷰2 = 리뷰2_생성(식품);
         GetReviewResponse 리뷰1_dto = GetReviewResponse.from(리뷰1);
         GetReviewResponse 리뷰2_dto = GetReviewResponse.from(리뷰2);
 
@@ -71,6 +85,25 @@ class ReviewQueryServiceTest extends QueryServiceTest {
         assertThat(reviews.reviews().get(0)).usingRecursiveComparison().isEqualTo(리뷰2_dto);
         assertThat(reviews.reviews().get(1)).usingRecursiveComparison().isEqualTo(리뷰1_dto);
     }
+
+    private Review 리뷰1_생성(PetFood 식품) {
+        Member 멤버 = memberRepository.save(무민());
+        PetSize 사이즈 = petSizeRepository.save(소형견());
+        Breeds 종류 = breedsRepository.save(견종(사이즈));
+        Pet 반려동물 = petRepository.save(반려동물(멤버, 종류));
+        return reviewRepository.save(극찬_리뷰_생성(반려동물, 식품, List.of("없어요")));
+    }
+
+    private Review 리뷰2_생성(PetFood 식품) {
+        PetSize 사이즈 = petSizeRepository.save(소형견());
+        Member 멤버2 = memberRepository.save(멤버_이름("무민2"));
+        Breeds 종류 = breedsRepository.save(견종(사이즈));
+        Pet 반려동물2 = petRepository.save(반려동물(멤버2, 종류));
+        return reviewRepository.save(
+                혹평_리뷰_생성(반려동물2, 식품, List.of(눈물_이상반응().getAdverseReactionType().getDescription(),
+                        먹고_토_이상반응().getAdverseReactionType().getDescription())));
+    }
+
 
     @Test
     void 식품_id가_null이면_예외가_발생한다() {
@@ -95,16 +128,20 @@ class ReviewQueryServiceTest extends QueryServiceTest {
     void getReview() {
         //given
         PetFood 식품 = 모든_영양기준_만족_식품(브랜드_조회하기());
-        Member 멤버 = memberRepository.save(무민());
         petFoodRepository.save(식품);
-        Review 극찬_리뷰 = reviewRepository.save(극찬_리뷰_생성(멤버, 식품, List.of("없어요")));
+        Member 멤버 = memberRepository.save(무민());
+        PetSize 사이즈 = petSizeRepository.save(소형견());
+        Breeds 종류 = breedsRepository.save(견종(사이즈));
+        Pet 반려동물 = petRepository.save(반려동물(멤버, 종류));
+        Review 극찬_리뷰 = reviewRepository.save(극찬_리뷰_생성(반려동물, 식품, List.of("없어요")));
 
         //when
         Review review = reviewQueryService.getReview(극찬_리뷰.getId());
 
         //then
         assertAll(
-                () -> assertThat(review.getMember().getName()).isEqualTo("무민"),
+                () -> assertThat(review.getPet().getOwner().getName()).isEqualTo("무민"),
+                () -> assertThat(review.getPet().getName()).isEqualTo("무민이"),
                 () -> assertThat(review.getRating()).isEqualTo(5),
                 () -> assertThat(review.getComment()).isEqualTo("우리 아이랑 너무 잘 맞아요!"),
                 () -> assertThat(review.getTastePreference()).isEqualTo(EATS_VERY_WELL),

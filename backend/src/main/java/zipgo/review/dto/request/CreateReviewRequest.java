@@ -6,7 +6,7 @@ import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import java.util.List;
-import zipgo.member.domain.Member;
+import zipgo.pet.domain.Pet;
 import zipgo.petfood.domain.PetFood;
 import zipgo.review.domain.Review;
 import zipgo.review.domain.type.StoolCondition;
@@ -31,9 +31,9 @@ public record CreateReviewRequest(
         List<String> adverseReactions
 ) {
 
-    public Review toEntity(Member member, PetFood petFood) {
+    public Review toEntity(Pet pet, PetFood petFood) {
         return Review.builder()
-                .member(member)
+                .pet(pet)
                 .petFood(petFood)
                 .rating(rating())
                 .comment(comment)

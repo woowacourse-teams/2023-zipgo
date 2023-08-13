@@ -9,6 +9,7 @@ import org.junit.jupiter.params.provider.ValueSource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import zipgo.brand.domain.Brand;
+import zipgo.brand.domain.fixture.BrandFixture;
 import zipgo.brand.domain.repository.BrandRepository;
 import zipgo.petfood.domain.PetFood;
 import zipgo.petfood.exception.PetFoodException;
@@ -30,7 +31,7 @@ class PetFoodRepositoryTest {
     private BrandRepository brandRepository;
 
     private Brand 브랜드_조회하기() {
-        return brandRepository.findAll().get(0);
+        return brandRepository.save(BrandFixture.오리젠_식품_브랜드_생성());
     }
 
     @Test
