@@ -2,6 +2,7 @@ package zipgo.review.application;
 
 import java.util.ArrayList;
 import java.util.List;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import zipgo.brand.domain.Brand;
@@ -70,10 +71,18 @@ class ReviewsServiceTest extends ServiceTest {
     @Autowired
     private ReviewService reviewService;
 
+    private Brand 브랜드;
+    private PetFood 식품;
+
+    @BeforeEach
+    void setUp() {
+        브랜드 = brandRepository.save(아카나_식품_브랜드_생성());
+        식품 = 모든_영양기준_만족_식품(브랜드);
+    }
+
     @Test
     void 리뷰를_생성할_수_있다() {
         //given
-        PetFood 식품 = 모든_영양기준_만족_식품(브랜드_조회하기());
         Member 멤버 = memberRepository.save(무민());
         PetFood 저장된_식품 = petFoodRepository.save(식품);
 
@@ -93,14 +102,9 @@ class ReviewsServiceTest extends ServiceTest {
         );
     }
 
-    private Brand 브랜드_조회하기() {
-        return brandRepository.save(아카나_식품_브랜드_생성());
-    }
-
     @Test
     void 잘못된_기호성으로_리뷰를_생성할_시_예외_처리() {
         //given
-        PetFood 식품 = 모든_영양기준_만족_식품(브랜드_조회하기());
         Member 멤버 = memberRepository.save(무민());
         PetFood 저장된_식품 = petFoodRepository.save(식품);
         CreateReviewRequest request = new CreateReviewRequest(
@@ -120,7 +124,7 @@ class ReviewsServiceTest extends ServiceTest {
     @Test
     void 잘못된_배변_반응으로_리뷰를_생성할_시_예외_처리() {
         //given
-        PetFood 식품 = 모든_영양기준_만족_식품(브랜드_조회하기());
+        PetFood 식품 = 모든_영양기준_만족_식품(브랜드);
         Member 멤버 = memberRepository.save(무민());
         PetFood 저장된_식품 = petFoodRepository.save(식품);
         CreateReviewRequest request = new CreateReviewRequest(
@@ -140,7 +144,7 @@ class ReviewsServiceTest extends ServiceTest {
     @Test
     void 잘못된_멤버_아이디로_리뷰를_생성할_시_예외_처리() {
         //given
-        PetFood 식품 = 모든_영양기준_만족_식품(브랜드_조회하기());
+        PetFood 식품 = 모든_영양기준_만족_식품(브랜드);
         PetFood 저장된_식품 = petFoodRepository.save(식품);
 
         //when, then
@@ -151,7 +155,7 @@ class ReviewsServiceTest extends ServiceTest {
     @Test
     void 리뷰를_수정할_수_있다() {
         //given
-        PetFood 식품 = 모든_영양기준_만족_식품(브랜드_조회하기());
+        PetFood 식품 = 모든_영양기준_만족_식품(브랜드);
         Member 멤버 = memberRepository.save(무민());
 
         petFoodRepository.save(식품);
@@ -185,7 +189,7 @@ class ReviewsServiceTest extends ServiceTest {
     void 잘못된_리뷰_id로_리뷰를_수정하면_예외_처리() {
         //given
         long 잘못된_리뷰_id = 123456789L;
-        모든_영양기준_만족_식품(브랜드_조회하기());
+        모든_영양기준_만족_식품(브랜드);
         Member 멤버 = memberRepository.save(무민());
 
         //when, then
@@ -196,7 +200,7 @@ class ReviewsServiceTest extends ServiceTest {
     @Test
     void 리뷰를_삭제할_수_있다() {
         //given
-        PetFood 식품 = 모든_영양기준_만족_식품(브랜드_조회하기());
+        PetFood 식품 = 모든_영양기준_만족_식품(브랜드);
         Member 멤버 = memberRepository.save(무민());
         petFoodRepository.save(식품);
         Review 리뷰 = 혹평리뷰(식품, 멤버);
