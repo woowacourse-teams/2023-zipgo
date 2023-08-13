@@ -42,11 +42,7 @@ import static zipgo.petfood.domain.fixture.PrimaryIngredientFixture.주원료_�
 @SuppressWarnings("NonAsciiCharacters")
 @SpringBootTest(properties = {"spring.sql.init.mode=never"})
 @DisplayNameGeneration(DisplayNameGenerator.ReplaceUnderscores.class)
-@AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
 class PetFoodQueryRepositoryTest {
-
-    @PersistenceContext
-    private EntityManager em;
 
     @Autowired
     private PetFoodRepository petFoodRepository;
