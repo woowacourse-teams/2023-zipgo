@@ -11,7 +11,6 @@ import {
 } from '@/hooks/query/review';
 import { ACTION_TYPES, useReviewForm } from '@/hooks/review/useReviewForm';
 import { routerPath } from '@/router/routes';
-import { AdverseReaction, StoolCondition, TastePreference } from '@/types/review/client';
 
 interface ReviewFormProps {
   petFoodId: number;

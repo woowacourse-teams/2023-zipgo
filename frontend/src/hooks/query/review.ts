@@ -9,6 +9,7 @@ export const useReviewItemQuery = (payload: Parameter<typeof getReview>) => {
   const { data, ...restQuery } = useQuery({
     queryKey: [QUERY_KEY.reviewItem],
     queryFn: () => getReview(payload),
+    enabled: payload.reviewId > 0,
   });
 
   return {
