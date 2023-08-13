@@ -387,7 +387,6 @@ class PetFoodQueryServiceTest extends ServiceTest {
                         EMPTY_LIST
                 )
         );
-        System.out.println("count = " + count);
 
         // then
         assertThat(count).isEqualTo(petFoodRepository.findAll().size());
