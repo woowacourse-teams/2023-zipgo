@@ -145,10 +145,10 @@ class ReviewQueryRepositoryImplTest {
     @Test
     void 결과가_없는경우_빈리스트를_반환한다() {
         //given
-        reviewRepository.deleteAll();
+        PetFood 식품 = 식품_만들기();
 
         //when
-        List<Review> reviews = reviewQueryRepository.findReviewsBy(1L, 10, null);
+        List<Review> reviews = reviewQueryRepository.findReviewsBy(식품.getId(), 10, null);
 
         //then
         assertThat(reviews).isEmpty();

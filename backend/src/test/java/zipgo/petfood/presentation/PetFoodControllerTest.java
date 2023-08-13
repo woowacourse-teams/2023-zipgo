@@ -3,7 +3,6 @@ package zipgo.petfood.presentation;
 import com.epages.restdocs.apispec.ResourceSnippetDetails;
 import com.epages.restdocs.apispec.Schema;
 import java.util.List;
-import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
@@ -68,14 +67,6 @@ public class PetFoodControllerTest extends AcceptanceTest {
                 .name("닭고기")
                 .build());
 
-    }
-
-    @AfterEach
-    void tearDown() {
-        primaryIngredientRepository.deleteAll();
-        functionalityRepository.deleteAll();
-        petFoodRepository.deleteAll();
-        brandRepository.deleteAll();
     }
 
     @Nested

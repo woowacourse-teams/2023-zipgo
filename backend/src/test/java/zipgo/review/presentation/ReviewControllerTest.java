@@ -196,7 +196,8 @@ public class ReviewControllerTest extends AcceptanceTest {
         }
 
         private void 리뷰_하나빼고_삭제() {
-            reviewRepository.deleteAll(reviewRepository.findAll().stream().skip(1).collect(Collectors.toList()));
+            List<Review> 리뷰들 = reviewRepository.findAll().stream().skip(1).collect(Collectors.toList());
+            reviewRepository.deleteAllById(리뷰들.stream().map(Review::getId).toList());
         }
 
         @Test
