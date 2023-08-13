@@ -5,7 +5,7 @@ import org.junit.jupiter.api.DisplayNameGenerator;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.transaction.annotation.Transactional;
 
-@Transactional(readOnly = true)
+@Transactional
 @SuppressWarnings("NonAsciiCharacters")
 @SpringBootTest(properties = {"spring.sql.init.mode=never"})
 @DisplayNameGeneration(DisplayNameGenerator.ReplaceUnderscores.class)
