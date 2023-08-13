@@ -1,7 +1,10 @@
-import { useState } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 
 import { initialSelectedFilterList, SelectedFilterList } from '@/context/food';
 import type { KeywordEn } from '@/types/food/client';
+
+import useValidQueryString from './common/useValidQueryString';
+import { useFoodListInfiniteQuery } from './query/food';
 
 export const useFoodListFilter = () => {
   const [selectedFilterList, setSelectedFilterList] = useState(initialSelectedFilterList);
@@ -25,4 +28,46 @@ export const useFoodListFilter = () => {
   };
 
   return { selectedFilterList, parsedSelectedFilterList, toggleFilter, resetSelectedFilterList };
+};
+
+export const useInfiniteFoodListScroll = () => {
+  const queries = useValidQueryString<KeywordEn>([
+    'nutritionStandards',
+    'mainIngredients',
+    'brands',
+    'functionalities',
+  ]);
+
+  const queriesString = Object.values(queries).join();
+
+  const { foodList, fetchNextPage, hasNextPage, isFetchingNextPage, remove, refetch } =
+    useFoodListInfiniteQuery(queries);
+
+  const executeFoodListInfiniteQuery = useCallback(
+    (entries: IntersectionObserverEntry[]) => {
+      entries.forEach(entry => {
+        const canLoadMore = entry.isIntersecting && hasNextPage && !isFetchingNextPage;
+
+        if (canLoadMore) fetchNextPage();
+      });
+    },
+    [hasNextPage, isFetchingNextPage, fetchNextPage],
+  );
+
+  const targetRef = useRef(null);
+
+  useEffect(() => {
+    const observer = new IntersectionObserver(executeFoodListInfiniteQuery, { threshold: 0.1 });
+
+    if (targetRef.current) observer.observe(targetRef.current);
+
+    return () => observer.disconnect();
+  }, [executeFoodListInfiniteQuery]);
+
+  useEffect(() => {
+    remove();
+    refetch();
+  }, [queriesString, refetch, remove]);
+
+  return { foodList, hasNextPage, refetch, targetRef };
 };

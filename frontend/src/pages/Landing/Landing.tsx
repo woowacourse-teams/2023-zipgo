@@ -1,4 +1,3 @@
-import { useEffect } from 'react';
 import styled from 'styled-components';
 
 import ZipgoBanner from '@/assets/png/landing_banner.png';
@@ -6,23 +5,10 @@ import Header from '@/components/@common/Header/Header';
 import Template from '@/components/@common/Template';
 import FilterBottomSheet from '@/components/Food/FilterBottomSheet/FilterBottomSheet';
 import FoodList from '@/components/Food/FoodList/FoodList';
-import useValidQueryString from '@/hooks/common/useValidQueryString';
-import { useFoodListQuery } from '@/hooks/query/food';
-import { KeywordEn } from '@/types/food/client';
+import { useInfiniteFoodListScroll } from '@/hooks/food';
 
 const Landing = () => {
-  const queries = useValidQueryString<KeywordEn>([
-    'nutritionStandards',
-    'mainIngredients',
-    'brands',
-    'functionalities',
-  ]);
-
-  const { foodList, refetch } = useFoodListQuery(queries);
-
-  useEffect(() => {
-    refetch();
-  }, Object.values(queries));
+  const { foodList, hasNextPage, targetRef } = useInfiniteFoodListScroll();
 
   if (!foodList) return null;
 
@@ -45,6 +31,10 @@ const Landing = () => {
         <ListSection>
           <FilterBottomSheet />
           <FoodList foodListData={foodList} />
+          <ObserverTarget
+            ref={targetRef}
+            aria-label={hasNextPage ? '' : '모든 식품 목록을 불러왔습니다'}
+          />
         </ListSection>
       </Layout>
     </Template>
@@ -107,4 +97,10 @@ const BannerImg = styled.img`
 
 const ListSection = styled.section`
   padding: 2rem;
+`;
+
+const ObserverTarget = styled.p`
+  font-size: 1.4rem;
+  color: ${({ theme }) => theme.color.grey400};
+  text-align: center;
 `;

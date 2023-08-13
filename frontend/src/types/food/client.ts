@@ -28,6 +28,10 @@ export type Brand = {
   hasResidentVet: boolean;
 };
 
+export type LastPetFoodId = 'lastPetFoodId';
+
+export type Size = 'size';
+
 export type NutritionStandards = 'nutritionStandards';
 
 export type MainIngredients = 'mainIngredients';
@@ -35,6 +39,10 @@ export type MainIngredients = 'mainIngredients';
 export type Brands = 'brands';
 
 export type Functionality = 'functionalities';
+
+export type KeywordsForPaging = [LastPetFoodId, Size];
+
+export type KeywordForPaging = KeywordsForPaging[number];
 
 export type KeywordsKo = ['영양기준', '주원료', '브랜드', '기능성'];
 
