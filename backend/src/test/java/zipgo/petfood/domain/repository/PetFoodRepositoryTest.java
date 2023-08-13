@@ -1,16 +1,14 @@
 package zipgo.petfood.domain.repository;
 
 import java.util.List;
-import org.junit.jupiter.api.DisplayNameGeneration;
-import org.junit.jupiter.api.DisplayNameGenerator;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import zipgo.brand.domain.Brand;
 import zipgo.brand.domain.fixture.BrandFixture;
 import zipgo.brand.domain.repository.BrandRepository;
+import zipgo.common.repository.RepositoryTest;
 import zipgo.petfood.domain.PetFood;
 import zipgo.petfood.exception.PetFoodException;
 
@@ -19,10 +17,7 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static zipgo.petfood.domain.fixture.PetFoodFixture.모든_영양기준_만족_식품;
 import static zipgo.petfood.domain.fixture.PetFoodFixture.유럽_영양기준_만족_식품;
 
-@DataJpaTest
-@SuppressWarnings("NonAsciiCharacters")
-@DisplayNameGeneration(DisplayNameGenerator.ReplaceUnderscores.class)
-class PetFoodRepositoryTest {
+class PetFoodRepositoryTest extends RepositoryTest {
 
     @Autowired
     private PetFoodRepository petFoodRepository;
