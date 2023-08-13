@@ -10,7 +10,6 @@ import lombok.Builder.Default;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import zipgo.common.entity.BaseTimeEntity;
 
 @Getter
 @Builder
