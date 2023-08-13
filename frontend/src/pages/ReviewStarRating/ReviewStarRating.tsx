@@ -1,61 +1,38 @@
-import { useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { styled } from 'styled-components';
 
 import PageHeader from '@/components/@common/PageHeader/PageHeader';
 import StarRatingInput from '@/components/@common/StarRating/StarRatingInput/StarRatingInput';
 import Template from '@/components/@common/Template';
+import { useReviewStarRating } from '@/hooks/review/useReviewStarRating';
 import { routerPath } from '@/router/routes';
-import { AdverseReaction, StoolCondition, TastePreference } from '@/types/review/client';
-
-interface LocationState {
-  state: {
-    petFoodId: number;
-    name: string;
-    imageUrl: string;
-    isEditMode: boolean;
-    userRating: number;
-    reviewDetail: {
-      reviewId: number;
-      tastePreference: TastePreference;
-      stoolCondition: StoolCondition;
-      adverseReactions: AdverseReaction[];
-      comment: string;
-    };
-  };
-}
 
 const ReviewStarRating = () => {
   const navigate = useNavigate();
-  const location = useLocation() as LocationState;
-  const {
-    petFoodId,
-    name,
-    imageUrl,
-    isEditMode = false,
-    userRating = 0,
-    reviewDetail,
-  } = { ...location.state };
-  const [rating, setRating] = useState(userRating);
+  const location = useLocation();
+  const { petFoodId, foodData, isEditMode, reviewId, rating, setRating } =
+    useReviewStarRating(location);
 
   const onMouseDownStar = (selectedRating: number) => setRating(selectedRating);
 
   const onClickStar = (selectedRating: number) => {
-    navigate(routerPath.reviewAddition({ petFoodId, rating, isEditMode }), {
-      state: { petFoodId, name, imageUrl, reviewDetail },
+    navigate(routerPath.reviewAddition({ petFoodId }), {
+      state: { selectedRating, isEditMode, reviewId },
     });
   };
 
   const goBack = () => navigate(routerPath.back);
+
+  if (!foodData) throw new Error('죄송합니다, 해당 식품 정보를 찾을 수 없습니다.');
 
   return (
     <Template.WithoutHeader footer={false}>
       <PageHeader onClick={goBack} />
       <Container>
         <FoodImageWrapper>
-          <FoodImage src={imageUrl} alt={`${name}`} />
+          <FoodImage src={foodData.imageUrl} alt={`${foodData.name}`} />
         </FoodImageWrapper>
-        <FoodName>{name}</FoodName>
+        <FoodName>{foodData.name}</FoodName>
         <Label>이 사료 어땠어요?</Label>
         <StarRatingInput
           rating={rating}

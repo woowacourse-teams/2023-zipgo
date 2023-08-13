@@ -1,6 +1,8 @@
 import {
   DeleteReviewReq,
   DeleteReviewRes,
+  GetReviewReq,
+  GetReviewRes,
   GetReviewsReq,
   GetReviewsRes,
   PostReviewReq,
@@ -10,6 +12,12 @@ import {
 } from '@/types/review/remote';
 
 import { client } from '.';
+
+export const getReview = async ({ reviewId }: GetReviewReq) => {
+  const { data } = await client.get<GetReviewRes>(`/reviews/${reviewId}`);
+
+  return data;
+};
 
 export const getReviews = async ({ petFoodId }: GetReviewsReq) => {
   const { data } = await client.get<GetReviewsRes>(`/pet-foods/${petFoodId}/reviews`);

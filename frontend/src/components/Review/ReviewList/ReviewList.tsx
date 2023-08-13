@@ -3,7 +3,6 @@ import { styled } from 'styled-components';
 
 import WriteIcon from '@/assets/svg/write_btn.svg';
 import { useValidParams } from '@/hooks/@common/useValidParams';
-import { useFoodDetailQuery } from '@/hooks/query/food';
 import { useReviewListQuery } from '@/hooks/query/review';
 import { routerPath } from '@/router/routes';
 
@@ -13,9 +12,9 @@ const ReviewList = () => {
   const navigate = useNavigate();
   const { petFoodId } = useValidParams(['petFoodId']);
   const { reviewList } = useReviewListQuery({ petFoodId });
-  const { foodData } = useFoodDetailQuery({ petFoodId });
 
   const authData = localStorage.getItem('auth');
+  const goReviewWrite = () => navigate(routerPath.reviewStarRating({ petFoodId }));
 
   if (!reviewList) throw new Error('리뷰 리스트를 찾을 수 없습니다.');
 
@@ -35,19 +34,7 @@ const ReviewList = () => {
         </NoReviewText>
       )}
       {authData !== null && (
-        <ReviewAddButton
-          type="button"
-          aria-label="리뷰 작성"
-          onClick={() =>
-            navigate(routerPath.reviewStarRating({ petFoodId }), {
-              state: {
-                petFoodId: foodData?.id,
-                name: foodData?.name,
-                imageUrl: foodData?.imageUrl,
-              },
-            })
-          }
-        >
+        <ReviewAddButton type="button" aria-label="리뷰 작성" onClick={goReviewWrite}>
           <WriteIconImage src={WriteIcon} alt="" />
         </ReviewAddButton>
       )}

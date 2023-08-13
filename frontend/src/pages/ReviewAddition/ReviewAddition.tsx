@@ -11,24 +11,17 @@ import { AdverseReaction, StoolCondition, TastePreference } from '@/types/review
 
 interface LocationState {
   state: {
-    petFoodId: number;
-    name: string;
-    imageUrl: string;
-    reviewDetail: {
-      reviewId: number;
-      tastePreference: TastePreference;
-      stoolCondition: StoolCondition;
-      adverseReactions: AdverseReaction[];
-      comment: string;
-    };
+    selectedRating: number;
+    isEditMode: boolean;
+    reviewId: number;
   };
 }
 
 const ReviewAddition = () => {
   const navigate = useNavigate();
-  const { rating, isEditMode } = useValidParams(['rating', 'isEditMode']);
+  const { petFoodId } = useValidParams(['petFoodId']);
   const location = useLocation() as LocationState;
-  const { petFoodId, name, imageUrl, reviewDetail } = { ...location.state };
+  const { selectedRating, isEditMode, reviewId } = { ...location.state };
 
   const goBack = () => navigate(routerPath.back);
 
@@ -37,13 +30,13 @@ const ReviewAddition = () => {
       <PageHeader onClick={goBack} />
       <Container>
         <FoodInfoWrapper>
-          <FoodInfoInReviewForm name={name} rating={Number(rating)} imageUrl={imageUrl} />
+          <FoodInfoInReviewForm petFoodId={Number(petFoodId)} rating={selectedRating} />
         </FoodInfoWrapper>
         <ReviewForm
-          petFoodId={petFoodId}
-          rating={Number(rating)}
-          isEditMode={isEditMode === 'true'}
-          reviewDetail={reviewDetail}
+          petFoodId={Number(petFoodId)}
+          rating={selectedRating}
+          isEditMode={isEditMode}
+          reviewId={reviewId}
         />
       </Container>
     </Template.WithoutHeader>

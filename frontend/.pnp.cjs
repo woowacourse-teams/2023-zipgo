@@ -76,6 +76,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["husky", "npm:8.0.3"],\
             ["lint-staged", "npm:13.2.3"],\
             ["msw", "virtual:d9650954c7f1725ea712d2e40695de9ea5d1c0fa9b89379134c62909d440d91b03d6c37e2823804a3404472b90a5bec73c82193190dd3c4db4c9e9edd75db91e#npm:1.2.3"],\
+            ["msw-storybook-addon", "virtual:d9650954c7f1725ea712d2e40695de9ea5d1c0fa9b89379134c62909d440d91b03d6c37e2823804a3404472b90a5bec73c82193190dd3c4db4c9e9edd75db91e#npm:1.8.0"],\
             ["pinst", "npm:3.0.0"],\
             ["postcss", "npm:8.4.26"],\
             ["postcss-styled-syntax", "virtual:d9650954c7f1725ea712d2e40695de9ea5d1c0fa9b89379134c62909d440d91b03d6c37e2823804a3404472b90a5bec73c82193190dd3c4db4c9e9edd75db91e#npm:0.4.0"],\
@@ -83,9 +84,11 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["react", "npm:18.2.0"],\
             ["react-dom", "virtual:d9650954c7f1725ea712d2e40695de9ea5d1c0fa9b89379134c62909d440d91b03d6c37e2823804a3404472b90a5bec73c82193190dd3c4db4c9e9edd75db91e#npm:18.2.0"],\
             ["react-refresh", "npm:0.14.0"],\
+            ["react-router", "virtual:d9650954c7f1725ea712d2e40695de9ea5d1c0fa9b89379134c62909d440d91b03d6c37e2823804a3404472b90a5bec73c82193190dd3c4db4c9e9edd75db91e#npm:6.14.2"],\
             ["react-router-dom", "virtual:d9650954c7f1725ea712d2e40695de9ea5d1c0fa9b89379134c62909d440d91b03d6c37e2823804a3404472b90a5bec73c82193190dd3c4db4c9e9edd75db91e#npm:6.14.1"],\
             ["serve", "npm:14.2.0"],\
             ["storybook", "npm:7.0.27"],\
+            ["storybook-addon-react-router-v6", "virtual:d9650954c7f1725ea712d2e40695de9ea5d1c0fa9b89379134c62909d440d91b03d6c37e2823804a3404472b90a5bec73c82193190dd3c4db4c9e9edd75db91e#npm:2.0.2"],\
             ["styled-components", "virtual:d9650954c7f1725ea712d2e40695de9ea5d1c0fa9b89379134c62909d440d91b03d6c37e2823804a3404472b90a5bec73c82193190dd3c4db4c9e9edd75db91e#npm:6.0.4"],\
             ["styled-normalize", "virtual:d9650954c7f1725ea712d2e40695de9ea5d1c0fa9b89379134c62909d440d91b03d6c37e2823804a3404472b90a5bec73c82193190dd3c4db4c9e9edd75db91e#npm:8.0.7"],\
             ["stylelint", "npm:15.10.1"],\
@@ -6861,6 +6864,13 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["@remix-run/router", "npm:1.7.1"]\
           ],\
           "linkType": "HARD"\
+        }],\
+        ["npm:1.7.2", {\
+          "packageLocation": "./.yarn/cache/@remix-run-router-npm-1.7.2-f063ddbaf6-ea43bb662f.zip/node_modules/@remix-run/router/",\
+          "packageDependencies": [\
+            ["@remix-run/router", "npm:1.7.2"]\
+          ],\
+          "linkType": "HARD"\
         }]\
       ]],\
       ["@sinclair/typebox", [\
@@ -11616,6 +11626,15 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           "linkType": "HARD"\
         }]\
       ]],\
+      ["compare-versions", [\
+        ["npm:6.0.0", {\
+          "packageLocation": "./.yarn/cache/compare-versions-npm-6.0.0-f6c7b2d14e-bf2fa355b2.zip/node_modules/compare-versions/",\
+          "packageDependencies": [\
+            ["compare-versions", "npm:6.0.0"]\
+          ],\
+          "linkType": "HARD"\
+        }]\
+      ]],\
       ["compressible", [\
         ["npm:2.0.18", {\
           "packageLocation": "./.yarn/cache/compressible-npm-2.0.18-ee5ab04d88-58321a85b3.zip/node_modules/compressible/",\
@@ -14057,6 +14076,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["husky", "npm:8.0.3"],\
             ["lint-staged", "npm:13.2.3"],\
             ["msw", "virtual:d9650954c7f1725ea712d2e40695de9ea5d1c0fa9b89379134c62909d440d91b03d6c37e2823804a3404472b90a5bec73c82193190dd3c4db4c9e9edd75db91e#npm:1.2.3"],\
+            ["msw-storybook-addon", "virtual:d9650954c7f1725ea712d2e40695de9ea5d1c0fa9b89379134c62909d440d91b03d6c37e2823804a3404472b90a5bec73c82193190dd3c4db4c9e9edd75db91e#npm:1.8.0"],\
             ["pinst", "npm:3.0.0"],\
             ["postcss", "npm:8.4.26"],\
             ["postcss-styled-syntax", "virtual:d9650954c7f1725ea712d2e40695de9ea5d1c0fa9b89379134c62909d440d91b03d6c37e2823804a3404472b90a5bec73c82193190dd3c4db4c9e9edd75db91e#npm:0.4.0"],\
@@ -14064,9 +14084,11 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["react", "npm:18.2.0"],\
             ["react-dom", "virtual:d9650954c7f1725ea712d2e40695de9ea5d1c0fa9b89379134c62909d440d91b03d6c37e2823804a3404472b90a5bec73c82193190dd3c4db4c9e9edd75db91e#npm:18.2.0"],\
             ["react-refresh", "npm:0.14.0"],\
+            ["react-router", "virtual:d9650954c7f1725ea712d2e40695de9ea5d1c0fa9b89379134c62909d440d91b03d6c37e2823804a3404472b90a5bec73c82193190dd3c4db4c9e9edd75db91e#npm:6.14.2"],\
             ["react-router-dom", "virtual:d9650954c7f1725ea712d2e40695de9ea5d1c0fa9b89379134c62909d440d91b03d6c37e2823804a3404472b90a5bec73c82193190dd3c4db4c9e9edd75db91e#npm:6.14.1"],\
             ["serve", "npm:14.2.0"],\
             ["storybook", "npm:7.0.27"],\
+            ["storybook-addon-react-router-v6", "virtual:d9650954c7f1725ea712d2e40695de9ea5d1c0fa9b89379134c62909d440d91b03d6c37e2823804a3404472b90a5bec73c82193190dd3c4db4c9e9edd75db91e#npm:2.0.2"],\
             ["styled-components", "virtual:d9650954c7f1725ea712d2e40695de9ea5d1c0fa9b89379134c62909d440d91b03d6c37e2823804a3404472b90a5bec73c82193190dd3c4db4c9e9edd75db91e#npm:6.0.4"],\
             ["styled-normalize", "virtual:d9650954c7f1725ea712d2e40695de9ea5d1c0fa9b89379134c62909d440d91b03d6c37e2823804a3404472b90a5bec73c82193190dd3c4db4c9e9edd75db91e#npm:8.0.7"],\
             ["stylelint", "npm:15.10.1"],\
@@ -17022,6 +17044,29 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           "linkType": "HARD"\
         }]\
       ]],\
+      ["msw-storybook-addon", [\
+        ["npm:1.8.0", {\
+          "packageLocation": "./.yarn/cache/msw-storybook-addon-npm-1.8.0-62c7737ede-14d7ab064f.zip/node_modules/msw-storybook-addon/",\
+          "packageDependencies": [\
+            ["msw-storybook-addon", "npm:1.8.0"]\
+          ],\
+          "linkType": "SOFT"\
+        }],\
+        ["virtual:d9650954c7f1725ea712d2e40695de9ea5d1c0fa9b89379134c62909d440d91b03d6c37e2823804a3404472b90a5bec73c82193190dd3c4db4c9e9edd75db91e#npm:1.8.0", {\
+          "packageLocation": "./.yarn/__virtual__/msw-storybook-addon-virtual-abec2b56ac/0/cache/msw-storybook-addon-npm-1.8.0-62c7737ede-14d7ab064f.zip/node_modules/msw-storybook-addon/",\
+          "packageDependencies": [\
+            ["msw-storybook-addon", "virtual:d9650954c7f1725ea712d2e40695de9ea5d1c0fa9b89379134c62909d440d91b03d6c37e2823804a3404472b90a5bec73c82193190dd3c4db4c9e9edd75db91e#npm:1.8.0"],\
+            ["@types/msw", null],\
+            ["is-node-process", "npm:1.2.0"],\
+            ["msw", "virtual:d9650954c7f1725ea712d2e40695de9ea5d1c0fa9b89379134c62909d440d91b03d6c37e2823804a3404472b90a5bec73c82193190dd3c4db4c9e9edd75db91e#npm:1.2.3"]\
+          ],\
+          "packagePeers": [\
+            "@types/msw",\
+            "msw"\
+          ],\
+          "linkType": "HARD"\
+        }]\
+      ]],\
       ["multicast-dns", [\
         ["npm:7.2.5", {\
           "packageLocation": "./.yarn/cache/multicast-dns-npm-7.2.5-e1c9c3ec64-00b8a57df1.zip/node_modules/multicast-dns/",\
@@ -18682,11 +18727,32 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           ],\
           "linkType": "SOFT"\
         }],\
+        ["npm:6.14.2", {\
+          "packageLocation": "./.yarn/cache/react-router-npm-6.14.2-b2944a374e-7507bf5732.zip/node_modules/react-router/",\
+          "packageDependencies": [\
+            ["react-router", "npm:6.14.2"]\
+          ],\
+          "linkType": "SOFT"\
+        }],\
         ["virtual:0cfd2bf6c64e69966f4e3fc7e50c4d793acbdefe180b7788b87738b16e5a9862cc567f2579b79b596d4224b2d9404d971b2e371146584eb090035075cb5cab64#npm:6.14.1", {\
           "packageLocation": "./.yarn/__virtual__/react-router-virtual-a30fb0bbf1/0/cache/react-router-npm-6.14.1-ad306a6b5d-16f3d108e0.zip/node_modules/react-router/",\
           "packageDependencies": [\
             ["react-router", "virtual:0cfd2bf6c64e69966f4e3fc7e50c4d793acbdefe180b7788b87738b16e5a9862cc567f2579b79b596d4224b2d9404d971b2e371146584eb090035075cb5cab64#npm:6.14.1"],\
             ["@remix-run/router", "npm:1.7.1"],\
+            ["@types/react", "npm:18.2.15"],\
+            ["react", "npm:18.2.0"]\
+          ],\
+          "packagePeers": [\
+            "@types/react",\
+            "react"\
+          ],\
+          "linkType": "HARD"\
+        }],\
+        ["virtual:d9650954c7f1725ea712d2e40695de9ea5d1c0fa9b89379134c62909d440d91b03d6c37e2823804a3404472b90a5bec73c82193190dd3c4db4c9e9edd75db91e#npm:6.14.2", {\
+          "packageLocation": "./.yarn/__virtual__/react-router-virtual-2ff58a5d2c/0/cache/react-router-npm-6.14.2-b2944a374e-7507bf5732.zip/node_modules/react-router/",\
+          "packageDependencies": [\
+            ["react-router", "virtual:d9650954c7f1725ea712d2e40695de9ea5d1c0fa9b89379134c62909d440d91b03d6c37e2823804a3404472b90a5bec73c82193190dd3c4db4c9e9edd75db91e#npm:6.14.2"],\
+            ["@remix-run/router", "npm:1.7.2"],\
             ["@types/react", "npm:18.2.15"],\
             ["react", "npm:18.2.0"]\
           ],\
@@ -19883,6 +19949,70 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           "packageDependencies": [\
             ["storybook", "npm:7.0.27"],\
             ["@storybook/cli", "npm:7.0.27"]\
+          ],\
+          "linkType": "HARD"\
+        }]\
+      ]],\
+      ["storybook-addon-react-router-v6", [\
+        ["npm:2.0.2", {\
+          "packageLocation": "./.yarn/cache/storybook-addon-react-router-v6-npm-2.0.2-5ce5d5b0a4-6b0cd38c54.zip/node_modules/storybook-addon-react-router-v6/",\
+          "packageDependencies": [\
+            ["storybook-addon-react-router-v6", "npm:2.0.2"]\
+          ],\
+          "linkType": "SOFT"\
+        }],\
+        ["virtual:d9650954c7f1725ea712d2e40695de9ea5d1c0fa9b89379134c62909d440d91b03d6c37e2823804a3404472b90a5bec73c82193190dd3c4db4c9e9edd75db91e#npm:2.0.2", {\
+          "packageLocation": "./.yarn/__virtual__/storybook-addon-react-router-v6-virtual-848c129dcb/0/cache/storybook-addon-react-router-v6-npm-2.0.2-5ce5d5b0a4-6b0cd38c54.zip/node_modules/storybook-addon-react-router-v6/",\
+          "packageDependencies": [\
+            ["storybook-addon-react-router-v6", "virtual:d9650954c7f1725ea712d2e40695de9ea5d1c0fa9b89379134c62909d440d91b03d6c37e2823804a3404472b90a5bec73c82193190dd3c4db4c9e9edd75db91e#npm:2.0.2"],\
+            ["@storybook/blocks", "virtual:d9650954c7f1725ea712d2e40695de9ea5d1c0fa9b89379134c62909d440d91b03d6c37e2823804a3404472b90a5bec73c82193190dd3c4db4c9e9edd75db91e#npm:7.0.27"],\
+            ["@storybook/channels", null],\
+            ["@storybook/components", null],\
+            ["@storybook/core-events", null],\
+            ["@storybook/manager-api", null],\
+            ["@storybook/preview-api", null],\
+            ["@storybook/theming", null],\
+            ["@types/react", "npm:18.2.15"],\
+            ["@types/react-dom", "npm:18.2.7"],\
+            ["@types/react-router", null],\
+            ["@types/react-router-dom", null],\
+            ["@types/storybook__blocks", null],\
+            ["@types/storybook__channels", null],\
+            ["@types/storybook__components", null],\
+            ["@types/storybook__core-events", null],\
+            ["@types/storybook__manager-api", null],\
+            ["@types/storybook__preview-api", null],\
+            ["@types/storybook__theming", null],\
+            ["compare-versions", "npm:6.0.0"],\
+            ["react", "npm:18.2.0"],\
+            ["react-dom", "virtual:d9650954c7f1725ea712d2e40695de9ea5d1c0fa9b89379134c62909d440d91b03d6c37e2823804a3404472b90a5bec73c82193190dd3c4db4c9e9edd75db91e#npm:18.2.0"],\
+            ["react-inspector", "virtual:143036968c9b5fe1b62646e9da83a2d2222121f4f5ce2f1f1326f0e88bcadf21f8e74d6b619c46768eb2ddb3e91536f65e7ac1ecdc640a4c2aa3680c763bc171#npm:6.0.2"],\
+            ["react-router", "virtual:d9650954c7f1725ea712d2e40695de9ea5d1c0fa9b89379134c62909d440d91b03d6c37e2823804a3404472b90a5bec73c82193190dd3c4db4c9e9edd75db91e#npm:6.14.2"],\
+            ["react-router-dom", "virtual:d9650954c7f1725ea712d2e40695de9ea5d1c0fa9b89379134c62909d440d91b03d6c37e2823804a3404472b90a5bec73c82193190dd3c4db4c9e9edd75db91e#npm:6.14.1"]\
+          ],\
+          "packagePeers": [\
+            "@storybook/blocks",\
+            "@storybook/channels",\
+            "@storybook/components",\
+            "@storybook/core-events",\
+            "@storybook/manager-api",\
+            "@storybook/preview-api",\
+            "@storybook/theming",\
+            "@types/react-dom",\
+            "@types/react-router-dom",\
+            "@types/react-router",\
+            "@types/react",\
+            "@types/storybook__blocks",\
+            "@types/storybook__channels",\
+            "@types/storybook__components",\
+            "@types/storybook__core-events",\
+            "@types/storybook__manager-api",\
+            "@types/storybook__preview-api",\
+            "@types/storybook__theming",\
+            "react-dom",\
+            "react-router-dom",\
+            "react-router",\
+            "react"\
           ],\
           "linkType": "HARD"\
         }]\

@@ -28,7 +28,7 @@ const getFoodList = (): GetFoodListRes => ({
 
 const getFoodDetail = (): GetFoodDetailRes => ({
   id: 0,
-  name: 'name',
+  name: '베베 사료',
   brandName: 'brand',
   foodName: 'food',
   imageUrl: 'https://m.wellfeed.co.kr/web/product/big/202305/d535183f626c65184ac0d674477f744b.jpg',

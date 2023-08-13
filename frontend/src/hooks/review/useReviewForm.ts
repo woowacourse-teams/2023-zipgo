@@ -45,51 +45,34 @@ const reducer = (state: PostReviewReq, action: Action): PostReviewReq => {
 
   if (action.type === ACTION_TYPES.SET_ADVERSE_REACTIONS) {
     const NO_ADVERSE_REACTION = '없어요';
-    const hasAdverseReaction = state.adverseReactions.includes(action.adverseReaction);
-    const hasNoAdverseReaction = state.adverseReactions.includes(NO_ADVERSE_REACTION);
+    const adverseReactionsSet = new Set(state.adverseReactions);
+    const hasAdverseReaction = adverseReactionsSet.has(action.adverseReaction);
     const isCurrentlyNoAdverseReactionSelected = action.adverseReaction === NO_ADVERSE_REACTION;
-    const hasOnlyNoAdverseReaction =
-      state.adverseReactions.length === 1 && isCurrentlyNoAdverseReactionSelected;
-    const hasOnlyOneAdverseReactionWithoutNo =
-      state.adverseReactions.length === 1 && !isCurrentlyNoAdverseReactionSelected;
+    const hadOnlyOneAdverseReaction = state.adverseReactions.length === 1;
 
     // 선택해제 - 이미 선택된 필터칩인 경우
     if (hasAdverseReaction) {
-      if (hasOnlyNoAdverseReaction) return state; // 없어요만 선택된 경우 선택 해제 불가
-      if (hasOnlyOneAdverseReactionWithoutNo) {
-        // 1개만 선택된 상태에서 선택 해제하는 경우
-        const filteredAdverseReactionsWithNo = state.adverseReactions
-          .filter(item => item !== action.adverseReaction) // 해당 칩 선택 해제
-          .concat(NO_ADVERSE_REACTION); // 없어요 추가
+      adverseReactionsSet.delete(action.adverseReaction); // 해당 칩 선택 해제
 
-        return {
-          ...state,
-          adverseReactions: filteredAdverseReactionsWithNo,
-        };
-      }
+      // 1개만 선택된 상태에서 선택 해제한 경우 '없어요' 선택
+      if (hadOnlyOneAdverseReaction) adverseReactionsSet.add(NO_ADVERSE_REACTION);
 
       return {
         ...state,
-        adverseReactions: state.adverseReactions.filter(item => item !== action.adverseReaction),
+        adverseReactions: Array.from(adverseReactionsSet),
       };
     }
 
-    // 선택 - '없어요'를 선택한 경우 다른 필터칩 선택 해제 및 '없어요' 선택
+    // 선택 - '없어요'를 선택한 경우 '없어요'만 선택
     if (isCurrentlyNoAdverseReactionSelected) {
       return { ...state, adverseReactions: [action.adverseReaction] };
     }
 
-    // 선택 - '없어요'를 제외한 다른 필터칩을 선택한 경우(없어요 선택O) '없어요' 선택 해제 및 필터칩 선택
-    if (hasNoAdverseReaction) {
-      const adverseReactionsWithoutNo = [...state.adverseReactions, action.adverseReaction].filter(
-        item => item !== NO_ADVERSE_REACTION,
-      );
+    // 선택 - '없어요'를 제외한 다른 필터칩을 선택한 경우
+    adverseReactionsSet.delete(NO_ADVERSE_REACTION); // '없어요' 선택 해제
+    adverseReactionsSet.add(action.adverseReaction); // 해당 칩 선택
 
-      return { ...state, adverseReactions: adverseReactionsWithoutNo };
-    }
-
-    // 선택 - '없어요'를 제외한 다른 필터칩을 선택한 경우(없어요 선택X) 필터칩 선택
-    return { ...state, adverseReactions: [...state.adverseReactions, action.adverseReaction] };
+    return { ...state, adverseReactions: Array.from(adverseReactionsSet) };
   }
 
   return state;

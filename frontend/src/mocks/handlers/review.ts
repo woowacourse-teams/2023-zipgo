@@ -1,10 +1,18 @@
 import { rest } from 'msw';
 
 import { BASE_URL } from '@/apis';
+import { Review } from '@/types/review/client';
 
 import reviewFixture from '../fixtures/review';
 
 const reviewHandlers = [
+  rest.get(`${BASE_URL}/reviews/:reviewId`, (req, res, ctx) => {
+    const { reviews } = reviewFixture.getReviews();
+    const review = reviews.find(review => review.id === Number(req.params.reviewId)) as Review;
+
+    return res(ctx.status(200), ctx.json(review));
+  }),
+
   rest.get(`${BASE_URL}/pet-foods/:petFoodId/reviews`, (req, res, ctx) => {
     const reviews = reviewFixture.getReviews();
 

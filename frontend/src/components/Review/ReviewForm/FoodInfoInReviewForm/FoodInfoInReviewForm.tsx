@@ -2,23 +2,26 @@ import { styled } from 'styled-components';
 
 import StarRatingDisplay from '@/components/@common/StarRating/StarRatingDisplay/StartRatingDisplay';
 import { SATISFACTION_MESSAGES } from '@/constants/review';
+import { useFoodDetailQuery } from '@/hooks/query/food';
 
 interface FoodInfoInReviewFormProps {
-  name: string;
+  petFoodId: number;
   rating: number;
-  imageUrl: string;
 }
 
 const FoodInfoInReviewForm = (foodInfoInReviewFormProps: FoodInfoInReviewFormProps) => {
-  const { name, rating, imageUrl } = foodInfoInReviewFormProps;
+  const { petFoodId, rating } = foodInfoInReviewFormProps;
+  const { foodData } = useFoodDetailQuery({ petFoodId: String(petFoodId) });
+
+  if (!foodData) return null;
 
   return (
     <FoodInfoInReviewContainer>
       <FoodImageWrapper>
-        <FoodImage src={imageUrl} alt={`${name}`} />
+        <FoodImage src={foodData.imageUrl} alt={`${foodData.name}`} />
       </FoodImageWrapper>
       <div>
-        <FoodName>{name}</FoodName>
+        <FoodName>{foodData.name}</FoodName>
         <StarRatingDisplay rating={rating} />
         <Caption>{SATISFACTION_MESSAGES[rating]}</Caption>
       </div>

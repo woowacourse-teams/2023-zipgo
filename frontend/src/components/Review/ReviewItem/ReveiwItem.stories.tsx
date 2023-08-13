@@ -1,5 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/react';
 import React from 'react';
+import { reactRouterParameters } from 'storybook-addon-react-router-v6';
 
 import ReviewItem from './ReviewItem';
 
@@ -14,6 +15,14 @@ const meta = {
       </div>
     ),
   ],
+  parameters: {
+    reactRouter: reactRouterParameters({
+      location: {
+        pathParams: { petFoodId: '1' },
+      },
+      routing: { path: '/pet-food/:petFoodId' },
+    }),
+  },
 } satisfies Meta<typeof ReviewItem>;
 
 export default meta;

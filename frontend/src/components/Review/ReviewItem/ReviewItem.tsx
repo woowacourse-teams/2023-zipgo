@@ -6,7 +6,6 @@ import DogIcon from '@/assets/svg/dog_icon.svg';
 import StarRatingDisplay from '@/components/@common/StarRating/StarRatingDisplay/StartRatingDisplay';
 import { COMMENT_VISIABLE_LINE_LIMIT, REACTIONS } from '@/constants/review';
 import { useValidParams } from '@/hooks/@common/useValidParams';
-import { useFoodDetailQuery } from '@/hooks/query/food';
 import { useRemoveReviewMutation } from '@/hooks/query/review';
 import { routerPath } from '@/router/routes';
 import { Review } from '@/types/review/client';
@@ -33,17 +32,13 @@ const ReviewItem = (reviewItemProps: ReviewItemProps) => {
   const { petFoodId } = useValidParams(['petFoodId']);
   const { removeReviewMutation } = useRemoveReviewMutation();
   const [isCommentExpanded, setIsCommentExpanded] = useState(false);
-  const { foodData } = useFoodDetailQuery({ petFoodId });
 
   const onClickEditButton = () => {
     navigate(routerPath.reviewStarRating({ petFoodId }), {
       state: {
-        petFoodId: foodData?.id,
-        name: foodData?.foodName,
-        imageUrl: foodData?.imageUrl,
+        selectedRating: rating,
         isEditMode: true,
-        userRating: rating,
-        reviewDetail: { reviewId: id, tastePreference, stoolCondition, adverseReactions, comment },
+        reviewId: id,
       },
     });
   };

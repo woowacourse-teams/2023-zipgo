@@ -4,7 +4,11 @@ import { styled } from 'styled-components';
 
 import Label from '@/components/@common/Label/Label';
 import { ADVERSE_REACTIONS, STOOL_CONDITIONS, TASTE_PREFERENCES } from '@/constants/review';
-import { useAddReviewMutation, useEditReviewMutation } from '@/hooks/query/review';
+import {
+  useAddReviewMutation,
+  useEditReviewMutation,
+  useReviewItemQuery,
+} from '@/hooks/query/review';
 import { ACTION_TYPES, useReviewForm } from '@/hooks/review/useReviewForm';
 import { routerPath } from '@/router/routes';
 import { AdverseReaction, StoolCondition, TastePreference } from '@/types/review/client';
@@ -13,31 +17,27 @@ interface ReviewFormProps {
   petFoodId: number;
   rating: number;
   isEditMode?: boolean;
-  reviewDetail?: {
-    reviewId: number;
-    tastePreference: TastePreference;
-    stoolCondition: StoolCondition;
-    adverseReactions: AdverseReaction[];
-    comment: string;
-  };
+  reviewId?: number;
 }
 
 const ReviewForm = (reviewFormProps: ReviewFormProps) => {
-  const { petFoodId, rating, isEditMode = false, reviewDetail } = reviewFormProps;
-  const { review, reviewDispatch } = useReviewForm({ petFoodId, rating });
+  const { petFoodId, rating, isEditMode = false, reviewId = -1 } = reviewFormProps;
+  const { reviewItem } = useReviewItemQuery({ reviewId });
   const { addReviewMutation } = useAddReviewMutation();
   const { editReviewMutation } = useEditReviewMutation();
+  const { review, reviewDispatch } = useReviewForm({ petFoodId, rating });
 
   const navigate = useNavigate();
 
   const onSubmitReview = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
-    if (isEditMode && reviewDetail) {
-      editReviewMutation.editReview({ reviewId: reviewDetail.reviewId, ...review }).then(() => {
+    if (isEditMode && reviewItem) {
+      editReviewMutation.editReview({ reviewId, ...review }).then(() => {
         alert('리뷰 수정이 완료되었습니다.');
         navigate(routerPath.foodDetail({ petFoodId }));
       });
+
       return;
     }
 
@@ -48,25 +48,25 @@ const ReviewForm = (reviewFormProps: ReviewFormProps) => {
   };
 
   useEffect(() => {
-    if (isEditMode && reviewDetail) {
+    if (isEditMode && reviewItem) {
       reviewDispatch({
         type: ACTION_TYPES.SET_TASTE_PREFERENCE,
-        tastePreference: reviewDetail.tastePreference,
+        tastePreference: reviewItem.tastePreference,
       });
 
       reviewDispatch({
         type: ACTION_TYPES.SET_STOOL_CONDITION,
-        stoolCondition: reviewDetail.stoolCondition,
+        stoolCondition: reviewItem.stoolCondition,
       });
 
       reviewDispatch({
         type: ACTION_TYPES.SET_ADVERSE_REACTIONS_DEFAULT,
-        adverseReactions: reviewDetail.adverseReactions,
+        adverseReactions: reviewItem.adverseReactions,
       });
 
-      reviewDispatch({ type: ACTION_TYPES.SET_COMMENT, comment: reviewDetail.comment });
+      reviewDispatch({ type: ACTION_TYPES.SET_COMMENT, comment: reviewItem.comment });
     }
-  }, [isEditMode, reviewDetail, reviewDispatch]);
+  }, [isEditMode, reviewItem, reviewDispatch]);
 
   return (
     <ReviewFormContainer onSubmit={onSubmitReview}>

@@ -16,6 +16,7 @@ const config: StorybookConfig = {
     '@storybook/preset-create-react-app',
     '@storybook/addon-interactions',
     '@storybook/addon-actions',
+    'storybook-addon-react-router-v6',
     wrapForPnp('@storybook/addon-essentials'),
   ],
   framework: {
