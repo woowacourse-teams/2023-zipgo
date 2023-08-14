@@ -55,12 +55,10 @@ const FoodDetail = () => {
   return (
     <>
       <PageHeader title={name} />
-
       <FoodDetailWrapper>
         <FoodProfileContainer>
           <FoodProfile {...foodData} />
         </FoodProfileContainer>
-
         <NavigationBar
           navData={[{ title: '상세정보' }, { title: '리뷰' }]}
           navIndex={pageIndex}
