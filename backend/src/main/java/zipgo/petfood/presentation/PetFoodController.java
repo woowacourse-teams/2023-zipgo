@@ -12,9 +12,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import zipgo.petfood.application.PetFoodQueryService;
-import zipgo.petfood.application.dto.FilterDto;
 import zipgo.petfood.domain.PetFood;
 import zipgo.petfood.presentation.dto.FilterMetadataResponse;
+import zipgo.petfood.presentation.dto.FilterRequest;
 import zipgo.petfood.presentation.dto.FilterResponse;
 import zipgo.petfood.presentation.dto.GetPetFoodResponse;
 import zipgo.petfood.presentation.dto.GetPetFoodsResponse;
@@ -38,7 +38,7 @@ public class PetFoodController {
             @RequestParam(required = false) Long lastPetFoodId,
             @RequestParam(defaultValue = "20", required = false) int size
     ) throws UnsupportedEncodingException {
-        FilterDto filterDto = FilterDto.of(
+        FilterRequest filterDto = FilterRequest.of(
                 convertStringsToCollection(brands),
                 convertStringsToCollection(nutritionStandards),
                 convertStringsToCollection(mainIngredients),

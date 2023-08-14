@@ -10,11 +10,13 @@ import org.springframework.transaction.annotation.Transactional;
 import zipgo.brand.domain.Brand;
 import zipgo.brand.domain.repository.BrandRepository;
 import zipgo.common.service.ServiceTest;
-import zipgo.petfood.application.dto.FilterDto;
+import zipgo.petfood.domain.Functionality;
 import zipgo.petfood.domain.PetFood;
+import zipgo.petfood.domain.PrimaryIngredient;
 import zipgo.petfood.domain.repository.FunctionalityRepository;
 import zipgo.petfood.domain.repository.PetFoodRepository;
 import zipgo.petfood.domain.repository.PrimaryIngredientRepository;
+import zipgo.petfood.presentation.dto.FilterRequest;
 import zipgo.petfood.presentation.dto.FilterResponse;
 import zipgo.petfood.presentation.dto.FilterResponse.BrandResponse;
 import zipgo.petfood.presentation.dto.FilterResponse.FunctionalityResponse;
@@ -33,16 +35,17 @@ import static zipgo.petfood.domain.fixture.FunctionalityFixture.기능성_튼튼
 import static zipgo.petfood.domain.fixture.PetFoodFixture.모든_영양기준_만족_식품;
 import static zipgo.petfood.domain.fixture.PetFoodFixture.미국_영양기준_만족_식품;
 import static zipgo.petfood.domain.fixture.PetFoodFixture.유럽_영양기준_만족_식품;
-import static zipgo.petfood.domain.fixture.PrimaryIngredientFixture.원재료_닭고기_식품;
-import static zipgo.petfood.domain.fixture.PrimaryIngredientFixture.원재료_돼지고기_식품;
-import static zipgo.petfood.domain.fixture.PrimaryIngredientFixture.원재료_소고기_식품;
+import static zipgo.petfood.domain.fixture.PetFoodFunctionalityFixture.식품_기능성_연관관계_매핑;
+import static zipgo.petfood.domain.fixture.PetFoodIngredientFixture.식품_주원료_연관관계_매핑;
+import static zipgo.petfood.domain.fixture.PrimaryIngredientFixture.주원료_닭고기;
+import static zipgo.petfood.domain.fixture.PrimaryIngredientFixture.주원료_돼지고기;
+import static zipgo.petfood.domain.fixture.PrimaryIngredientFixture.주원료_소고기;
 import static zipgo.petfood.presentation.dto.FilterResponse.NutrientStandardResponse;
 import static zipgo.petfood.presentation.dto.FilterResponse.PrimaryIngredientResponse;
 
 class PetFoodQueryServiceTest extends ServiceTest {
 
     private static final int size = 20;
-
 
     @Autowired
     private PetFoodQueryService petFoodQueryService;
@@ -65,17 +68,37 @@ class PetFoodQueryServiceTest extends ServiceTest {
         Brand 오리젠 = brandRepository.save(오리젠_식품_브랜드_생성());
         Brand 퓨리나 = brandRepository.save(퓨리나_식품_브랜드_생성());
 
-        PetFood 모든_영양기준_만족_식품 = petFoodRepository.save(모든_영양기준_만족_식품(아카나));
-        PetFood 미국_영양기준_만족_식품 = petFoodRepository.save(미국_영양기준_만족_식품(오리젠));
-        PetFood 유럽_영양기준_만족_식품 = petFoodRepository.save(유럽_영양기준_만족_식품(퓨리나));
+        PetFood 모든_영양기준_만족_식품 = 모든_영양기준_만족_식품(아카나);
+        PetFood 미국_영양기준_만족_식품 = 미국_영양기준_만족_식품(오리젠);
+        PetFood 유럽_영양기준_만족_식품 = 유럽_영양기준_만족_식품(퓨리나);
 
-        primaryIngredientRepository.save(원재료_소고기_식품(모든_영양기준_만족_식품));
-        primaryIngredientRepository.save(원재료_돼지고기_식품(미국_영양기준_만족_식품));
-        primaryIngredientRepository.save(원재료_닭고기_식품(유럽_영양기준_만족_식품));
+        Functionality 기능성_튼튼 = 기능성_튼튼();
+        Functionality 기능성_짱짱 = 기능성_짱짱();
+        Functionality 기능성_다이어트 = 기능성_다이어트();
 
-        functionalityRepository.save(기능성_튼튼(모든_영양기준_만족_식품));
-        functionalityRepository.save(기능성_짱짱(미국_영양기준_만족_식품));
-        functionalityRepository.save(기능성_다이어트(유럽_영양기준_만족_식품));
+        식품_기능성_연관관계_매핑(모든_영양기준_만족_식품, 기능성_튼튼);
+        식품_기능성_연관관계_매핑(미국_영양기준_만족_식품, 기능성_짱짱);
+        식품_기능성_연관관계_매핑(유럽_영양기준_만족_식품, 기능성_다이어트);
+
+        PrimaryIngredient 원재료_소고기 = 주원료_소고기();
+        PrimaryIngredient 원재료_돼지고기 = 주원료_돼지고기();
+        PrimaryIngredient 원재료_닭고기 = 주원료_닭고기();
+
+        식품_주원료_연관관계_매핑(모든_영양기준_만족_식품, 원재료_소고기);
+        식품_주원료_연관관계_매핑(미국_영양기준_만족_식품, 원재료_돼지고기);
+        식품_주원료_연관관계_매핑(유럽_영양기준_만족_식품, 원재료_닭고기);
+
+        petFoodRepository.save(모든_영양기준_만족_식품);
+        petFoodRepository.save(미국_영양기준_만족_식품);
+        petFoodRepository.save(유럽_영양기준_만족_식품);
+
+        functionalityRepository.save(기능성_튼튼);
+        functionalityRepository.save(기능성_짱짱);
+        functionalityRepository.save(기능성_다이어트);
+
+        primaryIngredientRepository.save(원재료_소고기);
+        primaryIngredientRepository.save(원재료_돼지고기);
+        primaryIngredientRepository.save(원재료_닭고기);
     }
 
     @Nested
@@ -86,11 +109,11 @@ class PetFoodQueryServiceTest extends ServiceTest {
         void 브랜드를_만족하는_식품만_반환한다() {
             //given
             List<PetFood> allFoods = petFoodRepository.findAll();
-            Long lastPetFoodId = allFoods.get(allFoods.size() - 1).getId() + 1;
+            Long lastPetFoodId = getLastPetFoodId(allFoods);
 
             // when
             List<PetFood> petFoods = petFoodQueryService.getPetFoodsByFilters(
-                    FilterDto.of(
+                    FilterRequest.of(
                             List.of("퓨리나"),
                             EMPTY_LIST,
                             EMPTY_LIST,
@@ -112,22 +135,23 @@ class PetFoodQueryServiceTest extends ServiceTest {
         void 브랜드를_만족하고_lastPetFoodId보다_작은_식품만_반환한다() {
             //given
             List<PetFood> allFoods = petFoodRepository.findAll();
+            Long lastPetFoodId = getLastPetFoodId(allFoods);
 
             // when
             List<PetFood> petFoods = petFoodQueryService.getPetFoodsByFilters(
-                    FilterDto.of(
+                    FilterRequest.of(
                             List.of("퓨리나"),
                             EMPTY_LIST,
                             EMPTY_LIST,
                             EMPTY_LIST
                     ),
-                    allFoods.get(2).getId(),
+                    lastPetFoodId,
                     size
             );
 
             // then
             assertAll(
-                    () -> assertThat(petFoods).hasSize(0)
+                    () -> assertThat(petFoods).hasSize(1)
             );
         }
 
@@ -135,11 +159,11 @@ class PetFoodQueryServiceTest extends ServiceTest {
         void 영양_기준을_만족하는_식품만_반환한다() {
             //given
             List<PetFood> allFoods = petFoodRepository.findAll();
-            Long lastPetFoodId = allFoods.get(allFoods.size() - 1).getId() + 1;
+            Long lastPetFoodId = getLastPetFoodId(allFoods);
 
             // when
             List<PetFood> petFoods = petFoodQueryService.getPetFoodsByFilters(
-                    FilterDto.of(
+                    FilterRequest.of(
                             EMPTY_LIST,
                             List.of("유럽"),
                             EMPTY_LIST,
@@ -157,11 +181,11 @@ class PetFoodQueryServiceTest extends ServiceTest {
         void 주원료를_만족하는_식품만_반환한다() {
             //given
             List<PetFood> allFoods = petFoodRepository.findAll();
-            Long lastPetFoodId = allFoods.get(allFoods.size() - 1).getId() + 1;
+            Long lastPetFoodId = getLastPetFoodId(allFoods);
 
             // when
             List<PetFood> petFoods = petFoodQueryService.getPetFoodsByFilters(
-                    FilterDto.of(
+                    FilterRequest.of(
                             EMPTY_LIST,
                             EMPTY_LIST,
                             List.of("소고기"),
@@ -174,7 +198,7 @@ class PetFoodQueryServiceTest extends ServiceTest {
             // then
             assertAll(
                     () -> assertThat(petFoods).hasSize(1),
-                    () -> assertThat(petFoods).extracting(petFood -> petFood.getPrimaryIngredients().get(0).getName())
+                    () -> assertThat(petFoods).extracting(petFood -> petFood.getPetFoodPrimaryIngredients().get(0).getPrimaryIngredient().getName())
                             .isEqualTo(List.of("소고기"))
             );
         }
@@ -183,11 +207,11 @@ class PetFoodQueryServiceTest extends ServiceTest {
         void 기능성을_만족하는_식품만_반환한다() {
             //given
             List<PetFood> allFoods = petFoodRepository.findAll();
-            Long lastPetFoodId = allFoods.get(allFoods.size() - 1).getId() + 1;
+            Long lastPetFoodId = getLastPetFoodId(allFoods);
 
             // when
             List<PetFood> petFoods = petFoodQueryService.getPetFoodsByFilters(
-                    FilterDto.of(
+                    FilterRequest.of(
                             EMPTY_LIST,
                             EMPTY_LIST,
                             EMPTY_LIST,
@@ -200,20 +224,21 @@ class PetFoodQueryServiceTest extends ServiceTest {
             // then
             assertAll(
                     () -> assertThat(petFoods).hasSize(1),
-                    () -> assertThat(petFoods).extracting(petFood -> petFood.getFunctionalities().get(0).getName())
+                    () -> assertThat(petFoods).extracting(petFood -> petFood.getPetFoodFunctionalities().get(0).getFunctionality().getName())
                             .isEqualTo(List.of("튼튼"))
             );
         }
 
+        // 아카나, 미국, 튼튼, 소고기
         @Test
         void 모든_필터를_만족하는_식품만_반환한다() {
             //given
             List<PetFood> allFoods = petFoodRepository.findAll();
-            Long lastPetFoodId = allFoods.get(allFoods.size() - 1).getId() + 1;
+            Long lastPetFoodId = allFoods.get(allFoods.size() - 1).getId();
 
             // when
             List<PetFood> petFoods = petFoodQueryService.getPetFoodsByFilters(
-                    FilterDto.of(
+                    FilterRequest.of(
                             List.of("아카나", "오리젠"),
                             List.of("미국"),
                             List.of("소고기"),
@@ -228,9 +253,9 @@ class PetFoodQueryServiceTest extends ServiceTest {
                     () -> assertThat(petFoods).hasSize(1),
                     () -> assertThat(petFoods).extracting(petFood -> petFood.getHasStandard().getEurope())
                             .contains(true),
-                    () -> assertThat(petFoods).extracting(petFood -> petFood.getPrimaryIngredients().get(0).getName())
+                    () -> assertThat(petFoods).extracting(petFood -> petFood.getPetFoodPrimaryIngredients().get(0).getPrimaryIngredient().getName())
                             .isEqualTo(List.of("소고기")),
-                    () -> assertThat(petFoods).extracting(petFood -> petFood.getFunctionalities().get(0).getName())
+                    () -> assertThat(petFoods).extracting(petFood -> petFood.getPetFoodFunctionalities().get(0).getFunctionality().getName())
                             .isEqualTo(List.of("튼튼"))
             );
         }
@@ -239,11 +264,11 @@ class PetFoodQueryServiceTest extends ServiceTest {
         void 모든_정보가_NULL일_경우_모든_식품을_반환한다() {
             //given
             List<PetFood> allFoods = petFoodRepository.findAll();
-            Long lastPetFoodId = allFoods.get(allFoods.size() - 1).getId() + 1;
+            Long lastPetFoodId = getLastPetFoodId(allFoods);
 
             // when
             List<PetFood> petFoods = petFoodQueryService.getPetFoodsByFilters(
-                    FilterDto.of(
+                    FilterRequest.of(
                             EMPTY_LIST,
                             EMPTY_LIST,
                             EMPTY_LIST,
@@ -261,21 +286,22 @@ class PetFoodQueryServiceTest extends ServiceTest {
         void lastPetFoodId_보다_작은_식품을_반환한다() {
             //given
             List<PetFood> allFoods = petFoodRepository.findAll();
+            Long lastPetFoodId = getLastPetFoodId(allFoods);
 
             // when
             List<PetFood> petFoods = petFoodQueryService.getPetFoodsByFilters(
-                    FilterDto.of(
+                    FilterRequest.of(
                             EMPTY_LIST,
                             EMPTY_LIST,
                             EMPTY_LIST,
                             EMPTY_LIST
                     ),
-                    allFoods.get(1).getId(),
+                    lastPetFoodId,
                     size
             );
 
             // then
-            assertThat(petFoods.size()).isEqualTo(1);
+            assertThat(petFoods.size()).isEqualTo(allFoods.size());
         }
 
         @Test
@@ -284,13 +310,19 @@ class PetFoodQueryServiceTest extends ServiceTest {
             Brand 인스팅트 = brandRepository.save(인스팅트_식품_브랜드_생성());
             for (int i = 0; i < 20; i++) {
                 PetFood 미국_영양기준_만족_식품 = savePetFood(인스팅트);
-                primaryIngredientRepository.save(원재료_돼지고기_식품(미국_영양기준_만족_식품));
-                functionalityRepository.save(기능성_짱짱(미국_영양기준_만족_식품));
+
+                PrimaryIngredient 원재료_돼지고기 = 주원료_돼지고기();
+                식품_주원료_연관관계_매핑(미국_영양기준_만족_식품, 원재료_돼지고기);
+                primaryIngredientRepository.save(원재료_돼지고기);
+
+                Functionality 기능성_짱짱 = 기능성_짱짱();
+                식품_기능성_연관관계_매핑(미국_영양기준_만족_식품, 기능성_짱짱);
+                functionalityRepository.save(기능성_짱짱);
             }
 
             // when
             List<PetFood> petFoods = petFoodQueryService.getPetFoodsByFilters(
-                    FilterDto.of(
+                    FilterRequest.of(
                             EMPTY_LIST,
                             EMPTY_LIST,
                             EMPTY_LIST,
@@ -308,6 +340,11 @@ class PetFoodQueryServiceTest extends ServiceTest {
             return petFoodRepository.save(미국_영양기준_만족_식품(브랜드));
         }
 
+    }
+
+    private static Long getLastPetFoodId(List<PetFood> allFoods) {
+        Long lastPetFoodId = allFoods.get(allFoods.size() - 1).getId() + 1;
+        return lastPetFoodId;
     }
 
     @Nested
@@ -343,13 +380,14 @@ class PetFoodQueryServiceTest extends ServiceTest {
     void 필터에_맞는_식품_count_를_반환할_수_있다() {
         // given, when
         Long count = petFoodQueryService.getPetFoodsCountByFilters(
-                FilterDto.of(
+                FilterRequest.of(
                         EMPTY_LIST,
                         EMPTY_LIST,
                         EMPTY_LIST,
                         EMPTY_LIST
                 )
         );
+        System.out.println("count = " + count);
 
         // then
         assertThat(count).isEqualTo(petFoodRepository.findAll().size());

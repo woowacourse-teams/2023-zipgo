@@ -1,5 +1,6 @@
 package zipgo.petfood.domain;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Embedded;
 import jakarta.persistence.Entity;
@@ -20,6 +21,7 @@ import lombok.NoArgsConstructor;
 import zipgo.brand.domain.Brand;
 import zipgo.common.entity.BaseTimeEntity;
 
+import static jakarta.persistence.CascadeType.REMOVE;
 import static jakarta.persistence.FetchType.LAZY;
 
 @Entity
@@ -54,12 +56,12 @@ public class PetFood extends BaseTimeEntity {
     private Brand brand;
 
     @Builder.Default
-    @OneToMany(mappedBy = "petFood")
-    private List<PrimaryIngredient> primaryIngredients = new ArrayList<>();
+    @OneToMany(mappedBy = "petFood", cascade = {CascadeType.PERSIST, REMOVE})
+    private List<PetFoodPrimaryIngredient> petFoodPrimaryIngredients = new ArrayList<>();
 
     @Builder.Default
-    @OneToMany(mappedBy = "petFood")
-    private List<Functionality> functionalities = new ArrayList<>();
+    @OneToMany(mappedBy = "petFood", cascade = {CascadeType.PERSIST, REMOVE})
+    private List<PetFoodFunctionality> petFoodFunctionalities = new ArrayList<>();
 
     public double calculateRatingAverage() {
         return reviews.calculateRatingAverage();
@@ -69,12 +71,12 @@ public class PetFood extends BaseTimeEntity {
         return reviews.countReviews();
     }
 
-    public void addPrimaryIngredient(PrimaryIngredient primaryIngredient) {
-        this.primaryIngredients.add(primaryIngredient);
+    public void addPetFoodFunctionality(PetFoodFunctionality petFoodFunctionality) {
+        this.petFoodFunctionalities.add(petFoodFunctionality);
     }
 
-    public void addFunctionality(Functionality functionality) {
-        this.functionalities.add(functionality);
+    public void addPetFoodPrimaryIngredient(PetFoodPrimaryIngredient petFoodPrimaryIngredient) {
+        this.petFoodPrimaryIngredients.add(petFoodPrimaryIngredient);
     }
 
 }

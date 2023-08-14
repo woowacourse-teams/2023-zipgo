@@ -11,13 +11,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.restdocs.payload.JsonFieldType;
 import org.springframework.restdocs.restassured.RestDocumentationFilter;
 import zipgo.brand.domain.Brand;
-import zipgo.brand.domain.fixture.BrandFixture;
 import zipgo.brand.domain.repository.BrandRepository;
 import zipgo.common.acceptance.AcceptanceTest;
+import zipgo.petfood.domain.Functionality;
 import zipgo.petfood.domain.PetFood;
 import zipgo.petfood.domain.PrimaryIngredient;
-import zipgo.petfood.domain.fixture.FunctionalityFixture;
-import zipgo.petfood.domain.fixture.PetFoodFixture;
+import zipgo.petfood.domain.fixture.PetFoodFunctionalityFixture;
 import zipgo.petfood.domain.repository.FunctionalityRepository;
 import zipgo.petfood.domain.repository.PetFoodRepository;
 import zipgo.petfood.domain.repository.PrimaryIngredientRepository;
@@ -39,6 +38,13 @@ import static org.springframework.restdocs.payload.PayloadDocumentation.response
 import static org.springframework.restdocs.request.RequestDocumentation.parameterWithName;
 import static org.springframework.restdocs.request.RequestDocumentation.pathParameters;
 import static org.springframework.restdocs.request.RequestDocumentation.queryParameters;
+import static zipgo.brand.domain.fixture.BrandFixture.아카나_식품_브랜드_생성;
+import static zipgo.petfood.domain.fixture.FunctionalityFixture.기능성_다이어트;
+import static zipgo.petfood.domain.fixture.FunctionalityFixture.기능성_튼튼;
+import static zipgo.petfood.domain.fixture.PetFoodFixture.모든_영양기준_만족_식품;
+import static zipgo.petfood.domain.fixture.PetFoodFunctionalityFixture.*;
+import static zipgo.petfood.domain.fixture.PetFoodIngredientFixture.식품_주원료_연관관계_매핑;
+import static zipgo.petfood.domain.fixture.PrimaryIngredientFixture.주원료_닭고기;
 
 public class PetFoodControllerTest extends AcceptanceTest {
 
@@ -58,15 +64,20 @@ public class PetFoodControllerTest extends AcceptanceTest {
 
     @BeforeEach
     void setUp() {
-        Brand 아카나 = brandRepository.save(BrandFixture.아카나_식품_브랜드_생성());
-        식품 = petFoodRepository.save(PetFoodFixture.모든_영양기준_만족_식품(아카나));
-        functionalityRepository.save(FunctionalityFixture.기능성_다이어트(식품));
-        functionalityRepository.save(FunctionalityFixture.기능성_튼튼(식품));
-        primaryIngredientRepository.save(PrimaryIngredient.builder()
-                .petFood(식품)
-                .name("닭고기")
-                .build());
+        Brand 아카나 = brandRepository.save(아카나_식품_브랜드_생성());
+        PetFood 모든_영양기준_만족_식품 = 모든_영양기준_만족_식품(아카나);
+        Functionality 기능성_다이어트 = 기능성_다이어트();
+        Functionality 기능성_튼튼 = 기능성_튼튼();
+        PrimaryIngredient 주원료_닭고기 = 주원료_닭고기();
 
+        식품_기능성_연관관계_매핑(모든_영양기준_만족_식품, 기능성_다이어트);
+        식품_기능성_연관관계_매핑(모든_영양기준_만족_식품, 기능성_튼튼);
+        식품_주원료_연관관계_매핑(모든_영양기준_만족_식품, 주원료_닭고기);
+
+        functionalityRepository.save(기능성_다이어트);
+        functionalityRepository.save(기능성_튼튼);
+        primaryIngredientRepository.save(주원료_닭고기);
+        식품 = petFoodRepository.save(모든_영양기준_만족_식품);
     }
 
     @Nested
@@ -170,14 +181,14 @@ public class PetFoodControllerTest extends AcceptanceTest {
                     .assertThat().statusCode(OK.value());
         }
 
-        private void 주원료_만들기(PetFood 식품) {
-            PrimaryIngredient 주원료 = PrimaryIngredient.builder().petFood(식품).name("주원료").build();
+        private void 주원료_만들기() {
+            PrimaryIngredient 주원료 = 주원료_닭고기();
             primaryIngredientRepository.save(주원료);
         }
 
         private PetFood 모의_식품_생성() {
-            Brand 아카나 = brandRepository.save(BrandFixture.아카나_식품_브랜드_생성());
-            return petFoodRepository.save(PetFoodFixture.모든_영양기준_만족_식품(아카나));
+            Brand 아카나 = brandRepository.save(아카나_식품_브랜드_생성());
+            return petFoodRepository.save(모든_영양기준_만족_식품(아카나));
         }
 
         private RestDocumentationFilter 식품_상세_조회_API_문서_생성() {

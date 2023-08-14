@@ -1,4 +1,4 @@
-package zipgo.petfood.domain.repository;
+package zipgo.petfood.infra.persist;
 
 import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.jpa.impl.JPAQueryFactory;
@@ -9,9 +9,9 @@ import org.springframework.transaction.annotation.Transactional;
 import zipgo.petfood.domain.PetFood;
 
 import static zipgo.brand.domain.QBrand.brand;
-import static zipgo.petfood.domain.QFunctionality.functionality;
 import static zipgo.petfood.domain.QPetFood.petFood;
-import static zipgo.petfood.domain.QPrimaryIngredient.primaryIngredient;
+import static zipgo.petfood.domain.QPetFoodFunctionality.petFoodFunctionality;
+import static zipgo.petfood.domain.QPetFoodPrimaryIngredient.petFoodPrimaryIngredient;
 
 @Repository
 @RequiredArgsConstructor
@@ -32,9 +32,8 @@ public class PetFoodQueryRepository {
                 .selectFrom(petFood)
                 .join(petFood.brand, brand)
                 .fetchJoin()
-                .join(petFood.primaryIngredients, primaryIngredient)
-                .fetchJoin()
-                .join(petFood.functionalities, functionality)
+                .join(petFood.petFoodPrimaryIngredients, petFoodPrimaryIngredient)
+                .join(petFood.petFoodFunctionalities, petFoodFunctionality)
                 .where(
                         isLessThan(lastPetFoodId),
                         isContainBrand(brandsName),
@@ -47,11 +46,32 @@ public class PetFoodQueryRepository {
                 .fetch();
     }
 
+    public Long getCount(
+            List<String> brandsName,
+            List<String> standards,
+            List<String> primaryIngredientList,
+            List<String> functionalityList
+    ) {
+        return queryFactory
+                .select(petFood.count())
+                .from(petFood)
+                .join(petFood.brand, brand)
+                .join(petFood.petFoodPrimaryIngredients, petFoodPrimaryIngredient)
+                .join(petFood.petFoodFunctionalities, petFoodFunctionality)
+                .where(
+                        isContainBrand(brandsName),
+                        isMeetStandardCondition(standards),
+                        isContainPrimaryIngredients(primaryIngredientList),
+                        isContainFunctionalities(functionalityList)
+                )
+                .fetchOne();
+    }
+
     private BooleanExpression isLessThan(Long lastPetFoodId) {
         if (lastPetFoodId == null) {
             return null;
         }
-        return petFood.id.lt(lastPetFoodId);
+        return petFood.id.loe(lastPetFoodId);
     }
 
     private BooleanExpression isContainBrand(List<String> brandsName) {
@@ -80,31 +100,16 @@ public class PetFoodQueryRepository {
         if (primaryIngredientList.isEmpty()) {
             return null;
         }
-        return petFood.primaryIngredients.any().name.in(primaryIngredientList);
+        return petFood.petFoodPrimaryIngredients.any()
+                .primaryIngredient.name.in(primaryIngredientList);
     }
 
     private BooleanExpression isContainFunctionalities(List<String> functionalityList) {
         if (functionalityList.isEmpty()) {
             return null;
         }
-        return petFood.functionalities.any().name.in(functionalityList);
-    }
-
-    public Long getCount(List<String> brandsName, List<String> standards, List<String> primaryIngredientList,
-                         List<String> functionalityList) {
-        return queryFactory
-                .select(petFood.id.countDistinct())
-                .from(petFood)
-                .join(petFood.brand, brand)
-                .join(petFood.primaryIngredients, primaryIngredient)
-                .join(petFood.functionalities, functionality)
-                .where(
-                        isContainBrand(brandsName),
-                        isMeetStandardCondition(standards),
-                        isContainPrimaryIngredients(primaryIngredientList),
-                        isContainFunctionalities(functionalityList)
-                )
-                .fetchOne();
+        return petFood.petFoodFunctionalities.any()
+                .functionality.name.in(functionalityList);
     }
 
 }
