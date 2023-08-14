@@ -59,4 +59,6 @@ export const getReviewSummary = async ({ petFoodId }: GetReviewSummaryReq) => {
 
 export const getReviewsMeta = async () => {
   const { data } = await client.get<GetReviewsMetaRes>('/reviews/metaData');
+
+  return data;
 };
