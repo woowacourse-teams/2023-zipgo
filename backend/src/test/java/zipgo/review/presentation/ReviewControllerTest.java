@@ -61,7 +61,7 @@ import static zipgo.review.fixture.ReviewFixture.극찬_리뷰_생성;
 import static zipgo.review.fixture.ReviewFixture.리뷰_생성_요청;
 import static zipgo.review.fixture.ReviewFixture.리뷰_수정_요청;
 
-
+// TODO: 새로 생긴 파라미터로 인수테스트 작성하기
 public class ReviewControllerTest extends AcceptanceTest {
 
     private PetFood 식품;
@@ -119,8 +119,9 @@ public class ReviewControllerTest extends AcceptanceTest {
             var 요청_준비 = given(spec).contentType(JSON).filter(리뷰_전체_목록_조회_API_문서_생성("리뷰 전체 조회 - 성공"));
 
             // when
-            var 응답 = 요청_준비.when().pathParam("id", 식품.getId())
-                    .get("/pet-foods/{id}/reviews");
+            var 응답 = 요청_준비.when()
+                    .queryParam("petFoodId", 식품.getId())
+                    .get("/reviews");
 
             // then
             응답.then()
@@ -137,9 +138,9 @@ public class ReviewControllerTest extends AcceptanceTest {
 
             // when
             var 응답 = 요청_준비.when()
+                    .queryParam("petFoodId", 식품.getId())
                     .queryParam("size", 10)
-                    .pathParam("id", 식품.getId())
-                    .get("/pet-foods/{id}/reviews");
+                    .get("/reviews");
 
             // then
             응답.then()
@@ -155,9 +156,9 @@ public class ReviewControllerTest extends AcceptanceTest {
 
             // when
             var 응답 = 요청_준비.when()
+                    .queryParam("petFoodId", 식품.getId())
                     .queryParam("size", 10)
-                    .pathParam("id", 식품.getId())
-                    .get("/pet-foods/{id}/reviews");
+                    .get("/reviews");
 
             // then
             응답.then()
@@ -167,9 +168,14 @@ public class ReviewControllerTest extends AcceptanceTest {
 
         private RestDocumentationFilter 리뷰_전체_목록_조회_API_문서_생성(String uniqueName) {
             return document(uniqueName, 문서_정보.responseSchema(성공_응답_형식),
-                    queryParameters(parameterWithName("size").description("조회하고자 하는 리뷰의 개수").optional(),
-                            parameterWithName("lastReviewId").description("이전 페이지의 마지막 리뷰 id").optional()),
-                    pathParameters(parameterWithName("id").description("식품 id")),
+                    queryParameters(
+                            parameterWithName("petFoodId").description("식품 id"),
+                            parameterWithName("size").description("조회하고자 하는 리뷰의 개수").optional(),
+                            parameterWithName("lastReviewId").description("이전 페이지의 마지막 리뷰 id").optional(),
+                            parameterWithName("breedSizeId").description("반려동물의 견종 크기 id").optional(),
+                            parameterWithName("ageGroupId").description("반려동물의 나이 그룹 id").optional(),
+                            parameterWithName("breedId").description("반려동물의 견종 id").optional(),
+                            parameterWithName("sortBy").description("정렬 기준").optional()),
                     responseFields(fieldWithPath("reviews[].id").description("리뷰 id").type(JsonFieldType.NUMBER),
                             fieldWithPath("reviews[].reviewerName").description("리뷰 작성자 이름").type(JsonFieldType.STRING),
                             fieldWithPath("reviews[].rating").description("리뷰 별점").type(JsonFieldType.NUMBER),
@@ -209,9 +215,9 @@ public class ReviewControllerTest extends AcceptanceTest {
 
             // when
             var 응답 = 요청_준비.when()
+                    .queryParam("petFoodId", 식품.getId())
                     .queryParam("size", 0)
-                    .pathParam("id", 식품.getId())
-                    .get("/pet-foods/{id}/reviews");
+                    .get("/reviews");
 
             // then
             응답.then()
