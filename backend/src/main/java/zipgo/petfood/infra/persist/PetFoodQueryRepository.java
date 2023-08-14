@@ -16,7 +16,7 @@ import static zipgo.petfood.domain.QPetFoodPrimaryIngredient.petFoodPrimaryIngre
 @Repository
 @RequiredArgsConstructor
 @Transactional(readOnly = true)
-public class PetFoodQueryRepository {
+public class PetFoodQueryRepository implements zipgo.petfood.domain.repository.PetFoodQueryRepository {
 
     private final JPAQueryFactory queryFactory;
 
@@ -46,6 +46,7 @@ public class PetFoodQueryRepository {
                 .fetch();
     }
 
+    @Override
     public Long getCount(
             List<String> brandsName,
             List<String> standards,
