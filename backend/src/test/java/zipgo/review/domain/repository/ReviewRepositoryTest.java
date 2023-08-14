@@ -89,6 +89,8 @@ public class ReviewRepositoryTest extends RepositoryTest {
         for (HelpfulReaction helpfulReaction : helpfulReactions) {
             System.out.println(helpfulReaction);
         }
+        System.out.println(모르는_베베);
+        System.out.println("helpfulReactions.get(0).equals(모르는_베베) = " + helpfulReactions.get(0).equals(모르는_베베));
         assertThat(helpfulReactions)
                 .anyMatch(helpfulReaction -> helpfulReaction.getMadeBy().equals(모르는_베베));
     }

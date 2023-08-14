@@ -24,7 +24,7 @@ import static lombok.EqualsAndHashCode.Include;
 @ToString
 @AllArgsConstructor
 @NoArgsConstructor(access = PROTECTED)
-@EqualsAndHashCode(onlyExplicitlyIncluded = true, callSuper = true)
+@EqualsAndHashCode(onlyExplicitlyIncluded = true, callSuper = false)
 public class Member extends BaseTimeEntity {
 
     @Id
