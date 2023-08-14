@@ -21,6 +21,7 @@ import zipgo.petfood.domain.repository.PetFoodRepository;
 import zipgo.review.application.dto.GetReviewQueryRequest;
 import zipgo.review.domain.Review;
 import zipgo.review.domain.repository.ReviewRepository;
+import zipgo.review.dto.response.GetReviewMetadataResponse;
 import zipgo.review.dto.response.GetReviewResponse;
 import zipgo.review.dto.response.GetReviewsResponse;
 
@@ -147,6 +148,31 @@ class ReviewQueryServiceTest extends QueryServiceTest {
                 () -> assertThat(review.getTastePreference()).isEqualTo(EATS_VERY_WELL),
                 () -> assertThat(review.getStoolCondition()).isEqualTo(SOFT_MOIST),
                 () -> assertThat(review.getAdverseReactions().get(0).getAdverseReactionType()).isEqualTo(NONE)
+        );
+    }
+
+    @Test
+    void 리뷰_메타데이터를_조회할_수_있다() {
+        //given
+        PetSize 소형견 = new PetSize(null, "소형견");
+        PetSize 중형견 = new PetSize(null, "중형견");
+        PetSize 대형견 = new PetSize(null, "대형견");
+        List<PetSize> petSizes = List.of(소형견, 중형견, 대형견);
+        petSizeRepository.saveAll(petSizes);
+        List<Breeds> breeds = List.of(new Breeds(null, "푸들", 소형견), new Breeds(null, "말티즈", 소형견),
+                new Breeds(null, "진돗개", 중형견), new Breeds(null, "시바견", 중형견),
+                new Breeds(null, "리트리버", 대형견), new Breeds(null, "허스키", 대형견));
+        breedsRepository.saveAll(breeds);
+
+        //when
+        GetReviewMetadataResponse 응답 = reviewQueryService.getReviewMetadata();
+
+        //then
+        assertAll(
+                () -> assertThat(응답.breedSizes()).hasSize(3),
+                () -> assertThat(응답.sortBy()).hasSize(4),
+                () -> assertThat(응답.ageGroups()).hasSize(3),
+                () -> assertThat(응답.breeds()).isNotEmpty()
         );
     }
 

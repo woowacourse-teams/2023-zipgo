@@ -2,7 +2,6 @@ package zipgo.review.presentation;
 
 import jakarta.validation.Valid;
 import java.net.URI;
-import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -22,7 +21,6 @@ import zipgo.review.domain.Review;
 import zipgo.review.dto.request.CreateReviewRequest;
 import zipgo.review.dto.request.UpdateReviewRequest;
 import zipgo.review.dto.response.GetReviewMetadataResponse;
-import zipgo.review.dto.response.GetReviewMetadataResponse.Metadata;
 import zipgo.review.dto.response.GetReviewResponse;
 import zipgo.review.dto.response.GetReviewsResponse;
 
@@ -80,12 +78,7 @@ public class ReviewController {
 
     @GetMapping("/reviews/metadata")
     public ResponseEntity<GetReviewMetadataResponse> getMetadata() {
-        GetReviewMetadataResponse metadata = new GetReviewMetadataResponse(
-                List.of(new Metadata(1L, "소형견")),
-                List.of(new Metadata(1L, "최신순")),
-                List.of(new Metadata(1L, "퍼피")),
-                List.of(new Metadata(1L, "포메라니안"))
-        );
+        GetReviewMetadataResponse metadata = reviewQueryService.getReviewMetadata();
         return ResponseEntity.ok(metadata);
     }
 
