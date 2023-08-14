@@ -85,11 +85,7 @@ public class ReviewRepositoryTest extends RepositoryTest {
         //then
         Review 조회한_리뷰 = reviewRepository.findById(아는_리뷰.getId())
                 .orElseThrow(() -> new ReviewException.NotFound(아는_리뷰.getId()));
-        List<HelpfulReaction> helpfulReactions = 조회한_리뷰.getHelpfulReactions();
-        for (HelpfulReaction helpfulReaction : helpfulReactions) {
-            System.out.println(helpfulReaction);
-        }
-        assertThat(helpfulReactions)
+        assertThat(조회한_리뷰.getHelpfulReactions())
                 .anyMatch(helpfulReaction -> helpfulReaction.getMadeBy().equals(모르는_베베));
     }
 
