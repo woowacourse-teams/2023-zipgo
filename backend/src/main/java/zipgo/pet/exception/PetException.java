@@ -6,12 +6,19 @@ public class PetException extends RuntimeException {
         super(message);
     }
 
-    public static class NotFound extends PetException {
+    public static class AgeNotFound extends PetException {
 
-        public NotFound() {
+        public AgeNotFound() {
             super("분류에 속하지 않는 나이입니다.");
         }
 
+    }
+
+    public static class GenderNotFound extends PetException {
+
+        public GenderNotFound() {
+            super("존재하지 않는 성별입니다.");
+        }
     }
 
 }

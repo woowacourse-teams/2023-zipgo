@@ -57,6 +57,9 @@ dependencies {
     runtimeOnly 'com.mysql:mysql-connector-j'
     runtimeOnly 'com.h2database:h2'
 
+    implementation 'software.amazon.awssdk:s3:2.20.121'
+    compileOnly 'software.amazon.awssdk:url-connection-client:2.20.121'
+
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
     testImplementation 'io.rest-assured:rest-assured:5.3.1'
 
@@ -100,6 +103,7 @@ jacocoTestReport {
                             '**/*Request*',
                             '**/BaseTimeEntity',
                             '**/*Dto*',
+                            '**/S3*',
                             '**/*Interceptor*',
                             '**/*ArgumentResolver*',
                             '**/*ExceptionHandler*'
