@@ -7,7 +7,7 @@ import org.springframework.boot.test.context.TestConfiguration;
 import org.springframework.context.annotation.Bean;
 import zipgo.petfood.infra.persist.PetFoodQueryRepository;
 import zipgo.review.domain.repository.ReviewQueryRepository;
-import zipgo.review.domain.repository.ReviewQueryRepositoryImpl;
+import zipgo.review.infra.persist.ReviewQueryRepositoryImpl;
 
 @TestConfiguration
 public class QueryDslTestConfig {

@@ -77,7 +77,8 @@ class ReviewQueryServiceTest extends QueryServiceTest {
         GetReviewResponse 리뷰2_dto = GetReviewResponse.from(리뷰2);
 
         //when
-        var request = new FindReviewsQueryRequest(식품.getId(), 2, null, SortBy.RECENT, emptyList(), emptyList());
+        var request = new FindReviewsQueryRequest(식품.getId(), 2, null, SortBy.RECENT, emptyList(), emptyList(),
+                emptyList());
         GetReviewsResponse reviews = reviewQueryService.getReviews(request);
 
         //then

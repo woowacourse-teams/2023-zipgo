@@ -10,7 +10,8 @@ public record FindReviewsQueryRequest(
         Long lastReviewId,
         SortBy sortBy,
         List<Long> petSizes,
-        List<AgeGroup> ageGroups
+        List<AgeGroup> ageGroups,
+        List<Long> breedIds
 ) {
 
     public FindReviewsQueryRequest {

@@ -19,4 +19,11 @@ public class BreedsFixture {
                 .build();
     }
 
+    public static Breeds 견종(PetSize 사이즈, String 이름) {
+        return Breeds.builder()
+                .name(이름)
+                .petSize(사이즈)
+                .build();
+    }
+
 }

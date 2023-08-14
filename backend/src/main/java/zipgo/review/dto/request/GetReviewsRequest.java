@@ -19,7 +19,8 @@ public record GetReviewsRequest(
         Long lastReviewId,
         Long sortById,
         List<Long> petSizeId,
-        List<Long> ageGroupId
+        List<Long> ageGroupId,
+        List<Long> breedId
 ) {
 
     public FindReviewsQueryRequest toQueryRequest() {
@@ -29,7 +30,9 @@ public record GetReviewsRequest(
                 lastReviewId,
                 SortBy.from(sortById()),
                 petSizeId(),
-                ageGroupId().stream().map(AgeGroup::from).toList());
+                ageGroupId().stream().map(AgeGroup::from).toList(),
+                breedId()
+        );
     }
 
     @Override
@@ -49,6 +52,11 @@ public record GetReviewsRequest(
     @Override
     public List<Long> ageGroupId() {
         return requireNonNullElse(ageGroupId, emptyList());
+    }
+
+    @Override
+    public List<Long> breedId() {
+        return requireNonNullElse(breedId, emptyList());
     }
 
 }

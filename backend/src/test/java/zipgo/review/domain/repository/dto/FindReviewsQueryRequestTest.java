@@ -14,8 +14,8 @@ class FindReviewsQueryRequestTest {
     void 식품_id가_null이면_예외가_발생한다() {
         // expect
         assertThatThrownBy(
-                () -> new FindReviewsQueryRequest(null, 10, null, null, emptyList(), emptyList())).isInstanceOf(
-                IllegalArgumentException.class);
+                () -> new FindReviewsQueryRequest(null, 10, null, null, emptyList(), emptyList(), emptyList()))
+                .isInstanceOf(IllegalArgumentException.class);
     }
 
     @ParameterizedTest
@@ -23,7 +23,8 @@ class FindReviewsQueryRequestTest {
     void size가_0_이하면_예외가_발생한다(int 음수) {
 
         // expect
-        assertThatThrownBy(() -> new FindReviewsQueryRequest(1L, 음수, null, SortBy.RECENT, emptyList(), emptyList()))
+        assertThatThrownBy(
+                () -> new FindReviewsQueryRequest(1L, 음수, null, SortBy.RECENT, emptyList(), emptyList(), emptyList()))
                 .isInstanceOf(IllegalArgumentException.class);
     }
 
