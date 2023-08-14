@@ -46,6 +46,12 @@ const reviewHandlers = [
   rest.put(`${BASE_URL}/reviews/:reviewId`, async (req, res, ctx) => res(ctx.status(204))),
 
   rest.delete(`${BASE_URL}/reviews/:reviewId`, (req, res, ctx) => res(ctx.status(204))),
+
+  rest.get(`${BASE_URL}/reviews/summary?petFoodId`, (req, res, ctx) => {
+    const reviewSummary = reviewFixture.getReviewSummary();
+
+    return res(ctx.delay(2000), ctx.status(200), ctx.json(reviewSummary));
+  }),
 ];
 
 export default reviewHandlers;

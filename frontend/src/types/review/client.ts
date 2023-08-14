@@ -35,7 +35,7 @@ type AlignControlsMeta = {
 type FilterControlsMeta = {
   id: number;
   name: string;
-};
+}[];
 
 type ChartInfo = {
   name: string;

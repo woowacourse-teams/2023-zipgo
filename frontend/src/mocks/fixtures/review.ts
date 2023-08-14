@@ -1,4 +1,4 @@
-import { GetReviewsMetaRes, GetReviewsRes } from '@/types/review/remote';
+import { GetReviewsMetaRes, GetReviewsRes, GetReviewSummaryRes } from '@/types/review/remote';
 
 const getReviews = (): GetReviewsRes => ({
   reviews: [
@@ -99,6 +99,108 @@ const getReviewsMeta = (): GetReviewsMetaRes => ({
   ],
 });
 
-const reviewFixture = { getReviews, getReviewsMeta };
+const getReviewSummary = (): GetReviewSummaryRes => ({
+  rating: {
+    average: 3.7,
+    rating: [
+      {
+        name: '5',
+        percentage: 34,
+      },
+      {
+        name: '4',
+        percentage: 44,
+      },
+      {
+        name: '3',
+        percentage: 24,
+      },
+      {
+        name: '2',
+        percentage: 64,
+      },
+      {
+        name: '1',
+        percentage: 12,
+      },
+    ],
+  },
+  tastePreference: [
+    {
+      name: '정말 잘 먹음',
+      percentage: 34,
+    },
+    {
+      name: '잘 먹는 편',
+      percentage: 54,
+    },
+    {
+      name: '가끔 먹음',
+      percentage: 34,
+    },
+    {
+      name: '잘 안 먹음',
+      percentage: 24,
+    },
+    {
+      name: '전혀 안 먹음',
+      percentage: 4,
+    },
+  ],
+  stoolCondition: [
+    {
+      name: '딱딱',
+      percentage: 34,
+    },
+    {
+      name: '설사',
+      percentage: 54,
+    },
+    {
+      name: '말랑 딱딱',
+      percentage: 34,
+    },
+    {
+      name: '말랑',
+      percentage: 24,
+    },
+    {
+      name: '묽음',
+      percentage: 14,
+    },
+    {
+      name: '모르겠어요',
+      percentage: 24,
+    },
+  ],
+  adverseReaction: [
+    {
+      name: '호흡 이슈',
+      percentage: 34,
+    },
+    {
+      name: '침 흘림',
+      percentage: 54,
+    },
+    {
+      name: '화장실 자주 감',
+      percentage: 34,
+    },
+    {
+      name: '코 건조',
+      percentage: 24,
+    },
+    {
+      name: '구토',
+      percentage: 14,
+    },
+    {
+      name: '없음',
+      percentage: 24,
+    },
+  ],
+});
+
+const reviewFixture = { getReviews, getReviewSummary, getReviewsMeta };
 
 export default reviewFixture;
