@@ -123,4 +123,11 @@ public class Review extends BaseTimeEntity {
         this.adverseReactions.clear();
     }
 
+
+    public int getPetAge() {
+        int createdYear = getCreatedAt().getYear();
+        int birthYear = pet.getBirthYear().getValue();
+        return createdYear - birthYear;
+    }
+
 }

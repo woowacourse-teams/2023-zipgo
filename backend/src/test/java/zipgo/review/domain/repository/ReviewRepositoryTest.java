@@ -2,8 +2,14 @@ package zipgo.review.domain.repository;
 
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
+import java.time.LocalDateTime;
+import java.time.Year;
 import java.util.List;
+import java.util.stream.Stream;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.Arguments;
+import org.junit.jupiter.params.provider.MethodSource;
 import org.springframework.beans.factory.annotation.Autowired;
 import zipgo.brand.domain.Brand;
 import zipgo.brand.domain.fixture.BrandFixture;
@@ -91,6 +97,49 @@ public class ReviewRepositoryTest extends RepositoryTest {
         Breeds 종류 = breedsRepository.save(견종(사이즈));
         Pet 반려동물 = petRepository.save(반려동물(멤버, 종류));
         return reviewRepository.save(극찬_리뷰_생성(반려동물, 식품, List.of("없어요")));
+    }
+
+    @ParameterizedTest
+    @MethodSource("생년별_나이")
+    void 리뷰_당시_나이를_계산할_수_있다(int 생년, int 예상_나이) {
+        //given
+        Review 리뷰 = 이_연도에_태어난_반려동물이_쓴_리뷰(생년);
+
+        //when
+        int 나이 = 리뷰.getPetAge();
+
+        //then
+        assertThat(나이).isEqualTo(예상_나이);
+    }
+
+    public static Stream<Arguments> 생년별_나이() {
+        int 테스트_작성_연도와의_차 = LocalDateTime.now().getYear() - 2023;
+        return Stream.of(
+                Arguments.of(1990, 33 + 테스트_작성_연도와의_차),
+                Arguments.of(2020, 3 + 테스트_작성_연도와의_차),
+                Arguments.of(2001, 22 + 테스트_작성_연도와의_차),
+                Arguments.of(2000, 23 + 테스트_작성_연도와의_차),
+                Arguments.of(2023, 0 + 테스트_작성_연도와의_차)
+        );
+    }
+
+    private Review 이_연도에_태어난_반려동물이_쓴_리뷰(int 생년) {
+        Brand 브랜드 = brandRepository.save(BrandFixture.오리젠_식품_브랜드_생성());
+        PetFood 식품 = petFoodRepository.save(PetFoodFixture.모든_영양기준_만족_식품(브랜드));
+        Member 멤버 = memberRepository.save(무민());
+        PetSize 사이즈 = petSizeRepository.save(소형견());
+        Breeds 종류 = breedsRepository.save(견종(사이즈));
+        Pet 반려동물 = petRepository.save(
+                Pet.builder()
+                        .name("무민이")
+                        .owner(멤버)
+                        .birthYear(Year.of(생년))
+                        .breeds(종류)
+                        .weight(5.0)
+                        .build()
+        );
+        Review 리뷰 = reviewRepository.save(극찬_리뷰_생성(반려동물, 식품, List.of("없어요")));
+        return 리뷰;
     }
 
 }
