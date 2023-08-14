@@ -90,7 +90,8 @@ class AuthControllerMockArgumentResolverTest {
                 ),
                 responseFields(
                         fieldWithPath("name").description("사용자 이름"),
-                        fieldWithPath("profileImgUrl").description("사용자 프로필 사진")
+                        fieldWithPath("profileImgUrl").description("사용자 프로필 사진"),
+                        fieldWithPath("hasPet").description("반려동물 등록 여부")
                 ));
     }
 
