@@ -6,6 +6,8 @@ import {
   GetReviewsMetaRes,
   GetReviewsReq,
   GetReviewsRes,
+  GetReviewSummaryReq,
+  GetReviewSummaryRes,
   PostReviewReq,
   PostReviewRes,
   PutReviewReq,
@@ -45,8 +47,16 @@ export const deleteReview = async ({ reviewId }: DeleteReviewReq) => {
   return data;
 };
 
-export const getReviewsMeta = async () => {
-  const { data } = await client.get<GetReviewsMetaRes>('/reviews/metaData');
+export const getReviewSummary = async ({ petFoodId }: GetReviewSummaryReq) => {
+  const { data } = await client<GetReviewSummaryRes>('/reviews/summary', {
+    params: {
+      petFoodId,
+    },
+  });
 
   return data;
+};
+
+export const getReviewsMeta = async () => {
+  const { data } = await client.get<GetReviewsMetaRes>('/reviews/metaData');
 };
