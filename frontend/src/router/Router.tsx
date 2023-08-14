@@ -1,4 +1,3 @@
-import { ReactNode } from 'react';
 import { createBrowserRouter, RouterProvider } from 'react-router-dom';
 
 import App from '@/App';
@@ -11,6 +10,7 @@ import PetProfileBreedsAddition from '@/pages/PetProfile/PetProfileBreedsAdditio
 import PetProfileBreedsSizeAddition from '@/pages/PetProfile/PetProfileBreedsSizeAddition';
 import PetProfileGenderAddition from '@/pages/PetProfile/PetProfileGenderAddition';
 import PetProfileNameAddition from '@/pages/PetProfile/PetProfileNameAddition';
+import PetProfileWeightAddition from '@/pages/PetProfile/PetProfileWeightAddition';
 import ReviewAddition from '@/pages/ReviewAddition/ReviewAddition';
 import ReviewStarRating from '@/pages/ReviewStarRating/ReviewStarRating';
 
@@ -65,6 +65,10 @@ export const router = createBrowserRouter([
           {
             path: PATH.PET_PROFILE_GENDER_ADDITION,
             element: <PetProfileGenderAddition />,
+          },
+          {
+            path: PATH.PET_PROFILE_WEIGHT_ADDITION,
+            element: <PetProfileWeightAddition />,
           },
         ],
       },
