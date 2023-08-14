@@ -50,6 +50,9 @@ public class Review extends BaseTimeEntity {
     @JoinColumn(name = "pet_id")
     private Pet pet;
 
+    @Column(nullable = false)
+    private double weight;
+
     @ManyToOne(fetch = LAZY)
     @JoinColumn(name = "pet_food_id")
     private PetFood petFood;
