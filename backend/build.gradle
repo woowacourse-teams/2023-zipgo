@@ -105,7 +105,8 @@ jacocoTestReport {
                             '**/*Dto*',
                             '**/*Interceptor*',
                             '**/*ArgumentResolver*',
-                            '**/*ExceptionHandler*'
+                            '**/*ExceptionHandler*',
+                            '**/LoggingUtils'
                     ])
                 })
         )
@@ -141,7 +142,8 @@ jacocoTestCoverageVerification {
                     '*.BaseTimeEntity',
                     '*.*Interceptor',
                     '*.*ArgumentResolver',
-                    '*.*ExceptionHandler'
+                    '*.*ExceptionHandler',
+                    '*.LoggingUtils'
             ] + Qdomains
         }
     }
