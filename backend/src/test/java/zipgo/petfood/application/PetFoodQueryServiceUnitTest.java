@@ -7,8 +7,8 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import zipgo.brand.domain.repository.BrandRepository;
-import zipgo.petfood.domain.repository.PetFoodQueryRepository;
 import zipgo.petfood.domain.repository.PetFoodRepository;
+import zipgo.petfood.infra.persist.PetFoodQueryRepository;
 
 @ExtendWith(MockitoExtension.class)
 @DisplayNameGeneration(ReplaceUnderscores.class)

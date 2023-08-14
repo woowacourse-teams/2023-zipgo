@@ -20,6 +20,7 @@ import zipgo.review.application.dto.GetReviewQueryRequest;
 import zipgo.review.domain.Review;
 import zipgo.review.dto.request.CreateReviewRequest;
 import zipgo.review.dto.request.UpdateReviewRequest;
+import zipgo.review.dto.response.GetReviewMetadataResponse;
 import zipgo.review.dto.response.GetReviewResponse;
 import zipgo.review.dto.response.GetReviewsResponse;
 
@@ -73,6 +74,12 @@ public class ReviewController {
     ) {
         reviewService.deleteReview(authDto.id(), reviewId);
         return ResponseEntity.noContent().build();
+    }
+
+    @GetMapping("/reviews/metadata")
+    public ResponseEntity<GetReviewMetadataResponse> getMetadata() {
+        GetReviewMetadataResponse metadata = reviewQueryService.getReviewMetadata();
+        return ResponseEntity.ok(metadata);
     }
 
 }

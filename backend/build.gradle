@@ -54,6 +54,9 @@ dependencies {
     annotationProcessor "jakarta.annotation:jakarta.annotation-api"
     annotationProcessor "jakarta.persistence:jakarta.persistence-api"
 
+    implementation 'org.springframework.boot:spring-boot-starter-actuator'
+    implementation 'io.micrometer:micrometer-registry-prometheus'
+
     runtimeOnly 'com.mysql:mysql-connector-j'
     runtimeOnly 'com.h2database:h2'
 
@@ -102,7 +105,8 @@ jacocoTestReport {
                             '**/*Dto*',
                             '**/*Interceptor*',
                             '**/*ArgumentResolver*',
-                            '**/*ExceptionHandler*'
+                            '**/*ExceptionHandler*',
+                            '**/LoggingUtils'
                     ])
                 })
         )
@@ -138,7 +142,8 @@ jacocoTestCoverageVerification {
                     '*.BaseTimeEntity',
                     '*.*Interceptor',
                     '*.*ArgumentResolver',
-                    '*.*ExceptionHandler'
+                    '*.*ExceptionHandler',
+                    '*.LoggingUtils'
             ] + Qdomains
         }
     }

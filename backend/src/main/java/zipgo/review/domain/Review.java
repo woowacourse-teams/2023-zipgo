@@ -20,7 +20,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import zipgo.auth.exception.AuthException;
 import zipgo.common.entity.BaseTimeEntity;
-import zipgo.member.domain.Member;
+import zipgo.pet.domain.Pet;
 import zipgo.petfood.domain.PetFood;
 import zipgo.review.domain.type.AdverseReactionType;
 import zipgo.review.domain.type.StoolCondition;
@@ -46,8 +46,11 @@ public class Review extends BaseTimeEntity {
     private Long id;
 
     @ManyToOne(fetch = LAZY)
-    @JoinColumn(name = "member_id")
-    private Member member;
+    @JoinColumn(name = "pet_id")
+    private Pet pet;
+
+    @Column(nullable = false)
+    private double weight;
 
     @ManyToOne(fetch = LAZY)
     @JoinColumn(name = "pet_food_id")
@@ -108,7 +111,7 @@ public class Review extends BaseTimeEntity {
         if (memberId == null) {
             return false;
         }
-        return this.member.getId() == memberId;
+        return this.pet.getOwner().getId() == memberId;
     }
 
     public void removeAdverseReactions() {

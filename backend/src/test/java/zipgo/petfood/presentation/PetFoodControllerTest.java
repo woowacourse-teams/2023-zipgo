@@ -1,14 +1,25 @@
-package zipgo.acceptance;
+package zipgo.petfood.presentation;
 
 import com.epages.restdocs.apispec.ResourceSnippetDetails;
 import com.epages.restdocs.apispec.Schema;
 import java.util.List;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.restdocs.payload.JsonFieldType;
 import org.springframework.restdocs.restassured.RestDocumentationFilter;
-import org.springframework.test.context.jdbc.Sql;
+import zipgo.brand.domain.Brand;
+import zipgo.brand.domain.repository.BrandRepository;
+import zipgo.common.acceptance.AcceptanceTest;
+import zipgo.petfood.domain.Functionality;
+import zipgo.petfood.domain.PetFood;
+import zipgo.petfood.domain.PrimaryIngredient;
+import zipgo.petfood.domain.fixture.PetFoodFunctionalityFixture;
+import zipgo.petfood.domain.repository.FunctionalityRepository;
+import zipgo.petfood.domain.repository.PetFoodRepository;
+import zipgo.petfood.domain.repository.PrimaryIngredientRepository;
 
 import static com.epages.restdocs.apispec.RestAssuredRestDocumentationWrapper.document;
 import static com.epages.restdocs.apispec.RestAssuredRestDocumentationWrapper.resourceDetails;
@@ -27,8 +38,47 @@ import static org.springframework.restdocs.payload.PayloadDocumentation.response
 import static org.springframework.restdocs.request.RequestDocumentation.parameterWithName;
 import static org.springframework.restdocs.request.RequestDocumentation.pathParameters;
 import static org.springframework.restdocs.request.RequestDocumentation.queryParameters;
+import static zipgo.brand.domain.fixture.BrandFixture.아카나_식품_브랜드_생성;
+import static zipgo.petfood.domain.fixture.FunctionalityFixture.기능성_다이어트;
+import static zipgo.petfood.domain.fixture.FunctionalityFixture.기능성_튼튼;
+import static zipgo.petfood.domain.fixture.PetFoodFixture.모든_영양기준_만족_식품;
+import static zipgo.petfood.domain.fixture.PetFoodFunctionalityFixture.*;
+import static zipgo.petfood.domain.fixture.PetFoodIngredientFixture.식품_주원료_연관관계_매핑;
+import static zipgo.petfood.domain.fixture.PrimaryIngredientFixture.주원료_닭고기;
 
-public class PetFoodAcceptanceTest extends AcceptanceTest {
+public class PetFoodControllerTest extends AcceptanceTest {
+
+    @Autowired
+    private BrandRepository brandRepository;
+
+    @Autowired
+    private PetFoodRepository petFoodRepository;
+
+    @Autowired
+    private PrimaryIngredientRepository primaryIngredientRepository;
+
+    @Autowired
+    private FunctionalityRepository functionalityRepository;
+
+    private PetFood 식품;
+
+    @BeforeEach
+    void setUp() {
+        Brand 아카나 = brandRepository.save(아카나_식품_브랜드_생성());
+        PetFood 모든_영양기준_만족_식품 = 모든_영양기준_만족_식품(아카나);
+        Functionality 기능성_다이어트 = 기능성_다이어트();
+        Functionality 기능성_튼튼 = 기능성_튼튼();
+        PrimaryIngredient 주원료_닭고기 = 주원료_닭고기();
+
+        식품_기능성_연관관계_매핑(모든_영양기준_만족_식품, 기능성_다이어트);
+        식품_기능성_연관관계_매핑(모든_영양기준_만족_식품, 기능성_튼튼);
+        식품_주원료_연관관계_매핑(모든_영양기준_만족_식품, 주원료_닭고기);
+
+        functionalityRepository.save(기능성_다이어트);
+        functionalityRepository.save(기능성_튼튼);
+        primaryIngredientRepository.save(주원료_닭고기);
+        식품 = petFoodRepository.save(모든_영양기준_만족_식품);
+    }
 
     @Nested
     @DisplayName("식품 전체 조회 API")
@@ -59,7 +109,7 @@ public class PetFoodAcceptanceTest extends AcceptanceTest {
         @Test
         void 필터를_지정해서_요청한다() {
             // given
-            List<String> 브랜드 = List.of("오리젠");
+            List<String> 브랜드 = List.of("아카나");
             List<String> 영양기준 = List.of("유럽");
             List<String> 기능성 = List.of("튼튼");
             List<String> 주단백질원 = List.of("닭고기");
@@ -117,15 +167,13 @@ public class PetFoodAcceptanceTest extends AcceptanceTest {
         @Test
         void 올바른_요청() {
             // given
-            Long 모의_식품_아이디 = 모의_식품_생성();
-
             var 요청_준비 = given(spec)
                     .contentType(JSON)
                     .filter(식품_상세_조회_API_문서_생성());
 
             // when
             var 응답 = 요청_준비.when()
-                    .pathParam("id", 모의_식품_아이디)
+                    .pathParam("id", 식품.getId())
                     .get("/pet-foods/{id}");
 
             // then
@@ -133,10 +181,14 @@ public class PetFoodAcceptanceTest extends AcceptanceTest {
                     .assertThat().statusCode(OK.value());
         }
 
-        @Sql("./insert-pet-food.sql")
-        private Long 모의_식품_생성() {
-            // todo: 데이터베이스 추가
-            return 1L;
+        private void 주원료_만들기() {
+            PrimaryIngredient 주원료 = 주원료_닭고기();
+            primaryIngredientRepository.save(주원료);
+        }
+
+        private PetFood 모의_식품_생성() {
+            Brand 아카나 = brandRepository.save(아카나_식품_브랜드_생성());
+            return petFoodRepository.save(모든_영양기준_만족_식품(아카나));
         }
 
         private RestDocumentationFilter 식품_상세_조회_API_문서_생성() {
@@ -166,7 +218,7 @@ public class PetFoodAcceptanceTest extends AcceptanceTest {
         }
 
         @Test
-        void 존재하지_않는_아이디로_요청한다() { // TODO: 예외처리
+        void 존재하지_않는_아이디로_요청한다() {
             //given
             var 요청_준비 = given(spec)
                     .contentType(JSON)

@@ -1,7 +1,6 @@
 package zipgo.common;
 
 import jakarta.servlet.http.HttpServletResponse;
-import lombok.extern.log4j.Log4j2;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
@@ -11,6 +10,7 @@ import org.springframework.web.context.request.ServletWebRequest;
 import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 import zipgo.auth.exception.AuthException;
+import zipgo.common.logging.LoggingUtils;
 import zipgo.member.exception.MemberException;
 import zipgo.petfood.exception.PetFoodException;
 import zipgo.petfood.presentation.dto.ErrorResponse;
@@ -22,7 +22,6 @@ import static org.springframework.http.HttpStatus.INTERNAL_SERVER_ERROR;
 import static org.springframework.http.HttpStatus.NOT_FOUND;
 import static org.springframework.http.HttpStatus.UNAUTHORIZED;
 
-@Log4j2
 @RestControllerAdvice
 public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
 
@@ -33,22 +32,25 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
             AuthException.ResourceNotFound.class
     })
     public ResponseEntity<ErrorResponse> handleNotFoundException(Exception exception) {
+        LoggingUtils.error(exception);
         return ResponseEntity.status(NOT_FOUND).body(ErrorResponse.of(exception));
     }
 
     @ExceptionHandler({Exception.class})
     public ResponseEntity<ErrorResponse> handleException(Exception exception) {
-        logger.error("서버 내부 오류 발생", exception);
+        LoggingUtils.error(exception);
         return ResponseEntity.status(INTERNAL_SERVER_ERROR).body(new ErrorResponse("서버 내부 오류"));
     }
 
     @ExceptionHandler({AuthException.class})
     public ResponseEntity<ErrorResponse> handleUnauthorizedException(Exception exception) {
+        LoggingUtils.error(exception);
         return ResponseEntity.status(UNAUTHORIZED).body(ErrorResponse.of(exception));
     }
 
     @ExceptionHandler({AuthException.Forbidden.class})
     public ResponseEntity<ErrorResponse> handleForbiddenException(Exception exception) {
+        LoggingUtils.error(exception);
         return ResponseEntity.status(FORBIDDEN).body(ErrorResponse.of(exception));
     }
 
@@ -67,6 +69,7 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
         if (isAlreadyCommitted(request)) {
             return null;
         }
+        LoggingUtils.error(exception);
         return ResponseEntity.status(statusCode).body(ErrorResponse.of(exception));
     }
 
