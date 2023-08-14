@@ -3,7 +3,7 @@ package zipgo.review.dto.response;
 import java.util.List;
 
 public record GetReviewMetadataResponse(
-        List<Metadata> breedSizes,
+        List<Metadata> petSizes,
         List<Metadata> sortBy,
         List<Metadata> ageGroups,
         List<Metadata> breeds

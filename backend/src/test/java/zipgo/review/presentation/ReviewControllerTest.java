@@ -457,9 +457,9 @@ public class ReviewControllerTest extends AcceptanceTest {
             return document("리뷰 메타데이터 조회 - 성공",
                     문서_정보.responseSchema(성공_응답_형식),
                     responseFields(
-                            fieldWithPath("breedSizes").description("반려견 크기 메타데이터").type(JsonFieldType.ARRAY),
-                            fieldWithPath("breedSizes[].id").description("반려견 크기 id").type(JsonFieldType.NUMBER),
-                            fieldWithPath("breedSizes[].name").description("반려견 크기 이름").type(JsonFieldType.STRING),
+                            fieldWithPath("petSizes").description("반려견 크기 메타데이터").type(JsonFieldType.ARRAY),
+                            fieldWithPath("petSizes[].id").description("반려견 크기 id").type(JsonFieldType.NUMBER),
+                            fieldWithPath("petSizes[].name").description("반려견 크기 이름").type(JsonFieldType.STRING),
                             fieldWithPath("sortBy").description("리뷰 정렬 기준 메타데이터").type(JsonFieldType.ARRAY),
                             fieldWithPath("sortBy[].id").description("리뷰 정렬 기준 id").type(JsonFieldType.NUMBER),
                             fieldWithPath("sortBy[].name").description("리뷰 정렬 기준 이름").type(JsonFieldType.STRING),

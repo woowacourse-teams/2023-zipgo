@@ -161,7 +161,7 @@ class ReviewQueryServiceTest extends QueryServiceTest {
 
         //then
         assertAll(
-                () -> assertThat(응답.breedSizes()).hasSize(3),
+                () -> assertThat(응답.petSizes()).hasSize(3),
                 () -> assertThat(응답.sortBy()).hasSize(4),
                 () -> assertThat(응답.ageGroups()).hasSize(3),
                 () -> assertThat(응답.breeds()).isNotEmpty()
