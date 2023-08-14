@@ -1,4 +1,4 @@
-import { useEffect } from 'react';
+import { ChangeEvent, useEffect } from 'react';
 import { useOutletContext } from 'react-router-dom';
 import { styled } from 'styled-components';
 
@@ -15,6 +15,15 @@ const PetProfileAgeAddition = () => {
     updateIsValidStep(false);
   }, []);
 
+  const onChangeAge = (e: ChangeEvent<HTMLSelectElement>) => {
+    const selectedValue = Number(e.target.value);
+    const isValidNumberRange = ({ number, min, max }: Record<string, number>) =>
+      typeof number === 'number' && number >= min && number <= max;
+
+    if (isValidNumberRange({ number: selectedValue, min: 0, max: 20 })) updateIsValidStep(true);
+    if (!isValidNumberRange({ number: selectedValue, min: 0, max: 20 })) updateIsValidStep(false);
+  };
+
   return (
     <Container>
       <Title>
@@ -22,7 +31,7 @@ const PetProfileAgeAddition = () => {
         귀여운 이름이에요. 나이는요?
       </Title>
       <InputLabel htmlFor="pet-age">나이 선택</InputLabel>
-      <PetAgeSelect id="pet-age" />
+      <PetAgeSelect id="pet-age" onChange={onChangeAge} />
     </Container>
   );
 };
