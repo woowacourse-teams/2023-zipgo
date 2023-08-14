@@ -5,7 +5,7 @@ import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
 import org.springframework.boot.test.context.TestConfiguration;
 import org.springframework.context.annotation.Bean;
-import zipgo.petfood.domain.repository.PetFoodQueryRepository;
+import zipgo.petfood.infra.persist.PetFoodQueryRepository;
 import zipgo.review.domain.repository.ReviewQueryRepository;
 import zipgo.review.domain.repository.ReviewQueryRepositoryImpl;
 

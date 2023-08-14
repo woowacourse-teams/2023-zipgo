@@ -34,8 +34,8 @@ import static zipgo.pet.domain.fixture.PetSizeFixture.소형견;
 import static zipgo.review.fixture.ReviewFixture.극찬_리뷰_생성;
 
 
-@DataJpaTest
 @Import(QueryDslTestConfig.class)
+@DataJpaTest(properties = {"spring.sql.init.mode=never"})
 class ReviewQueryRepositoryImplTest {
 
     @Autowired

@@ -27,12 +27,12 @@ public record GetPetFoodResponse(
                 petFood.getPurchaseLink(),
                 ratingAverage,
                 reviewCount,
-                petFood.getPrimaryIngredients().stream()
-                        .map(primaryIngredient -> primaryIngredient.getName())
+                petFood.getPetFoodPrimaryIngredients().stream()
+                        .map(petFoodPrimaryIngredient -> petFoodPrimaryIngredient.getPrimaryIngredient().getName())
                         .toList(),
                 NutrientStandardResponse.from(petFood.getHasStandard()),
-                petFood.getFunctionalities().stream()
-                        .map(functionality -> functionality.getName())
+                petFood.getPetFoodFunctionalities().stream()
+                        .map(petFoodFunctionality -> petFoodFunctionality.getFunctionality().getName())
                         .toList(),
                 PetFoodBrandResponse.from(petFood.getBrand())
         );

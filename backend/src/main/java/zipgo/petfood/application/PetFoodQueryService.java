@@ -6,16 +6,17 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import zipgo.brand.domain.Brand;
 import zipgo.brand.domain.repository.BrandRepository;
-import zipgo.petfood.application.dto.FilterDto;
 import zipgo.petfood.domain.Functionality;
 import zipgo.petfood.domain.PetFood;
 import zipgo.petfood.domain.PrimaryIngredient;
 import zipgo.petfood.domain.repository.FunctionalityRepository;
-import zipgo.petfood.domain.repository.PetFoodQueryRepository;
 import zipgo.petfood.domain.repository.PetFoodRepository;
 import zipgo.petfood.domain.repository.PrimaryIngredientRepository;
+import zipgo.petfood.infra.persist.PetFoodQueryRepository;
+import zipgo.petfood.presentation.dto.FilterRequest;
 import zipgo.petfood.presentation.dto.FilterResponse;
 import zipgo.petfood.presentation.dto.GetPetFoodResponse;
+
 
 @Service
 @RequiredArgsConstructor
@@ -29,7 +30,7 @@ public class PetFoodQueryService {
     private final PrimaryIngredientRepository primaryIngredientRepository;
 
     public List<PetFood> getPetFoodsByFilters(
-            FilterDto filterDto,
+            FilterRequest filterDto,
             Long lastPetFoodId,
             int size
     ) {
@@ -45,11 +46,10 @@ public class PetFoodQueryService {
 
     public GetPetFoodResponse getPetFoodResponse(Long id) {
         PetFood petfood = petFoodRepository.getById(id);
-
         return GetPetFoodResponse.of(petfood, petfood.calculateRatingAverage(), petfood.countReviews());
     }
 
-    public Long getPetFoodsCountByFilters(FilterDto filterDto) {
+    public Long getPetFoodsCountByFilters(FilterRequest filterDto) {
         return petFoodQueryRepository.getCount(
                 filterDto.brands(),
                 filterDto.nutritionStandards(),
