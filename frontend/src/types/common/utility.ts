@@ -6,6 +6,8 @@ export type Values<T extends object> = T[keyof T];
 
 export type StyledProps<T> = { [K in keyof T as `$${string & K}`]: T[K] };
 
+export type Values<T extends object> = T[keyof T];
+
 type Separator = '_';
 
 type IsChar<Char extends string> = Uppercase<Char> extends Lowercase<Char> ? false : true;
