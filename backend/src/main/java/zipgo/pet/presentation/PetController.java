@@ -12,7 +12,6 @@ import zipgo.auth.presentation.Auth;
 import zipgo.auth.presentation.dto.AuthDto;
 import zipgo.pet.application.PetService;
 import zipgo.pet.presentation.dto.request.CreatePetRequest;
-import zipgo.pet.presentation.dto.response.PetResponse;
 
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 import static org.springframework.http.MediaType.MULTIPART_FORM_DATA_VALUE;
@@ -25,7 +24,7 @@ public class PetController {
     private final PetService petService;
 
     @GetMapping(consumes = {MULTIPART_FORM_DATA_VALUE, APPLICATION_JSON_VALUE})
-    public ResponseEntity<PetResponse> create(
+    public ResponseEntity<Void> create(
             @Auth AuthDto authDto,
             @RequestBody @Valid CreatePetRequest request
     ) {
