@@ -41,4 +41,8 @@ public class Member extends BaseTimeEntity {
     @OneToOne(mappedBy = "owner")
     private Pet pet;
 
+    public boolean hasPet() {
+        return pet != null;
+    }
+
 }
