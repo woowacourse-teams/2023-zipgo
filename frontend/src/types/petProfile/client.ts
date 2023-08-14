@@ -1,4 +1,4 @@
-import { BREEDS_SIZES } from '@/constants/petProfile';
+import { BREEDS_SIZES, GENDERS } from '@/constants/petProfile';
 
 type PetProfile = {
   id: number;
@@ -6,7 +6,7 @@ type PetProfile = {
   age: number;
   breeds: Breed['name'];
   breedsSize: BreedsSize;
-  gender: '남' | '여';
+  gender: Gender;
   weight: number;
   imageUrl: string;
 };
@@ -18,9 +18,11 @@ type Breed = {
 
 type BreedsSize = (typeof BREEDS_SIZES)[number];
 
+type Gender = (typeof GENDERS)[number];
+
 interface PetProfileOutletContextProps {
   updateCurrentStep: (step: number) => void;
   updateIsValidStep: (isValid: boolean) => void;
 }
 
-export type { Breed, BreedsSize, PetProfile, PetProfileOutletContextProps };
+export type { Breed, BreedsSize, Gender, PetProfile, PetProfileOutletContextProps };
