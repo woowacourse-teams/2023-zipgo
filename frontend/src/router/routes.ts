@@ -6,6 +6,12 @@ const STATIC: Record<Uppercase<CamelToSnake<keyof typeof generateStaticPath>>, s
   LOGIN: '/login',
   PET_PROFILE_ADDITION: '/pets/write/',
   PET_PROFILE_NAME_ADDITION: '/pets/write/name',
+  PET_PROFILE_AGE_ADDITION: '/pets/write/age',
+  PET_PROFILE_BREEDS_ADDITION: '/pets/write/breeds',
+  PET_PROFILE_BREEDS_SIZE_ADDITION: '/pets/write/breedsSize',
+  PET_PROFILE_GENDER_ADDITION: '/pets/write/gender',
+  PET_PROFILE_WEIGHT_ADDITION: '/pets/write/weight',
+  PET_PROFILE_IMAGE_FILE_ADDITION: '/pets/write/imageFile',
 };
 
 const DYNAMIC: Record<Uppercase<CamelToSnake<keyof typeof generateDynamicPath>>, string> = {
@@ -24,6 +30,12 @@ export const generateStaticPath = {
   login: () => STATIC.LOGIN,
   petProfileAddition: () => STATIC.PET_PROFILE_ADDITION,
   petProfileNameAddition: () => STATIC.PET_PROFILE_NAME_ADDITION,
+  petProfileAgeAddition: () => STATIC.PET_PROFILE_AGE_ADDITION,
+  petProfileBreedsAddition: () => STATIC.PET_PROFILE_BREEDS_ADDITION,
+  petProfileBreedsSizeAddition: () => STATIC.PET_PROFILE_BREEDS_SIZE_ADDITION,
+  petProfileGenderAddition: () => STATIC.PET_PROFILE_GENDER_ADDITION,
+  petProfileWeightAddition: () => STATIC.PET_PROFILE_WEIGHT_ADDITION,
+  petProfileImageFileAddition: () => STATIC.PET_PROFILE_IMAGE_FILE_ADDITION,
 };
 
 export const generateDynamicPath = {
