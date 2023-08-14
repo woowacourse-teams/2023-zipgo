@@ -39,12 +39,13 @@ public enum AgeGroup {
 
     public Year calculateMinBirthYear() {
         int currentYear = LocalDateTime.now().getYear();
-        return Year.of(currentYear - this.greaterThanOrEqual);
+        return Year.of(currentYear - this.lessThan + 1);
+
     }
 
     public Year calculateMaxBirthYear() {
         int currentYear = LocalDateTime.now().getYear();
-        return Year.of(currentYear - this.lessThan + 1);
+        return Year.of(currentYear - this.greaterThanOrEqual);
     }
 
 }

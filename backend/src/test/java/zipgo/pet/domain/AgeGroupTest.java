@@ -83,8 +83,8 @@ class AgeGroupTest {
     public static Stream<Arguments> 연령대별_최소_출생연도() {
         int 테스트_작성_연도와의_차 = LocalDateTime.now().getYear() - 2023;
         return Stream.of(
-                Arguments.of(AgeGroup.ADULT, 2022 + 테스트_작성_연도와의_차),
-                Arguments.of(AgeGroup.SENIOR, 2016 + 테스트_작성_연도와의_차),
+                Arguments.of(AgeGroup.ADULT, 2017 + 테스트_작성_연도와의_차),
+                Arguments.of(AgeGroup.SENIOR, 1974 + 테스트_작성_연도와의_차),
                 Arguments.of(AgeGroup.PUPPY, 2023 + 테스트_작성_연도와의_차)
         );
     }
@@ -101,8 +101,8 @@ class AgeGroupTest {
     public static Stream<Arguments> 연령대별_최대_출생연도() {
         int 테스트_작성_연도와의_차 = LocalDateTime.now().getYear() - 2023;
         return Stream.of(
-                Arguments.of(AgeGroup.ADULT, 2017 + 테스트_작성_연도와의_차),
-                Arguments.of(AgeGroup.SENIOR, 1974 + 테스트_작성_연도와의_차),
+                Arguments.of(AgeGroup.ADULT, 2022 + 테스트_작성_연도와의_차),
+                Arguments.of(AgeGroup.SENIOR, 2016 + 테스트_작성_연도와의_차),
                 Arguments.of(AgeGroup.PUPPY, 2023 + 테스트_작성_연도와의_차)
         );
     }
