@@ -1,6 +1,8 @@
 package zipgo.pet.domain;
 
 
+import java.time.LocalDateTime;
+import java.time.Year;
 import java.util.Arrays;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -33,6 +35,16 @@ public enum AgeGroup {
             }
         }
         throw new IllegalArgumentException("AgeGroup에 해당하는 id가 없습니다.");
+    }
+
+    public Year calculateMinBirthYear() {
+        int currentYear = LocalDateTime.now().getYear();
+        return Year.of(currentYear - this.greaterThanOrEqual);
+    }
+
+    public Year calculateMaxBirthYear() {
+        int currentYear = LocalDateTime.now().getYear();
+        return Year.of(currentYear - this.lessThan + 1);
     }
 
 }
