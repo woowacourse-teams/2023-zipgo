@@ -3,7 +3,11 @@ package zipgo.review.dto.request;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Positive;
 import java.util.List;
+import zipgo.pet.domain.AgeGroup;
+import zipgo.review.application.SortBy;
+import zipgo.review.domain.repository.dto.FindReviewsQueryRequest;
 
+import static java.util.Collections.emptyList;
 import static java.util.Objects.requireNonNullElse;
 
 public record GetReviewsRequest(
@@ -14,9 +18,19 @@ public record GetReviewsRequest(
         Integer size,
         Long lastReviewId,
         Long sortById,
-        List<Long> breedSizeId,
+        List<Long> petSizeId,
         List<Long> ageGroupId
 ) {
+
+    public FindReviewsQueryRequest toQueryRequest() {
+        return new FindReviewsQueryRequest(
+                petFoodId,
+                size(),
+                lastReviewId,
+                SortBy.from(sortById()),
+                petSizeId(),
+                ageGroupId().stream().map(AgeGroup::from).toList());
+    }
 
     @Override
     public Long sortById() {
@@ -28,14 +42,13 @@ public record GetReviewsRequest(
         return requireNonNullElse(size, 10);
     }
 
-    @Override
-    public List<Long> breedSizeId() {
-        return requireNonNullElse(breedSizeId, List.of(1L, 2L, 3L));
+    public List<Long> petSizeId() {
+        return requireNonNullElse(petSizeId, emptyList());
     }
 
     @Override
     public List<Long> ageGroupId() {
-        return requireNonNullElse(ageGroupId, List.of(1L, 2L, 3L));
+        return requireNonNullElse(ageGroupId, emptyList());
     }
 
 }

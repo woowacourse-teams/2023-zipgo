@@ -172,7 +172,7 @@ public class ReviewControllerTest extends AcceptanceTest {
                             parameterWithName("petFoodId").description("식품 id"),
                             parameterWithName("size").description("조회하고자 하는 리뷰의 개수").optional(),
                             parameterWithName("lastReviewId").description("이전 페이지의 마지막 리뷰 id").optional(),
-                            parameterWithName("breedSizeId").description("반려동물의 견종 크기 id").optional(),
+                            parameterWithName("petSizeId").description("반려동물의 견종 크기 id").optional(),
                             parameterWithName("ageGroupId").description("반려동물의 나이 그룹 id").optional(),
                             parameterWithName("breedId").description("반려동물의 견종 id").optional(),
                             parameterWithName("sortBy").description("정렬 기준").optional()),
@@ -221,8 +221,7 @@ public class ReviewControllerTest extends AcceptanceTest {
 
             // then
             응답.then()
-                    .assertThat().statusCode(BAD_REQUEST.value())
-                    .assertThat().body("message", is("size는 0보다 커야 합니다."));
+                    .assertThat().statusCode(BAD_REQUEST.value());
         }
 
         private RestDocumentationFilter API_예외응답_문서_생성(String uniqueName) {

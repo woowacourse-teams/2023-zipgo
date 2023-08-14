@@ -2,8 +2,6 @@ package zipgo.review.application;
 
 import java.util.List;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.params.ParameterizedTest;
-import org.junit.jupiter.params.provider.ValueSource;
 import org.springframework.beans.factory.annotation.Autowired;
 import zipgo.brand.domain.Brand;
 import zipgo.brand.domain.repository.BrandRepository;
@@ -18,15 +16,15 @@ import zipgo.pet.domain.repository.PetRepository;
 import zipgo.pet.domain.repository.PetSizeRepository;
 import zipgo.petfood.domain.PetFood;
 import zipgo.petfood.domain.repository.PetFoodRepository;
-import zipgo.review.application.dto.GetReviewQueryRequest;
 import zipgo.review.domain.Review;
 import zipgo.review.domain.repository.ReviewRepository;
+import zipgo.review.domain.repository.dto.FindReviewsQueryRequest;
 import zipgo.review.dto.response.GetReviewMetadataResponse;
 import zipgo.review.dto.response.GetReviewResponse;
 import zipgo.review.dto.response.GetReviewsResponse;
 
+import static java.util.Collections.emptyList;
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.AssertionsForClassTypes.assertThatThrownBy;
 import static org.junit.jupiter.api.Assertions.assertAll;
 import static zipgo.brand.domain.fixture.BrandFixture.아카나_식품_브랜드_생성;
 import static zipgo.pet.domain.fixture.BreedsFixture.견종;
@@ -79,7 +77,8 @@ class ReviewQueryServiceTest extends QueryServiceTest {
         GetReviewResponse 리뷰2_dto = GetReviewResponse.from(리뷰2);
 
         //when
-        GetReviewsResponse reviews = reviewQueryService.getReviews(new GetReviewQueryRequest(식품.getId(), 2, null));
+        var request = new FindReviewsQueryRequest(식품.getId(), 2, null, SortBy.RECENT, emptyList(), emptyList());
+        GetReviewsResponse reviews = reviewQueryService.getReviews(request);
 
         //then
         assertThat(reviews.reviews().size()).isEqualTo(2);
@@ -100,25 +99,8 @@ class ReviewQueryServiceTest extends QueryServiceTest {
         Member 멤버2 = memberRepository.save(멤버_이름("무민2"));
         Breeds 종류 = breedsRepository.save(견종(사이즈));
         Pet 반려동물2 = petRepository.save(반려동물(멤버2, 종류));
-        return reviewRepository.save(
-                혹평_리뷰_생성(반려동물2, 식품, List.of(눈물_이상반응().getAdverseReactionType().getDescription(),
-                        먹고_토_이상반응().getAdverseReactionType().getDescription())));
-    }
-
-
-    @Test
-    void 식품_id가_null이면_예외가_발생한다() {
-        // expect
-        assertThatThrownBy(() -> new GetReviewQueryRequest(null, 10, null))
-                .isInstanceOf(IllegalArgumentException.class);
-    }
-
-    @ParameterizedTest
-    @ValueSource(ints = {0, -1, -100, Integer.MAX_VALUE + 1})
-    void size가_0_이하면_예외가_발생한다(int 음수) {
-        // expect
-        assertThatThrownBy(() -> reviewQueryService.getReviews(new GetReviewQueryRequest(1L, 음수, null)))
-                .isInstanceOf(IllegalArgumentException.class);
+        return reviewRepository.save(혹평_리뷰_생성(반려동물2, 식품, List.of(눈물_이상반응().getAdverseReactionType().getDescription(),
+                먹고_토_이상반응().getAdverseReactionType().getDescription())));
     }
 
     private Brand 브랜드_조회하기() {
@@ -140,15 +122,13 @@ class ReviewQueryServiceTest extends QueryServiceTest {
         Review review = reviewQueryService.getReview(극찬_리뷰.getId());
 
         //then
-        assertAll(
-                () -> assertThat(review.getPet().getOwner().getName()).isEqualTo("무민"),
+        assertAll(() -> assertThat(review.getPet().getOwner().getName()).isEqualTo("무민"),
                 () -> assertThat(review.getPet().getName()).isEqualTo("무민이"),
                 () -> assertThat(review.getRating()).isEqualTo(5),
                 () -> assertThat(review.getComment()).isEqualTo("우리 아이랑 너무 잘 맞아요!"),
                 () -> assertThat(review.getTastePreference()).isEqualTo(EATS_VERY_WELL),
                 () -> assertThat(review.getStoolCondition()).isEqualTo(SOFT_MOIST),
-                () -> assertThat(review.getAdverseReactions().get(0).getAdverseReactionType()).isEqualTo(NONE)
-        );
+                () -> assertThat(review.getAdverseReactions().get(0).getAdverseReactionType()).isEqualTo(NONE));
     }
 
     @Test
@@ -160,12 +140,8 @@ class ReviewQueryServiceTest extends QueryServiceTest {
         GetReviewMetadataResponse 응답 = reviewQueryService.getReviewMetadata();
 
         //then
-        assertAll(
-                () -> assertThat(응답.petSizes()).hasSize(3),
-                () -> assertThat(응답.sortBy()).hasSize(4),
-                () -> assertThat(응답.ageGroups()).hasSize(3),
-                () -> assertThat(응답.breeds()).isNotEmpty()
-        );
+        assertAll(() -> assertThat(응답.petSizes()).hasSize(3), () -> assertThat(응답.sortBy()).hasSize(4),
+                () -> assertThat(응답.ageGroups()).hasSize(3), () -> assertThat(응답.breeds()).isNotEmpty());
     }
 
     private void 요구되는_리뷰_메타데이터_저장() {
@@ -175,8 +151,8 @@ class ReviewQueryServiceTest extends QueryServiceTest {
         List<PetSize> petSizes = List.of(소형견, 중형견, 대형견);
         petSizeRepository.saveAll(petSizes);
         List<Breeds> breeds = List.of(new Breeds(null, "푸들", 소형견), new Breeds(null, "말티즈", 소형견),
-                new Breeds(null, "진돗개", 중형견), new Breeds(null, "시바견", 중형견),
-                new Breeds(null, "리트리버", 대형견), new Breeds(null, "허스키", 대형견));
+                new Breeds(null, "진돗개", 중형견), new Breeds(null, "시바견", 중형견), new Breeds(null, "리트리버", 대형견),
+                new Breeds(null, "허스키", 대형견));
         breedsRepository.saveAll(breeds);
     }
 

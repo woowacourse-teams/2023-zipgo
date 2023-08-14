@@ -16,7 +16,6 @@ import zipgo.auth.presentation.Auth;
 import zipgo.auth.presentation.dto.AuthDto;
 import zipgo.review.application.ReviewQueryService;
 import zipgo.review.application.ReviewService;
-import zipgo.review.application.dto.GetReviewQueryRequest;
 import zipgo.review.domain.Review;
 import zipgo.review.dto.request.CreateReviewRequest;
 import zipgo.review.dto.request.GetReviewsRequest;
@@ -44,9 +43,7 @@ public class ReviewController { // TODO: requestMapping 으로 변경
     @GetMapping("/reviews")
     public ResponseEntity<GetReviewsResponse> getAllReviews(
             @ModelAttribute @Valid GetReviewsRequest request) {
-        GetReviewQueryRequest reviewQueryRequest = new GetReviewQueryRequest(request.petFoodId(), request.size(),
-                request.lastReviewId());
-        GetReviewsResponse reviews = reviewQueryService.getReviews(reviewQueryRequest);
+        GetReviewsResponse reviews = reviewQueryService.getReviews(request.toQueryRequest());
 
         return ResponseEntity.ok(reviews);
     }
