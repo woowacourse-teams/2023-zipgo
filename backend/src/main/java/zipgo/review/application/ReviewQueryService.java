@@ -36,14 +36,37 @@ public class ReviewQueryService {
     }
 
     public GetReviewMetadataResponse getReviewMetadata() {
-        return new GetReviewMetadataResponse(
-                petSizeRepository.findAll().stream().map(petSize -> new Metadata(petSize.getId(), petSize.getName()))
-                        .toList(),
-                Arrays.stream(SortBy.values()).map(sortBy -> new Metadata(sortBy.getId(), sortBy.getName())).toList(),
-                Arrays.stream(AgeGroup.values()).map(ageGroup -> new Metadata(ageGroup.getId(), ageGroup.getName()))
-                        .toList(),
-                breedsRepository.findAll().stream().map(breed -> new Metadata(breed.getId(), breed.getName())).toList()
-        );
+        List<Metadata> breedSizes = findAllBreedSizes();
+        List<Metadata> sorters = findAllSorters();
+        List<Metadata> ageGroups = findAllAgeGroups();
+        List<Metadata> breeds = findAllBreeds();
+
+        return new GetReviewMetadataResponse(breedSizes, sorters, ageGroups, breeds);
+    }
+
+    private List<Metadata> findAllBreeds() {
+        return breedsRepository.findAll().stream()
+                .map(breed -> new Metadata(breed.getId(), breed.getName()))
+                .toList();
+    }
+
+    private List<Metadata> findAllAgeGroups() {
+        return Arrays.stream(AgeGroup.values())
+                .map(ageGroup -> new Metadata(ageGroup.getId(), ageGroup.getName()))
+                .toList();
+    }
+
+    private List<Metadata> findAllSorters() {
+        return Arrays.stream(SortBy.values())
+                .map(sortBy -> new Metadata(sortBy.getId(), sortBy.getName()))
+                .toList();
+    }
+
+    private List<Metadata> findAllBreedSizes() {
+        return petSizeRepository.findAll()
+                .stream()
+                .map(petSize -> new Metadata(petSize.getId(), petSize.getName()))
+                .toList();
     }
 
 }
