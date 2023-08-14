@@ -385,10 +385,6 @@ public class ReviewControllerTest extends AcceptanceTest {
         private ResourceSnippetDetails 문서_정보 = resourceDetails().summary("리뷰 삭제하기")
                 .description("해당 반려동물 식품에 대한 리뷰를 삭제합니다.");
 
-        @BeforeEach
-        void setUp() {
-
-        }
 
         @Test
         void 리뷰를_성공적으로_삭제하면_204_반환() {
