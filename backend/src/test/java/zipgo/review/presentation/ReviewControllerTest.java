@@ -184,7 +184,27 @@ public class ReviewControllerTest extends AcceptanceTest {
                             fieldWithPath("reviews[].tastePreference").description("기호성").type(JsonFieldType.STRING),
                             fieldWithPath("reviews[].stoolCondition").description("대변 상태").type(JsonFieldType.STRING),
                             fieldWithPath("reviews[].adverseReactions").description("이상 반응들")
-                                    .type(JsonFieldType.ARRAY)));
+                                    .type(JsonFieldType.ARRAY),
+                            fieldWithPath("reviews[].petProfile.id").description("반려동물 id").type(JsonFieldType.NUMBER),
+                            fieldWithPath("reviews[].petProfile.name").description("반려동물 이름")
+                                    .type(JsonFieldType.STRING),
+                            fieldWithPath("reviews[].petProfile.writtenAge").description("반려동물 나이")
+                                    .type(JsonFieldType.NUMBER),
+                            fieldWithPath("reviews[].petProfile.writtenWeight").description("반려동물 몸무게")
+                                    .type(JsonFieldType.NUMBER),
+                            fieldWithPath("reviews[].petProfile.breed.id").description("반려동물 견종 id")
+                                    .type(JsonFieldType.NUMBER),
+                            fieldWithPath("reviews[].petProfile.breed.name").description("반려동물 견종 이름")
+                                    .type(JsonFieldType.STRING),
+                            fieldWithPath("reviews[].petProfile.breed.size.id").description("반려동물 견종 크기 id")
+                                    .type(JsonFieldType.NUMBER),
+                            fieldWithPath("reviews[].petProfile.breed.size.name").description("반려동물 견종 크기 이름")
+                                    .type(JsonFieldType.STRING),
+                            fieldWithPath("reviews[].helpfulReaction.count").description("도움이 되었어요 수")
+                                    .type(JsonFieldType.NUMBER),
+                            fieldWithPath("reviews[].helpfulReaction.reacted").description("도움이 되었어요를 눌렀는지")
+                                    .type(JsonFieldType.BOOLEAN)));
+
         }
 
         private void 리뷰_여러개_생성() {

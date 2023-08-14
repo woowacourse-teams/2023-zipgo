@@ -13,8 +13,33 @@ public record GetReviewResponse(
         String comment,
         String tastePreference,
         String stoolCondition,
-        List<String> adverseReactions
+        List<String> adverseReactions,
+        PetProfileResponse petProfile,
+        HelpfulReactionResponse helpfulReaction
+
 ) {
+
+    public record PetProfileResponse(
+            Long id,
+            String name,
+            int writtenAge,
+            double writtenWeight,
+            BreedResponse breed
+    ) {
+
+    }
+
+    public record BreedResponse(Long id, String name, PetSizeResponse size) {
+
+    }
+
+    public record PetSizeResponse(Long id, String name) {
+
+    }
+
+    public record HelpfulReactionResponse(Long count, boolean reacted) {
+
+    }
 
     public static GetReviewResponse from(Review review) {
         return new GetReviewResponse(
@@ -25,7 +50,9 @@ public record GetReviewResponse(
                 review.getComment(),
                 review.getTastePreference().getDescription(),
                 review.getStoolCondition().getDescription(),
-                getAdverseReactions(review)
+                getAdverseReactions(review),
+                null,
+                null
         );
     }
 
