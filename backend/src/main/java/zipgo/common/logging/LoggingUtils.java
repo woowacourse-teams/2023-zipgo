@@ -11,17 +11,15 @@ public class LoggingUtils {
 
     public static void error(Exception exception) {
         String message = getExceptionMessage(exception.getMessage());
-        StackTraceElement[] stackTraceElement = exception.getStackTrace();
 
-        log.error(message + "\n \t {}", stackTraceElement[0]);
+        log.error(message + "\n \t {}", exception);
     }
 
     private static String getExceptionMessage(String message) {
-        if (message.isBlank()) {
+        if (message == null || message.isBlank()) {
             return "";
         }
         return message;
     }
-
 
 }
