@@ -57,4 +57,13 @@ class AgeGroupTest {
                 .hasMessageContaining("분류에 속하지 않는 나이입니다.");
     }
 
+    @ParameterizedTest
+    @ValueSource(longs = {0L, -5L, 100L})
+    void 해당하는_아이디가_없으면_예외가_발생한다(Long id) {
+        // expect
+        assertThatThrownBy(() -> AgeGroup.from(id))
+                .isInstanceOf(IllegalArgumentException.class)
+                .hasMessage("AgeGroup에 해당하는 id가 없습니다.");
+    }
+
 }

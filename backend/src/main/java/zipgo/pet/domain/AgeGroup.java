@@ -26,4 +26,13 @@ public enum AgeGroup {
                 .orElseThrow(PetException.AgeNotFound::new);
     }
 
+    public static AgeGroup from(Long id) {
+        for (AgeGroup ageGroup : AgeGroup.values()) {
+            if (ageGroup.id.equals(id)) {
+                return ageGroup;
+            }
+        }
+        throw new IllegalArgumentException("AgeGroup에 해당하는 id가 없습니다.");
+    }
+
 }
