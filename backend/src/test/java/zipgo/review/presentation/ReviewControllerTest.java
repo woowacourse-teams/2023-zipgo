@@ -376,7 +376,6 @@ public class ReviewControllerTest extends AcceptanceTest {
 
     }
 
-
     @Nested
     @DisplayName("리뷰 삭제 API")
     class DeleteReviews {
@@ -426,6 +425,52 @@ public class ReviewControllerTest extends AcceptanceTest {
         private RestDocumentationFilter API_예외응답_문서_생성() {
             return document("리뷰 삭제 - 실패(Forbidden)", 문서_정보.responseSchema(에러_응답_형식),
                     requestHeaders(headerWithName("Authorization").description("인증을 위한 JWT")));
+        }
+
+    }
+
+    @Nested
+    @DisplayName("리뷰 메타데이터 조회 API")
+    class GetMetadata {
+
+        private Schema 성공_응답_형식 = schema("ReviewMetadataResponse");
+        private ResourceSnippetDetails 문서_정보 = resourceDetails().summary("리뷰 메타데이터 조회하기")
+                .description("리뷰 메타데이터를 조회합니다.");
+
+        @Test
+        void 리뷰_메타데이터_조회하기() {
+            //given
+            var 요청_준비 = given(spec)
+                    .contentType(JSON)
+                    .filter(리뷰_메타데이터_조회_API_문서_생성());
+
+            //when
+            var 응답 = 요청_준비.when()
+                    .get("/reviews/metadata");
+
+            //then
+            응답.then()
+                    .assertThat().statusCode(OK.value());
+        }
+
+        private RestDocumentationFilter 리뷰_메타데이터_조회_API_문서_생성() {
+            return document("리뷰 메타데이터 조회 - 성공",
+                    문서_정보.responseSchema(성공_응답_형식),
+                    responseFields(
+                            fieldWithPath("petSizes").description("반려견 크기 메타데이터").type(JsonFieldType.ARRAY),
+                            fieldWithPath("petSizes[].id").description("반려견 크기 id").type(JsonFieldType.NUMBER),
+                            fieldWithPath("petSizes[].name").description("반려견 크기 이름").type(JsonFieldType.STRING),
+                            fieldWithPath("sortBy").description("리뷰 정렬 기준 메타데이터").type(JsonFieldType.ARRAY),
+                            fieldWithPath("sortBy[].id").description("리뷰 정렬 기준 id").type(JsonFieldType.NUMBER),
+                            fieldWithPath("sortBy[].name").description("리뷰 정렬 기준 이름").type(JsonFieldType.STRING),
+                            fieldWithPath("ageGroups").description("연령대 메타데이터").type(JsonFieldType.ARRAY),
+                            fieldWithPath("ageGroups[].id").description("연령대 id").type(JsonFieldType.NUMBER),
+                            fieldWithPath("ageGroups[].name").description("연령대 이름").type(JsonFieldType.STRING),
+                            fieldWithPath("breeds").description("품종 메타데이터").type(JsonFieldType.ARRAY),
+                            fieldWithPath("breeds[].id").description("품종 id").type(JsonFieldType.NUMBER),
+                            fieldWithPath("breeds[].name").description("품종 이름").type(JsonFieldType.STRING)
+                    )
+            );
         }
 
     }
