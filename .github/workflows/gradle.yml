@@ -41,6 +41,6 @@ jobs:
         uses: actions/upload-artifact@v3
         with:
           name: report_files
-          path: backend/report_files.tar.gz
+          path: report_files.tar.gz
       - name: Build with Gradle
         run: ./gradlew build
