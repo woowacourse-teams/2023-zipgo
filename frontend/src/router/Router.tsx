@@ -8,6 +8,7 @@ import Login from '@/pages/Login/Login';
 import PetProfileAddition from '@/pages/PetProfile/PetProfileAddition';
 import PetProfileAgeAddition from '@/pages/PetProfile/PetProfileAgeAddition';
 import PetProfileBreedsAddition from '@/pages/PetProfile/PetProfileBreedsAddition';
+import PetProfileBreedsSizeAddition from '@/pages/PetProfile/PetProfileBreedsSizeAddition';
 import PetProfileNameAddition from '@/pages/PetProfile/PetProfileNameAddition';
 import ReviewAddition from '@/pages/ReviewAddition/ReviewAddition';
 import ReviewStarRating from '@/pages/ReviewStarRating/ReviewStarRating';
@@ -55,6 +56,10 @@ export const router = createBrowserRouter([
           {
             path: PATH.PET_PROFILE_BREEDS_ADDITION,
             element: <PetProfileBreedsAddition />,
+          },
+          {
+            path: PATH.PET_PROFILE_BREEDS_SIZE_ADDITION,
+            element: <PetProfileBreedsSizeAddition />,
           },
         ],
       },
