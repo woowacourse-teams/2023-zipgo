@@ -4,12 +4,13 @@ import { styled } from 'styled-components';
 
 import Input from '@/components/@common/Input/Input';
 import { PET_PROFILE_ADDITION_STEP } from '@/constants/petProfile';
+import { usePetProfileContext } from '@/context/petProfile';
 import { PetProfileOutletContextProps } from '@/types/petProfile/client';
 
 const PetProfileNameAddition = () => {
   const [isValidInput, setIsValidInput] = useState(true);
-  const { updatePetName, updateCurrentStep, updateIsValidStep } =
-    useOutletContext<PetProfileOutletContextProps>();
+  const { updateCurrentStep, updateIsValidStep } = useOutletContext<PetProfileOutletContextProps>();
+  const { updatePetProfile } = usePetProfileContext();
 
   useEffect(() => {
     updateCurrentStep(PET_PROFILE_ADDITION_STEP.NAME);
@@ -22,7 +23,7 @@ const PetProfileNameAddition = () => {
     if (validCharacters.test(inputValue)) {
       setIsValidInput(true);
       updateIsValidStep(true);
-      updatePetName(inputValue);
+      updatePetProfile({ name: inputValue });
     }
 
     if (!validCharacters.test(inputValue)) {

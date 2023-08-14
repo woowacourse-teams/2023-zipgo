@@ -1,5 +1,7 @@
 import { PATH } from '@/router/routes';
 
+export const BREEDS_SIZES = ['소형견', '중형견', '대형견'] as const;
+
 export const PET_PROFILE_ADDITION_STEP = {
   NAME: 1,
   AGE: 2,

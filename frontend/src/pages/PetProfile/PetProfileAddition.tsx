@@ -6,38 +6,39 @@ import BackBtnIcon from '@/assets/svg/back_btn.svg';
 import Button from '@/components/@common/Button/Button';
 import Template from '@/components/@common/Template';
 import { PET_PROFILE_ADDITION_STEP, STEP_PATH } from '@/constants/petProfile';
+import { PetProfileProvider } from '@/context/petProfile';
 import { routerPath } from '@/router/routes';
 
 const PetProfileAddition = () => {
   const navigate = useNavigate();
-  const [petName, setPetName] = useState('');
   const [step, setStep] = useState(0);
   const [isValidStep, setIsValidStep] = useState(false);
 
   const goBack = () => navigate(routerPath.back);
   const goNext = () => navigate(STEP_PATH[step + 1]);
 
-  const updatePetName = (name: string) => setPetName(name);
   const updateCurrentStep = (step: number) => setStep(step);
   const updateIsValidStep = (isValid: boolean) => setIsValidStep(isValid);
 
   return (
-    <Template
-      staticHeader={() =>
-        getPetProfileAdditionHeader({
-          title: '반려동물 정보 등록',
-          step,
-          totalStep: Object.keys(PET_PROFILE_ADDITION_STEP).length,
-          onClickBackButton: goBack,
-        })
-      }
-      footer={false}
-    >
-      <ContentLayout>
-        <Outlet context={{ petName, updatePetName, updateCurrentStep, updateIsValidStep }} />
-      </ContentLayout>
-      <Button text="다음" fixed onClick={goNext} disabled={!isValidStep} />
-    </Template>
+    <PetProfileProvider>
+      <Template
+        staticHeader={() =>
+          getPetProfileAdditionHeader({
+            title: '반려동물 정보 등록',
+            step,
+            totalStep: Object.keys(PET_PROFILE_ADDITION_STEP).length,
+            onClickBackButton: goBack,
+          })
+        }
+        footer={false}
+      >
+        <ContentLayout>
+          <Outlet context={{ updateCurrentStep, updateIsValidStep }} />
+        </ContentLayout>
+        <Button text="다음" fixed onClick={goNext} disabled={!isValidStep} />
+      </Template>
+    </PetProfileProvider>
   );
 };
 

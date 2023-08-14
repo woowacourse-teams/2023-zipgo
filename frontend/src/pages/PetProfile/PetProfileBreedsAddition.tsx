@@ -3,11 +3,12 @@ import { useOutletContext } from 'react-router-dom';
 import { styled } from 'styled-components';
 
 import { PET_PROFILE_ADDITION_STEP } from '@/constants/petProfile';
+import { usePetProfileContext } from '@/context/petProfile';
 import { PetProfileOutletContextProps } from '@/types/petProfile/client';
 
 const PetProfileBreedsAddition = () => {
-  const { petName, updateCurrentStep, updateIsValidStep } =
-    useOutletContext<PetProfileOutletContextProps>();
+  const { updateCurrentStep, updateIsValidStep } = useOutletContext<PetProfileOutletContextProps>();
+  const { petProfile, updatePetProfile } = usePetProfileContext();
 
   useEffect(() => {
     updateCurrentStep(PET_PROFILE_ADDITION_STEP.BREEDS);
@@ -16,7 +17,7 @@ const PetProfileBreedsAddition = () => {
 
   return (
     <Container>
-      <PetName>{petName}</PetName>
+      <PetName>{petProfile.name}</PetName>
       <Title>는 어떤 아이인가요?</Title>
     </Container>
   );

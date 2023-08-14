@@ -4,11 +4,12 @@ import { styled } from 'styled-components';
 
 import PetAgeSelect from '@/components/PetProfile/PetAgeSelect';
 import { PET_PROFILE_ADDITION_STEP } from '@/constants/petProfile';
+import { usePetProfileContext } from '@/context/petProfile';
 import { PetProfileOutletContextProps } from '@/types/petProfile/client';
 
 const PetProfileAgeAddition = () => {
-  const { petName, updateCurrentStep, updateIsValidStep } =
-    useOutletContext<PetProfileOutletContextProps>();
+  const { updateCurrentStep, updateIsValidStep } = useOutletContext<PetProfileOutletContextProps>();
+  const { petProfile, updatePetProfile } = usePetProfileContext();
 
   useEffect(() => {
     updateCurrentStep(PET_PROFILE_ADDITION_STEP.AGE);
@@ -20,14 +21,18 @@ const PetProfileAgeAddition = () => {
     const isValidNumberRange = ({ number, min, max }: Record<string, number>) =>
       typeof number === 'number' && number >= min && number <= max;
 
-    if (isValidNumberRange({ number: selectedValue, min: 0, max: 20 })) updateIsValidStep(true);
+    if (isValidNumberRange({ number: selectedValue, min: 0, max: 20 })) {
+      updateIsValidStep(true);
+      updatePetProfile({ age: selectedValue });
+    }
+
     if (!isValidNumberRange({ number: selectedValue, min: 0, max: 20 })) updateIsValidStep(false);
   };
 
   return (
     <Container>
       <Title>
-        <PetName>{`${petName},`}</PetName>
+        <PetName>{`${petProfile.name},`}</PetName>
         귀여운 이름이에요. 나이는요?
       </Title>
       <InputLabel htmlFor="pet-age">나이 선택</InputLabel>
