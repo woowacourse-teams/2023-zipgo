@@ -12,8 +12,6 @@ spring:
     name: monitoring
 
 management:
-  server:
-    port: 8080
   endpoint:
     metrics:
       enabled: true
