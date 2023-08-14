@@ -3,7 +3,6 @@ package zipgo;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
-import org.springframework.data.jpa.repository.config.EnableJpaAuditing;
 import zipgo.auth.infra.kakao.config.KakaoCredentials;
 import zipgo.common.config.JwtCredentials;
 

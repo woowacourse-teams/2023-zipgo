@@ -11,9 +11,8 @@ import lombok.Builder;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import zipgo.pet.domain.Pet;
-
 import zipgo.common.entity.BaseTimeEntity;
+import zipgo.pet.domain.Pet;
 
 import static lombok.AccessLevel.PROTECTED;
 import static lombok.EqualsAndHashCode.Include;

@@ -5,15 +5,26 @@ import com.epages.restdocs.apispec.Schema;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.restdocs.payload.JsonFieldType;
 import org.springframework.restdocs.restassured.RestDocumentationFilter;
-import zipgo.acceptance.AcceptanceTest;
+import zipgo.brand.domain.Brand;
+import zipgo.brand.domain.fixture.BrandFixture;
+import zipgo.brand.domain.repository.BrandRepository;
+import zipgo.common.acceptance.AcceptanceTest;
+import zipgo.member.domain.Member;
 import zipgo.member.domain.fixture.MemberFixture;
 import zipgo.member.domain.repository.MemberRepository;
+import zipgo.pet.domain.Breeds;
+import zipgo.pet.domain.Pet;
+import zipgo.pet.domain.PetSize;
+import zipgo.pet.domain.repository.BreedsRepository;
+import zipgo.pet.domain.repository.PetRepository;
+import zipgo.pet.domain.repository.PetSizeRepository;
 import zipgo.petfood.domain.PetFood;
 import zipgo.petfood.domain.repository.PetFoodRepository;
 import zipgo.review.domain.Review;
@@ -41,15 +52,26 @@ import static org.springframework.restdocs.payload.PayloadDocumentation.response
 import static org.springframework.restdocs.request.RequestDocumentation.parameterWithName;
 import static org.springframework.restdocs.request.RequestDocumentation.pathParameters;
 import static org.springframework.restdocs.request.RequestDocumentation.queryParameters;
+import static zipgo.pet.domain.fixture.BreedsFixture.견종;
+import static zipgo.pet.domain.fixture.PetFixture.반려동물;
+import static zipgo.pet.domain.fixture.PetSizeFixture.소형견;
+import static zipgo.petfood.domain.fixture.PetFoodFixture.모든_영양기준_만족_식품;
+import static zipgo.review.fixture.MemberFixture.무민;
+import static zipgo.review.fixture.ReviewFixture.극찬_리뷰_생성;
 import static zipgo.review.fixture.ReviewFixture.리뷰_생성_요청;
 import static zipgo.review.fixture.ReviewFixture.리뷰_수정_요청;
 
 
 public class ReviewControllerTest extends AcceptanceTest {
 
-    private Long petFoodId = 1L;
-    private Long reviewId = 1L;
+    private PetFood 식품;
+
+    private Review 리뷰;
+
     private Long 잘못된_id = 123456789L;
+
+    @Autowired
+    private BrandRepository brandRepository;
 
     @Autowired
     private PetFoodRepository petFoodRepository;
@@ -59,6 +81,28 @@ public class ReviewControllerTest extends AcceptanceTest {
 
     @Autowired
     private ReviewRepository reviewRepository;
+
+    @Autowired
+    private BreedsRepository breedsRepository;
+
+    @Autowired
+    private PetSizeRepository petSizeRepository;
+
+    @Autowired
+    private PetRepository petRepository;
+
+    @BeforeEach
+    void setUp() {
+        Brand 브랜드 = brandRepository.save(BrandFixture.오리젠_식품_브랜드_생성());
+        식품 = 모든_영양기준_만족_식품(브랜드);
+        petFoodRepository.save(식품);
+
+        Member 멤버 = memberRepository.save(무민());
+        PetSize 사이즈 = petSizeRepository.save(소형견());
+        Breeds 종류 = breedsRepository.save(견종(사이즈));
+        Pet 반려동물 = petRepository.save(반려동물(멤버, 종류));
+        리뷰 = reviewRepository.save(ReviewFixture.극찬_리뷰_생성(반려동물, 식품, List.of("없어요")));
+    }
 
     @Nested
     @DisplayName("리뷰 전체 목록 조회 API")
@@ -75,7 +119,8 @@ public class ReviewControllerTest extends AcceptanceTest {
             var 요청_준비 = given(spec).contentType(JSON).filter(리뷰_전체_목록_조회_API_문서_생성("리뷰 전체 조회 - 성공"));
 
             // when
-            var 응답 = 요청_준비.when().pathParam("id", petFoodId).get("/pet-foods/{id}/reviews");
+            var 응답 = 요청_준비.when().pathParam("id", 식품.getId())
+                    .get("/pet-foods/{id}/reviews");
 
             // then
             응답.then()
@@ -93,7 +138,8 @@ public class ReviewControllerTest extends AcceptanceTest {
             // when
             var 응답 = 요청_준비.when()
                     .queryParam("size", 10)
-                    .pathParam("id", petFoodId).get("/pet-foods/{id}/reviews");
+                    .pathParam("id", 식품.getId())
+                    .get("/pet-foods/{id}/reviews");
 
             // then
             응답.then()
@@ -110,7 +156,8 @@ public class ReviewControllerTest extends AcceptanceTest {
             // when
             var 응답 = 요청_준비.when()
                     .queryParam("size", 10)
-                    .pathParam("id", petFoodId).get("/pet-foods/{id}/reviews");
+                    .pathParam("id", 식품.getId())
+                    .get("/pet-foods/{id}/reviews");
 
             // then
             응답.then()
@@ -135,10 +182,13 @@ public class ReviewControllerTest extends AcceptanceTest {
         }
 
         private void 리뷰_여러개_생성() {
-            PetFood 식품 = petFoodRepository.findById(petFoodId).orElseThrow(IllegalArgumentException::new);
             List<Review> 리뷰들 = new ArrayList<>();
             for (int i = 0; i < 20; i++) {
-                Review 리뷰 = ReviewFixture.극찬_리뷰_생성(memberRepository.save(MemberFixture.식별자_없는_멤버("email" + i)), 식품,
+                Member 멤버 = memberRepository.save(MemberFixture.식별자_없는_멤버("email" + i));
+                PetSize 사이즈 = petSizeRepository.save(소형견());
+                Breeds 종류 = breedsRepository.save(견종(사이즈));
+                Pet 반려동물 = petRepository.save(반려동물(멤버, 종류));
+                Review 리뷰 = 극찬_리뷰_생성(반려동물, 식품,
                         List.of("없어요"));
                 리뷰들.add(리뷰);
             }
@@ -146,7 +196,8 @@ public class ReviewControllerTest extends AcceptanceTest {
         }
 
         private void 리뷰_하나빼고_삭제() {
-            reviewRepository.deleteAll(reviewRepository.findAll().stream().skip(1).collect(Collectors.toList()));
+            List<Review> 리뷰들 = reviewRepository.findAll().stream().skip(1).collect(Collectors.toList());
+            reviewRepository.deleteAllById(리뷰들.stream().map(Review::getId).toList());
         }
 
         @Test
@@ -159,7 +210,7 @@ public class ReviewControllerTest extends AcceptanceTest {
             // when
             var 응답 = 요청_준비.when()
                     .queryParam("size", 0)
-                    .pathParam("id", petFoodId)
+                    .pathParam("id", 식품.getId())
                     .get("/pet-foods/{id}/reviews");
 
             // then
@@ -188,7 +239,7 @@ public class ReviewControllerTest extends AcceptanceTest {
             var 요청_준비 = given(spec).contentType(JSON).filter(리뷰_개별_API_문서_생성());
 
             // when
-            var 응답 = 요청_준비.when().pathParam("reviewId", reviewId).get("/reviews/{reviewId}");
+            var 응답 = 요청_준비.when().pathParam("reviewId", 리뷰.getId()).get("/reviews/{reviewId}");
 
             // then
             응답.then().assertThat().statusCode(OK.value());
@@ -222,7 +273,8 @@ public class ReviewControllerTest extends AcceptanceTest {
         void 리뷰를_성공적으로_생성하면_201_반환() {
             // given
             var token = jwtProvider.create("1");
-            var 요청_준비 = given(spec).header("Authorization", "Bearer " + token).body(리뷰_생성_요청(petFoodId))
+            var 요청_준비 = given(spec).header("Authorization", "Bearer " + token)
+                    .body(리뷰_생성_요청(식품.getId()))
                     .contentType(JSON).filter(리뷰_생성_API_문서_생성());
 
             // when
@@ -247,7 +299,8 @@ public class ReviewControllerTest extends AcceptanceTest {
         void 없는_식품에_대해_리뷰를_생성하면_404_반환() {
             // given
             var token = jwtProvider.create("1");
-            var 요청_준비 = given(spec).header("Authorization", "Bearer " + token).body(리뷰_생성_요청(잘못된_id)).contentType(JSON)
+            var 요청_준비 = given(spec).header("Authorization", "Bearer " + token)
+                    .body(리뷰_생성_요청(잘못된_id)).contentType(JSON)
                     .filter(API_예외응답_문서_생성());
 
             // when
@@ -277,11 +330,14 @@ public class ReviewControllerTest extends AcceptanceTest {
         void 리뷰를_성공적으로_수정하면_204_반환() {
             // given
             var token = jwtProvider.create("1");
-            var 요청_준비 = given(spec).header("Authorization", "Bearer " + token).body(리뷰_수정_요청()).contentType(JSON)
+            var 요청_준비 = given(spec).header("Authorization", "Bearer " + token)
+                    .body(리뷰_수정_요청()).contentType(JSON)
                     .filter(리뷰_수정_API_문서_생성());
 
             // when
-            var 응답 = 요청_준비.when().pathParam("reviewId", reviewId).put("/reviews/{reviewId}");
+            var 응답 = 요청_준비.when()
+                    .pathParam("reviewId", 리뷰.getId())
+                    .put("/reviews/{reviewId}");
 
             // then
             응답.then().assertThat().statusCode(NO_CONTENT.value());
@@ -302,11 +358,12 @@ public class ReviewControllerTest extends AcceptanceTest {
         void 리뷰를_쓴_사람이_아닌_멤버가_리뷰를_수정하면_403_반환() {
             // given
             var notOwnerToken = jwtProvider.create("2");
-            var 요청_준비 = given(spec).header("Authorization", "Bearer " + notOwnerToken).body(리뷰_생성_요청(petFoodId))
+            var 요청_준비 = given(spec).header("Authorization", "Bearer " + notOwnerToken)
+                    .body(리뷰_생성_요청(식품.getId()))
                     .contentType(JSON).filter(API_예외응답_문서_생성());
 
             // when
-            var 응답 = 요청_준비.when().pathParam("reviewId", reviewId).put("/reviews/{reviewId}");
+            var 응답 = 요청_준비.when().pathParam("reviewId", 리뷰.getId()).put("/reviews/{reviewId}");
 
             // then
             응답.then().assertThat().statusCode(FORBIDDEN.value());
@@ -328,15 +385,17 @@ public class ReviewControllerTest extends AcceptanceTest {
         private ResourceSnippetDetails 문서_정보 = resourceDetails().summary("리뷰 삭제하기")
                 .description("해당 반려동물 식품에 대한 리뷰를 삭제합니다.");
 
+
         @Test
         void 리뷰를_성공적으로_삭제하면_204_반환() {
             // given
             var token = jwtProvider.create("1");
-            var 요청_준비 = given(spec).header("Authorization", "Bearer " + token).body(리뷰_수정_요청()).contentType(JSON)
+            var 요청_준비 = given(spec).header("Authorization", "Bearer " + token)
+                    .body(리뷰_수정_요청()).contentType(JSON)
                     .filter(리뷰_삭제_API_문서_생성());
 
             // when
-            var 응답 = 요청_준비.when().pathParam("reviewId", reviewId).delete("/reviews/{reviewId}");
+            var 응답 = 요청_준비.when().pathParam("reviewId", 리뷰.getId()).delete("/reviews/{reviewId}");
 
             // then
             응답.then().assertThat().statusCode(NO_CONTENT.value());
@@ -352,11 +411,13 @@ public class ReviewControllerTest extends AcceptanceTest {
         void 리뷰를_쓴_사람이_아닌_멤버가_리뷰를_삭제하면_403_반환() {
             // given
             var notOwnerToken = jwtProvider.create("2");
-            var 요청_준비 = given(spec).header("Authorization", "Bearer " + notOwnerToken).body(리뷰_생성_요청(petFoodId))
-                    .contentType(JSON).filter(API_예외응답_문서_생성());
+            var 요청_준비 = given(spec)
+                    .header("Authorization", "Bearer " + notOwnerToken)
+                    .contentType(JSON)
+                    .filter(API_예외응답_문서_생성());
 
             // when
-            var 응답 = 요청_준비.when().pathParam("reviewId", reviewId).delete("/reviews/{reviewId}");
+            var 응답 = 요청_준비.when().pathParam("reviewId", 리뷰.getId()).delete("/reviews/{reviewId}");
 
             // then
             응답.then().assertThat().statusCode(FORBIDDEN.value());

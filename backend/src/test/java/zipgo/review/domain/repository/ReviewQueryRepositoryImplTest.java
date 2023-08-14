@@ -12,16 +12,26 @@ import zipgo.brand.domain.Brand;
 import zipgo.brand.domain.fixture.BrandFixture;
 import zipgo.brand.domain.repository.BrandRepository;
 import zipgo.common.config.QueryDslTestConfig;
+import zipgo.member.domain.Member;
 import zipgo.member.domain.fixture.MemberFixture;
 import zipgo.member.domain.repository.MemberRepository;
+import zipgo.pet.domain.Breeds;
+import zipgo.pet.domain.Pet;
+import zipgo.pet.domain.PetSize;
+import zipgo.pet.domain.repository.BreedsRepository;
+import zipgo.pet.domain.repository.PetRepository;
+import zipgo.pet.domain.repository.PetSizeRepository;
 import zipgo.petfood.domain.PetFood;
 import zipgo.petfood.domain.fixture.PetFoodFixture;
 import zipgo.petfood.domain.repository.PetFoodRepository;
 import zipgo.review.domain.Review;
-import zipgo.review.fixture.ReviewFixture;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
+import static zipgo.pet.domain.fixture.BreedsFixture.견종;
+import static zipgo.pet.domain.fixture.PetFixture.반려동물;
+import static zipgo.pet.domain.fixture.PetSizeFixture.소형견;
+import static zipgo.review.fixture.ReviewFixture.극찬_리뷰_생성;
 
 
 @DataJpaTest
@@ -42,6 +52,15 @@ class ReviewQueryRepositoryImplTest {
 
     @Autowired
     private PetFoodRepository petFoodRepository;
+
+    @Autowired
+    private BreedsRepository breedsRepository;
+
+    @Autowired
+    private PetSizeRepository petSizeRepository;
+
+    @Autowired
+    private PetRepository petRepository;
 
 
     @Test
@@ -66,7 +85,11 @@ class ReviewQueryRepositoryImplTest {
     private void 리뷰_여러개_생성(PetFood 식품) {
         List<Review> 리뷰들 = new ArrayList<>();
         for (int i = 0; i < 20; i++) {
-            Review 리뷰 = ReviewFixture.극찬_리뷰_생성(memberRepository.save(MemberFixture.식별자_없는_멤버("email" + i)), 식품,
+            Member 멤버 = memberRepository.save(MemberFixture.식별자_없는_멤버("email" + i));
+            PetSize 사이즈 = petSizeRepository.save(소형견());
+            Breeds 종류 = breedsRepository.save(견종(사이즈));
+            Pet 반려동물 = petRepository.save(반려동물(멤버, 종류));
+            Review 리뷰 = 극찬_리뷰_생성(반려동물, 식품,
                     List.of("없어요"));
             리뷰들.add(리뷰);
         }
@@ -122,10 +145,10 @@ class ReviewQueryRepositoryImplTest {
     @Test
     void 결과가_없는경우_빈리스트를_반환한다() {
         //given
-        reviewRepository.deleteAll();
+        PetFood 식품 = 식품_만들기();
 
         //when
-        List<Review> reviews = reviewQueryRepository.findReviewsBy(1L, 10, null);
+        List<Review> reviews = reviewQueryRepository.findReviewsBy(식품.getId(), 10, null);
 
         //then
         assertThat(reviews).isEmpty();

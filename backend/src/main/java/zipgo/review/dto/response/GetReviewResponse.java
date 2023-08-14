@@ -19,7 +19,7 @@ public record GetReviewResponse(
     public static GetReviewResponse from(Review review) {
         return new GetReviewResponse(
                 review.getId(),
-                review.getMember().getName(),
+                review.getPet().getOwner().getName(),
                 review.getRating(),
                 review.getCreatedAt().format(ofPattern("yyyy-MM-dd")),
                 review.getComment(),

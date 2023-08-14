@@ -9,7 +9,7 @@ public class BrandFixture {
                 .name("오리젠")
                 .imageUrl(
                         "https://www.nestle.com/sites/default/files/styles/brand_logo/public/purina-logo-square-2023.png?h=a7e6d17b&itok=k6CCv7Sr")
-                .nation("캐나")
+                .nation("캐나다")
                 .foundedYear(1985)
                 .hasResearchCenter(true)
                 .hasResidentVet(true)

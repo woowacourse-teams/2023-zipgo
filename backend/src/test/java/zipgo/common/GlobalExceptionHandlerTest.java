@@ -8,7 +8,7 @@ import org.junit.jupiter.api.DisplayNameGenerator.ReplaceUnderscores;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.web.HttpMediaTypeNotSupportedException;
-import zipgo.acceptance.AcceptanceTest;
+import zipgo.common.acceptance.AcceptanceTest;
 import zipgo.petfood.presentation.dto.ErrorResponse;
 import zipgo.review.presentation.ReviewController;
 
