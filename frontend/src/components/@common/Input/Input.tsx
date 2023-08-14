@@ -8,8 +8,8 @@ interface InputProps extends InputHTMLAttributes<HTMLInputElement> {
   fontSize?: string;
   isValid?: boolean;
 }
-const Input = (InputProps: InputProps) => {
-  const { design, fontSize, isValid = true, ...restProps } = InputProps;
+const Input = (inputProps: InputProps) => {
+  const { design, fontSize, isValid = true, ...restProps } = inputProps;
 
   return <InputWrapper $design={design} $fontSize={fontSize} $isValid={isValid} {...restProps} />;
 };
