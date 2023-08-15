@@ -10,7 +10,7 @@ public interface BreedsRepository extends JpaRepository<Breeds, Long> {
     Optional<Breeds> findByNameAndPetSizeId(String name, Long petSizeId);
 
     default Breeds getByNameAndPetSize(String name, Long petSizeId) {
-        return findByNameAndPetSizeId(name, petSizeId).orElseThrow(PetException.BreedsNotFound::new);
+        return findByNameAndPetSizeId(name, petSizeId).orElseThrow(PetException.PetSizeNotFound::new);
     }
 
 }

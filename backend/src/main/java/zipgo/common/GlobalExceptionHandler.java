@@ -33,6 +33,7 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
             AuthException.ResourceNotFound.class,
             PetException.AgeNotFound.class,
             PetException.GenderNotFound.class,
+            PetException.PetSizeNotFound.class,
             PetException.BreedsNotFound.class
     })
     public ResponseEntity<ErrorResponse> handleNotFoundException(Exception exception) {

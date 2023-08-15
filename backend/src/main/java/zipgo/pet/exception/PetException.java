@@ -25,7 +25,15 @@ public class PetException extends RuntimeException {
     public static class BreedsNotFound extends PetException {
 
         public BreedsNotFound() {
-            super("존재하지 않는 품종입니다.");
+            super("존재하지 않는 견종입니다.");
+        }
+
+    }
+
+    public static class PetSizeNotFound extends PetException {
+
+        public PetSizeNotFound() {
+            super("존재하지 않는 견종 크기입니다.");
         }
 
     }
