@@ -2,6 +2,7 @@ package zipgo.review.application;
 
 import java.util.ArrayList;
 import java.util.List;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import zipgo.brand.domain.Brand;
@@ -51,10 +52,12 @@ class ReviewsServiceTest extends ServiceTest {
     private BrandRepository brandRepository;
 
     @Autowired
-    private AdverseReactionRepository adverseReactionRepository;
-
-    @Autowired
     private ReviewService reviewService;
+
+    @BeforeEach
+    void setUp() {
+        reviewRepository.deleteAll();;
+    }
 
     @Test
     void 리뷰를_생성할_수_있다() {
