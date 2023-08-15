@@ -9,10 +9,20 @@ interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
   fixed?: boolean;
   style?: CSSProperties;
   disabled?: boolean;
+  icon?: string;
 }
 
 const Button = (buttonProps: ButtonProps) => {
-  const { text, onClick, kind = 'primary', fixed, style, disabled, ...restProps } = buttonProps;
+  const {
+    text,
+    onClick,
+    kind = 'primary',
+    fixed,
+    style,
+    disabled,
+    icon,
+    ...restProps
+  } = buttonProps;
 
   return (
     <ButtonOuter $fixed={fixed}>
@@ -24,6 +34,7 @@ const Button = (buttonProps: ButtonProps) => {
         $disabled={disabled}
         {...restProps}
       >
+        {icon && <img src={icon} alt="icon" />}
         {text}
       </ButtonWrapper>
     </ButtonOuter>
@@ -53,6 +64,11 @@ const ButtonOuter = styled.div<ButtonStyleProps>`
 const ButtonWrapper = styled.button<ButtonStyleProps>`
   cursor: ${({ $disabled }) => ($disabled ? 'not-allowed' : 'pointer')};
 
+  display: flex;
+  gap: 0.4rem;
+  align-items: center;
+  justify-content: center;
+
   width: 100%;
   height: 5.1rem;
 
@@ -75,7 +91,6 @@ const ButtonWrapper = styled.button<ButtonStyleProps>`
   }};
   border: none;
   border-radius: 16px;
-  box-shadow: 0 -8px 20px #fff;
 
   transition: all 100ms ease-in-out;
 
@@ -90,5 +105,6 @@ const ButtonWrapper = styled.button<ButtonStyleProps>`
     $fixed &&
     `
     margin-bottom: 4rem;
+    box-shadow: 0 -8px 20px #fff;
   `}
 `;
