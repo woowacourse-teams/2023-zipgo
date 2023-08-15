@@ -60,7 +60,7 @@ class ImageControllerTest {
     @Test
     void 사진_등록_성공하면_201_반환() throws Exception {
         // given
-        var 사진_파일 = new MockMultipartFile("file", "사진.png", "image/png", "사진".getBytes());
+        var 사진_파일 = new MockMultipartFile("image", "사진.png", "image/png", "사진".getBytes());
 
         when(imageService.save(사진_파일))
                 .thenReturn("사진_주소");
@@ -81,7 +81,7 @@ class ImageControllerTest {
         return MockMvcRestDocumentationWrapper.document("사진 등록 - 성공",
                 문서_정보,
                 requestHeaders(headerWithName("Authorization").description("인증을 위한 JWT")),
-                requestParts(partWithName("file").description("반려견 사진")),
+                requestParts(partWithName("image").description("반려견 사진")),
                 responseFields(fieldWithPath("imageUrl").description("사진 링크").type(JsonFieldType.STRING))
         );
     }
