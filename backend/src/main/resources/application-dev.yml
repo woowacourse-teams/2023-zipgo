@@ -1,11 +1,20 @@
+---
+# port
+server:
+  port: 8081
 
+---
 # database
 spring:
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://localhost:3306/zipgo
-    username: admin
-    password: p@ssword
+    url: ${JDBC_URL}
+    username: ${DB_USERNAME}
+    password: ${DB_PASSWORD}
+
+---
+# jpa
+spring:
   jpa:
     database: mysql
     database-platform: org.hibernate.dialect.MySQL57Dialect
@@ -16,27 +25,32 @@ spring:
       hibernate:
         format_sql: true
         show_sql: true
-    open-in-view: false
     defer-datasource-initialization: true
 
   sql:
     init:
       mode: never
 
-jwt:
-  secret-key: 027eb3f4aa36e178497290da0fa573ee
-  expire-length: 60480000000000000
-
+---
+# OAUTH
 oauth:
   kakao:
-    client-id: 027eb3f4aa36e178497290da0fa573ee
-    redirect-uri: http://localhost:3000/login
+    client-id: ${CLIENT_ID}
+    redirect-uri: ${REDIRECT_URI}
+    client-secret: ${CLIENT_SECRET}
+
+---
+# jwt
+jwt:
+  secret-key: ${ZIPGO_SECRET_KEY}
+  expire-length: ${EXPIRE_LENGTH}
 
 cloud:
   aws:
     s3:
-      bucket: 버킷이름
-      zipgo-directory-name: 집고_디렉토리_이름
-      pet-image-directory: 집고_디렉토리_이미지
-      image-url: 집고_이미지_서버_유알엘
-
+      bucket: ${BUCKET_NAME}
+      zipgo-directory-name: ${ZIPGO_DIRECTORY_NAME}
+      pet-image-directory: ${PET_IMAGE_DIRECTORY}
+      image-url: ${DEV_SERVER_IMAGE_URL}
+    region:
+      static: ap-northeast-2
