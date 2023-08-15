@@ -1,11 +1,11 @@
 package zipgo.petfood.domain;
 
 import jakarta.persistence.Entity;
-import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToMany;
+import java.util.ArrayList;
+import java.util.List;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -28,13 +28,12 @@ public class Functionality extends BaseTimeEntity {
 
     private String name;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "pet_food_id")
-    private PetFood petFood;
+    @Builder.Default
+    @OneToMany(mappedBy = "functionality")
+    private List<PetFoodFunctionality> petFoodFunctionality = new ArrayList<>();
 
-    public void changePetFood(PetFood petFood) {
-        this.petFood = petFood;
-        this.petFood.addFunctionality(this);
+    public void addPetFoodFunctionality(PetFoodFunctionality petFoodFunctionality) {
+        this.petFoodFunctionality.add(petFoodFunctionality);
     }
 
 }

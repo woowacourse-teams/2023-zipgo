@@ -25,7 +25,7 @@ public class ReviewService {
         Member member = memberRepository.getById(memberId);
         PetFood petFood = petFoodRepository.getById(request.petFoodId());
 
-        Review review = request.toEntity(member, petFood);
+        Review review = request.toEntity(member.getPet(), petFood);
         review.addAdverseReactions(request.adverseReactions());
 
         reviewRepository.save(review);

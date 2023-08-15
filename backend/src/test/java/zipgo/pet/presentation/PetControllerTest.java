@@ -5,7 +5,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.restdocs.payload.JsonFieldType;
 import org.springframework.restdocs.restassured.RestDocumentationFilter;
-import zipgo.acceptance.AcceptanceTest;
+import zipgo.common.acceptance.AcceptanceTest;
 import zipgo.member.domain.repository.MemberRepository;
 import zipgo.pet.domain.PetSize;
 import zipgo.pet.domain.repository.BreedsRepository;

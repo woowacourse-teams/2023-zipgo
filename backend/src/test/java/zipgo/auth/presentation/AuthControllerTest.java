@@ -12,6 +12,7 @@ import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.data.jpa.mapping.JpaMetamodelMappingContext;
 import org.springframework.restdocs.mockmvc.RestDocumentationResultHandler;
+import org.springframework.restdocs.payload.JsonFieldType;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.web.servlet.MockMvc;
 import zipgo.auth.application.AuthService;
@@ -92,10 +93,12 @@ class AuthControllerTest {
                 문서_정보,
                 queryParameters(parameterWithName("code").optional().description("소셜 로그인 API")),
                 responseFields(
-                        fieldWithPath("accessToken").description("accessToken"),
+                        fieldWithPath("accessToken").description("accessToken").type(JsonFieldType.STRING),
                         fieldWithPath("authResponse").description("로그인 후 필요한 사용자 정보"),
-                        fieldWithPath("authResponse.name").description("사용자 이름"),
+                        fieldWithPath("authResponse.name").description("사용자 이름").type(JsonFieldType.STRING),
                         fieldWithPath("authResponse.profileImgUrl").description("사용자 프로필 사진")
+                                .type(JsonFieldType.STRING),
+                        fieldWithPath("authResponse.hasPet").description("반려동물 등록 여부").type(JsonFieldType.BOOLEAN)
                 ));
     }
 

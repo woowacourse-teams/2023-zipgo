@@ -1,21 +1,21 @@
-package zipgo.petfood.application.dto;
+package zipgo.petfood.presentation.dto;
 
 import java.util.List;
 
-public record FilterDto(
+public record FilterRequest(
         List<String> brands,
         List<String> nutritionStandards,
         List<String> mainIngredients,
         List<String> functionalities
 ) {
 
-    public static FilterDto of(
+    public static FilterRequest of(
             List<String> brands,
             List<String> nutritionStandards,
             List<String> mainIngredients,
             List<String> functionalities
     ) {
-        return new FilterDto(brands, nutritionStandards, mainIngredients, functionalities);
+        return new FilterRequest(brands, nutritionStandards, mainIngredients, functionalities);
     }
 
 }

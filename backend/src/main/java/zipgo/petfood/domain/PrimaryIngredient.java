@@ -4,15 +4,15 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToMany;
+import java.util.ArrayList;
+import java.util.List;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import zipgo.common.entity.BaseTimeEntity;
 
-import static jakarta.persistence.FetchType.LAZY;
 import static lombok.AccessLevel.PROTECTED;
 
 @Entity
@@ -28,13 +28,12 @@ public class PrimaryIngredient extends BaseTimeEntity {
 
     private String name;
 
-    @ManyToOne(fetch = LAZY)
-    @JoinColumn(name = "pet_food_id")
-    private PetFood petFood;
+    @Builder.Default
+    @OneToMany(mappedBy = "primaryIngredient")
+    private List<PetFoodPrimaryIngredient> petFoodPrimaryIngredients = new ArrayList<>();
 
-    public void changePetFood(PetFood petFood) {
-        this.petFood = petFood;
-        this.petFood.addPrimaryIngredient(this);
+    public void addPetFoodPrimaryIngredient(PetFoodPrimaryIngredient petFoodPrimaryIngredient) {
+        petFoodPrimaryIngredients.add(petFoodPrimaryIngredient);
     }
 
 }

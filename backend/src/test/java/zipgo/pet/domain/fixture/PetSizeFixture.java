@@ -11,4 +11,8 @@ public class PetSizeFixture {
                 .build();
     }
 
+    public static PetSize 소형견() {
+        return PetSize.builder().name("소형견").build();
+    }
+
 }

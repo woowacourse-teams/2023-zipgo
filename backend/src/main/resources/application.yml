@@ -3,3 +3,34 @@
 spring:
   profiles:
     active: dev
+
+---
+#metric, log monitoring
+
+spring:
+  application:
+    name: monitoring
+
+management:
+  endpoint:
+    metrics:
+      enabled: true
+    prometheus:
+      enabled: true
+    logfile:
+      external-file: ./logs/warn.log
+
+  endpoints:
+    web:
+      exposure:
+        include: health, info, metrics, prometheus, logfile
+
+  metrics:
+    tags:
+      application: ${spring.application.name}
+
+
+server:
+  tomcat:
+    mbeanregistry:
+      enabled: true
