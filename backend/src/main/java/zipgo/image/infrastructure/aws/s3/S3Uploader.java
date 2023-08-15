@@ -1,4 +1,4 @@
-package zipgo.pet.infrastructure.aws.s3;
+package zipgo.image.infrastructure.aws.s3;
 
 import java.io.IOException;
 import lombok.RequiredArgsConstructor;
@@ -20,7 +20,6 @@ public class S3Uploader {
                 .key(key)
                 .contentType("image/png")
                 .build();
-
         try {
             s3Client.putObject(objectRequest, RequestBody.fromBytes(getBytes(file)));
         } catch (UnsupportedOperationException e) {

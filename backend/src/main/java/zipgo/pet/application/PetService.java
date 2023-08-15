@@ -21,26 +21,21 @@ public class PetService {
     private final PetRepository petRepository;
     private final MemberRepository memberRepository;
     private final BreedsRepository breedsRepository;
-    private final ImageClient imageClient;
 
     public Long createPet(Long memberId, CreatePetRequest request) {
         Member member = memberRepository.getById(memberId);
-        Breeds breeds = breedsRepository.getByName(request.breeds());
+        Breeds breeds = breedsRepository.getByName(request.breed());
 
-        int birthYear = Year.now().getValue() - request.age();
-        Pet pet = petRepository.save(toPet(request, birthYear, member, breeds));
-        String imageUrl = imageClient.upload(String.valueOf(pet.getId()), request.image());
-        pet.updateImageUrl(imageUrl);
-
+        Pet pet = petRepository.save(toPet(request, member, breeds));
         return pet.getId();
     }
 
     private Pet toPet(
             CreatePetRequest request,
-            int birthYear,
             Member member,
             Breeds breeds
     ) {
+        int birthYear = Year.now().getValue() - request.age();
         return Pet.builder()
                 .birthYear(Year.of(birthYear))
                 .owner(member)

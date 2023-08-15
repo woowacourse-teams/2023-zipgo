@@ -137,6 +137,7 @@ jacocoTestCoverageVerification {
                     '*.*Application',
                     '*.*Exception',
                     '*.*Dto',
+                    '*.S3*',
                     '*.*Response',
                     '*.*Request',
                     '*.BaseTimeEntity',

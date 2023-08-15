@@ -1,4 +1,4 @@
-package zipgo.pet.infrastructure.aws.s3;
+package zipgo.image.infrastructure.aws.s3;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
