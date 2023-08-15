@@ -13,6 +13,9 @@ export const useImageUpload = () => {
     if (!e.target.files) return;
 
     const imageFile = e.target.files[0];
+
+    if (!imageFile) return;
+
     const imageUploadFormData = new FormData();
 
     if (imageFile.size > MAX_FILE_SIZE) {

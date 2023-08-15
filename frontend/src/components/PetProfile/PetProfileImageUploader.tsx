@@ -1,4 +1,3 @@
-/* eslint-disable react/jsx-no-useless-fragment */
 import { useEffect } from 'react';
 import { styled } from 'styled-components';
 
@@ -8,32 +7,22 @@ import { useImageUpload } from '@/hooks/common/useImageUpload';
 
 const PetProfileImageUploader = () => {
   const { updatePetProfile } = usePetProfileContext();
-  const { previewImage, imageUrl, uploadImage, deletePreviewImage } = useImageUpload();
+  const { previewImage, imageUrl, uploadImage } = useImageUpload();
 
   useEffect(() => {
     updatePetProfile({ imageUrl });
   }, [imageUrl]);
 
   return (
-    <>
-      {previewImage ? (
-        <ImageAndButtonContainer>
-          <PreviewImageWrapper>
-            <PreviewImage src={previewImage} alt="미리보기" />
-          </PreviewImageWrapper>
-          <ImageDeleteButton type="button" onClick={deletePreviewImage} aria-label="사진 삭제">
-            x
-          </ImageDeleteButton>
-        </ImageAndButtonContainer>
-      ) : (
-        <ImageUploadLabel aria-label="사진 업로드하기">
-          <input type="file" accept="image/*" onChange={uploadImage} />
-          <CameraIconWrapper>
-            <img src={CameraIcon} alt="" />
-          </CameraIconWrapper>
-        </ImageUploadLabel>
-      )}
-    </>
+    <ImageUploadLabel aria-label="사진 업로드하기">
+      <input type="file" accept="image/*" onChange={uploadImage} />
+      <PreviewImageWrapper>
+        {previewImage && <PreviewImage src={previewImage} alt="" />}
+      </PreviewImageWrapper>
+      <CameraIconWrapper>
+        <img src={CameraIcon} alt="" />
+      </CameraIconWrapper>
+    </ImageUploadLabel>
   );
 };
 
@@ -48,10 +37,10 @@ const PreviewImageWrapper = styled.div`
 
   overflow: hidden;
 
-  width: 15rem;
-  height: 15rem;
+  width: 16rem;
+  height: 16rem;
 
-  background-color: ${({ theme }) => theme.color.white};
+  border: none;
   border-radius: 50%;
 `;
 
@@ -64,28 +53,7 @@ const PreviewImage = styled.img`
   height: 100%;
 
   object-fit: cover;
-`;
-
-const ImageDeleteButton = styled.button`
-  cursor: pointer;
-
-  position: absolute;
-  top: 0;
-  right: -1.6rem;
-
-  display: flex;
-  align-items: center;
-  justify-content: center;
-
-  width: 5rem;
-  height: 5rem;
-
-  font-size: 1.6rem;
-  color: ${({ theme }) => theme.color.grey600};
-  text-align: center;
-
-  background-color: transparent;
-  border: none;
+  background-color: ${({ theme }) => theme.color.grey200};
 `;
 
 const ImageUploadLabel = styled.label`
@@ -93,15 +61,19 @@ const ImageUploadLabel = styled.label`
 
   position: relative;
 
-  width: 15rem;
-  height: 15rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 
-  background-color: ${({ theme }) => theme.color.grey200};
+  width: 16rem;
+  height: 16rem;
+
+  background-color: #d0e6f9;
   border: 1px solid ${({ theme }) => theme.color.grey300};
   border-radius: 50%;
 
   & > input {
-    opacity: 0;
+    display: none;
   }
 `;
 
