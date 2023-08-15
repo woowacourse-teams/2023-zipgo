@@ -14,8 +14,8 @@ interface PetProfileValue extends Omit<PetProfile, 'id' | 'imageUrl'> {
 const initialPetProfile: PetProfileValue = {
   name: '',
   age: 0,
-  breeds: '믹스견',
-  breedsSize: '소형견',
+  breed: '믹스견',
+  petSize: '소형견',
   gender: '남',
   weight: 1,
 };

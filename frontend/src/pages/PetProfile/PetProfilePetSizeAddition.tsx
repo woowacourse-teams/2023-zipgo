@@ -3,41 +3,41 @@ import { useOutletContext } from 'react-router-dom';
 import { styled } from 'styled-components';
 
 import Label from '@/components/@common/Label/Label';
-import { BREEDS_SIZES, PET_PROFILE_ADDITION_STEP } from '@/constants/petProfile';
+import { PET_PROFILE_ADDITION_STEP, PET_SIZES } from '@/constants/petProfile';
 import { usePetProfileContext } from '@/context/petProfile';
-import { BreedsSize, PetProfileOutletContextProps } from '@/types/petProfile/client';
+import { PetProfileOutletContextProps, PetSize } from '@/types/petProfile/client';
 
-const PetProfileBreedsSizeAddition = () => {
+const PetProfilePetSizeAddition = () => {
   const { updateCurrentStep } = useOutletContext<PetProfileOutletContextProps>();
   const { petProfile, updatePetProfile } = usePetProfileContext();
 
   useEffect(() => {
-    updateCurrentStep(PET_PROFILE_ADDITION_STEP.BREEDS_SIZE);
+    updateCurrentStep(PET_PROFILE_ADDITION_STEP.PET_SIZE);
   }, []);
 
-  const onClickBreedsSize = (size: BreedsSize) => updatePetProfile({ breedsSize: size });
+  const onClickPetSize = (size: PetSize) => updatePetProfile({ petSize: size });
 
   return (
     <Container>
       <PetName>{petProfile.name}</PetName>
       <Title>의 크기는 어느 정도인가요?</Title>
-      <InputLabel htmlFor="pet-breeds-size">크기 선택</InputLabel>
-      <BreedsSizeContainer role="radiogroup" id="pet-breeds-size">
-        {BREEDS_SIZES.map(size => (
+      <InputLabel htmlFor="pet-size">크기 선택</InputLabel>
+      <PetSizeContainer role="radiogroup" id="pet-size">
+        {PET_SIZES.map(size => (
           <Label
             key={size}
             role="radio"
             text={size}
-            onClick={() => onClickBreedsSize(size)}
-            clicked={petProfile.breedsSize === size}
+            onClick={() => onClickPetSize(size)}
+            clicked={petProfile.petSize === size}
           />
         ))}
-      </BreedsSizeContainer>
+      </PetSizeContainer>
     </Container>
   );
 };
 
-export default PetProfileBreedsSizeAddition;
+export default PetProfilePetSizeAddition;
 
 const Container = styled.div`
   margin-top: 4rem;
@@ -75,7 +75,7 @@ const InputLabel = styled.label`
   letter-spacing: -0.5px;
 `;
 
-const BreedsSizeContainer = styled.div`
+const PetSizeContainer = styled.div`
   cursor: pointer;
 
   display: flex;

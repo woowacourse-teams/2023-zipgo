@@ -1,29 +1,30 @@
-import { ChangeEvent, useEffect } from 'react';
+import { useEffect } from 'react';
 import { useOutletContext } from 'react-router-dom';
 import { styled } from 'styled-components';
 
 import { PET_PROFILE_ADDITION_STEP } from '@/constants/petProfile';
 import { usePetProfileContext } from '@/context/petProfile';
 import { PetProfileOutletContextProps } from '@/types/petProfile/client';
+import { getTopicParticle } from '@/utils/getTopicParticle';
 
-const PetProfileBreedsAddition = () => {
+const PetProfileBreedAddition = () => {
   const { updateCurrentStep, updateIsValidStep } = useOutletContext<PetProfileOutletContextProps>();
   const { petProfile, updatePetProfile } = usePetProfileContext();
 
   useEffect(() => {
-    updateCurrentStep(PET_PROFILE_ADDITION_STEP.BREEDS);
-    updateIsValidStep(false);
+    updateCurrentStep(PET_PROFILE_ADDITION_STEP.BREED);
+    // updateIsValidStep(false);
   }, []);
 
   return (
     <Container>
       <PetName>{petProfile.name}</PetName>
-      <Title>는 어떤 아이인가요?</Title>
+      <Title>{`${getTopicParticle(petProfile.name)} 어떤 아이인가요?`}</Title>
     </Container>
   );
 };
 
-export default PetProfileBreedsAddition;
+export default PetProfileBreedAddition;
 
 const Container = styled.div`
   margin-top: 4rem;
