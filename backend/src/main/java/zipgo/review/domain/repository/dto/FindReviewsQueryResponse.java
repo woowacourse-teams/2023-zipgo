@@ -21,9 +21,7 @@ public record FindReviewsQueryResponse(
         Year petBirthYear,
         double petWrittenWeight,
         Long breedId, String breedName,
-        Long petSizeId, String petSizeName,
-        Long helpfulReactionCount,
-        boolean helpfulReactionReacted
+        Long petSizeId, String petSizeName
 
 ) {
 

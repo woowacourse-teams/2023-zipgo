@@ -17,8 +17,7 @@ import zipgo.review.domain.repository.dto.FindReviewsQueryResponse;
 import zipgo.review.domain.repository.dto.QFindReviewsQueryResponse;
 
 import static zipgo.pet.domain.QBreeds.breeds;
-import static zipgo.review.domain.QAdverseReaction.adverseReaction;
-import static zipgo.review.domain.QHelpfulReaction.helpfulReaction;
+import static zipgo.pet.domain.QPet.pet;
 import static zipgo.review.domain.QReview.review;
 
 @Repository
@@ -35,7 +34,6 @@ public class ReviewQueryRepositoryImpl implements ReviewQueryRepository {
         List<Long> petSizeIds = request.petSizes();
         List<Long> breedIds = request.breedIds();
 
-        Long memberId = request.memberId();
         return queryFactory.select(new QFindReviewsQueryResponse(
                                 review.id,
                                 review.rating,
@@ -51,17 +49,12 @@ public class ReviewQueryRepositoryImpl implements ReviewQueryRepository {
                                 breeds.id,
                                 breeds.name,
                                 breeds.petSize.id,
-                                breeds.petSize.name,
-                                Expressions.asNumber(1L),
-//                                review.helpfulReactions.size().count(),
-                                getIfUserReacted(memberId)
+                                breeds.petSize.name
                         )
                 )
                 .from(review)
-                .join(review.pet.breeds, breeds)
-                .join(review.adverseReactions, adverseReaction)
-                .fetchJoin()
-                .join(review.helpfulReactions, helpfulReaction)
+                .join(review.pet, pet)
+                .join(pet.breeds, breeds)
                 .where(
                         equalsPetFoodId(petFoodId),
                         afterThan(lastReviewId),
@@ -72,13 +65,6 @@ public class ReviewQueryRepositoryImpl implements ReviewQueryRepository {
                 .orderBy(getSorter(request.sortBy()))
                 .limit(size)
                 .fetch();
-    }
-
-    private BooleanExpression getIfUserReacted(Long memberId) {
-        if (memberId == null) {
-            return Expressions.FALSE;
-        }
-        return review.helpfulReactions.any().madeBy.id.eq(memberId);
     }
 
     private BooleanExpression inBreedIds(List<Long> breedIds) {

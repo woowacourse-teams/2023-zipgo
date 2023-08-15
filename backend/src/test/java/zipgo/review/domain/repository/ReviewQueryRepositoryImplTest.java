@@ -104,6 +104,7 @@ class ReviewQueryRepositoryImplTest {
                     .size(10)
                     .lastReviewId(null)
                     .sortBy(SortBy.RECENT)
+                    .memberId(1L)
                     .build();
 
             var 리뷰_리스트 = reviewQueryRepository.findReviewsBy(요청);
@@ -311,7 +312,7 @@ class ReviewQueryRepositoryImplTest {
         void 도움이_되는_순() {
             //given
             PetFood 식품 = 식품_만들기();
-            도움이_돼요_리뷰(식품);
+            아이디_내림차순으로_도움이_돼요_눌러주기(식품);
 
             //when
             var 요청 = FindReviewsQueryRequest.builder()
@@ -323,12 +324,12 @@ class ReviewQueryRepositoryImplTest {
 
             //then
             assertThat(리뷰_리스트)
-                    .extracting(FindReviewsQueryResponse::helpfulReactionCount)
-                    .isSortedAccordingTo(reverseOrder());
+                    .extracting(FindReviewsQueryResponse::id)
+                    .isSorted();
 
         }
 
-        private void 도움이_돼요_리뷰(PetFood 식품) {
+        private void 아이디_내림차순으로_도움이_돼요_눌러주기(PetFood 식품) {
             List<Review> 리뷰들 = new ArrayList<>();
             for (int i = 0; i < 5; i++) {
                 Member 멤버 = memberRepository.save(MemberFixture.식별자_없는_멤버("email" + i));
