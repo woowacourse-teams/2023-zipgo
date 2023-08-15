@@ -1,4 +1,4 @@
-import { GetBreedsRes } from '@/types/petProfile/remote';
+import { GetBreedsRes, GetPetsRes } from '@/types/petProfile/remote';
 
 const getBreeds = (): GetBreedsRes => ({
   breeds: [
@@ -29,6 +29,31 @@ const getBreeds = (): GetBreedsRes => ({
   ],
 });
 
-const petProfileFixture = { getBreeds };
+const getPets = (): GetPetsRes => ({
+  pets: [
+    {
+      id: 1,
+      name: '쫑이',
+      age: 0,
+      breed: '시베리안 허스키',
+      petSize: '중형견',
+      gender: '남',
+      weight: 2,
+      imageUrl: 'https://avatars.githubusercontent.com/u/24777828?v=4',
+    },
+    {
+      id: 2,
+      name: '에디',
+      age: 19,
+      breed: '믹스견',
+      petSize: '소형견',
+      gender: '여',
+      weight: 100,
+      imageUrl: 'https://avatars.githubusercontent.com/u/24777828?v=4',
+    },
+  ],
+});
+
+const petProfileFixture = { getBreeds, getPets };
 
 export default petProfileFixture;
