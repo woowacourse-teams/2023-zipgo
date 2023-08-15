@@ -1,4 +1,3 @@
-import { useState } from 'react';
 import { Outlet, useNavigate } from 'react-router-dom';
 import { styled } from 'styled-components';
 
@@ -7,16 +6,21 @@ import Button from '@/components/@common/Button/Button';
 import Template from '@/components/@common/Template';
 import { PET_PROFILE_ADDITION_STEP, STEP_PATH } from '@/constants/petProfile';
 import { PetProfileProvider } from '@/context/petProfile';
+import { usePetProfileStep } from '@/hooks/petProfile';
 import { routerPath } from '@/router/routes';
 
 const PetProfileAddition = () => {
   const navigate = useNavigate();
-  const [step, setStep] = useState(0);
-  const [isValidStep, setIsValidStep] = useState(false);
-  const [isMixedBreed, setIsMixedBreed] = useState(false);
-
-  const lastStep = Object.values(STEP_PATH).length;
-  const isLastStep = step === lastStep;
+  const {
+    step,
+    totalStep,
+    isLastStep,
+    isValidStep,
+    isMixedBreed,
+    updateIsMixedBreed,
+    updateCurrentStep,
+    updateIsValidStep,
+  } = usePetProfileStep();
 
   const goBack = (): void => navigate(routerPath.back);
   const goNext = () => {
@@ -25,14 +29,8 @@ const PetProfileAddition = () => {
       return;
     }
 
-    if (step < lastStep) {
-      navigate(STEP_PATH[step + 1]);
-    }
+    if (!isLastStep) navigate(STEP_PATH[step + 1]);
   };
-
-  const updateIsMixedBreed = (isMixed: boolean) => setIsMixedBreed(isMixed);
-  const updateCurrentStep = (step: number) => setStep(step);
-  const updateIsValidStep = (isValid: boolean) => setIsValidStep(isValid);
 
   return (
     <PetProfileProvider>
@@ -41,7 +39,7 @@ const PetProfileAddition = () => {
           getPetProfileAdditionHeader({
             title: '반려동물 정보 등록',
             step,
-            totalStep: Object.keys(PET_PROFILE_ADDITION_STEP).length,
+            totalStep,
             onClickBackButton: goBack,
           })
         }
