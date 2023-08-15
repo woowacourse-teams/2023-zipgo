@@ -1,7 +1,5 @@
 package zipgo.review.domain.repository;
 
-import jakarta.persistence.EntityManager;
-import jakarta.persistence.PersistenceContext;
 import java.time.LocalDateTime;
 import java.time.Year;
 import java.util.List;
@@ -61,9 +59,6 @@ public class ReviewRepositoryTest extends RepositoryTest {
     @Autowired
     private PetRepository petRepository;
 
-    @PersistenceContext
-    private EntityManager entityManager;
-
 
     @Test
     void 도움이_돼요가_잘_추가된다() {
@@ -79,8 +74,6 @@ public class ReviewRepositoryTest extends RepositoryTest {
 
         아는_리뷰.getHelpfulReactions().add(도움이_돼요);
         reviewRepository.save(아는_리뷰);
-        entityManager.flush();
-        entityManager.clear();
 
         //then
         Review 조회한_리뷰 = reviewRepository.findById(아는_리뷰.getId())
