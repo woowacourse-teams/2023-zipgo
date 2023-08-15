@@ -1,7 +1,8 @@
-import { useEffect } from 'react';
+import { ChangeEvent, useEffect } from 'react';
 import { useOutletContext } from 'react-router-dom';
 import { styled } from 'styled-components';
 
+import PetBreedSelect from '@/components/PetProfile/PetBreedSelect';
 import { PET_PROFILE_ADDITION_STEP } from '@/constants/petProfile';
 import { usePetProfileContext } from '@/context/petProfile';
 import { PetProfileOutletContextProps } from '@/types/petProfile/client';
@@ -13,13 +14,22 @@ const PetProfileBreedAddition = () => {
 
   useEffect(() => {
     updateCurrentStep(PET_PROFILE_ADDITION_STEP.BREED);
-    // updateIsValidStep(false);
+    updateIsValidStep(false);
   }, []);
+
+  const onChangeBreed = (e: ChangeEvent<HTMLSelectElement>) => {
+    const selectedBreed = e.target.value;
+
+    updateIsValidStep(true);
+    updatePetProfile({ breed: selectedBreed });
+  };
 
   return (
     <Container>
       <PetName>{petProfile.name}</PetName>
       <Title>{`${getTopicParticle(petProfile.name)} 어떤 아이인가요?`}</Title>
+      <InputLabel htmlFor="pet-breed">견종 선택</InputLabel>
+      <PetBreedSelect id="pet-breed" onChange={onChangeBreed} />
     </Container>
   );
 };
@@ -47,5 +57,17 @@ const PetName = styled.span`
   font-weight: 700;
   line-height: 1.7rem;
   color: ${({ theme }) => theme.color.primary};
+  letter-spacing: -0.5px;
+`;
+
+const InputLabel = styled.label`
+  display: block;
+
+  margin-bottom: 1.6rem;
+
+  font-size: 1.3rem;
+  font-weight: 500;
+  line-height: 1.7rem;
+  color: ${({ theme }) => theme.color.grey600};
   letter-spacing: -0.5px;
 `;
