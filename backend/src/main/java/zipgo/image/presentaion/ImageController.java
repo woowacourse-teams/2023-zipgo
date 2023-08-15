@@ -19,8 +19,10 @@ public class ImageController {
     private final ImageService imageService;
 
     @PostMapping
-    public ResponseEntity<ImageResponse> upload(@RequestPart MultipartFile file) {
-        String url = imageService.save(file);
+    public ResponseEntity<ImageResponse> upload(
+            @RequestPart(required = false, value = "image") MultipartFile imageFile
+    ) {
+        String url = imageService.save(imageFile);
         return ResponseEntity.created(URI.create(url)).body(ImageResponse.from(url));
     }
 
