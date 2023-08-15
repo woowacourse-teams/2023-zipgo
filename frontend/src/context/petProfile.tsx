@@ -1,23 +1,23 @@
 import { createContext, ReactNode, useContext, useMemo, useState } from 'react';
 
-import { PetProfile } from '@/types/petProfile/client';
+import { PetProfile, PetSize } from '@/types/petProfile/client';
 
 interface PetProfileContext {
   petProfile: PetProfileValue;
   updatePetProfile: (newProfile: Partial<PetProfileValue>) => void;
 }
 
-interface PetProfileValue extends Omit<PetProfile, 'id' | 'imageUrl'> {
-  imageFile?: File;
+interface PetProfileValue extends Omit<PetProfile, 'id' | 'petSize'> {
+  petSize?: PetSize;
 }
 
 const initialPetProfile: PetProfileValue = {
   name: '',
   age: 0,
   breed: '믹스견',
-  petSize: '소형견',
   gender: '남',
   weight: 1,
+  imageUrl: '',
 };
 
 const PetProfileContext = createContext<PetProfileContext>({
