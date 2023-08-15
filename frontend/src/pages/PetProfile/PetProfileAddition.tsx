@@ -6,19 +6,53 @@ import BackBtnIcon from '@/assets/svg/back_btn.svg';
 import Button from '@/components/@common/Button/Button';
 import Template from '@/components/@common/Template';
 import { PET_PROFILE_ADDITION_STEP, STEP_PATH } from '@/constants/petProfile';
-import { PetProfileProvider } from '@/context/petProfile';
+import { PetProfileProvider, usePetProfileContext } from '@/context/petProfile';
+import { useAddPetProfileMutation } from '@/hooks/query/petProfile';
 import { routerPath } from '@/router/routes';
+import { PostPetProfileReq } from '@/types/petProfile/remote';
 
 const PetProfileAddition = () => {
+  const lastStep = Object.values(STEP_PATH).length;
   const navigate = useNavigate();
   const [step, setStep] = useState(0);
   const [isValidStep, setIsValidStep] = useState(false);
+  const [isMixedBreed, setIsMixedBreed] = useState(false);
+  const [finalPetProfile, setFinalPetProfile] = useState<PostPetProfileReq>({
+    name: '',
+    age: 0,
+    breed: '믹스견',
+    gender: '남',
+    weight: 1,
+    imageUrl: '',
+  });
+  const { addPetProfileMutation } = useAddPetProfileMutation();
 
-  const goBack = () => navigate(routerPath.back);
-  const goNext = () => navigate(STEP_PATH[step + 1]);
+  const goBack = (): void => navigate(routerPath.back);
+  const goNext = () => {
+    if (step === PET_PROFILE_ADDITION_STEP.BREED && !isMixedBreed) {
+      navigate(STEP_PATH[step + 2]);
+      return;
+    }
 
+    if (step < lastStep) {
+      navigate(STEP_PATH[step + 1]);
+      return;
+    }
+
+    onSubmitPetProfile();
+  };
+
+  const onSubmitPetProfile = () => {
+    addPetProfileMutation.addPetProfile(finalPetProfile).then(() => {
+      alert('반려동물 정보 등록이 완료되었습니다.');
+      navigate(routerPath.home());
+    });
+  };
+
+  const updateIsMixedBreed = (isMixed: boolean) => setIsMixedBreed(isMixed);
   const updateCurrentStep = (step: number) => setStep(step);
   const updateIsValidStep = (isValid: boolean) => setIsValidStep(isValid);
+  const updateFinalPetProfile = (petProfile: PostPetProfileReq) => setFinalPetProfile(petProfile);
 
   return (
     <PetProfileProvider>
@@ -34,7 +68,14 @@ const PetProfileAddition = () => {
         footer={false}
       >
         <ContentLayout>
-          <Outlet context={{ updateCurrentStep, updateIsValidStep }} />
+          <Outlet
+            context={{
+              updateIsMixedBreed,
+              updateCurrentStep,
+              updateIsValidStep,
+              updateFinalPetProfile,
+            }}
+          />
         </ContentLayout>
         <Button text="다음" fixed onClick={goNext} disabled={!isValidStep} />
       </Template>

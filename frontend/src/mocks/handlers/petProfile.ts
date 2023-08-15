@@ -10,6 +10,8 @@ const petProfileHandlers = [
 
     return res(ctx.status(200), ctx.json(breeds));
   }),
+
+  rest.post(`${BASE_URL}/pets`, (req, res, ctx) => res(ctx.status(201))),
 ];
 
 export default petProfileHandlers;

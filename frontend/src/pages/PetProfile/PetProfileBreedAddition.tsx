@@ -9,8 +9,9 @@ import { PetProfileOutletContextProps } from '@/types/petProfile/client';
 import { getTopicParticle } from '@/utils/getTopicParticle';
 
 const PetProfileBreedAddition = () => {
-  const { updateCurrentStep, updateIsValidStep } = useOutletContext<PetProfileOutletContextProps>();
   const { petProfile, updatePetProfile } = usePetProfileContext();
+  const { updateIsMixedBreed, updateCurrentStep, updateIsValidStep } =
+    useOutletContext<PetProfileOutletContextProps>();
 
   useEffect(() => {
     updateCurrentStep(PET_PROFILE_ADDITION_STEP.BREED);
@@ -19,6 +20,9 @@ const PetProfileBreedAddition = () => {
 
   const onChangeBreed = (e: ChangeEvent<HTMLSelectElement>) => {
     const selectedBreed = e.target.value;
+
+    if (selectedBreed === '믹스견') updateIsMixedBreed(true);
+    if (selectedBreed !== '믹스견') updateIsMixedBreed(false);
 
     updateIsValidStep(true);
     updatePetProfile({ breed: selectedBreed });

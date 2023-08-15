@@ -1,11 +1,11 @@
-import { Breed, PetProfile } from './client';
+import { Breed, PetProfile, PetSize } from './client';
 
 interface GetBreedsRes {
   breeds: Breed[];
 }
 
-interface PostPetProfileReq extends Omit<PetProfile, 'id' | 'imageUrl'> {
-  imageFile?: File;
+interface PostPetProfileReq extends Omit<PetProfile, 'id' | 'petSize'> {
+  petSize?: PetSize;
 }
 
 interface PostPetProfileRes {}
