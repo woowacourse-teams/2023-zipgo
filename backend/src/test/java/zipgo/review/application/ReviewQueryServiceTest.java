@@ -23,7 +23,6 @@ import zipgo.review.dto.response.GetReviewMetadataResponse;
 import zipgo.review.dto.response.GetReviewResponse;
 import zipgo.review.dto.response.GetReviewsResponse;
 
-import static java.util.Collections.emptyList;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertAll;
 import static zipgo.brand.domain.fixture.BrandFixture.아카나_식품_브랜드_생성;
@@ -77,14 +76,17 @@ class ReviewQueryServiceTest extends QueryServiceTest {
         GetReviewResponse 리뷰2_dto = GetReviewResponse.from(리뷰2);
 
         //when
-        var request = new FindReviewsQueryRequest(식품.getId(), 2, null, SortBy.RECENT, emptyList(), emptyList(),
-                emptyList());
-        GetReviewsResponse reviews = reviewQueryService.getReviews(request);
+        var 요청 = FindReviewsQueryRequest.builder()
+                .petFoodId(식품.getId())
+                .size(2)
+                .sortBy(SortBy.RECENT)
+                .build();
+        GetReviewsResponse 리뷰_리스트 = reviewQueryService.getReviews(요청);
 
         //then
-        assertThat(reviews.reviews().size()).isEqualTo(2);
-        assertThat(reviews.reviews().get(0)).usingRecursiveComparison().isEqualTo(리뷰2_dto);
-        assertThat(reviews.reviews().get(1)).usingRecursiveComparison().isEqualTo(리뷰1_dto);
+        assertThat(리뷰_리스트.reviews().size()).isEqualTo(2);
+        assertThat(리뷰_리스트.reviews().get(0)).usingRecursiveComparison().isEqualTo(리뷰2_dto);
+        assertThat(리뷰_리스트.reviews().get(1)).usingRecursiveComparison().isEqualTo(리뷰1_dto);
     }
 
     private Review 리뷰1_생성(PetFood 식품) {

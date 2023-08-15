@@ -31,7 +31,8 @@ public record GetReviewsRequest(
                 SortBy.from(sortById()),
                 petSizeId(),
                 ageGroupId().stream().map(AgeGroup::from).toList(),
-                breedId()
+                breedId(),
+                null
         );
     }
 

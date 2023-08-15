@@ -5,7 +5,6 @@ import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
 import zipgo.review.application.SortBy;
 
-import static java.util.Collections.emptyList;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThatThrownBy;
 
 class FindReviewsQueryRequestTest {
@@ -14,7 +13,12 @@ class FindReviewsQueryRequestTest {
     void 식품_id가_null이면_예외가_발생한다() {
         // expect
         assertThatThrownBy(
-                () -> new FindReviewsQueryRequest(null, 10, null, null, emptyList(), emptyList(), emptyList()))
+                () -> FindReviewsQueryRequest.builder()
+                        .petFoodId(null)
+                        .size(10)
+                        .lastReviewId(null)
+                        .sortBy(null)
+                        .build())
                 .isInstanceOf(IllegalArgumentException.class);
     }
 
@@ -24,7 +28,12 @@ class FindReviewsQueryRequestTest {
 
         // expect
         assertThatThrownBy(
-                () -> new FindReviewsQueryRequest(1L, 음수, null, SortBy.RECENT, emptyList(), emptyList(), emptyList()))
+                () -> FindReviewsQueryRequest.builder()
+                        .petFoodId(1L)
+                        .size(음수)
+                        .lastReviewId(null)
+                        .sortBy(SortBy.RECENT)
+                        .build())
                 .isInstanceOf(IllegalArgumentException.class);
     }
 

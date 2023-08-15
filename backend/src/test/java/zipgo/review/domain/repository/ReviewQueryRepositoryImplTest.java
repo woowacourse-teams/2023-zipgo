@@ -8,6 +8,7 @@ import java.util.List;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.context.annotation.Import;
 import org.springframework.transaction.annotation.Transactional;
@@ -30,6 +31,7 @@ import zipgo.review.application.SortBy;
 import zipgo.review.domain.HelpfulReaction;
 import zipgo.review.domain.Review;
 import zipgo.review.domain.repository.dto.FindReviewsQueryRequest;
+import zipgo.review.domain.repository.dto.FindReviewsQueryResponse;
 
 import static java.util.Collections.emptyList;
 import static java.util.Collections.reverseOrder;
@@ -46,6 +48,7 @@ import static zipgo.review.fixture.ReviewFixture.극찬_리뷰_생성;
 
 @Import(QueryDslTestConfig.class)
 @DataJpaTest(properties = {"spring.sql.init.mode=never"})
+@AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
 class ReviewQueryRepositoryImplTest {
 
     @Autowired
@@ -96,12 +99,17 @@ class ReviewQueryRepositoryImplTest {
             리뷰_여러개_생성(식품);
 
             // when
-            var request = new FindReviewsQueryRequest(식품.getId(), 10, null, SortBy.RECENT, emptyList(),
-                    emptyList(), emptyList());
-            List<Review> 조회한_리뷰_리스트 = reviewQueryRepository.findReviewsBy(request);
+            var 요청 = FindReviewsQueryRequest.builder()
+                    .petFoodId(식품.getId())
+                    .size(10)
+                    .lastReviewId(null)
+                    .sortBy(SortBy.RECENT)
+                    .build();
+
+            var 리뷰_리스트 = reviewQueryRepository.findReviewsBy(요청);
 
             // then
-            assertThat(조회한_리뷰_리스트.size()).isEqualTo(10);
+            assertThat(리뷰_리스트.size()).isEqualTo(10);
         }
 
 
@@ -134,16 +142,21 @@ class ReviewQueryRepositoryImplTest {
             reviewRepository.saveAll(리뷰들);
 
             // when
-            long 커서 = 리뷰들.stream().map(Review::getId).sorted().toList().get(4);
-            var request = new FindReviewsQueryRequest(식품.getId(), 10, 커서,
-                    SortBy.RECENT, emptyList(), emptyList(), emptyList());
-            List<Long> 조회한_리뷰_아이디 = reviewQueryRepository.findReviewsBy(request).stream()
-                    .map(Review::getId).toList();
+            long 중간에있는_리뷰의_id = 리뷰들.stream().map(Review::getId).sorted().toList().get(4);
+            var 요청 = FindReviewsQueryRequest.builder()
+                    .petFoodId(식품.getId())
+                    .size(10)
+                    .lastReviewId(중간에있는_리뷰의_id)
+                    .sortBy(SortBy.RECENT)
+                    .build();
+
+            List<Long> 리뷰_아이디_리스트 = reviewQueryRepository.findReviewsBy(요청).stream()
+                    .map(FindReviewsQueryResponse::id).toList();
 
             // then
-            assertThat(조회한_리뷰_아이디)
+            assertThat(리뷰_아이디_리스트)
                     .isNotEmpty()
-                    .allMatch(id -> id < 커서);
+                    .allMatch(id -> id < 중간에있는_리뷰의_id);
         }
 
         @Test
@@ -153,26 +166,32 @@ class ReviewQueryRepositoryImplTest {
             리뷰_여러개_생성(식품);
 
             // when
-            var request = new FindReviewsQueryRequest(식품.getId(), 20, null,
-                    SortBy.RECENT, emptyList(), emptyList(), emptyList());
-            List<Review> 리뷰 = reviewQueryRepository.findReviewsBy(request);
+            var 요청 = FindReviewsQueryRequest.builder()
+                    .petFoodId(식품.getId())
+                    .size(20)
+                    .sortBy(SortBy.RECENT)
+                    .build();
+            var 리뷰_리스트 = reviewQueryRepository.findReviewsBy(요청);
 
             // then
-            assertThat(리뷰).hasSize(20);
+            assertThat(리뷰_리스트).hasSize(20);
         }
 
         @Test
         void 결과가_없는경우_빈리스트를_반환한다() {
             //given
             PetFood 식품 = 식품_만들기();
-            var request = new FindReviewsQueryRequest(식품.getId(), 10, null,
-                    SortBy.RECENT, emptyList(), Arrays.stream(AgeGroup.values()).toList(), emptyList());
-
+            var 요청 = FindReviewsQueryRequest.builder()
+                    .petFoodId(식품.getId())
+                    .size(10)
+                    .sortBy(SortBy.RECENT)
+                    .ageGroups(Arrays.stream(AgeGroup.values()).toList())
+                    .build();
             //when
-            List<Review> reviews = reviewQueryRepository.findReviewsBy(request);
+            var 리뷰_리스트 = reviewQueryRepository.findReviewsBy(요청);
 
             //then
-            assertThat(reviews).isEmpty();
+            assertThat(리뷰_리스트).isEmpty();
         }
 
         @Test
@@ -180,14 +199,18 @@ class ReviewQueryRepositoryImplTest {
             //given
             PetFood 식품 = 식품_만들기();
             리뷰_여러개_생성(식품);
-            var request = new FindReviewsQueryRequest(식품.getId(), 10, -1L,
-                    SortBy.RECENT, emptyList(), Arrays.stream(AgeGroup.values()).toList(), emptyList());
-
+            var 요청 = FindReviewsQueryRequest.builder()
+                    .petFoodId(식품.getId())
+                    .size(10)
+                    .lastReviewId(-1L)
+                    .sortBy(SortBy.RECENT)
+                    .ageGroups(Arrays.stream(AgeGroup.values()).toList())
+                    .build();
             //when
-            List<Review> reviews = reviewQueryRepository.findReviewsBy(request);
+            var 리뷰_리스트 = reviewQueryRepository.findReviewsBy(요청);
 
             //then
-            assertThat(reviews).isEmpty();
+            assertThat(리뷰_리스트).isEmpty();
         }
 
     }
@@ -202,12 +225,17 @@ class ReviewQueryRepositoryImplTest {
             리뷰_여러개_생성(식품);
 
             //when
-            var request = new FindReviewsQueryRequest(식품.getId(), 10, null,
-                    SortBy.RECENT, emptyList(), emptyList(), emptyList());
-            List<Review> reviews = reviewQueryRepository.findReviewsBy(request);
+            var 요청 = FindReviewsQueryRequest.builder()
+                    .petFoodId(식품.getId())
+                    .size(10)
+                    .sortBy(SortBy.RECENT)
+                    .build();
+
+            var 리뷰_리스트 = reviewQueryRepository.findReviewsBy(요청);
 
             //then
-            assertThat(reviews).extracting(Review::getId).isSortedAccordingTo(reverseOrder());
+            assertThat(리뷰_리스트).extracting(FindReviewsQueryResponse::id)
+                    .isSortedAccordingTo(reverseOrder());
         }
 
         private void 리뷰_여러개_생성(PetFood 식품) {
@@ -231,12 +259,17 @@ class ReviewQueryRepositoryImplTest {
             별점_리뷰_생성(식품);
 
             //when
-            var request = new FindReviewsQueryRequest(식품.getId(), 10, null,
-                    SortBy.RAGING_DESC, emptyList(), emptyList(), emptyList());
-            List<Review> reviews = reviewQueryRepository.findReviewsBy(request);
+            var 요청 = FindReviewsQueryRequest.builder()
+                    .petFoodId(식품.getId())
+                    .size(10)
+                    .sortBy(SortBy.RAGING_DESC)
+                    .build();
+
+            var 리뷰_리스트 = reviewQueryRepository.findReviewsBy(요청);
 
             //then
-            assertThat(reviews).extracting(Review::getRating).isSortedAccordingTo(reverseOrder());
+            assertThat(리뷰_리스트).extracting(FindReviewsQueryResponse::rating)
+                    .isSortedAccordingTo(reverseOrder());
         }
 
         private void 별점_리뷰_생성(PetFood 식품) {
@@ -261,12 +294,17 @@ class ReviewQueryRepositoryImplTest {
             별점_리뷰_생성(식품);
 
             //when
-            var request = new FindReviewsQueryRequest(식품.getId(), 10, null,
-                    SortBy.RATING_ASC, emptyList(), emptyList(), emptyList());
-            List<Review> reviews = reviewQueryRepository.findReviewsBy(request);
+            var 요청 = FindReviewsQueryRequest.builder()
+                    .petFoodId(식품.getId())
+                    .size(10)
+                    .sortBy(SortBy.RATING_ASC)
+                    .build();
+            var 리뷰_리스트 = reviewQueryRepository.findReviewsBy(요청);
 
             //then
-            assertThat(reviews).extracting(Review::getRating).isSorted();
+            assertThat(리뷰_리스트)
+                    .extracting(FindReviewsQueryResponse::rating)
+                    .isSorted();
         }
 
         @Test
@@ -276,12 +314,16 @@ class ReviewQueryRepositoryImplTest {
             도움이_돼요_리뷰(식품);
 
             //when
-            var request = new FindReviewsQueryRequest(식품.getId(), 10, null,
-                    SortBy.HELPFUL, emptyList(), emptyList(), emptyList());
-            List<Review> reviews = reviewQueryRepository.findReviewsBy(request);
+            var 요청 = FindReviewsQueryRequest.builder()
+                    .petFoodId(식품.getId())
+                    .size(10)
+                    .sortBy(SortBy.HELPFUL)
+                    .build();
+            var 리뷰_리스트 = reviewQueryRepository.findReviewsBy(요청);
 
             //then
-            assertThat(reviews).extracting(review -> review.getHelpfulReactions().size())
+            assertThat(리뷰_리스트)
+                    .extracting(FindReviewsQueryResponse::helpfulReactionCount)
                     .isSortedAccordingTo(reverseOrder());
 
         }
@@ -320,12 +362,18 @@ class ReviewQueryRepositoryImplTest {
             견종_리뷰_생성(식품, 종류);
 
             //when
-            var request = new FindReviewsQueryRequest(식품.getId(), 10, null,
-                    SortBy.RECENT, List.of(종류.getId()), emptyList(), emptyList());
-            List<Review> reviews = reviewQueryRepository.findReviewsBy(request);
+            var 요청 = FindReviewsQueryRequest.builder()
+                    .petFoodId(식품.getId())
+                    .size(10)
+                    .sortBy(SortBy.RECENT)
+                    .breedIds(List.of(종류.getId()))
+                    .build();
+            var 리뷰_리스트 = reviewQueryRepository.findReviewsBy(요청);
 
             //then
-            assertThat(reviews).extracting(Review::getPet).extracting(Pet::getBreeds).containsOnly(종류);
+            assertThat(리뷰_리스트)
+                    .extracting(FindReviewsQueryResponse::breedId)
+                    .containsOnly(종류.getId());
         }
 
         private void 랜덤_리뷰_생성(PetFood 식품) {
@@ -362,13 +410,17 @@ class ReviewQueryRepositoryImplTest {
             나이대_리뷰_생성(식품, 2023);
 
             //when
-            var request = new FindReviewsQueryRequest(식품.getId(), 10, null,
-                    SortBy.RECENT, emptyList(), List.of(PUPPY), emptyList());
-            List<Review> reviews = reviewQueryRepository.findReviewsBy(request);
+            var 요청 = FindReviewsQueryRequest.builder()
+                    .petFoodId(식품.getId())
+                    .size(10)
+                    .sortBy(SortBy.RECENT)
+                    .ageGroups(List.of(PUPPY))
+                    .build();
+            var 리뷰_리스트 = reviewQueryRepository.findReviewsBy(요청);
 
             //then
-            assertThat(reviews)
-                    .extracting(review -> AgeGroup.from(review.getPet().calculateCurrentAge()))
+            assertThat(리뷰_리스트)
+                    .extracting(review -> AgeGroup.from(Year.now().getValue() - review.petBirthYear().getValue()))
                     .containsOnly(PUPPY);
         }
 
@@ -396,14 +448,18 @@ class ReviewQueryRepositoryImplTest {
             사이즈_리뷰_생성(식품, 사이즈);
 
             //when
-            var request = new FindReviewsQueryRequest(식품.getId(), 10, null,
-                    SortBy.RECENT, emptyList(), emptyList(), List.of(사이즈.getId()));
-            List<Review> reviews = reviewQueryRepository.findReviewsBy(request);
+            var 요청 = FindReviewsQueryRequest.builder()
+                    .petFoodId(식품.getId())
+                    .size(10)
+                    .sortBy(SortBy.RECENT)
+                    .petSizes(List.of(사이즈.getId()))
+                    .build();
+            var 리뷰_리스트 = reviewQueryRepository.findReviewsBy(요청);
 
             //then
-            assertThat(reviews)
-                    .extracting(review -> review.getPet().getBreeds().getPetSize())
-                    .containsOnly(사이즈);
+            assertThat(리뷰_리스트)
+                    .extracting(review -> review.petSizeId())
+                    .containsOnly(사이즈.getId());
         }
 
         private void 사이즈_리뷰_생성(PetFood 식품, PetSize 사이즈) {

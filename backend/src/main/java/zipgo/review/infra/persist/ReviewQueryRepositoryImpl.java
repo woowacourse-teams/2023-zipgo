@@ -11,11 +11,14 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 import zipgo.pet.domain.AgeGroup;
 import zipgo.review.application.SortBy;
-import zipgo.review.domain.Review;
 import zipgo.review.domain.repository.ReviewQueryRepository;
 import zipgo.review.domain.repository.dto.FindReviewsQueryRequest;
+import zipgo.review.domain.repository.dto.FindReviewsQueryResponse;
+import zipgo.review.domain.repository.dto.QFindReviewsQueryResponse;
 
 import static zipgo.pet.domain.QBreeds.breeds;
+import static zipgo.review.domain.QAdverseReaction.adverseReaction;
+import static zipgo.review.domain.QHelpfulReaction.helpfulReaction;
 import static zipgo.review.domain.QReview.review;
 
 @Repository
@@ -25,15 +28,40 @@ public class ReviewQueryRepositoryImpl implements ReviewQueryRepository {
     private final JPAQueryFactory queryFactory;
 
     @Override
-    public List<Review> findReviewsBy(FindReviewsQueryRequest request) {
+    public List<FindReviewsQueryResponse> findReviewsBy(FindReviewsQueryRequest request) {
         Long petFoodId = request.petFoodId();
         int size = request.size();
         Long lastReviewId = request.lastReviewId();
         List<Long> petSizeIds = request.petSizes();
         List<Long> breedIds = request.breedIds();
 
-        return queryFactory.selectFrom(review)
-                .join(breeds).on(review.pet.breeds.id.eq(breeds.id))
+        Long memberId = request.memberId();
+        return queryFactory.select(new QFindReviewsQueryResponse(
+                                review.id,
+                                review.rating,
+                                review.createdAt,
+                                review.comment,
+                                review.tastePreference,
+                                review.stoolCondition,
+                                review.adverseReactions,
+                                review.pet.id,
+                                review.pet.name,
+                                review.pet.birthYear,
+                                review.weight,
+                                breeds.id,
+                                breeds.name,
+                                breeds.petSize.id,
+                                breeds.petSize.name,
+                                Expressions.asNumber(1L),
+//                                review.helpfulReactions.size().count(),
+                                getIfUserReacted(memberId)
+                        )
+                )
+                .from(review)
+                .join(review.pet.breeds, breeds)
+                .join(review.adverseReactions, adverseReaction)
+                .fetchJoin()
+                .join(review.helpfulReactions, helpfulReaction)
                 .where(
                         equalsPetFoodId(petFoodId),
                         afterThan(lastReviewId),
@@ -44,6 +72,13 @@ public class ReviewQueryRepositoryImpl implements ReviewQueryRepository {
                 .orderBy(getSorter(request.sortBy()))
                 .limit(size)
                 .fetch();
+    }
+
+    private BooleanExpression getIfUserReacted(Long memberId) {
+        if (memberId == null) {
+            return Expressions.FALSE;
+        }
+        return review.helpfulReactions.any().madeBy.id.eq(memberId);
     }
 
     private BooleanExpression inBreedIds(List<Long> breedIds) {

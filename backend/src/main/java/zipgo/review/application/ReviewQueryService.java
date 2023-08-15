@@ -27,8 +27,8 @@ public class ReviewQueryService {
     private final PetSizeRepository petSizeRepository;
 
     public GetReviewsResponse getReviews(FindReviewsQueryRequest request) {
-        List<Review> reviews = reviewQueryRepository.findReviewsBy(request);
-        return GetReviewsResponse.from(reviews);
+        reviewQueryRepository.findReviewsBy(request);
+        return GetReviewsResponse.from(null);
     }
 
     public Review getReview(Long reviewId) {
