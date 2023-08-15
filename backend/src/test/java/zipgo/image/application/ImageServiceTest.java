@@ -39,5 +39,4 @@ class ImageServiceTest {
         Assertions.assertThat(저장된_사진).isEqualTo("생성된파일이름");
     }
 
-
 }
