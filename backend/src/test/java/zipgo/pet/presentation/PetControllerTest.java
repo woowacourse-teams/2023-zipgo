@@ -2,6 +2,7 @@ package zipgo.pet.presentation;
 
 import com.epages.restdocs.apispec.ResourceSnippetDetails;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.restdocs.payload.JsonFieldType;
@@ -29,9 +30,7 @@ import static zipgo.review.fixture.MemberFixture.멤버_이름;
 
 class PetControllerTest extends AcceptanceTest {
 
-    private ResourceSnippetDetails 문서_정보 = resourceDetails().summary("반려동물 등록하기")
-            .description("반려동물을 등록합니다.");
-
+    private ResourceSnippetDetails 문서_정보 = resourceDetails().summary("반려동물 등록하기").description("반려동물을 등록합니다.");
 
     @Autowired
     private MemberRepository memberRepository;
@@ -49,49 +48,58 @@ class PetControllerTest extends AcceptanceTest {
         breedsRepository.save(품종_생성("시베리안 허스키", 대형견));
     }
 
-    @Test
-    void 반려동물을_성공적으로_생성하면_201_반환() {
-        // given
-        var token = jwtProvider.create("1");
-        var 반려견_생성_요청 = new CreatePetRequest("상근이", "남", "아기사진", 3, "시베리안 허스키", "대형견", 57.8);
-        var 요청_준비 = given(spec).header("Authorization", "Bearer " + token).body(반려견_생성_요청)
-                .contentType(JSON).filter(성공_API_문서_생성());
+    @Nested
+    class 반려동물_등록_성공 {
 
-        // when
-        var 응답 = 요청_준비.when().post("/pets");
+        @Test
+        void 반려동물_등록_성공시_201_반환() {
+            // given
+            var token = jwtProvider.create("1");
+            var 반려견_생성_요청 = new CreatePetRequest("상근이", "남", "아기사진", 3, "시베리안 허스키", "대형견", 57.8);
+            var 요청_준비 = given(spec).header("Authorization", "Bearer " + token).body(반려견_생성_요청)
+                    .contentType(JSON).filter(성공_API_문서_생성());
 
-        // then
-        응답.then().assertThat().statusCode(CREATED.value());
+            // when
+            var 응답 = 요청_준비.when().post("/pets");
+
+            // then
+            응답.then().assertThat().statusCode(CREATED.value());
+        }
+
     }
 
-    @Test
-    void 존재하지_않는_견종일시_404_반환() {
-        var token = jwtProvider.create("1");
-        var 반려견_생성_요청 = new CreatePetRequest("상근이", "남", "아기사진", 3, "존재하지 않는 종", "대형견", 57.8);
-        var 요청_준비 = given(spec).header("Authorization", "Bearer " + token).body(반려견_생성_요청)
-                .contentType(JSON).filter(API_예외응답_문서_생성());
+    @Nested
+    class 반려동물_등록_실패 {
 
-        // when
-        var 응답 = 요청_준비.when().post("/pets");
+        @Test
+        void 존재하지_않는_견종일시_404_반환() {
+            var token = jwtProvider.create("1");
+            var 반려견_생성_요청 = new CreatePetRequest("상근이", "남", "아기사진", 3, "존재하지 않는 종", "대형견", 57.8);
+            var 요청_준비 = given(spec).header("Authorization", "Bearer " + token).body(반려견_생성_요청)
+                    .contentType(JSON).filter(API_예외응답_문서_생성());
 
-        // then
-        응답.then().assertThat().statusCode(NOT_FOUND.value());
+            // when
+            var 응답 = 요청_준비.when().post("/pets");
+
+            // then
+            응답.then().assertThat().statusCode(NOT_FOUND.value());
+        }
+
+        @Test
+        void 존재하지_않는_견종_크기일시_404_반환() {
+            var token = jwtProvider.create("1");
+            var 반려견_생성_요청 = new CreatePetRequest("상근이", "남", "아기사진", 3, "시베리안 허스키", "초초초 대형견", 57.8);
+            var 요청_준비 = given(spec).header("Authorization", "Bearer " + token).body(반려견_생성_요청)
+                    .contentType(JSON).filter(API_예외응답_문서_생성());
+
+            // when
+            var 응답 = 요청_준비.when().post("/pets");
+
+            // then
+            응답.then().assertThat().statusCode(NOT_FOUND.value());
+        }
+
     }
-
-    @Test
-    void 존재하지_않는_견종_크기일시_404_반환() {
-        var token = jwtProvider.create("1");
-        var 반려견_생성_요청 = new CreatePetRequest("상근이", "남", "아기사진", 3, "시베리안 허스키", "초초초 대형견", 57.8);
-        var 요청_준비 = given(spec).header("Authorization", "Bearer " + token).body(반려견_생성_요청)
-                .contentType(JSON).filter(API_예외응답_문서_생성());
-
-        // when
-        var 응답 = 요청_준비.when().post("/pets");
-
-        // then
-        응답.then().assertThat().statusCode(NOT_FOUND.value());
-    }
-
 
     private RestDocumentationFilter 성공_API_문서_생성() {
         return document("반려견 등록 - 성공", 문서_정보,
