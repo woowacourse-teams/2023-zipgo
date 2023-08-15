@@ -1,25 +1,18 @@
 /* eslint-disable react/jsx-no-useless-fragment */
 import { useEffect } from 'react';
-import { useOutletContext } from 'react-router-dom';
 import { styled } from 'styled-components';
 
 import CameraIcon from '@/assets/svg/camera_icon.svg';
 import { usePetProfileContext } from '@/context/petProfile';
 import { useImageUpload } from '@/hooks/common/useImageUpload';
-import { PetProfileOutletContextProps } from '@/types/petProfile/client';
 
 const PetProfileImageUploader = () => {
-  const { updateFinalPetProfile } = useOutletContext<PetProfileOutletContextProps>();
-  const { petProfile, updatePetProfile } = usePetProfileContext();
+  const { updatePetProfile } = usePetProfileContext();
   const { previewImage, imageUrl, uploadImage, deletePreviewImage } = useImageUpload();
 
   useEffect(() => {
     updatePetProfile({ imageUrl });
-  }, [imageUrl, updatePetProfile]);
-
-  useEffect(() => {
-    updateFinalPetProfile(petProfile);
-  }, [petProfile, updateFinalPetProfile]);
+  }, [imageUrl]);
 
   return (
     <>
