@@ -32,7 +32,8 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
             MemberException.NotFound.class,
             AuthException.ResourceNotFound.class,
             PetException.AgeNotFound.class,
-            PetException.GenderNotFound.class
+            PetException.GenderNotFound.class,
+            PetException.BreedsNotFound.class
     })
     public ResponseEntity<ErrorResponse> handleNotFoundException(Exception exception) {
         LoggingUtils.error(exception);

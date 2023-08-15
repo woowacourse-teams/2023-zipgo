@@ -58,8 +58,4 @@ public class Pet extends BaseTimeEntity {
 
     private String imageUrl;
 
-    public void updateImageUrl(String imageUrl){
-        this.imageUrl = imageUrl;
-    }
-
 }

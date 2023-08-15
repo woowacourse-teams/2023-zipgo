@@ -7,10 +7,10 @@ import zipgo.pet.exception.PetException;
 
 public interface BreedsRepository extends JpaRepository<Breeds, Long> {
 
-    Optional<Breeds> findByName(String name);
+    Optional<Breeds> findByNameAndPetSizeId(String name, Long petSizeId);
 
-    default Breeds getByName(String name) {
-        return findByName(name).orElseThrow(PetException.BreedsNotFound::new);
+    default Breeds getByNameAndPetSize(String name, Long petSizeId) {
+        return findByNameAndPetSizeId(name, petSizeId).orElseThrow(PetException.BreedsNotFound::new);
     }
 
 }

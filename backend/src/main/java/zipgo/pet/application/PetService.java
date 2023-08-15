@@ -9,8 +9,10 @@ import zipgo.member.domain.repository.MemberRepository;
 import zipgo.pet.domain.Breeds;
 import zipgo.pet.domain.Gender;
 import zipgo.pet.domain.Pet;
+import zipgo.pet.domain.PetSize;
 import zipgo.pet.domain.repository.BreedsRepository;
 import zipgo.pet.domain.repository.PetRepository;
+import zipgo.pet.domain.repository.PetSizeRepository;
 import zipgo.pet.presentation.dto.request.CreatePetRequest;
 
 @Service
@@ -21,10 +23,12 @@ public class PetService {
     private final PetRepository petRepository;
     private final MemberRepository memberRepository;
     private final BreedsRepository breedsRepository;
+    private final PetSizeRepository petSizeRepository;
 
     public Long createPet(Long memberId, CreatePetRequest request) {
         Member member = memberRepository.getById(memberId);
-        Breeds breeds = breedsRepository.getByName(request.breed());
+        PetSize petSize = petSizeRepository.getByName(request.petSize());
+        Breeds breeds = breedsRepository.getByNameAndPetSize(request.breed(), petSize.getId());
 
         Pet pet = petRepository.save(toPet(request, member, breeds));
         return pet.getId();
