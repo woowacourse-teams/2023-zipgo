@@ -28,7 +28,7 @@ public class PetService {
     public Long createPet(Long memberId, CreatePetRequest request) {
         Member member = memberRepository.getById(memberId);
         PetSize petSize = petSizeRepository.getByName(request.petSize());
-        Breeds breeds = breedsRepository.getByNameAndPetSize(request.breed(), petSize.getId());
+        Breeds breeds = breedsRepository.getByNameAndPetSizeId(request.breed(), petSize.getId());
 
         Pet pet = petRepository.save(toPet(request, member, breeds));
         return pet.getId();
