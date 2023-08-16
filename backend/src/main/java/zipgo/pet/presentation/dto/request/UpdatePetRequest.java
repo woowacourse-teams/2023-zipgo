@@ -3,8 +3,9 @@ package zipgo.pet.presentation.dto.request;
 import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotBlank;
+import java.time.Year;
 
-public record UpdatePetRequest (
+public record UpdatePetRequest(
         @NotBlank(message = "Null 또는 공백이 포함될 수 없습니다. 올바른 값인지 확인해주세요.")
         String name,
 
@@ -26,5 +27,10 @@ public record UpdatePetRequest (
         @Min(0)
         Double weight
 ) {
+
+    public Year getBirthYear() {
+        int birthYear = Year.now().getValue() - age;
+        return Year.of(birthYear);
+    }
 
 }

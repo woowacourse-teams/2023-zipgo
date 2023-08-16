@@ -34,10 +34,11 @@ public class PetController {
 
     @PutMapping("/{petId}")
     public ResponseEntity<Void> update(
+            @Auth AuthDto authDto,
             @PathVariable("petId") Long petId,
             @Auth @RequestBody @Valid UpdatePetRequest request
     ) {
-        petService.updatePet(petId ,request);
+        petService.updatePet(authDto.id(), petId ,request);
         return ResponseEntity.noContent().build();
     }
 

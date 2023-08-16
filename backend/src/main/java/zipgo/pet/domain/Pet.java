@@ -8,6 +8,7 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.OneToOne;
 import java.time.Year;
+import java.util.Objects;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -62,8 +63,8 @@ public class Pet extends BaseTimeEntity {
         this.name = name;
     }
 
-    public void updateBirthYear(String name) {
-        this.name = name;
+    public void updateBirthYear(Year year) {
+        this.birthYear = year;
     }
 
     public void updateBreeds(Breeds breeds) {
@@ -76,6 +77,12 @@ public class Pet extends BaseTimeEntity {
 
     public void updateImageUrl(String imageUrl) {
         this.imageUrl = imageUrl;
+    }
+
+    public void validateOwner(Long memberId) {
+        if (!Objects.equals(this.owner.getId(), memberId)) {
+            throw new IllegalArgumentException("반려견과 주인이 일치하지 않습니다.");
+        }
     }
 
 }

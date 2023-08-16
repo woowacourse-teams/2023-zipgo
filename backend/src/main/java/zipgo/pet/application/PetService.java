@@ -12,6 +12,7 @@ import zipgo.pet.domain.repository.BreedsRepository;
 import zipgo.pet.domain.repository.PetRepository;
 import zipgo.pet.domain.repository.PetSizeRepository;
 import zipgo.pet.presentation.dto.request.CreatePetRequest;
+import zipgo.pet.presentation.dto.request.UpdatePetRequest;
 
 @Service
 @Transactional
@@ -30,6 +31,25 @@ public class PetService {
 
         Pet pet = petRepository.save(request.toEntity(owner, breeds));
         return pet.getId();
+    }
+
+    public void updatePet(Long memberId, Long petId, UpdatePetRequest request) {
+        Pet pet = petRepository.getById(petId);
+
+        pet.validateOwner(memberId);
+
+        PetSize petSize = petSizeRepository.getByName(request.petSize());
+        Breeds breeds = breedsRepository.getByNameAndPetSizeId(request.breed(), petSize.getId());
+
+        update(request, pet, breeds);
+    }
+
+    private void update(UpdatePetRequest request, Pet pet, Breeds breeds) {
+        pet.updateName(request.name());
+        pet.updateImageUrl(request.image());
+        pet.updateBreeds(breeds);
+        pet.updateBirthYear(request.getBirthYear());
+        pet.updateWeight(request.weight());
     }
 
 }
