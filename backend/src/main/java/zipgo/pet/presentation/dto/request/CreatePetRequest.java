@@ -17,6 +17,7 @@ public record CreatePetRequest (
         @NotBlank(message = "Null 또는 공백이 포함될 수 없습니다. 올바른 값인지 확인해주세요.")
         String gender,
 
+        @NotBlank(message = "Null 또는 공백이 포함될 수 없습니다. 올바른 값인지 확인해주세요.")
         String image,
 
         @Max(20)
@@ -38,6 +39,7 @@ public record CreatePetRequest (
                 return Pet.builder()
                         .birthYear(Year.of(birthYear))
                         .owner(owner)
+                        .imageUrl(image)
                         .name(name)
                         .gender(Gender.from(gender))
                         .breeds(breeds)
