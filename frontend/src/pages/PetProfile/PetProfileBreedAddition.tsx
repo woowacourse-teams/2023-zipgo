@@ -3,8 +3,9 @@ import { useOutletContext } from 'react-router-dom';
 import { styled } from 'styled-components';
 
 import PetBreedSelect from '@/components/PetProfile/PetBreedSelect';
-import { MIXED_BREED, PET_PROFILE_ADDITION_STEP } from '@/constants/petProfile';
+import { PET_PROFILE_ADDITION_STEP } from '@/constants/petProfile';
 import { usePetProfileContext } from '@/context/petProfile';
+import { usePetProfileValidation } from '@/hooks/petProfile';
 import { PetProfileOutletContextProps } from '@/types/petProfile/client';
 import { getTopicParticle } from '@/utils/getTopicParticle';
 
@@ -12,6 +13,7 @@ const PetProfileBreedAddition = () => {
   const { petProfile, updatePetProfile } = usePetProfileContext();
   const { updateIsMixedBreed, updateCurrentStep, updateIsValidStep } =
     useOutletContext<PetProfileOutletContextProps>();
+  const { isMixedBreed } = usePetProfileValidation();
 
   useEffect(() => {
     updateCurrentStep(PET_PROFILE_ADDITION_STEP.BREED);
@@ -21,8 +23,8 @@ const PetProfileBreedAddition = () => {
   const onChangeBreed = (e: ChangeEvent<HTMLSelectElement>) => {
     const selectedBreed = e.target.value;
 
-    if (selectedBreed === MIXED_BREED) updateIsMixedBreed(true);
-    if (selectedBreed !== MIXED_BREED) updateIsMixedBreed(false);
+    if (isMixedBreed(selectedBreed)) updateIsMixedBreed(true);
+    if (!isMixedBreed(selectedBreed)) updateIsMixedBreed(false);
 
     updateIsValidStep(true);
     updatePetProfile({ breed: selectedBreed });
