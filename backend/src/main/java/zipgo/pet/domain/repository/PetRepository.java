@@ -1,5 +1,6 @@
 package zipgo.pet.domain.repository;
 
+import java.util.List;
 import java.util.Optional;
 import org.springframework.data.jpa.repository.JpaRepository;
 import zipgo.pet.domain.Pet;
@@ -12,5 +13,7 @@ public interface PetRepository extends JpaRepository<Pet, Long> {
     default Pet getById(Long petId) {
         return findById(petId).orElseThrow(PetException.PetNotFound::new);
     }
+
+    List<Pet> findByMemberId(Long memberId);
 
 }
