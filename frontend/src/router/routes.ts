@@ -18,6 +18,7 @@ const DYNAMIC: Record<Uppercase<CamelToSnake<keyof typeof generateDynamicPath>>,
   FOOD_DETAIL: '/pet-food/:petFoodId',
   REVIEW_STAR_RATING: '/pet-food/:petFoodId/reviews/write',
   REVIEW_ADDITION: '/pet-food/:petFoodId/reviews/write/detail',
+  PET_PROFILE_EDITION: '/pets/:petId/edit/',
 };
 
 export const PATH = {
@@ -44,6 +45,7 @@ export const generateDynamicPath = {
     `/pet-food/${petFoodId}/reviews/write`,
   reviewAddition: ({ petFoodId }: PathParams<'petFoodId'>) =>
     `/pet-food/${petFoodId}/reviews/write/detail`,
+  petProfileEdition: ({ petId }: PathParams<'petId'>) => `/pets/${petId}/edit`,
 };
 
 export const routerPath = {
