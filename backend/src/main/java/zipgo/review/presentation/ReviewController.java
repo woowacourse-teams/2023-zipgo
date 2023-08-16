@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import zipgo.auth.presentation.Auth;
 import zipgo.auth.presentation.OptionalAuth;
@@ -27,12 +28,13 @@ import zipgo.review.dto.response.GetReviewsResponse;
 
 @RestController
 @RequiredArgsConstructor
-public class ReviewController { // TODO: requestMapping 으로 변경
+@RequestMapping("/reviews")
+public class ReviewController {
 
     private final ReviewQueryService reviewQueryService;
     private final ReviewService reviewService;
 
-    @PostMapping("/reviews")
+    @PostMapping
     public ResponseEntity<Void> create(
             @Auth AuthDto authDto,
             @RequestBody @Valid CreateReviewRequest createReviewRequest
@@ -41,7 +43,7 @@ public class ReviewController { // TODO: requestMapping 으로 변경
         return ResponseEntity.created(URI.create("/reviews/" + reviewId)).build();
     }
 
-    @GetMapping("/reviews")
+    @GetMapping
     public ResponseEntity<GetReviewsResponse> getAllReviews(
             @OptionalAuth AuthDto authDto,
             @ModelAttribute @Valid GetReviewsRequest request) {
@@ -50,13 +52,13 @@ public class ReviewController { // TODO: requestMapping 으로 변경
         return ResponseEntity.ok(reviews);
     }
 
-    @GetMapping("/reviews/{id}")
+    @GetMapping("/{id}")
     public ResponseEntity<GetReviewResponse> getReview(@OptionalAuth AuthDto authDto, @PathVariable Long id) {
         Review review = reviewQueryService.getReview(id);
         return ResponseEntity.ok(GetReviewResponse.from(review, authDto.id()));
     }
 
-    @PutMapping("/reviews/{reviewId}")
+    @PutMapping("/{reviewId}")
     public ResponseEntity<Void> update(
             @Auth AuthDto authDto,
             @PathVariable Long reviewId,
@@ -66,7 +68,7 @@ public class ReviewController { // TODO: requestMapping 으로 변경
         return ResponseEntity.noContent().build();
     }
 
-    @DeleteMapping("/reviews/{reviewId}")
+    @DeleteMapping("/{reviewId}")
     public ResponseEntity<Void> delete(
             @Auth AuthDto authDto,
             @PathVariable Long reviewId
@@ -75,7 +77,7 @@ public class ReviewController { // TODO: requestMapping 으로 변경
         return ResponseEntity.noContent().build();
     }
 
-    @GetMapping("/reviews/metadata")
+    @GetMapping("/metadata")
     public ResponseEntity<GetReviewMetadataResponse> getMetadata() {
         GetReviewMetadataResponse metadata = reviewQueryService.getReviewMetadata();
         return ResponseEntity.ok(metadata);

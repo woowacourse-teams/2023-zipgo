@@ -61,7 +61,6 @@ import static zipgo.review.fixture.ReviewFixture.극찬_리뷰_생성;
 import static zipgo.review.fixture.ReviewFixture.리뷰_생성_요청;
 import static zipgo.review.fixture.ReviewFixture.리뷰_수정_요청;
 
-// TODO: 새로 생긴 파라미터로 인수테스트 작성하기
 public class ReviewControllerTest extends AcceptanceTest {
 
     private PetFood 식품;
@@ -298,15 +297,6 @@ public class ReviewControllerTest extends AcceptanceTest {
                                     .type(JsonFieldType.NUMBER),
                             fieldWithPath("helpfulReaction.reacted").description("도움이 되었어요를 눌렀는지")
                                     .type(JsonFieldType.BOOLEAN)));
-        }
-
-        @Test
-        void 로그인하고_리뷰_조회() {
-            //given
-
-            //when
-
-            //then
         }
 
     }
