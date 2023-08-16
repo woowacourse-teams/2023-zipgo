@@ -1,5 +1,10 @@
 import { PATH } from '@/router/routes';
 
+export const PET_AGE_MIN = 0;
+export const PET_AGE_MAX = 20;
+
+export const MIXED_BREED = '믹스견';
+
 export const PET_SIZES = ['소형견', '중형견', '대형견'] as const;
 export const GENDERS = ['남', '여'] as const;
 export const MALE = '남';

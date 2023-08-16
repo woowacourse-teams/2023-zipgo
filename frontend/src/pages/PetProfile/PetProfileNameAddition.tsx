@@ -5,28 +5,29 @@ import { styled } from 'styled-components';
 import Input from '@/components/@common/Input/Input';
 import { PET_PROFILE_ADDITION_STEP } from '@/constants/petProfile';
 import { usePetProfileContext } from '@/context/petProfile';
+import { usePetProfileValidation } from '@/hooks/petProfile';
 import { PetProfileOutletContextProps } from '@/types/petProfile/client';
 
 const PetProfileNameAddition = () => {
   const [isValidInput, setIsValidInput] = useState(true);
   const { updateCurrentStep, updateIsValidStep } = useOutletContext<PetProfileOutletContextProps>();
   const { updatePetProfile } = usePetProfileContext();
+  const { isValidName } = usePetProfileValidation();
 
   useEffect(() => {
     updateCurrentStep(PET_PROFILE_ADDITION_STEP.NAME);
   }, []);
 
   const onChangeName = (e: ChangeEvent<HTMLInputElement>) => {
-    const inputValue = e.target.value;
-    const validCharacters = /^[a-zA-Z0-9가-힣ㄱ-ㅎㅏ-ㅣ]{1,10}$/;
+    const petName = e.target.value;
 
-    if (validCharacters.test(inputValue)) {
+    if (isValidName(petName)) {
       setIsValidInput(true);
       updateIsValidStep(true);
-      updatePetProfile({ name: inputValue });
+      updatePetProfile({ name: petName });
     }
 
-    if (!validCharacters.test(inputValue)) {
+    if (!isValidName(petName)) {
       updateIsValidStep(false);
       setIsValidInput(false);
     }

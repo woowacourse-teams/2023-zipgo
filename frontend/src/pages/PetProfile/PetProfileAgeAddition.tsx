@@ -5,11 +5,13 @@ import { styled } from 'styled-components';
 import PetAgeSelect from '@/components/PetProfile/PetAgeSelect';
 import { PET_PROFILE_ADDITION_STEP } from '@/constants/petProfile';
 import { usePetProfileContext } from '@/context/petProfile';
+import { usePetProfileValidation } from '@/hooks/petProfile';
 import { PetProfileOutletContextProps } from '@/types/petProfile/client';
 
 const PetProfileAgeAddition = () => {
   const { updateCurrentStep, updateIsValidStep } = useOutletContext<PetProfileOutletContextProps>();
   const { petProfile, updatePetProfile } = usePetProfileContext();
+  const { isValidAgeRange } = usePetProfileValidation();
 
   useEffect(() => {
     updateCurrentStep(PET_PROFILE_ADDITION_STEP.AGE);
@@ -17,16 +19,14 @@ const PetProfileAgeAddition = () => {
   }, []);
 
   const onChangeAge = (e: ChangeEvent<HTMLSelectElement>) => {
-    const selectedValue = Number(e.target.value);
-    const isValidNumberRange = ({ number, min, max }: Record<string, number>) =>
-      typeof number === 'number' && number >= min && number <= max;
+    const selectedAge = Number(e.target.value);
 
-    if (isValidNumberRange({ number: selectedValue, min: 0, max: 20 })) {
+    if (isValidAgeRange(selectedAge)) {
       updateIsValidStep(true);
-      updatePetProfile({ age: selectedValue });
+      updatePetProfile({ age: selectedAge });
     }
 
-    if (!isValidNumberRange({ number: selectedValue, min: 0, max: 20 })) updateIsValidStep(false);
+    if (!isValidAgeRange(selectedAge)) updateIsValidStep(false);
   };
 
   return (

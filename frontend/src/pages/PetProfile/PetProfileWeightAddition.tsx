@@ -5,12 +5,14 @@ import { styled } from 'styled-components';
 import Input from '@/components/@common/Input/Input';
 import { PET_PROFILE_ADDITION_STEP } from '@/constants/petProfile';
 import { usePetProfileContext } from '@/context/petProfile';
+import { usePetProfileValidation } from '@/hooks/petProfile';
 import { PetProfileOutletContextProps } from '@/types/petProfile/client';
 
 const PetProfileWeightAddition = () => {
   const [isValidInput, setIsValidInput] = useState(true);
   const { updateCurrentStep, updateIsValidStep } = useOutletContext<PetProfileOutletContextProps>();
   const { petProfile, updatePetProfile } = usePetProfileContext();
+  const { isValidWeight } = usePetProfileValidation();
 
   useEffect(() => {
     updateCurrentStep(PET_PROFILE_ADDITION_STEP.WEIGHT);
@@ -18,16 +20,15 @@ const PetProfileWeightAddition = () => {
   }, []);
 
   const onChangeWeight = (e: ChangeEvent<HTMLInputElement>) => {
-    const inputValue = e.target.value;
-    const validCharacters = /^(?:100(?:\.0)?|\d{1,2}(?:\.\d)?)$/; // 100.0 또는 1~2자리 숫자.소수 첫째짜리 숫자
+    const petWeight = e.target.value;
 
-    if (validCharacters.test(inputValue)) {
+    if (isValidWeight(petWeight)) {
       setIsValidInput(true);
       updateIsValidStep(true);
-      updatePetProfile({ weight: Number(inputValue) });
+      updatePetProfile({ weight: Number(petWeight) });
     }
 
-    if (!validCharacters.test(inputValue)) {
+    if (!isValidWeight(petWeight)) {
       updateIsValidStep(false);
       setIsValidInput(false);
     }

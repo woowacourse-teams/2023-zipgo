@@ -3,7 +3,7 @@ import { useOutletContext } from 'react-router-dom';
 import { styled } from 'styled-components';
 
 import PetBreedSelect from '@/components/PetProfile/PetBreedSelect';
-import { PET_PROFILE_ADDITION_STEP } from '@/constants/petProfile';
+import { MIXED_BREED, PET_PROFILE_ADDITION_STEP } from '@/constants/petProfile';
 import { usePetProfileContext } from '@/context/petProfile';
 import { PetProfileOutletContextProps } from '@/types/petProfile/client';
 import { getTopicParticle } from '@/utils/getTopicParticle';
@@ -21,8 +21,8 @@ const PetProfileBreedAddition = () => {
   const onChangeBreed = (e: ChangeEvent<HTMLSelectElement>) => {
     const selectedBreed = e.target.value;
 
-    if (selectedBreed === '믹스견') updateIsMixedBreed(true);
-    if (selectedBreed !== '믹스견') updateIsMixedBreed(false);
+    if (selectedBreed === MIXED_BREED) updateIsMixedBreed(true);
+    if (selectedBreed !== MIXED_BREED) updateIsMixedBreed(false);
 
     updateIsValidStep(true);
     updatePetProfile({ breed: selectedBreed });
