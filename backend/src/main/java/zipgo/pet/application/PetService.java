@@ -21,6 +21,8 @@ import zipgo.pet.presentation.dto.request.UpdatePetRequest;
 @RequiredArgsConstructor
 public class PetService {
 
+    private static final String DEFAULT_PET_IMAGE = "https://image.zipgo.pet/dev/pet-image/dog_icon.svg";
+
     private final PetRepository petRepository;
     private final MemberRepository memberRepository;
     private final BreedsRepository breedsRepository;
@@ -31,8 +33,16 @@ public class PetService {
         PetSize petSize = petSizeRepository.getByName(request.petSize());
         Breeds breeds = breedsRepository.getByNameAndPetSizeId(request.breed(), petSize.getId());
 
-        Pet pet = petRepository.save(request.toEntity(owner, breeds));
-        return pet.getId();
+        Pet pet = request.toEntity(owner, breeds);
+        updateDefaultImage(pet);
+
+        return petRepository.save(pet).getId();
+    }
+
+    private void updateDefaultImage(Pet pet) {
+        if ("".equals(pet.getImageUrl())) {
+            pet.updateImageUrl(DEFAULT_PET_IMAGE);
+        }
     }
 
     public void updatePet(Long memberId, Long petId, UpdatePetRequest request) {
@@ -49,6 +59,7 @@ public class PetService {
     private void update(UpdatePetRequest request, Pet pet, Breeds breeds) {
         pet.updateName(request.name());
         pet.updateImageUrl(request.image());
+        updateDefaultImage(pet);
         pet.updateBreeds(breeds);
         pet.updateBirthYear(request.calculateBirthYear());
         pet.updateWeight(request.weight());

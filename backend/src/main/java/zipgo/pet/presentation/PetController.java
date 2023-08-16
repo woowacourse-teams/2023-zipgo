@@ -52,5 +52,4 @@ public class PetController {
         return ResponseEntity.ok(BreedsResponses.from(breeds));
     }
 
-
 }

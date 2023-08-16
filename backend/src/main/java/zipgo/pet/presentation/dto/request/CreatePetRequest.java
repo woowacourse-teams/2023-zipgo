@@ -38,6 +38,7 @@ public record CreatePetRequest (
                 return Pet.builder()
                         .birthYear(Year.of(birthYear))
                         .owner(owner)
+                        .imageUrl(image)
                         .name(name)
                         .gender(Gender.from(gender))
                         .breeds(breeds)
