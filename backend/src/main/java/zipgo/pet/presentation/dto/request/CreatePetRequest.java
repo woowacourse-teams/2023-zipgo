@@ -33,15 +33,15 @@ public record CreatePetRequest (
         Double weight
 ) {
 
-        public static Pet toEntity(CreatePetRequest request, Member owner, Breeds breeds) {
-                int birthYear = Year.now().getValue() - request.age();
+        public Pet toEntity(Member owner, Breeds breeds) {
+                int birthYear = Year.now().getValue() - age;
                 return Pet.builder()
                         .birthYear(Year.of(birthYear))
                         .owner(owner)
-                        .name(request.name())
-                        .gender(Gender.from(request.gender()))
+                        .name(name)
+                        .gender(Gender.from(gender))
                         .breeds(breeds)
-                        .weight(request.weight())
+                        .weight(weight)
                         .build();
         }
 

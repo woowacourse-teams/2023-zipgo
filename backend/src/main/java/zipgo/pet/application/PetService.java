@@ -28,7 +28,7 @@ public class PetService {
         PetSize petSize = petSizeRepository.getByName(request.petSize());
         Breeds breeds = breedsRepository.getByNameAndPetSizeId(request.breed(), petSize.getId());
 
-        Pet pet = petRepository.save(CreatePetRequest.toEntity(request, owner, breeds));
+        Pet pet = petRepository.save(request.toEntity(owner, breeds));
         return pet.getId();
     }
 
