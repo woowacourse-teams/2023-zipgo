@@ -12,6 +12,8 @@ import static zipgo.brand.domain.QBrand.brand;
 import static zipgo.petfood.domain.QPetFood.petFood;
 import static zipgo.petfood.domain.QPetFoodFunctionality.petFoodFunctionality;
 import static zipgo.petfood.domain.QPetFoodPrimaryIngredient.petFoodPrimaryIngredient;
+import static zipgo.review.domain.QAdverseReaction.adverseReaction;
+import static zipgo.review.domain.QReview.review;
 
 @Repository
 @RequiredArgsConstructor
@@ -112,6 +114,16 @@ public class PetFoodQueryRepository implements zipgo.petfood.domain.repository.P
         }
         return petFood.petFoodFunctionalities.any()
                 .functionality.name.in(functionalityList);
+    }
+
+    public PetFood findPetFoodWithReviewsByPetFoodId(Long petFoodId) {;
+        return queryFactory
+                .selectFrom(petFood)
+                .join(petFood.reviews.reviews, review)
+                .fetchJoin()
+                .join(review.adverseReactions, adverseReaction)
+                .where(petFood.id.eq(petFoodId))
+                .fetchOne();
     }
 
 }
