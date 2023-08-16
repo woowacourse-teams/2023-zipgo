@@ -51,8 +51,8 @@ public class PetController {
     }
 
     @GetMapping
-    public ResponseEntity<PetResponses> readPets(@Auth AuthDto authDto) {
-        List<Pet> pets = petQueryService.readOwnerPets(authDto.id());
+    public ResponseEntity<PetResponses> readMemberPets(@Auth AuthDto authDto) {
+        List<Pet> pets = petQueryService.readMemberPets(authDto.id());
         return ResponseEntity.ok(PetResponses.from(pets));
     }
 

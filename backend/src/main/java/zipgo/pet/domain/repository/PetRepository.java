@@ -3,6 +3,7 @@ package zipgo.pet.domain.repository;
 import java.util.List;
 import java.util.Optional;
 import org.springframework.data.jpa.repository.JpaRepository;
+import zipgo.member.domain.Member;
 import zipgo.pet.domain.Pet;
 import zipgo.pet.exception.PetException;
 
@@ -14,6 +15,6 @@ public interface PetRepository extends JpaRepository<Pet, Long> {
         return findById(petId).orElseThrow(PetException.PetNotFound::new);
     }
 
-    List<Pet> findByMemberId(Long memberId);
+    List<Pet> findByOwner(Member owner);
 
 }

@@ -5,6 +5,8 @@ import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import zipgo.member.domain.Member;
+import zipgo.member.domain.repository.MemberRepository;
 import zipgo.pet.domain.Breeds;
 import zipgo.pet.domain.Pet;
 import zipgo.pet.domain.repository.BreedsRepository;
@@ -18,10 +20,12 @@ public class PetQueryService {
     private static final int FIRST_PLACE = 0;
 
     private final PetRepository petRepository;
+    private final MemberRepository memberRepository;
     private final BreedsRepository breedsRepository;
 
-    public List<Pet> readOwnerPets(Long memberId) {
-        return petRepository.findByMemberId(memberId);
+    public List<Pet> readMemberPets(Long memberId) {
+        Member owner = memberRepository.getById(memberId);
+        return petRepository.findByOwner(owner);
     }
 
     public List<Breeds> readBreeds() {
