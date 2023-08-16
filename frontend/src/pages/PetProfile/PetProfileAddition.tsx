@@ -1,36 +1,24 @@
-import { Outlet, useNavigate } from 'react-router-dom';
+import { Outlet } from 'react-router-dom';
 import { styled } from 'styled-components';
 
 import BackBtnIcon from '@/assets/svg/back_btn.svg';
 import Button from '@/components/@common/Button/Button';
 import Template from '@/components/@common/Template';
-import { PET_PROFILE_ADDITION_STEP, STEP_PATH } from '@/constants/petProfile';
 import { PetProfileProvider } from '@/context/petProfile';
 import { usePetProfileStep } from '@/hooks/petProfile';
-import { routerPath } from '@/router/routes';
 
 const PetProfileAddition = () => {
-  const navigate = useNavigate();
   const {
     step,
     totalStep,
     isLastStep,
     isValidStep,
-    isMixedBreed,
     updateIsMixedBreed,
     updateCurrentStep,
     updateIsValidStep,
+    goBack,
+    goNext,
   } = usePetProfileStep();
-
-  const goBack = (): void => navigate(routerPath.back);
-  const goNext = () => {
-    if (step === PET_PROFILE_ADDITION_STEP.BREED && !isMixedBreed) {
-      navigate(STEP_PATH[step + 2]);
-      return;
-    }
-
-    if (!isLastStep) navigate(STEP_PATH[step + 1]);
-  };
 
   return (
     <PetProfileProvider>
