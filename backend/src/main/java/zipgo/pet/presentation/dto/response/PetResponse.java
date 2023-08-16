@@ -12,7 +12,6 @@ public record PetResponse(
         String gender,
         double weight,
         String imageUrl
-
 ) {
 
     public static PetResponse from(Pet pet) {
