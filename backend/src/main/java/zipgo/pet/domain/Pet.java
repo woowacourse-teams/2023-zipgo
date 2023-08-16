@@ -9,6 +9,7 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToOne;
 import java.time.Year;
+import java.util.Objects;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -58,6 +59,32 @@ public class Pet extends BaseTimeEntity {
     private Double weight;
 
     private String imageUrl;
+
+    public void updateName(String name) {
+        this.name = name;
+    }
+
+    public void updateBirthYear(Year year) {
+        this.birthYear = year;
+    }
+
+    public void updateBreeds(Breeds breeds) {
+        this.breeds = breeds;
+    }
+
+    public void updateWeight(double weight) {
+        this.weight = weight;
+    }
+
+    public void updateImageUrl(String imageUrl) {
+        this.imageUrl = imageUrl;
+    }
+
+    public void validateOwner(Long memberId) {
+        if (!Objects.equals(this.owner.getId(), memberId)) {
+            throw new IllegalArgumentException("반려견과 주인이 일치하지 않습니다.");
+        }
+    }
 
     public int calculateCurrentAge() {
         return Year.now().getValue() - birthYear.getValue();
