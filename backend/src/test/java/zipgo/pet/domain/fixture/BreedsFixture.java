@@ -5,9 +5,9 @@ import zipgo.pet.domain.PetSize;
 
 public class BreedsFixture {
 
-    public static Breeds 품종_생성(String 이름, PetSize 대형견) {
+    public static Breeds 견종_생성(String 이름, PetSize 사이즈) {
         return Breeds.builder()
-                .petSize(대형견)
+                .petSize(사이즈)
                 .name(이름)
                 .build();
     }

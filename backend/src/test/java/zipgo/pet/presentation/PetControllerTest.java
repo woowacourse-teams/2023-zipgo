@@ -36,8 +36,8 @@ import static org.springframework.restdocs.payload.PayloadDocumentation.response
 import static org.springframework.restdocs.request.RequestDocumentation.parameterWithName;
 import static org.springframework.restdocs.request.RequestDocumentation.pathParameters;
 import static zipgo.pet.domain.Gender.MALE;
-import static zipgo.pet.domain.fixture.BreedsFixture.품종_생성;
-import static zipgo.pet.domain.fixture.PetSizeFixture.대형견_생성;
+import static zipgo.pet.domain.fixture.BreedsFixture.견종_생성;
+import static zipgo.pet.domain.fixture.PetSizeFixture.대형견;
 import static zipgo.review.fixture.MemberFixture.멤버_이름;
 
 class PetControllerTest extends AcceptanceTest {
@@ -60,8 +60,8 @@ class PetControllerTest extends AcceptanceTest {
 
     @BeforeEach
     void setUp() {
-        대형견 = petSizeRepository.save(대형견_생성());
-        시베리안_허스키 = breedsRepository.save(품종_생성("시베리안 허스키", 대형견));
+        대형견 = petSizeRepository.save(대형견());
+        시베리안_허스키 = breedsRepository.save(견종_생성("시베리안 허스키", 대형견));
         갈비 = memberRepository.save(멤버_이름("갈비"));
     }
 

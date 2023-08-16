@@ -46,7 +46,7 @@ class PetServiceTest extends ServiceTest {
         Member 가비 = 멤버_등록("가비");
 
         // when
-        Long petId = petService.createPet(가비.getId(), 반려견_등록_요청("쫑이"));
+        Long petId = petService.createPet(가비.getId(), 반려견_등록_요청("쫑이").toDto());
 
         // then
         Pet 쫑이 = petRepository.findById(petId).get();
@@ -64,7 +64,7 @@ class PetServiceTest extends ServiceTest {
         Long 쫑이_주인_id = 생성된_쫑이.getOwner().getId();
 
         // when
-        petService.updatePet(쫑이_주인_id, 생성된_쫑이.getId(), 반려견_몸무게_수정_요청("쫑이", 80.0));
+        petService.updatePet(쫑이_주인_id, 생성된_쫑이.getId(), 반려견_몸무게_수정_요청("쫑이", 80.0).toDto());
 
         // then
         Pet 쫑이 = petRepository.findById(생성된_쫑이.getId()).get();
@@ -81,7 +81,7 @@ class PetServiceTest extends ServiceTest {
         Long 다른사람_id = 99999L;
 
         // expect
-        assertThatThrownBy(() -> petService.updatePet(다른사람_id, 쫑이.getId(), 반려견_몸무게_수정_요청("쫑이", 80.0)))
+        assertThatThrownBy(() -> petService.updatePet(다른사람_id, 쫑이.getId(), 반려견_몸무게_수정_요청("쫑이", 80.0).toDto()))
                 .isInstanceOf(IllegalArgumentException.class)
                 .hasMessageContaining("반려견과 주인이 일치하지 않습니다");
     }
