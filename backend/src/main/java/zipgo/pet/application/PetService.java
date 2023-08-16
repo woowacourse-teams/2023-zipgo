@@ -1,7 +1,5 @@
 package zipgo.pet.application;
 
-import java.util.ArrayList;
-import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -52,18 +50,6 @@ public class PetService {
         pet.updateBreeds(breeds);
         pet.updateBirthYear(request.calculateBirthYear());
         pet.updateWeight(request.weight());
-    }
-
-    public List<Breeds> readBreeds() {
-        String excludeName = "믹스견";
-        List<Breeds> breeds = breedsRepository.findByNameNotContaining(excludeName);
-
-        Breeds mixedBreeds = Breeds.builder()
-                .id(0L)
-                .name(excludeName)
-                .build();
-        breeds.add(mixedBreeds);
-        return new ArrayList<>(breeds);
     }
 
 }

@@ -1,7 +1,6 @@
 package zipgo.pet.application;
 
 import java.time.Year;
-import java.util.List;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import zipgo.common.service.ServiceTest;
@@ -85,25 +84,6 @@ class PetServiceTest extends ServiceTest {
         assertThatThrownBy(() -> petService.updatePet(다른사람_id, 쫑이.getId(), 반려견_몸무게_수정_요청("쫑이", 80.0)))
                 .isInstanceOf(IllegalArgumentException.class)
                 .hasMessageContaining("반려견과 주인이 일치하지 않습니다");
-    }
-
-    @Test
-    void 등록된_품종_정보를_모두_가져올_수_있다() {
-        // given
-        견종_크기_등록("소형견");
-        견종_크기_등록("중형견");
-        견종_크기_등록("대형견");
-
-        // when
-        List<PetSize> petSizes = petSizeRepository.findAll();
-
-        // then
-        assertAll(
-                () -> assertThat(petSizes).hasSize(3),
-                () -> assertThat(petSizes.get(0).getName()).isEqualTo("소형견"),
-                () -> assertThat(petSizes.get(1).getName()).isEqualTo("중형견"),
-                () -> assertThat(petSizes.get(2).getName()).isEqualTo("대형견")
-        );
     }
 
     private PetSize 견종_크기_등록(String 견종_크기) {
