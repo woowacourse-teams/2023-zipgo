@@ -14,11 +14,14 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import zipgo.auth.presentation.Auth;
 import zipgo.auth.presentation.dto.AuthDto;
+import zipgo.pet.application.PetQueryService;
 import zipgo.pet.application.PetService;
 import zipgo.pet.domain.Breeds;
+import zipgo.pet.domain.Pet;
 import zipgo.pet.presentation.dto.request.CreatePetRequest;
 import zipgo.pet.presentation.dto.request.UpdatePetRequest;
 import zipgo.pet.presentation.dto.response.BreedsResponses;
+import zipgo.pet.presentation.dto.response.PetResponses;
 
 @RestController
 @AllArgsConstructor
@@ -26,6 +29,7 @@ import zipgo.pet.presentation.dto.response.BreedsResponses;
 public class PetController {
 
     private final PetService petService;
+    private final PetQueryService petQueryService;
 
     @PostMapping
     public ResponseEntity<Void> create(
@@ -46,9 +50,15 @@ public class PetController {
         return ResponseEntity.noContent().build();
     }
 
+    @GetMapping
+    public ResponseEntity<PetResponses> readMemberPets(@Auth AuthDto authDto) {
+        List<Pet> pets = petQueryService.readMemberPets(authDto.id());
+        return ResponseEntity.ok(PetResponses.from(pets));
+    }
+
     @GetMapping("/breeds")
     public ResponseEntity<BreedsResponses> readBreeds() {
-        List<Breeds> breeds = petService.readBreeds();
+        List<Breeds> breeds = petQueryService.readBreeds();
         return ResponseEntity.ok(BreedsResponses.from(breeds));
     }
 

@@ -69,7 +69,7 @@ class PetControllerTest extends AcceptanceTest {
     class 반려동물_등록시 {
 
         @Test
-        void 성공하면_201_반환() {
+        void 성공하면_201_반환한다() {
             // given
             var token = jwtProvider.create("1");
             var 반려견_생성_요청 = new CreatePetRequest("상근이", "남", "아기사진", 3, "시베리안 허스키", "대형견", 57.8);
@@ -84,11 +84,11 @@ class PetControllerTest extends AcceptanceTest {
         }
 
         @Test
-        void 존재하지_않는_견종이면_404_반환() {
+        void 존재하지_않는_견종이면_404_반환한다() {
             var token = jwtProvider.create("1");
             var 반려견_생성_요청 = new CreatePetRequest("상근이", "남", "아기사진", 3, "존재하지 않는 종", "대형견", 57.8);
             var 요청_준비 = given(spec).header("Authorization", "Bearer " + token).body(반려견_생성_요청)
-                    .contentType(JSON).filter(API_반려견_등록_예외응답_문서_생성());
+                    .contentType(JSON).filter(API_반려동물_등록_예외응답_문서_생성());
 
             // when
             var 응답 = 요청_준비.when().post("/pets");
@@ -98,11 +98,11 @@ class PetControllerTest extends AcceptanceTest {
         }
 
         @Test
-        void 존재하지_않는_견종_크기면_404_반환() {
+        void 존재하지_않는_견종_크기면_404_반환한다() {
             var token = jwtProvider.create("1");
             var 반려견_생성_요청 = new CreatePetRequest("상근이", "남", "아기사진", 3, "시베리안 허스키", "초초초 대형견", 57.8);
             var 요청_준비 = given(spec).header("Authorization", "Bearer " + token).body(반려견_생성_요청)
-                    .contentType(JSON).filter(API_반려견_등록_예외응답_문서_생성());
+                    .contentType(JSON).filter(API_반려동물_등록_예외응답_문서_생성());
 
             // when
             var 응답 = 요청_준비.when().post("/pets");
@@ -117,7 +117,7 @@ class PetControllerTest extends AcceptanceTest {
     class 반려동물_정보_수정시 {
 
         @Test
-        void 성공하면_204_반환() {
+        void 성공하면_204_반환한다() {
             // given
             var 쫑이 = 반려견_생성();
             var 토큰 = jwtProvider.create("1");
@@ -133,13 +133,13 @@ class PetControllerTest extends AcceptanceTest {
         }
 
         @Test
-        void 반려견과_주인이_맞지_않으면_404_반환() {
+        void 반려견과_주인이_맞지_않으면_404_반환한다() {
             // given
             var 쫑이 = 반려견_생성();
             var 토큰 = jwtProvider.create("2");
             var 반려견_수정_요청 = new UpdatePetRequest("상근이", "남", "아기사진", 3, "시베리안 허스키", "대형견", 57.8);
             var 요청_준비 = given(spec).header("Authorization", "Bearer " + 토큰).body(반려견_수정_요청)
-                    .contentType(JSON).filter(API_반려견_수정_예외응답_문서_생성());
+                    .contentType(JSON).filter(API_반려동물_수정_예외응답_문서_생성());
 
             // when
             var 응답 = 요청_준비.when().put("/pets/{petId}", 쫑이.getId());
@@ -149,13 +149,13 @@ class PetControllerTest extends AcceptanceTest {
         }
 
         @Test
-        void 존재하지_않는_petId로_요청시_예외_발생() {
+        void 존재하지_않는_petId로_요청시_404_반환한다() {
             // given
             var 존재하지_않는_petId = 999999L;
             var 토큰 = jwtProvider.create("1");
             var 반려견_수정_요청 = new UpdatePetRequest("상근이", "남", "아기사진", 3, "시베리안 허스키", "대형견", 57.8);
             var 요청_준비 = given(spec).header("Authorization", "Bearer " + 토큰).body(반려견_수정_요청)
-                    .contentType(JSON).filter(API_반려견_수정_예외응답_문서_생성());
+                    .contentType(JSON).filter(API_반려동물_수정_예외응답_문서_생성());
 
             // when
             var 응답 = 요청_준비.when().put("/pets/{petId}", 존재하지_않는_petId);
@@ -167,13 +167,34 @@ class PetControllerTest extends AcceptanceTest {
     }
 
     @Test
-    void 견종_목록_조회_성공() {
+    void 견종_목록_조회_성공하면_200_반환한다() {
+        // given
         var 요청_준비 = given(spec)
                 .contentType(JSON).filter(견종_목록_조회_API_성공());
 
         // when
         var 응답 = 요청_준비.when()
                 .get("/pets/breeds");
+
+        // then
+        응답.then().assertThat().statusCode(OK.value());
+    }
+
+    @Test
+    void 사용자_반려동물_조회_성공시_200_반환한다() {
+        // given
+        var 토큰 = jwtProvider.create("1");
+        var 반려견_생성_요청 = new CreatePetRequest("상근이", "남", "아기사진", 3, "시베리안 허스키", "대형견", 57.8);
+        var 반려견_등록 = given(spec).header("Authorization", "Bearer " + 토큰).body(반려견_생성_요청)
+                .contentType(JSON);
+
+        var 요청_준비 = given(spec)
+                .header("Authorization", "Bearer " + 토큰)
+                .contentType(JSON).filter(사용자_반려동물_조회_API_성공());
+
+        // when
+        var 응답 = 요청_준비.when()
+                .get("/pets");
 
         // then
         응답.then().assertThat().statusCode(OK.value());
@@ -210,7 +231,7 @@ class PetControllerTest extends AcceptanceTest {
     }
 
     private RestDocumentationFilter 견종_목록_조회_API_성공() {
-        return document("견종 목록 조회 - 성공", resourceDetails().summary("견종 목록을 조회").description("견종 목록을 조회합니다."),
+        return document("견종 목록 조회 - 성공", resourceDetails().summary("견종 목록 조회").description("견종 목록을 조회합니다."),
                 responseFields(
                         fieldWithPath("breeds").description("견종").type(JsonFieldType.ARRAY),
                         fieldWithPath("breeds[].id").description("견종 식별자").type(JsonFieldType.NUMBER),
@@ -218,13 +239,20 @@ class PetControllerTest extends AcceptanceTest {
                 ));
     }
 
+    private RestDocumentationFilter 사용자_반려동물_조회_API_성공() {
+        return document("사용자 반려견 조회 - 성공", resourceDetails().summary("사용자의 반려견 조회").description("사용자의 반려견을 조회합니다."),
+                responseFields(
+                        fieldWithPath("pets[]").description("반려견 목록").type(JsonFieldType.ARRAY)
+                ));
+    }
 
-    private RestDocumentationFilter API_반려견_등록_예외응답_문서_생성() {
+
+    private RestDocumentationFilter API_반려동물_등록_예외응답_문서_생성() {
         return document("반려견 등록 - 실패(없는 견종)", resourceDetails().summary("반려동물 등록하기").description("반려동물을 등록합니다.").responseSchema(에러_응답_형식),
                 requestHeaders(headerWithName("Authorization").description("인증을 위한 JWT")));
     }
 
-    private RestDocumentationFilter API_반려견_수정_예외응답_문서_생성() {
+    private RestDocumentationFilter API_반려동물_수정_예외응답_문서_생성() {
         return document("반려견 수정 - 실패(반려견 주인과 사용자 불일치)", resourceDetails().summary("반려동물 수정하기").description("반려동물을 정보를 수정합니다.").responseSchema(에러_응답_형식),
                 requestHeaders(headerWithName("Authorization").description("인증을 위한 JWT")));
     }
