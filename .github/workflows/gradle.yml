@@ -24,5 +24,23 @@ jobs:
           distribution: 'adopt'
       - name: Grant execute permission for gradlew
         run: chmod +x gradlew
+            - name: why 안됨?
+        run: ./gradlew test
+      - name: 압츅
+        if: failure()
+        run: |
+          mkdir report_files
+          REPORT_DIRS=$(find . -type d -path '*/build/reports/tests/test')
+          for dir in $REPORT_DIRS; do
+            module_path=$(echo $dir | awk -F '/build/' '{print $1}' | cut -c 3-)
+            cp -r $dir report_files/$module_path/$(basename $(dirname $dir))
+          done
+          tar czvf report_files.tar.gz report_files
+      - name: ㅎ
+        if: failure()
+        uses: actions/upload-artifact@v3
+        with:
+          name: report_files
+          path: backend/report_files.tar.gz
       - name: Build with Gradle
         run: ./gradlew build
