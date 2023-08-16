@@ -28,9 +28,8 @@ public record UpdatePetRequest(
         Double weight
 ) {
 
-    public Year getBirthYear() {
-        int birthYear = Year.now().getValue() - age;
-        return Year.of(birthYear);
+    public Year calculateBirthYear() {
+        return Year.of(Year.now().getValue() - age);
     }
 
 }

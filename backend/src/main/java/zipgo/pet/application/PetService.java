@@ -48,7 +48,7 @@ public class PetService {
         pet.updateName(request.name());
         pet.updateImageUrl(request.image());
         pet.updateBreeds(breeds);
-        pet.updateBirthYear(request.getBirthYear());
+        pet.updateBirthYear(request.calculateBirthYear());
         pet.updateWeight(request.weight());
     }
 

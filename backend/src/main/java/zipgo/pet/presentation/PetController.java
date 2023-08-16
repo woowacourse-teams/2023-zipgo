@@ -36,7 +36,7 @@ public class PetController {
     public ResponseEntity<Void> update(
             @Auth AuthDto authDto,
             @PathVariable("petId") Long petId,
-            @Auth @RequestBody @Valid UpdatePetRequest request
+            @RequestBody @Valid UpdatePetRequest request
     ) {
         petService.updatePet(authDto.id(), petId ,request);
         return ResponseEntity.noContent().build();
