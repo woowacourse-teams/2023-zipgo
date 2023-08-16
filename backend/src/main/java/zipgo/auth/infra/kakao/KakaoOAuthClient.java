@@ -54,7 +54,6 @@ public class KakaoOAuthClient implements OAuthClient {
         body.add("grant_type", GRANT_TYPE);
         body.add("client_id", kakaoCredentials.getClientId());
         body.add("redirect_uri", kakaoCredentials.getRedirectUri());
-        body.add("redirect_uri", "http://localhost:3000");
         body.add("client_secret", kakaoCredentials.getClientSecret());
         body.add("code", authCode);
         return body;
