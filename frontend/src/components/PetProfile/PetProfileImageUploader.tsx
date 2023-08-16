@@ -28,10 +28,6 @@ const PetProfileImageUploader = () => {
 
 export default PetProfileImageUploader;
 
-const ImageAndButtonContainer = styled.div`
-  position: relative;
-`;
-
 const PreviewImageWrapper = styled.div`
   position: relative;
 
@@ -68,7 +64,8 @@ const ImageUploadLabel = styled.label`
   width: 16rem;
   height: 16rem;
 
-  background-color: #d0e6f9;
+  background-image: url('https://velog.velcdn.com/images/chex/post/9505d4fb-5850-4ce8-9575-04cece41a185/image.png');
+  background-size: contain;
   border: 1px solid ${({ theme }) => theme.color.grey300};
   border-radius: 50%;
 
