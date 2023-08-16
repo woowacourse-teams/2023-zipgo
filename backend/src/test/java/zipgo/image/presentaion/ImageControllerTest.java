@@ -36,11 +36,9 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @AutoConfigureRestDocs
 @ExtendWith(SpringExtension.class)
 @SuppressWarnings("NonAsciiCharacters")
-@MockBean(JpaMetamodelMappingContext.class)
 @WebMvcTest(controllers = ImageController.class)
 @DisplayNameGeneration(DisplayNameGenerator.ReplaceUnderscores.class)
 class ImageControllerTest {
-
 
     @Autowired
     private MockMvc mockMvc;

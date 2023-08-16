@@ -33,7 +33,6 @@ import static zipgo.member.domain.fixture.MemberFixture.식별자_있는_멤버;
 @AutoConfigureRestDocs
 @ExtendWith(SpringExtension.class)
 @SuppressWarnings("NonAsciiCharacters")
-@MockBean(JpaMetamodelMappingContext.class)
 @WebMvcTest(controllers = AuthController.class)
 @DisplayNameGeneration(DisplayNameGenerator.ReplaceUnderscores.class)
 class AuthControllerTest {
