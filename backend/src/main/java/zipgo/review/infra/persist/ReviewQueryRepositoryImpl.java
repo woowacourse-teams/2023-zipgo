@@ -1,5 +1,6 @@
 package zipgo.review.infra.persist;
 
+import com.querydsl.core.Tuple;
 import com.querydsl.core.types.Ops;
 import com.querydsl.core.types.OrderSpecifier;
 import com.querydsl.core.types.dsl.BooleanExpression;
@@ -11,13 +12,17 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 import zipgo.pet.domain.AgeGroup;
 import zipgo.review.application.SortBy;
+import zipgo.review.domain.Review;
 import zipgo.review.domain.repository.ReviewQueryRepository;
-import zipgo.review.domain.repository.dto.FindReviewsQueryRequest;
+import zipgo.review.domain.repository.dto.FindReviewsFilterRequest;
 import zipgo.review.domain.repository.dto.FindReviewsQueryResponse;
 import zipgo.review.domain.repository.dto.QFindReviewsQueryResponse;
+import zipgo.review.domain.repository.dto.ReviewWithHelpfulReaction;
 
 import static zipgo.pet.domain.QBreeds.breeds;
 import static zipgo.pet.domain.QPet.pet;
+import static zipgo.review.domain.QAdverseReaction.adverseReaction;
+import static zipgo.review.domain.QHelpfulReaction.helpfulReaction;
 import static zipgo.review.domain.QReview.review;
 
 @Repository
@@ -64,6 +69,15 @@ public class ReviewQueryRepositoryImpl implements ReviewQueryRepository {
                 .orderBy(getSorter(request.sortBy()))
                 .limit(size)
                 .fetch();
+    }
+
+    public List<Review> findReviewWithAdverseReactions(List<Long> reviewIds) {
+        return queryFactory.selectFrom(review)
+                .join(review.adverseReactions, adverseReaction)
+                .fetchJoin()
+                .where(review.id.in(reviewIds))
+                .fetch();
+
     }
 
     private BooleanExpression inBreedIds(List<Long> breedIds) {
@@ -119,6 +133,36 @@ public class ReviewQueryRepositoryImpl implements ReviewQueryRepository {
             return review.helpfulReactions.size().desc();
         }
         return review.id.desc();
+    }
+
+    @Override
+    public List<ReviewWithHelpfulReaction> findReviewWithHelpfulReactions(List<Long> reviewIds, Long memberId) {
+        List<Long> reviewIdsReactedByMember = queryFactory.select(review.id)
+                .from(helpfulReaction)
+                .join(helpfulReaction.review, review)
+                .where(review.id.in(reviewIds), helpfulReaction.madeBy.id.eq(memberId))
+                .fetch();
+
+        List<Tuple> idToCount = queryFactory.select(
+                        review.id,
+                        review.helpfulReactions.size())
+                .from(review)
+                .where(review.id.in(reviewIds))
+                .fetch();
+
+        return idToCount.stream().map(tuple -> {
+            Long reviewId = tuple.get(review.id);
+            Long count = tuple.get(review.helpfulReactions.size()).longValue();
+            return new ReviewWithHelpfulReaction(reviewId, count, reviewIdsReactedByMember.contains(reviewId));
+        }).toList();
+    }
+
+    public List<Long> findReactedReviewsByMember(List<Long> reviewIds, Long memberId) {
+        return queryFactory.select(review.id)
+                .from(helpfulReaction)
+                .join(helpfulReaction.review, review)
+                .where(review.id.in(reviewIds), helpfulReaction.madeBy.id.eq(memberId))
+                .fetch();
     }
 
 }

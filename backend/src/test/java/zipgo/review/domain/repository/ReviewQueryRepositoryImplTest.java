@@ -5,6 +5,7 @@ import java.time.Year;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Random;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,8 +31,10 @@ import zipgo.petfood.domain.repository.PetFoodRepository;
 import zipgo.review.application.SortBy;
 import zipgo.review.domain.HelpfulReaction;
 import zipgo.review.domain.Review;
-import zipgo.review.domain.repository.dto.FindReviewsQueryRequest;
+import zipgo.review.domain.repository.dto.FindReviewsFilterRequest;
 import zipgo.review.domain.repository.dto.FindReviewsQueryResponse;
+import zipgo.review.domain.repository.dto.ReviewWithHelpfulReaction;
+import zipgo.review.domain.type.AdverseReactionType;
 
 import static java.util.Collections.emptyList;
 import static java.util.Collections.reverseOrder;
@@ -41,6 +44,10 @@ import static zipgo.pet.domain.fixture.BreedsFixture.견종;
 import static zipgo.pet.domain.fixture.PetFixture.반려동물;
 import static zipgo.pet.domain.fixture.PetSizeFixture.소형견;
 import static zipgo.petfood.domain.fixture.PetFoodFixture.모든_영양기준_만족_식품;
+import static zipgo.review.domain.type.AdverseReactionType.FRIZZY_FUR;
+import static zipgo.review.domain.type.AdverseReactionType.NONE;
+import static zipgo.review.domain.type.AdverseReactionType.SCRATCHING;
+import static zipgo.review.domain.type.AdverseReactionType.TEARS;
 import static zipgo.review.domain.type.StoolCondition.SOFT_MOIST;
 import static zipgo.review.domain.type.TastePreference.EATS_VERY_WELL;
 import static zipgo.review.fixture.ReviewFixture.극찬_리뷰_생성;
@@ -88,9 +95,22 @@ class ReviewQueryRepositoryImplTest {
         return 식품;
     }
 
+    private void 리뷰_여러개_생성(PetFood 식품) {
+        List<Review> 리뷰들 = new ArrayList<>();
+        for (int i = 0; i < 20; i++) {
+            Member 멤버 = memberRepository.save(MemberFixture.식별자_없는_멤버("email" + i));
+            PetSize 사이즈 = petSizeRepository.save(소형견());
+            Breeds 종류 = breedsRepository.save(견종(사이즈));
+            Pet 반려동물 = petRepository.save(반려동물(멤버, 종류));
+            Review 리뷰 = 극찬_리뷰_생성(반려동물, 식품, List.of("없어요"));
+            리뷰들.add(리뷰);
+        }
+        reviewRepository.saveAll(리뷰들);
+    }
+
     @Nested
     @Transactional
-    class 페이지네이션 {
+    class 리뷰목록_페이지네이션 {
 
         @Test
         void 리뷰를_원하는_개수만큼_읽을_수_있다() {
@@ -113,19 +133,6 @@ class ReviewQueryRepositoryImplTest {
             assertThat(리뷰_리스트.size()).isEqualTo(10);
         }
 
-
-        private void 리뷰_여러개_생성(PetFood 식품) {
-            List<Review> 리뷰들 = new ArrayList<>();
-            for (int i = 0; i < 20; i++) {
-                Member 멤버 = memberRepository.save(MemberFixture.식별자_없는_멤버("email" + i));
-                PetSize 사이즈 = petSizeRepository.save(소형견());
-                Breeds 종류 = breedsRepository.save(견종(사이즈));
-                Pet 반려동물 = petRepository.save(반려동물(멤버, 종류));
-                Review 리뷰 = 극찬_리뷰_생성(반려동물, 식품, List.of("없어요"));
-                리뷰들.add(리뷰);
-            }
-            reviewRepository.saveAll(리뷰들);
-        }
 
         @Test
         void 커서보다_아이디가_작은_것들만_조회한다() {
@@ -217,7 +224,7 @@ class ReviewQueryRepositoryImplTest {
     }
 
     @Nested
-    class 정렬 {
+    class 리뷰목록_정렬 {
 
         @Test
         void 최신순() {
@@ -226,7 +233,7 @@ class ReviewQueryRepositoryImplTest {
             리뷰_여러개_생성(식품);
 
             //when
-            var 요청 = FindReviewsQueryRequest.builder()
+            var 요청 = FindReviewsFilterRequest.builder()
                     .petFoodId(식품.getId())
                     .size(10)
                     .sortBy(SortBy.RECENT)
@@ -369,7 +376,7 @@ class ReviewQueryRepositoryImplTest {
     }
 
     @Nested
-    class 필터링 {
+    class 리뷰목록_필터링 {
 
         @Test
         void 원하는_견종으로_필터링() {
@@ -467,7 +474,7 @@ class ReviewQueryRepositoryImplTest {
             사이즈_리뷰_생성(식품, 사이즈);
 
             //when
-            var 요청 = FindReviewsQueryRequest.builder()
+            var 요청 = FindReviewsFilterRequest.builder()
                     .petFoodId(식품.getId())
                     .size(10)
                     .sortBy(SortBy.RECENT)
@@ -494,5 +501,100 @@ class ReviewQueryRepositoryImplTest {
         }
 
     }
+
+    @Nested
+    class 리뷰_아이디리스트로_이상반응_조회 {
+
+        @Test
+        void 저장한_이상반응이_잘_나온다() {
+            //given
+            PetFood 식품 = 식품_만들기();
+            List<Review> 리뷰목록_생성된순서 = 리뷰_여러개_생성(식품);
+
+            //when
+            List<Review> 조회한_리뷰목록 = reviewQueryRepository.findReviewWithAdverseReactions(
+                    리뷰목록_생성된순서.stream().map(Review::getId).toList());
+
+            //then
+            assertThat(조회한_리뷰목록)
+                    .allMatch(review ->
+                            review.getAdverseReactions().stream()
+                                    .map(reaction -> reaction.getAdverseReactionType().getDescription())
+                                    .toList()
+                                    .containsAll(생성시_적었던_이상반응들(리뷰목록_생성된순서, review))
+                    );
+
+        }
+
+        private List<String> 생성시_적었던_이상반응들(List<Review> 리뷰목록_생성된순서, Review 조회한_리뷰목록_중_하나) {
+            return 리뷰목록_생성된순서.stream()
+                    .filter(리뷰 -> 리뷰.getId().equals(조회한_리뷰목록_중_하나.getId()))
+                    .map(리뷰 -> 리뷰.getAdverseReactions().stream()
+                            .map(이상반응 -> 이상반응.getAdverseReactionType().getDescription())
+                            .toList())
+                    .findFirst()
+                    .orElseThrow(() -> new RuntimeException("아이디로 리뷰를 찾을 수가 없음"));
+        }
+
+        private List<Review> 리뷰_여러개_생성(PetFood 식품) {
+            List<Review> 리뷰들 = new ArrayList<>();
+            List<AdverseReactionType> 이상반응 = List.of(NONE, TEARS, SCRATCHING, FRIZZY_FUR);
+            for (int i = 0; i < 20; i++) {
+                Member 멤버 = memberRepository.save(MemberFixture.식별자_없는_멤버("email" + i));
+                PetSize 사이즈 = petSizeRepository.save(소형견());
+                Breeds 종류 = breedsRepository.save(견종(사이즈));
+                Pet 반려동물 = petRepository.save(반려동물(멤버, 종류));
+                AdverseReactionType 랜덤_이상반응 = 이상반응.get(i % 4);
+                Review 리뷰 = 극찬_리뷰_생성(반려동물, 식품, List.of(랜덤_이상반응.getDescription()));
+                리뷰들.add(리뷰);
+            }
+            reviewRepository.saveAll(리뷰들);
+            return 리뷰들;
+        }
+
+    }
+
+    @Nested
+    class 리뷰_아이디리스트로_도움이돼요_조회 {
+
+        @Test
+        void 내가_도움이_돼요를_누른리뷰_조회() {
+            //given
+            PetFood 식품 = 식품_만들기();
+            Member 조회_요청_주체 = memberRepository.save(MemberFixture.식별자_없는_멤버("계속 도움을 얻는 사람"));
+            List<Long> 도움이돼요를_누른_리뷰_아이디 = 조회_생성_후_도움이돼요_누르기(식품, 조회_요청_주체);
+
+            //when
+            var 리뷰_목록 = reviewQueryRepository.findReviewWithHelpfulReactions(
+                    도움이돼요를_누른_리뷰_아이디, 조회_요청_주체.getId());
+
+            //then
+            assertThat(리뷰_목록)
+                    .extracting(ReviewWithHelpfulReaction::reacted)
+                    .allMatch(reacted -> reacted);
+        }
+
+        private List<Long> 조회_생성_후_도움이돼요_누르기(PetFood 식품, Member 도움이돼요_누르는_사람) {
+            List<Review> 도움이_돼요_누른_리뷰 = new ArrayList<>();
+            for (int i = 0; i < 5; i++) {
+                Member 멤버 = memberRepository.save(MemberFixture.식별자_없는_멤버("email" + i));
+                PetSize 사이즈 = petSizeRepository.save(소형견());
+                Breeds 종류 = breedsRepository.save(견종(사이즈));
+                Pet 반려동물 = petRepository.save(반려동물(멤버, 종류));
+                Review 리뷰 = Review.builder().pet(반려동물).petFood(식품).comment("없어요")
+                        .rating(i + 1).adverseReactions(emptyList()).tastePreference(EATS_VERY_WELL)
+                        .stoolCondition(SOFT_MOIST).build();
+                reviewRepository.save(리뷰);
+                if (new Random().nextInt() % 2 == 0) {
+                    리뷰.getHelpfulReactions().add(HelpfulReaction.builder().review(리뷰).madeBy(도움이돼요_누르는_사람).build());
+                    reviewRepository.save(리뷰);
+                    도움이_돼요_누른_리뷰.add(리뷰);
+                }
+            }
+            return 도움이_돼요_누른_리뷰.stream().map(Review::getId).toList();
+        }
+
+    }
+
 
 }
