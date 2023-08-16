@@ -27,10 +27,12 @@ import static org.springframework.http.HttpStatus.BAD_REQUEST;
 import static org.springframework.http.HttpStatus.CREATED;
 import static org.springframework.http.HttpStatus.NOT_FOUND;
 import static org.springframework.http.HttpStatus.NO_CONTENT;
+import static org.springframework.http.HttpStatus.OK;
 import static org.springframework.restdocs.headers.HeaderDocumentation.headerWithName;
 import static org.springframework.restdocs.headers.HeaderDocumentation.requestHeaders;
 import static org.springframework.restdocs.payload.PayloadDocumentation.fieldWithPath;
 import static org.springframework.restdocs.payload.PayloadDocumentation.requestFields;
+import static org.springframework.restdocs.payload.PayloadDocumentation.responseFields;
 import static org.springframework.restdocs.request.RequestDocumentation.parameterWithName;
 import static org.springframework.restdocs.request.RequestDocumentation.pathParameters;
 import static zipgo.pet.domain.Gender.MALE;
@@ -164,6 +166,20 @@ class PetControllerTest extends AcceptanceTest {
 
     }
 
+    @Test
+    void 견종_목록_조회_성공() {
+        var 요청_준비 = given(spec)
+                .contentType(JSON).filter(견종_목록_조회_API_성공());
+
+        // when
+        var 응답 = 요청_준비.when()
+                .get("/pets/breeds");
+
+        // then
+        응답.then().assertThat().statusCode(OK.value());
+    }
+
+
     private RestDocumentationFilter 반려동물_등록_성공_API_문서_생성() {
         return document("반려동물 등록 - 성공", resourceDetails().summary("반려동물 등록하기").description("반려동물을 등록합니다."),
                 requestHeaders(headerWithName("Authorization").description("인증을 위한 JWT")),
@@ -192,6 +208,16 @@ class PetControllerTest extends AcceptanceTest {
                         fieldWithPath("weight").description("반려견 몸무게").type(JsonFieldType.NUMBER))
         );
     }
+
+    private RestDocumentationFilter 견종_목록_조회_API_성공() {
+        return document("견종 목록 조회 - 성공", resourceDetails().summary("견종 목록을 조회").description("견종 목록을 조회합니다."),
+                responseFields(
+                        fieldWithPath("breeds").description("견종").type(JsonFieldType.ARRAY),
+                        fieldWithPath("breeds[].id").description("견종 식별자").type(JsonFieldType.NUMBER),
+                        fieldWithPath("breeds[].name").description("견종 이름").type(JsonFieldType.STRING)
+                ));
+    }
+
 
     private RestDocumentationFilter API_반려견_등록_예외응답_문서_생성() {
         return document("반려견 등록 - 실패(없는 견종)", resourceDetails().summary("반려동물 등록하기").description("반려동물을 등록합니다.").responseSchema(에러_응답_형식),
