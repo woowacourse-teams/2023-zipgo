@@ -59,6 +59,29 @@ class PetQueryServiceTest extends QueryServiceTest {
         );
     }
 
+    @Test
+    void 견종_정보를_조회할_수_있다() {
+        // given
+        PetSize 소형견 = 견종_크기_등록("소형견");
+        Breeds 풍산개 = 견종_등록("풍산개", 소형견);
+        Member 갈비 = 멤버_이름("갈비");
+        memberRepository.save(갈비);
+        Pet 상근이 = 반려동물_생성("상근이", 갈비, 풍산개);
+        petRepository.save(상근이);
+
+        // when
+        Pet 찾은_상근이 = petQueryService.readPet(상근이.getId());
+
+        // then
+        assertAll(
+                () -> assertThat(찾은_상근이.getName()).isEqualTo("상근이"),
+                () -> assertThat(찾은_상근이.getBreeds().getName()).isEqualTo("풍산개"),
+                () -> assertThat(찾은_상근이.getBreeds().getPetSize().getName()).isEqualTo("소형견"),
+                () -> assertThat(찾은_상근이.getOwner().getName()).isEqualTo("갈비")
+        );
+    }
+
+
     @Nested
     class 견종_조회시 {
 

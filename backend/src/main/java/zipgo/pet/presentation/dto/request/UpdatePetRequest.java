@@ -13,7 +13,7 @@ public record UpdatePetRequest(
         String gender,
 
         @NotBlank(message = "Null 또는 공백이 포함될 수 없습니다. 올바른 값인지 확인해주세요.")
-        String image,
+        String imageUrl,
 
         @Max(20)
         @Min(0)

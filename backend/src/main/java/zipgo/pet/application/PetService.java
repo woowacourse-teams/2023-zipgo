@@ -56,7 +56,7 @@ public class PetService {
 
     private void update(UpdatePetRequest request, Pet pet, Breeds breeds) {
         pet.updateName(request.name());
-        pet.updateImageUrl(request.image());
+        pet.updateImageUrl(request.imageUrl());
         updateDefaultImage(pet);
         pet.updateBreeds(breeds);
         pet.updateBirthYear(request.calculateBirthYear());
