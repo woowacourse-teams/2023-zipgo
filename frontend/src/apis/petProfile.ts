@@ -7,6 +7,8 @@ import {
   GetPetsRes,
   PostPetProfileReq,
   PostPetProfileRes,
+  PutPetReq,
+  PutPetRes,
 } from '@/types/petProfile/remote';
 
 import { client } from '.';
@@ -31,6 +33,13 @@ export const getPets = async () => {
 
 export const postPetProfile = async (postPetProfileProps: PostPetProfileReq) => {
   const { data } = await client.post<PostPetProfileRes>('/pets', postPetProfileProps);
+
+  return data;
+};
+
+export const putPet = async (putPetProps: PutPetReq) => {
+  const { id, ...restPetProfile } = putPetProps;
+  const { data } = await client.put<PutPetRes>(`/pets/${id}`, restPetProfile);
 
   return data;
 };

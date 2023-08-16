@@ -1,6 +1,6 @@
 import { useMutation, useQuery } from '@tanstack/react-query';
 
-import { deletePet, getBreeds, getPet, getPets, postPetProfile } from '@/apis/petProfile';
+import { deletePet, getBreeds, getPet, getPets, postPetProfile, putPet } from '@/apis/petProfile';
 import { Parameter } from '@/types/common/utility';
 
 const QUERY_KEY = { breedList: 'breedList', petItem: 'petItem', petList: 'petList' };
@@ -47,6 +47,14 @@ export const useAddPetProfileMutation = () => {
   });
 
   return { addPetProfileMutation: { addPetProfile, ...addPetProfileRestMutation } };
+};
+
+export const useEditPetMutation = () => {
+  const { mutateAsync: editPet, ...editPetRestMutation } = useMutation({
+    mutationFn: putPet,
+  });
+
+  return { editPetMutation: { editPet, ...editPetRestMutation } };
 };
 
 export const useRemovePetMutation = () => {

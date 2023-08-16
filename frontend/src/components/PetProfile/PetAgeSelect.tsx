@@ -1,21 +1,27 @@
 import { SelectHTMLAttributes } from 'react';
 import { styled } from 'styled-components';
 
-interface PetAgeSelectProps extends SelectHTMLAttributes<HTMLSelectElement> {}
+interface PetAgeSelectProps extends SelectHTMLAttributes<HTMLSelectElement> {
+  initialAge?: number;
+}
 
 const PetAgeSelect = (petAgeSelectProps: PetAgeSelectProps) => {
-  const { ...restProps } = petAgeSelectProps;
+  const { initialAge, ...restProps } = petAgeSelectProps;
 
   return (
     <AgeSelect name="pet-age" aria-label="반려동물 나이 선택" {...restProps}>
-      <option disabled selected value={undefined}>
+      <option disabled value={undefined} selected={!initialAge}>
         여기를 눌러 아이의 나이를 선택해주세요.
       </option>
-      <option value={0}>1살 미만</option>
+      <option value={0} selected={initialAge === 0}>
+        1살 미만
+      </option>
       {Array.from({ length: 19 }, (_, index) => index + 1).map(age => (
-        <option key={`${age}살`} value={age}>{`${age}살`}</option>
+        <option selected={age === initialAge} key={`${age}살`} value={age}>{`${age}살`}</option>
       ))}
-      <option value={20}>20살 이상</option>
+      <option value={20} selected={initialAge === 20}>
+        20살 이상
+      </option>
     </AgeSelect>
   );
 };

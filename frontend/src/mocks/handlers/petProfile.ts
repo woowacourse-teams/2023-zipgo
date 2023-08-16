@@ -27,6 +27,8 @@ const petProfileHandlers = [
 
   rest.post(`${BASE_URL}/pets`, (req, res, ctx) => res(ctx.status(201))),
 
+  rest.put(`${BASE_URL}/pets/:petId`, (req, res, ctx) => res(ctx.status(204))),
+
   rest.delete(`${BASE_URL}/pets/:petId`, (req, res, ctx) => res(ctx.status(204))),
 ];
 

@@ -1,9 +1,10 @@
-import { useState } from 'react';
+import { ChangeEvent, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 import {
   FEMALE,
   MALE,
+  MIXED_BREED,
   PET_AGE_MAX,
   PET_AGE_MIN,
   PET_PROFILE_ADDITION_STEP,
@@ -50,6 +51,46 @@ export const usePetProfileStep = () => {
 };
 
 export const usePetProfileValidation = () => {
+  const [isValidNameInput, setIsValidNameInput] = useState(true);
+  const [isValidAgeSelect, setIsValidAgeSelect] = useState(true);
+  const [isValidWeightInput, setIsValidWeightInput] = useState(true);
+
+  const validateName = (e: ChangeEvent<HTMLInputElement>) => {
+    const petName = e.target.value;
+
+    if (isValidName(petName)) {
+      setIsValidNameInput(true);
+      return true;
+    }
+
+    setIsValidNameInput(false);
+    return false;
+  };
+
+  const validateAge = (e: ChangeEvent<HTMLSelectElement>) => {
+    const petAge = Number(e.target.value);
+
+    if (isValidAgeRange(petAge)) {
+      setIsValidWeightInput(true);
+      return true;
+    }
+
+    setIsValidAgeSelect(false);
+    return false;
+  };
+
+  const validateWeight = (e: ChangeEvent<HTMLInputElement>) => {
+    const petWeight = e.target.value;
+
+    if (isValidWeight(petWeight)) {
+      setIsValidWeightInput(true);
+      return true;
+    }
+
+    setIsValidWeightInput(false);
+    return false;
+  };
+
   const isValidName = (name: string) => {
     const validNameCharacters = /^[a-zA-Z0-9가-힣ㄱ-ㅎㅏ-ㅣ]{1,10}$/;
 
@@ -67,10 +108,20 @@ export const usePetProfileValidation = () => {
     return validWeightCharacters.test(weight);
   };
 
+  const isMixedBreed = (breed: string) => breed === MIXED_BREED;
+
   return {
+    isValidNameInput,
+    isValidAgeSelect,
+    isValidWeightInput,
+
+    validateName,
+    validateAge,
+    validateWeight,
     isValidName,
     isValidAgeRange,
     isValidGender,
     isValidWeight,
+    isMixedBreed,
   };
 };

@@ -1,9 +1,11 @@
+import { Link } from 'react-router-dom';
 import { styled } from 'styled-components';
 
-import EditIcon from '@/assets/svg/edit_icon.svg';
+import EditIconDark from '@/assets/svg/edit_icon_dark.svg';
 import FemaleIcon from '@/assets/svg/female_icon_dark.svg';
 import MaleIcon from '@/assets/svg/male_icon_dark.svg';
 import { MALE } from '@/constants/petProfile';
+import { routerPath } from '@/router/routes';
 import { Gender, PetProfile } from '@/types/petProfile/client';
 
 interface PetItemProps {
@@ -33,9 +35,12 @@ const PetItem = (petItemProps: PetItemProps) => {
           </div>
         </PetImageAndDetail>
       </PetItemContent>
-      <EditButton type="button" aria-label="반려동물 정보 수정">
-        <img src={EditIcon} alt="" />
-      </EditButton>
+      <EditLink
+        to={routerPath.petProfileEdition({ petId: petInfo.id })}
+        aria-label="반려동물 정보 수정"
+      >
+        <img src={EditIconDark} alt="" />
+      </EditLink>
     </PetItemContainer>
   );
 };
@@ -155,7 +160,7 @@ const GenderImage = styled.img`
   object-fit: cover;
 `;
 
-const EditButton = styled.button`
+const EditLink = styled(Link)`
   cursor: pointer;
 
   display: flex;
