@@ -1,13 +1,11 @@
 package zipgo.pet.application;
 
-import java.time.Year;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import zipgo.member.domain.Member;
 import zipgo.member.domain.repository.MemberRepository;
 import zipgo.pet.domain.Breeds;
-import zipgo.pet.domain.Gender;
 import zipgo.pet.domain.Pet;
 import zipgo.pet.domain.PetSize;
 import zipgo.pet.domain.repository.BreedsRepository;
@@ -26,28 +24,12 @@ public class PetService {
     private final PetSizeRepository petSizeRepository;
 
     public Long createPet(Long memberId, CreatePetRequest request) {
-        Member member = memberRepository.getById(memberId);
+        Member owner = memberRepository.getById(memberId);
         PetSize petSize = petSizeRepository.getByName(request.petSize());
         Breeds breeds = breedsRepository.getByNameAndPetSizeId(request.breed(), petSize.getId());
 
-        Pet pet = petRepository.save(toPet(request, member, breeds));
+        Pet pet = petRepository.save(CreatePetRequest.toEntity(request, owner, breeds));
         return pet.getId();
-    }
-
-    private Pet toPet(
-            CreatePetRequest request,
-            Member member,
-            Breeds breeds
-    ) {
-        int birthYear = Year.now().getValue() - request.age();
-        return Pet.builder()
-                .birthYear(Year.of(birthYear))
-                .owner(member)
-                .name(request.name())
-                .gender(Gender.from(request.gender()))
-                .breeds(breeds)
-                .weight(request.weight())
-                .build();
     }
 
 }
