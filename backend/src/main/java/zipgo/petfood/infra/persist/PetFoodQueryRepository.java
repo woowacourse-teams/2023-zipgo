@@ -29,7 +29,8 @@ public class PetFoodQueryRepository implements zipgo.petfood.domain.repository.P
             int size
     ) {
         return queryFactory
-                .selectFrom(petFood)
+                .selectDistinct(petFood)
+                .from(petFood)
                 .join(petFood.brand, brand)
                 .fetchJoin()
                 .join(petFood.petFoodPrimaryIngredients, petFoodPrimaryIngredient)
