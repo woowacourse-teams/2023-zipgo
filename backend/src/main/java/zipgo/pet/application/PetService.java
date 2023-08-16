@@ -1,5 +1,6 @@
 package zipgo.pet.application;
 
+import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -30,6 +31,10 @@ public class PetService {
 
         Pet pet = petRepository.save(request.toEntity(owner, breeds));
         return pet.getId();
+    }
+
+    public List<Breeds> readBreeds() {
+         return breedsRepository.findAll();
     }
 
 }

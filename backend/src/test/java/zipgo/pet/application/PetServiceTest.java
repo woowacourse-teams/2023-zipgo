@@ -1,5 +1,6 @@
 package zipgo.pet.application;
 
+import java.util.List;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import zipgo.common.service.ServiceTest;
@@ -37,7 +38,7 @@ class PetServiceTest extends ServiceTest {
     @Test
     void 반려견을_등록_할_수_있다() {
         // given
-        PetSize 소형견 = 소형견_등록();
+        PetSize 소형견 = 견종_크기_등록("소형견");
         품종_등록("포메라니안", 소형견);
         Member 가비 = 멤버_등록("가비");
 
@@ -53,12 +54,32 @@ class PetServiceTest extends ServiceTest {
         );
     }
 
-    private PetSize 소형견_등록() {
-        PetSize 소형견 = PetSize
+    @Test
+    void 등록된_품종_정보를_모두_가져올_수_있다() {
+        // given
+        견종_크기_등록("소형견");
+        견종_크기_등록("중형견");
+        견종_크기_등록("대형견");
+
+        // when
+        List<PetSize> petSizes = petSizeRepository.findAll();
+
+        // then
+        assertAll(
+                () -> assertThat(petSizes).hasSize(3),
+                () -> assertThat(petSizes.get(0).getName()).isEqualTo("소형견"),
+                () -> assertThat(petSizes.get(1).getName()).isEqualTo("중형견"),
+                () -> assertThat(petSizes.get(2).getName()).isEqualTo("대형견")
+        );
+    }
+
+
+    private PetSize 견종_크기_등록(String 견종_크기) {
+        PetSize petSize = PetSize
                 .builder()
-                .name("소형견")
+                .name(견종_크기)
                 .build();
-        return petSizeRepository.save(소형견);
+        return petSizeRepository.save(petSize);
     }
 
     private Breeds 품종_등록(String 품종_이름, PetSize 크기) {
@@ -70,7 +91,7 @@ class PetServiceTest extends ServiceTest {
     }
 
     private CreatePetRequest 반려견_등록_요청(String 반려견_이름) {
-        return new CreatePetRequest(반려견_이름,"남", 반려견_이름 + "img" ,5, "포메라니안", "소형견", 65.4);
+        return new CreatePetRequest(반려견_이름, "남", 반려견_이름 + "img", 5, "포메라니안", "소형견", 65.4);
     }
 
     private Member 멤버_등록(String 이름) {
