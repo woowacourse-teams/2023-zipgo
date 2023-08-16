@@ -56,7 +56,7 @@ class ImageControllerTest {
     @Test
     void 사진_등록_성공하면_201_반환() throws Exception {
         // given
-        var 사진_파일 = new MockMultipartFile("imageUrl", "사진.png", "image/png", "사진".getBytes());
+        var 사진_파일 = new MockMultipartFile("image", "사진.png", "image/png", "사진".getBytes());
 
         when(imageService.save(사진_파일))
                 .thenReturn("사진_주소");
