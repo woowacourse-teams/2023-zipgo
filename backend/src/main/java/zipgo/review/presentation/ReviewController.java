@@ -82,4 +82,13 @@ public class ReviewController {
         return ResponseEntity.ok(metadata);
     }
 
+    @PostMapping("/reviews/{reviewId}/helpful-reactions")
+    public ResponseEntity<Void> createHelpfulReaction(
+            @Auth AuthDto authDto,
+            @PathVariable Long reviewId
+    ) {
+        return ResponseEntity.ok().build();
+    }
+
+
 }
