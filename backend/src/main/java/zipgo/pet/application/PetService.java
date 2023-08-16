@@ -57,6 +57,7 @@ public class PetService {
     public List<Breeds> readBreeds() {
         String excludeName = "믹스견";
         List<Breeds> breeds = breedsRepository.findByNameNotContaining(excludeName);
+
         Breeds mixedBreeds = Breeds.builder()
                 .id(0L)
                 .name(excludeName)
