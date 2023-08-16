@@ -177,7 +177,6 @@ public class ReviewControllerTest extends AcceptanceTest {
                             parameterWithName("breedId").description("반려동물의 견종 id").optional(),
                             parameterWithName("sortBy").description("정렬 기준").optional()),
                     responseFields(fieldWithPath("reviews[].id").description("리뷰 id").type(JsonFieldType.NUMBER),
-                            fieldWithPath("reviews[].reviewerName").description("리뷰 작성자 이름").type(JsonFieldType.STRING),
                             fieldWithPath("reviews[].rating").description("리뷰 별점").type(JsonFieldType.NUMBER),
                             fieldWithPath("reviews[].date").description("리뷰 생성일").type(JsonFieldType.STRING),
                             fieldWithPath("reviews[].comment").description("리뷰 코멘트").type(JsonFieldType.STRING),
@@ -274,13 +273,40 @@ public class ReviewControllerTest extends AcceptanceTest {
             return document("리뷰 개별 조회 - 성공", 문서_정보.responseSchema(성공_응답_형식),
                     pathParameters(parameterWithName("reviewId").description("리뷰 id")),
                     responseFields(fieldWithPath("id").description("리뷰 id").type(JsonFieldType.NUMBER),
-                            fieldWithPath("reviewerName").description("리뷰 작성자 이름").type(JsonFieldType.STRING),
                             fieldWithPath("rating").description("리뷰 별점").type(JsonFieldType.NUMBER),
                             fieldWithPath("date").description("리뷰 생성일").type(JsonFieldType.STRING),
                             fieldWithPath("comment").description("리뷰 코멘트").type(JsonFieldType.STRING),
                             fieldWithPath("tastePreference").description("기호성").type(JsonFieldType.STRING),
                             fieldWithPath("stoolCondition").description("대변 상태").type(JsonFieldType.STRING),
-                            fieldWithPath("adverseReactions").description("이상 반응들").type(JsonFieldType.ARRAY)));
+                            fieldWithPath("adverseReactions").description("이상 반응들").type(JsonFieldType.ARRAY),
+                            fieldWithPath("petProfile.id").description("반려동물 id").type(JsonFieldType.NUMBER),
+                            fieldWithPath("petProfile.name").description("반려동물 이름")
+                                    .type(JsonFieldType.STRING),
+                            fieldWithPath("petProfile.writtenAge").description("반려동물 나이")
+                                    .type(JsonFieldType.NUMBER),
+                            fieldWithPath("petProfile.writtenWeight").description("반려동물 몸무게")
+                                    .type(JsonFieldType.NUMBER),
+                            fieldWithPath("petProfile.breed.id").description("반려동물 견종 id")
+                                    .type(JsonFieldType.NUMBER),
+                            fieldWithPath("petProfile.breed.name").description("반려동물 견종 이름")
+                                    .type(JsonFieldType.STRING),
+                            fieldWithPath("petProfile.breed.size.id").description("반려동물 견종 크기 id")
+                                    .type(JsonFieldType.NUMBER),
+                            fieldWithPath("petProfile.breed.size.name").description("반려동물 견종 크기 이름")
+                                    .type(JsonFieldType.STRING),
+                            fieldWithPath("helpfulReaction.count").description("도움이 되었어요 수")
+                                    .type(JsonFieldType.NUMBER),
+                            fieldWithPath("helpfulReaction.reacted").description("도움이 되었어요를 눌렀는지")
+                                    .type(JsonFieldType.BOOLEAN)));
+        }
+
+        @Test
+        void 로그인하고_리뷰_조회() {
+            //given
+
+            //when
+
+            //then
         }
 
     }

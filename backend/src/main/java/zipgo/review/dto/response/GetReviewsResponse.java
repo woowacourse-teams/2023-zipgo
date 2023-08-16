@@ -11,9 +11,9 @@ public record GetReviewsResponse(
         List<GetReviewResponse> reviews
 ) {
 
-    public static GetReviewsResponse of(List<Review> reviews) {
+    public static GetReviewsResponse of(List<Review> reviews, Long memberId) {
         return new GetReviewsResponse(reviews.stream()
-                .map(GetReviewResponse::from).toList());
+                .map(review -> GetReviewResponse.from(review, memberId)).toList());
     }
 
     public static GetReviewsResponse of(List<FindReviewsQueryResponse> reviews,

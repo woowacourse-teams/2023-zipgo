@@ -23,7 +23,7 @@ public record GetReviewsRequest(
         List<Long> breedId
 ) {
 
-    public FindReviewsFilterRequest toQueryRequest() {
+    public FindReviewsFilterRequest toQueryRequest(Long memberId) {
         return new FindReviewsFilterRequest(
                 petFoodId,
                 size(),
@@ -32,7 +32,7 @@ public record GetReviewsRequest(
                 petSizeId(),
                 ageGroupId().stream().map(AgeGroup::from).toList(),
                 breedId(),
-                null
+                memberId
         );
     }
 

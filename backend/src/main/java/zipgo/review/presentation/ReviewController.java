@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 import zipgo.auth.presentation.Auth;
+import zipgo.auth.presentation.OptionalAuth;
 import zipgo.auth.presentation.dto.AuthDto;
 import zipgo.review.application.ReviewQueryService;
 import zipgo.review.application.ReviewService;
@@ -42,16 +43,17 @@ public class ReviewController { // TODO: requestMapping 으로 변경
 
     @GetMapping("/reviews")
     public ResponseEntity<GetReviewsResponse> getAllReviews(
+            @OptionalAuth AuthDto authDto,
             @ModelAttribute @Valid GetReviewsRequest request) {
-        GetReviewsResponse reviews = reviewQueryService.getReviews(request.toQueryRequest());
+        GetReviewsResponse reviews = reviewQueryService.getReviews(request.toQueryRequest(authDto.id()));
 
         return ResponseEntity.ok(reviews);
     }
 
     @GetMapping("/reviews/{id}")
-    public ResponseEntity<GetReviewResponse> getReview(@PathVariable Long id) {
+    public ResponseEntity<GetReviewResponse> getReview(@OptionalAuth AuthDto authDto, @PathVariable Long id) {
         Review review = reviewQueryService.getReview(id);
-        return ResponseEntity.ok(GetReviewResponse.from(review));
+        return ResponseEntity.ok(GetReviewResponse.from(review, authDto.id()));
     }
 
     @PutMapping("/reviews/{reviewId}")

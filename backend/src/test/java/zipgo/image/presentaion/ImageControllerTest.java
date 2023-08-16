@@ -16,7 +16,7 @@ import org.springframework.restdocs.payload.JsonFieldType;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.web.servlet.MockMvc;
 import zipgo.auth.presentation.AuthInterceptor;
-import zipgo.auth.presentation.JwtArgumentResolver;
+import zipgo.auth.presentation.JwtMandatoryArgumentResolver;
 import zipgo.auth.support.JwtProvider;
 import zipgo.image.application.ImageService;
 
@@ -51,7 +51,7 @@ class ImageControllerTest {
     private AuthInterceptor authInterceptor;
 
     @MockBean
-    private JwtArgumentResolver argumentResolver;
+    private JwtMandatoryArgumentResolver argumentResolver;
 
     @Test
     void 사진_등록_성공하면_201_반환() throws Exception {

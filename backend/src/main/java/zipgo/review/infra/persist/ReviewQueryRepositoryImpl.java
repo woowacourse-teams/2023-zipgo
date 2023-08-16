@@ -19,6 +19,7 @@ import zipgo.review.domain.repository.dto.FindReviewsQueryResponse;
 import zipgo.review.domain.repository.dto.QFindReviewsQueryResponse;
 import zipgo.review.domain.repository.dto.ReviewHelpfulReaction;
 
+import static java.util.Collections.emptyList;
 import static zipgo.pet.domain.QBreeds.breeds;
 import static zipgo.pet.domain.QPet.pet;
 import static zipgo.review.domain.QAdverseReaction.adverseReaction;
@@ -137,32 +138,35 @@ public class ReviewQueryRepositoryImpl implements ReviewQueryRepository {
 
     @Override
     public List<ReviewHelpfulReaction> findReviewWithHelpfulReactions(List<Long> reviewIds, Long memberId) {
-        List<Long> reviewIdsReactedByMember = queryFactory.select(review.id)
-                .from(helpfulReaction)
-                .join(helpfulReaction.review, review)
-                .where(review.id.in(reviewIds), helpfulReaction.madeBy.id.eq(memberId))
-                .fetch();
 
-        List<Tuple> idToCount = queryFactory.select(
-                        review.id,
-                        review.helpfulReactions.size())
+        List<Long> reviewIdsReactedByMember = findReviewIdsReactedBy(reviewIds, memberId);
+        List<Tuple> reviewIdToReactionCount = queryFactory
+                .select(review.id, review.helpfulReactions.size())
                 .from(review)
                 .where(review.id.in(reviewIds))
                 .fetch();
 
-        return idToCount.stream().map(tuple -> {
-            Long reviewId = tuple.get(review.id);
-            Long count = tuple.get(review.helpfulReactions.size()).longValue();
-            return new ReviewHelpfulReaction(reviewId, count, reviewIdsReactedByMember.contains(reviewId));
-        }).toList();
+        return collect(reviewIdsReactedByMember, reviewIdToReactionCount);
     }
 
-    public List<Long> findReactedReviewsByMember(List<Long> reviewIds, Long memberId) {
+    private List<Long> findReviewIdsReactedBy(List<Long> reviewIds, Long memberId) {
+        if (memberId == null) {
+            return emptyList();
+        }
         return queryFactory.select(review.id)
                 .from(helpfulReaction)
                 .join(helpfulReaction.review, review)
                 .where(review.id.in(reviewIds), helpfulReaction.madeBy.id.eq(memberId))
                 .fetch();
+    }
+
+    private List<ReviewHelpfulReaction> collect(List<Long> reviewIdsReactedByMember,
+                                                List<Tuple> reviewIdToReactionCount) {
+        return reviewIdToReactionCount.stream().map(tuple -> {
+            Long reviewId = tuple.get(review.id);
+            Long count = tuple.get(review.helpfulReactions.size()).longValue();
+            return new ReviewHelpfulReaction(reviewId, count, reviewIdsReactedByMember.contains(reviewId));
+        }).toList();
     }
 
 }

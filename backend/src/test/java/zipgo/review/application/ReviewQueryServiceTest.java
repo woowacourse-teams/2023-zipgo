@@ -76,8 +76,8 @@ class ReviewQueryServiceTest extends QueryServiceTest {
             PetFood 식품 = petFoodRepository.save(모든_영양기준_만족_식품(브랜드_조회하기()));
             Review 리뷰1 = 리뷰1_생성(식품);
             Review 리뷰2 = 리뷰2_생성(식품);
-            GetReviewResponse 리뷰1_dto = GetReviewResponse.from(리뷰1);
-            GetReviewResponse 리뷰2_dto = GetReviewResponse.from(리뷰2);
+            GetReviewResponse 리뷰1_dto = GetReviewResponse.from(리뷰1, null);
+            GetReviewResponse 리뷰2_dto = GetReviewResponse.from(리뷰2, null);
 
             //when
             var 요청 = FindReviewsFilterRequest.builder()
@@ -88,10 +88,11 @@ class ReviewQueryServiceTest extends QueryServiceTest {
             GetReviewsResponse 리뷰_리스트 = reviewQueryService.getReviews(요청);
 
             //then
-            System.out.println("리뷰_리스트 = " + 리뷰_리스트);
-            assertThat(리뷰_리스트.reviews().size()).isEqualTo(2);
-            assertThat(리뷰_리스트.reviews().get(0)).usingRecursiveComparison().isEqualTo(리뷰2_dto);
-            assertThat(리뷰_리스트.reviews().get(1)).usingRecursiveComparison().isEqualTo(리뷰1_dto);
+            assertAll(
+                    () -> assertThat(리뷰_리스트.reviews().size()).isEqualTo(2),
+                    () -> assertThat(리뷰_리스트.reviews().get(0)).usingRecursiveComparison().isEqualTo(리뷰2_dto),
+                    () -> assertThat(리뷰_리스트.reviews().get(1)).usingRecursiveComparison().isEqualTo(리뷰1_dto)
+            );
         }
 
         private Review 리뷰1_생성(PetFood 식품) {
