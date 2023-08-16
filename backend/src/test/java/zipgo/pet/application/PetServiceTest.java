@@ -1,6 +1,7 @@
 package zipgo.pet.application;
 
 import java.time.Year;
+import java.util.List;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import zipgo.common.service.ServiceTest;
@@ -41,8 +42,8 @@ class PetServiceTest extends ServiceTest {
     @Test
     void 반려견을_등록_할_수_있다() {
         // given
-        PetSize 소형견 = 소형견_등록();
-        품종_등록("포메라니안", 소형견);
+        PetSize 소형견 = 견종_크기_등록("소형견");
+        견종_등록("포메라니안", 소형견);
         Member 가비 = 멤버_등록("가비");
 
         // when
@@ -86,20 +87,39 @@ class PetServiceTest extends ServiceTest {
                 .hasMessageContaining("반려견과 주인이 일치하지 않습니다");
     }
 
-    private PetSize 소형견_등록() {
-        PetSize 소형견 = PetSize
-                .builder()
-                .name("소형견")
-                .build();
-        return petSizeRepository.save(소형견);
+    @Test
+    void 등록된_품종_정보를_모두_가져올_수_있다() {
+        // given
+        견종_크기_등록("소형견");
+        견종_크기_등록("중형견");
+        견종_크기_등록("대형견");
+
+        // when
+        List<PetSize> petSizes = petSizeRepository.findAll();
+
+        // then
+        assertAll(
+                () -> assertThat(petSizes).hasSize(3),
+                () -> assertThat(petSizes.get(0).getName()).isEqualTo("소형견"),
+                () -> assertThat(petSizes.get(1).getName()).isEqualTo("중형견"),
+                () -> assertThat(petSizes.get(2).getName()).isEqualTo("대형견")
+        );
     }
 
-    private Breeds 품종_등록(String 품종_이름, PetSize 크기) {
-        Breeds 품종 = Breeds.builder()
-                .name(품종_이름)
+    private PetSize 견종_크기_등록(String 견종_크기) {
+        PetSize petSize = PetSize
+                .builder()
+                .name(견종_크기)
+                .build();
+        return petSizeRepository.save(petSize);
+    }
+
+    private Breeds 견종_등록(String 견종_이름, PetSize 크기) {
+        Breeds 견종 = Breeds.builder()
+                .name(견종_이름)
                 .petSize(크기)
                 .build();
-        return breedsRepository.save(품종);
+        return breedsRepository.save(견종);
     }
 
     private CreatePetRequest 반려견_등록_요청(String 반려견_이름) {
@@ -116,8 +136,8 @@ class PetServiceTest extends ServiceTest {
     }
 
     private Pet 쫑이_등록하기() {
-        PetSize 소형견 = 소형견_등록();
-        Breeds 포메라니안 = 품종_등록("포메라니안", 소형견);
+        PetSize 소형견 = 견종_크기_등록("소형견");
+        Breeds 포메라니안 = 견종_등록("포메라니안", 소형견);
         Member 가비 = 멤버_등록("가비");
         Pet 쫑이 = Pet.builder()
                 .name("쫑이")
