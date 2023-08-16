@@ -65,7 +65,9 @@ const ImageUploadLabel = styled.label`
   height: 16rem;
 
   background-image: url('https://velog.velcdn.com/images/chex/post/9505d4fb-5850-4ce8-9575-04cece41a185/image.png');
-  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: cover;
   border: 1px solid ${({ theme }) => theme.color.grey300};
   border-radius: 50%;
 
