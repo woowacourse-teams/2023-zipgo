@@ -12,6 +12,7 @@ import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExcep
 import zipgo.auth.exception.AuthException;
 import zipgo.common.logging.LoggingUtils;
 import zipgo.member.exception.MemberException;
+import zipgo.pet.exception.PetException;
 import zipgo.petfood.exception.PetFoodException;
 import zipgo.petfood.presentation.dto.ErrorResponse;
 import zipgo.review.exception.ReviewException;
@@ -29,7 +30,12 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
             PetFoodException.NotFound.class,
             ReviewException.NotFound.class,
             MemberException.NotFound.class,
-            AuthException.ResourceNotFound.class
+            AuthException.ResourceNotFound.class,
+            PetException.AgeNotFound.class,
+            PetException.GenderNotFound.class,
+            PetException.PetSizeNotFound.class,
+            PetException.BreedsNotFound.class,
+            PetException.PetNotFound.class
     })
     public ResponseEntity<ErrorResponse> handleNotFoundException(Exception exception) {
         LoggingUtils.error(exception);

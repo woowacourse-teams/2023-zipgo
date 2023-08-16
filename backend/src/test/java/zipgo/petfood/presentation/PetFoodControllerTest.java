@@ -16,7 +16,6 @@ import zipgo.common.acceptance.AcceptanceTest;
 import zipgo.petfood.domain.Functionality;
 import zipgo.petfood.domain.PetFood;
 import zipgo.petfood.domain.PrimaryIngredient;
-import zipgo.petfood.domain.fixture.PetFoodFunctionalityFixture;
 import zipgo.petfood.domain.repository.FunctionalityRepository;
 import zipgo.petfood.domain.repository.PetFoodRepository;
 import zipgo.petfood.domain.repository.PrimaryIngredientRepository;
@@ -42,7 +41,7 @@ import static zipgo.brand.domain.fixture.BrandFixture.아카나_식품_브랜드
 import static zipgo.petfood.domain.fixture.FunctionalityFixture.기능성_다이어트;
 import static zipgo.petfood.domain.fixture.FunctionalityFixture.기능성_튼튼;
 import static zipgo.petfood.domain.fixture.PetFoodFixture.모든_영양기준_만족_식품;
-import static zipgo.petfood.domain.fixture.PetFoodFunctionalityFixture.*;
+import static zipgo.petfood.domain.fixture.PetFoodFunctionalityFixture.식품_기능성_연관관계_매핑;
 import static zipgo.petfood.domain.fixture.PetFoodIngredientFixture.식품_주원료_연관관계_매핑;
 import static zipgo.petfood.domain.fixture.PrimaryIngredientFixture.주원료_닭고기;
 

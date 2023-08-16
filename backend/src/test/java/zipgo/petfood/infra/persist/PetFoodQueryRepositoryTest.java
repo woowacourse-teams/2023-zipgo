@@ -33,6 +33,7 @@ import static zipgo.petfood.domain.fixture.PetFoodFunctionalityFixture.식품_�
 import static zipgo.petfood.domain.fixture.PetFoodIngredientFixture.식품_주원료_연관관계_매핑;
 import static zipgo.petfood.domain.fixture.PrimaryIngredientFixture.주원료_닭고기;
 import static zipgo.petfood.domain.fixture.PrimaryIngredientFixture.주원료_돼지고기;
+import static zipgo.petfood.domain.fixture.PrimaryIngredientFixture.주원료_말미잘;
 import static zipgo.petfood.domain.fixture.PrimaryIngredientFixture.주원료_소고기;
 
 @Transactional
@@ -118,6 +119,30 @@ class PetFoodQueryRepositoryTest {
                 () -> assertThat(petFoods).extracting(petFood -> petFood.getBrand().getName())
                         .contains("오리젠")
         );
+    }
+
+    @Test
+    void 같은_식품을_제거하고_limit_개수만큼_반환한다() {
+        // given
+        List<PetFood> allFoods = petFoodRepository.findAll();
+        Long lastPetFoodId = allFoods.get(allFoods.size() - 1).getId();
+
+        PetFood petFood = petFoodRepository.getById(lastPetFoodId);
+        식품_기능성_연관관계_매핑(petFood, 기능성_다이어트());
+        식품_주원료_연관관계_매핑(petFood, 주원료_말미잘());
+        petFoodRepository.save(petFood);
+
+        List<String> brandsName = EMPTY_LIST;
+        List<String> standards = EMPTY_LIST;
+        List<String> primaryIngredientList = EMPTY_LIST;
+        List<String> functionalityList = EMPTY_LIST;
+
+        // when
+        List<PetFood> petFoods = petFoodQueryRepository.findPagingPetFoods(brandsName, standards, primaryIngredientList,
+                functionalityList, lastPetFoodId, 20);
+
+        // then
+        assertThat(petFoods).hasSize(3);
     }
 
 }

@@ -23,7 +23,7 @@ public enum AgeGroup {
         return Arrays.stream(values())
                 .filter(ageGroup -> ageGroup.greaterThanOrEqual <= age && age < ageGroup.lessThan)
                 .findFirst()
-                .orElseThrow(PetException.NotFound::new);
+                .orElseThrow(PetException.AgeNotFound::new);
     }
 
 }
