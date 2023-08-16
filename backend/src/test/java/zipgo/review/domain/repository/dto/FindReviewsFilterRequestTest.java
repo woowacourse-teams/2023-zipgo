@@ -7,13 +7,13 @@ import zipgo.review.application.SortBy;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThatThrownBy;
 
-class FindReviewsQueryRequestTest {
+class FindReviewsFilterRequestTest {
 
     @Test
     void 식품_id가_null이면_예외가_발생한다() {
         // expect
         assertThatThrownBy(
-                () -> FindReviewsQueryRequest.builder()
+                () -> FindReviewsFilterRequest.builder()
                         .petFoodId(null)
                         .size(10)
                         .lastReviewId(null)
@@ -28,7 +28,7 @@ class FindReviewsQueryRequestTest {
 
         // expect
         assertThatThrownBy(
-                () -> FindReviewsQueryRequest.builder()
+                () -> FindReviewsFilterRequest.builder()
                         .petFoodId(1L)
                         .size(음수)
                         .lastReviewId(null)

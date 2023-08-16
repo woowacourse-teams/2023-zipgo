@@ -5,7 +5,7 @@ import jakarta.validation.constraints.Positive;
 import java.util.List;
 import zipgo.pet.domain.AgeGroup;
 import zipgo.review.application.SortBy;
-import zipgo.review.domain.repository.dto.FindReviewsQueryRequest;
+import zipgo.review.domain.repository.dto.FindReviewsFilterRequest;
 
 import static java.util.Collections.emptyList;
 import static java.util.Objects.requireNonNullElse;
@@ -23,8 +23,8 @@ public record GetReviewsRequest(
         List<Long> breedId
 ) {
 
-    public FindReviewsQueryRequest toQueryRequest() {
-        return new FindReviewsQueryRequest(
+    public FindReviewsFilterRequest toQueryRequest() {
+        return new FindReviewsFilterRequest(
                 petFoodId,
                 size(),
                 lastReviewId,

@@ -8,7 +8,7 @@ import zipgo.review.application.SortBy;
 import static java.util.Collections.emptyList;
 
 
-public record FindReviewsQueryRequest(
+public record FindReviewsFilterRequest(
         Long petFoodId,
         int size,
         Long lastReviewId,
@@ -20,7 +20,7 @@ public record FindReviewsQueryRequest(
 ) {
 
     @Builder
-    public FindReviewsQueryRequest {
+    public FindReviewsFilterRequest {
         if (petFoodId == null) {
             throw new IllegalArgumentException("petFoodId는 null 이 될 수 없습니다.");
         }
