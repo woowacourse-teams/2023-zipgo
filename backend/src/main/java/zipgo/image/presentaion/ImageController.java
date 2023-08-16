@@ -20,7 +20,7 @@ public class ImageController {
 
     @PostMapping
     public ResponseEntity<ImageResponse> upload(
-            @RequestPart(required = false, value = "imageUrl") MultipartFile imageFile
+            @RequestPart(required = false, value = "image") MultipartFile imageFile
     ) {
         String url = imageService.save(imageFile);
         return ResponseEntity.created(URI.create(url)).body(ImageResponse.from(url));

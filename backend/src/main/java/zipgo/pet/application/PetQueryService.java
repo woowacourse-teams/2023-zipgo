@@ -28,6 +28,10 @@ public class PetQueryService {
         return petRepository.findByOwner(owner);
     }
 
+    public Pet readPet(Long petId) {
+        return petRepository.getById(petId);
+    }
+
     public List<Breeds> readBreeds() {
         String excludeName = "믹스견";
         List<Breeds> breeds = breedsRepository.findByNameNotContaining(excludeName);

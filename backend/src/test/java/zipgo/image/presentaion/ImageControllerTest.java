@@ -77,7 +77,7 @@ class ImageControllerTest {
         return MockMvcRestDocumentationWrapper.document("사진 등록 - 성공",
                 문서_정보,
                 requestHeaders(headerWithName("Authorization").description("인증을 위한 JWT")),
-                requestParts(partWithName("imageUrl").description("반려견 사진")),
+                requestParts(partWithName("image").description("반려견 사진")),
                 responseFields(fieldWithPath("imageUrl").description("사진 링크").type(JsonFieldType.STRING))
         );
     }
