@@ -38,3 +38,7 @@ out/
 
 ### VS Code ###
 .vscode/
+
+### logs ###
+/logs
+/was-logs
