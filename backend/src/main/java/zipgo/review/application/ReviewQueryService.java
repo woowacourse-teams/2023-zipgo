@@ -24,7 +24,7 @@ import zipgo.review.domain.type.StoolCondition;
 import zipgo.review.domain.type.TastePreference;
 import zipgo.review.dto.response.GetReviewMetadataResponse;
 import zipgo.review.dto.response.GetReviewMetadataResponse.Metadata;
-import zipgo.review.dto.response.GetReviewSummaryResponse;
+import zipgo.review.dto.response.GetReviewsSummaryResponse;
 import zipgo.review.dto.response.GetReviewsResponse;
 import zipgo.review.dto.response.RatingSummaryElement;
 import zipgo.review.dto.response.SummaryElement;
@@ -85,7 +85,7 @@ public class ReviewQueryService {
                 .toList();
     }
 
-    public GetReviewSummaryResponse getReviewsSummary(Long petFoodId) {
+    public GetReviewsSummaryResponse getReviewsSummary(Long petFoodId) {
         PetFood petFood = petFoodQueryRepository.findPetFoodWithReviewsByPetFoodId(petFoodId);
         List<Review> reviews = petFood.getReviews().getReviews();
 
@@ -97,7 +97,7 @@ public class ReviewQueryService {
         List<SummaryElement> stoolCondition = summarizeStoolCondition(reviews, reviewSize);
         List<SummaryElement> adverseReaction = summarizeAdverseReaction(reviews);
         
-        return GetReviewSummaryResponse.of(rating, tastePreference, stoolCondition, adverseReaction);
+        return GetReviewsSummaryResponse.of(rating, tastePreference, stoolCondition, adverseReaction);
     }
 
     private List<SummaryElement> summarizeRating(List<Review> reviews, int reviewSize) {
