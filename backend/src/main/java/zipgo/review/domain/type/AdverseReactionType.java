@@ -2,7 +2,7 @@ package zipgo.review.domain.type;
 
 import java.util.Arrays;
 import lombok.Getter;
-import zipgo.review.exception.TastePreferenceException;
+import zipgo.review.exception.AdverseReactionException;
 
 @Getter
 public enum AdverseReactionType {
@@ -24,7 +24,7 @@ public enum AdverseReactionType {
         return Arrays.stream(values())
                 .filter(value -> value.getDescription().equals(tastePreference))
                 .findAny()
-                .orElseThrow(TastePreferenceException.NotFound::new);
+                .orElseThrow(AdverseReactionException.NotFound::new);
     }
 
 }
