@@ -2,7 +2,6 @@ package zipgo.pet.domain;
 
 import java.util.Arrays;
 import lombok.RequiredArgsConstructor;
-import zipgo.pet.exception.PetAgeNotFoundException;
 import zipgo.pet.exception.PetGenderNotFoundException;
 
 @RequiredArgsConstructor

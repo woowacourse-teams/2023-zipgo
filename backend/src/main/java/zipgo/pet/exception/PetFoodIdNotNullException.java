@@ -1,10 +1,9 @@
 package zipgo.pet.exception;
 
-import org.springframework.http.HttpStatus;
 import zipgo.common.error.ErrorCode;
 import zipgo.common.error.ZipgoException;
 
-import static org.springframework.http.HttpStatus.*;
+import static org.springframework.http.HttpStatus.BAD_REQUEST;
 
 public class PetFoodIdNotNullException extends ZipgoException {
 

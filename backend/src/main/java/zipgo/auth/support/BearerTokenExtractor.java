@@ -2,7 +2,6 @@ package zipgo.auth.support;
 
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.NoArgsConstructor;
-import zipgo.auth.exception.AuthForbiddenException;
 import zipgo.auth.exception.TokenInvalidException;
 
 import static lombok.AccessLevel.PRIVATE;

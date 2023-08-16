@@ -11,7 +11,6 @@ import zipgo.brand.domain.repository.BrandRepository;
 import zipgo.common.error.ZipgoException;
 import zipgo.common.repository.RepositoryTest;
 import zipgo.petfood.domain.PetFood;
-import zipgo.petfood.exception.PetFoodNotFoundException;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;

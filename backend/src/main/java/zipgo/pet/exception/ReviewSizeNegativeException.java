@@ -1,6 +1,5 @@
 package zipgo.pet.exception;
 
-import org.springframework.http.HttpStatus;
 import zipgo.common.error.ErrorCode;
 import zipgo.common.error.ZipgoException;
 

@@ -21,7 +21,6 @@ import zipgo.auth.exception.OAuthTokenNotBringException;
 import zipgo.auth.infra.kakao.config.KakaoCredentials;
 import zipgo.auth.infra.kakao.dto.KakaoMemberResponse;
 import zipgo.auth.infra.kakao.dto.KakaoTokenResponse;
-import zipgo.common.error.ZipgoException;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;

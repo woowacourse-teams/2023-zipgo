@@ -6,7 +6,6 @@ import org.junit.jupiter.api.DisplayNameGeneration;
 import org.junit.jupiter.api.DisplayNameGenerator;
 import org.junit.jupiter.api.Test;
 import zipgo.auth.exception.TokenExpiredException;
-import zipgo.auth.exception.OAuthTokenNotBringException;
 import zipgo.auth.exception.TokenInvalidException;
 import zipgo.common.config.JwtCredentials;
 

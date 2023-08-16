@@ -16,7 +16,6 @@ import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.web.servlet.MockMvc;
 import zipgo.auth.application.AuthService;
 import zipgo.auth.exception.OAuthTokenNotBringException;
-import zipgo.auth.exception.TokenInvalidException;
 import zipgo.auth.support.JwtProvider;
 import zipgo.member.application.MemberQueryService;
 

@@ -5,8 +5,6 @@ import com.querydsl.jpa.impl.JPAQueryFactory;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
-import zipgo.pet.exception.PetFoodIdNotNullException;
-import zipgo.pet.exception.ReviewSizeNegativeException;
 import zipgo.review.domain.Review;
 
 import static zipgo.review.domain.QReview.review;
