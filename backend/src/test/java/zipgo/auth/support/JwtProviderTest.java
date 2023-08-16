@@ -5,7 +5,9 @@ import java.util.Date;
 import org.junit.jupiter.api.DisplayNameGeneration;
 import org.junit.jupiter.api.DisplayNameGenerator;
 import org.junit.jupiter.api.Test;
-import zipgo.auth.exception.AuthException;
+import zipgo.auth.exception.TokenExpiredException;
+import zipgo.auth.exception.OAuthTokenNotBringException;
+import zipgo.auth.exception.TokenInvalidException;
 import zipgo.common.config.JwtCredentials;
 
 import static io.jsonwebtoken.SignatureAlgorithm.HS256;
@@ -51,8 +53,8 @@ class JwtProviderTest {
     void 유효하지_않은_토큰의_형식으로_payload를_조회할_경우_예외가_발생한다() {
         // expect
         assertThatThrownBy(() -> jwtProvider.getPayload("형식에맞지않는토큰"))
-                .isInstanceOf(AuthException.class)
-                .hasMessageContaining("JWT 서명이 잘못되었습니다");
+                .isInstanceOf(TokenInvalidException.class)
+                .hasMessageContaining("잘못된 토큰입니다. 올바른 토큰으로 다시 시도해주세요.");
     }
 
     @Test
@@ -67,8 +69,8 @@ class JwtProviderTest {
 
         // expect
         assertThatThrownBy(() -> jwtProvider.getPayload(만료된_토큰))
-                .isInstanceOf(AuthException.class)
-                .hasMessageContaining("유효기간이 만료된 토큰입니다");
+                .isInstanceOf(TokenExpiredException.class)
+                .hasMessageContaining("만료된 토큰입니다. 올바른 토큰으로 다시 시도해주세요.");
     }
 
     @Test
@@ -86,8 +88,8 @@ class JwtProviderTest {
 
         // then
         assertThatThrownBy(() -> jwtProvider.getPayload(다른_키로_만든_토큰))
-                .isInstanceOf(AuthException.class)
-                .hasMessageContaining("토큰의 서명 유효성 검사가 실패했습니다");
+                .isInstanceOf(TokenInvalidException.class)
+                .hasMessageContaining("잘못된 토큰입니다. 올바른 토큰으로 다시 시도해주세요.");
     }
 
     @Test
@@ -114,8 +116,8 @@ class JwtProviderTest {
 
         // expect
         assertThatThrownBy(() -> 유효기간이_지난_jwtProvider.validateParseJws(토큰))
-                .isInstanceOf(AuthException.class)
-                .hasMessageContaining("유효기간이 만료된 토큰입니다");
+                .isInstanceOf(TokenExpiredException.class)
+                .hasMessageContaining("만료된 토큰입니다. 올바른 토큰으로 다시 시도해주세요.");
     }
 
 }

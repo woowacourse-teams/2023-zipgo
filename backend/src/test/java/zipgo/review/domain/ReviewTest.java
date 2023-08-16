@@ -4,7 +4,9 @@ import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
-import zipgo.auth.exception.AuthException;
+import zipgo.auth.exception.AuthForbiddenException;
+import zipgo.auth.exception.OAuthTokenNotBringException;
+import zipgo.auth.exception.TokenInvalidException;
 import zipgo.member.domain.Member;
 import zipgo.pet.domain.Pet;
 import zipgo.petfood.domain.PetFood;
@@ -26,7 +28,7 @@ class ReviewTest {
 
         //expect
         assertThatThrownBy(() -> 리뷰.validateOwner(다른_회원의_아이디))
-                .isInstanceOf(AuthException.Forbidden.class);
+                .isInstanceOf(AuthForbiddenException.class);
     }
 
     private Review 리뷰_작성(Member 작성자) {

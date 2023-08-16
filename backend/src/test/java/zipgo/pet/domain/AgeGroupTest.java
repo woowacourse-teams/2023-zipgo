@@ -9,7 +9,7 @@ import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
 import org.junit.jupiter.params.provider.ValueSource;
-import zipgo.pet.exception.PetException;
+import zipgo.pet.exception.PetAgeNotFoundException;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
@@ -57,7 +57,7 @@ class AgeGroupTest {
     void 나이_그룹에_속하지_않는_수는_예외가_발생한다(int age) {
         // expect
         assertThatThrownBy(() -> AgeGroup.from(age))
-                .isInstanceOf(PetException.AgeNotFound.class)
+                .isInstanceOf(PetAgeNotFoundException.class)
                 .hasMessageContaining("분류에 속하지 않는 나이입니다.");
     }
 

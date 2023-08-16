@@ -2,7 +2,8 @@ package zipgo.pet.domain;
 
 import java.util.Arrays;
 import lombok.RequiredArgsConstructor;
-import zipgo.pet.exception.PetException;
+import zipgo.pet.exception.PetAgeNotFoundException;
+import zipgo.pet.exception.PetGenderNotFoundException;
 
 @RequiredArgsConstructor
 public enum Gender {
@@ -17,7 +18,7 @@ public enum Gender {
         return Arrays.stream(values())
                 .filter(gender -> gender.value.equals(other))
                 .findFirst()
-                .orElseThrow(PetException.GenderNotFound::new);
+                .orElseThrow(PetGenderNotFoundException::new);
     }
 
 }

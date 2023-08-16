@@ -11,7 +11,8 @@ import io.jsonwebtoken.security.SignatureException;
 import java.util.Date;
 import javax.crypto.SecretKey;
 import org.springframework.stereotype.Component;
-import zipgo.auth.exception.AuthException;
+import zipgo.auth.exception.TokenExpiredException;
+import zipgo.auth.exception.TokenInvalidException;
 import zipgo.common.config.JwtCredentials;
 
 import static io.jsonwebtoken.security.Keys.hmacShaKeyFor;
@@ -50,13 +51,13 @@ public class JwtProvider {
                     .build()
                     .parseClaimsJws(token);
         } catch (MalformedJwtException e) {
-            throw new AuthException("JWT 서명이 잘못되었습니다.", e);
+            throw new TokenInvalidException();
         } catch (ExpiredJwtException e) {
-            throw new AuthException("유효기간이 만료된 토큰입니다.", e);
+            throw new TokenExpiredException();
         } catch (SignatureException e) {
-            throw new AuthException("토큰의 서명 유효성 검사가 실패했습니다.", e);
+            throw new TokenInvalidException();
         } catch (Exception e) {
-            throw new AuthException("토큰의 알 수 없는 문제가 발생했습니다.", e);
+            throw new TokenInvalidException();
         }
     }
 

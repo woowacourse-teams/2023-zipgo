@@ -6,7 +6,7 @@ import java.time.Year;
 import java.util.Arrays;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
-import zipgo.pet.exception.PetException;
+import zipgo.pet.exception.PetAgeNotFoundException;
 
 @Getter
 @AllArgsConstructor
@@ -25,7 +25,7 @@ public enum AgeGroup {
         return Arrays.stream(values())
                 .filter(ageGroup -> ageGroup.greaterThanOrEqual <= age && age < ageGroup.lessThan)
                 .findFirst()
-                .orElseThrow(PetException.AgeNotFound::new);
+                .orElseThrow(PetAgeNotFoundException::new);
     }
 
     public static AgeGroup from(Long id) {

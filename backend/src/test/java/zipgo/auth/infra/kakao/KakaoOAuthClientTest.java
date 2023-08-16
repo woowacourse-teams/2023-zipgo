@@ -16,10 +16,12 @@ import org.springframework.util.MultiValueMap;
 import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.RestTemplate;
 import zipgo.auth.application.dto.OAuthMemberResponse;
-import zipgo.auth.exception.AuthException;
+import zipgo.auth.exception.OAuthResourceNotBringException;
+import zipgo.auth.exception.OAuthTokenNotBringException;
 import zipgo.auth.infra.kakao.config.KakaoCredentials;
 import zipgo.auth.infra.kakao.dto.KakaoMemberResponse;
 import zipgo.auth.infra.kakao.dto.KakaoTokenResponse;
+import zipgo.common.error.ZipgoException;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
@@ -101,8 +103,8 @@ class KakaoOAuthClientTest {
 
             // expect
             assertThatThrownBy(() -> kakaoOAuthClient.getAccessToken("authCode"))
-                    .isInstanceOf(AuthException.ResourceNotFound.class)
-                    .hasMessageContaining("카카오 토큰을 가져오는 데 실패했습니다.");
+                    .isInstanceOf(OAuthTokenNotBringException.class)
+                    .hasMessageContaining( "서드파티 서비스에서 토큰을 받아오지 못했습니다. 잠시후 다시 시도해주세요.");
         }
 
         @Test
@@ -118,8 +120,8 @@ class KakaoOAuthClientTest {
 
             // expect
             assertThatThrownBy(() -> kakaoOAuthClient.getMember("accessToken"))
-                    .isInstanceOf(AuthException.ResourceNotFound.class)
-                    .hasMessageContaining("카카오 사용자 정보를 가져오는 데 실패했습니다");
+                    .isInstanceOf(OAuthResourceNotBringException.class)
+                    .hasMessageContaining("서드파티 서비스에서 정보를 받아오지 못했습니다. 잠시후 다시 시도해주세요.");
         }
 
     }

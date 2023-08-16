@@ -3,7 +3,8 @@ package zipgo.pet.domain;
 import org.junit.jupiter.api.DisplayNameGeneration;
 import org.junit.jupiter.api.DisplayNameGenerator;
 import org.junit.jupiter.api.Test;
-import zipgo.pet.exception.PetException;
+import zipgo.pet.exception.PetAgeNotFoundException;
+import zipgo.pet.exception.PetGenderNotFoundException;
 
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
@@ -18,7 +19,7 @@ class GenderTest {
 
         // expect
         assertThatThrownBy(() -> Gender.from(존재하지_않는_성별))
-                .isInstanceOf(PetException.GenderNotFound.class)
+                .isInstanceOf(PetGenderNotFoundException.class)
                 .hasMessageContaining("존재하지 않는 성별입니다.");
     }
 
