@@ -31,6 +31,7 @@ export const useAuthMutation = () => {
     mutationFn: loginZipgoAuth,
     onSuccess({ accessToken, authResponse }) {
       localStorage.setItem('auth', accessToken);
+      localStorage.setItem('authResponse', JSON.stringify(authResponse));
       navigate(routerPath.home());
     },
   });

@@ -13,7 +13,9 @@ const ReviewList = () => {
   const { petFoodId } = useValidParams(['petFoodId']);
   const { reviewList } = useReviewListQuery({ petFoodId });
 
-  const authData = localStorage.getItem('auth');
+  const authResponse = localStorage.getItem('authResponse');
+  const { hasPet } = authResponse ? JSON.parse(authResponse) : null;
+
   const goReviewWrite = () => navigate(routerPath.reviewStarRating({ petFoodId }));
 
   if (!reviewList) throw new Error('리뷰 리스트를 찾을 수 없습니다.');
@@ -33,7 +35,7 @@ const ReviewList = () => {
           해당 식품의 첫 번째 리뷰어가 되어보세요!
         </NoReviewText>
       )}
-      {authData !== null && (
+      {hasPet && (
         <ReviewAddButton type="button" aria-label="리뷰 작성" onClick={goReviewWrite}>
           <WriteIconImage src={WriteIcon} alt="" />
         </ReviewAddButton>
