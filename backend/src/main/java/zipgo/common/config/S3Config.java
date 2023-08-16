@@ -13,7 +13,7 @@ public class S3Config {
     @Bean
     public S3Client s3Client() {
         return S3Client.builder()
-                .credentialsProvider(InstanceProfileCredentialsProvider.builder().build())
+                .credentialsProvider(InstanceProfileCredentialsProvider.create())
                 .region(AP_NORTHEAST_2)
                 .build();
     }
