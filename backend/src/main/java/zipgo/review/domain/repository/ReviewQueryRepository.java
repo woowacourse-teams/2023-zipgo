@@ -4,7 +4,7 @@ import java.util.List;
 import zipgo.review.domain.Review;
 import zipgo.review.domain.repository.dto.FindReviewsFilterRequest;
 import zipgo.review.domain.repository.dto.FindReviewsQueryResponse;
-import zipgo.review.domain.repository.dto.ReviewWithHelpfulReaction;
+import zipgo.review.domain.repository.dto.ReviewHelpfulReaction;
 
 public interface ReviewQueryRepository {
 
@@ -12,6 +12,6 @@ public interface ReviewQueryRepository {
 
     List<Review> findReviewWithAdverseReactions(List<Long> reviewIds);
 
-    List<ReviewWithHelpfulReaction> findReviewWithHelpfulReactions(List<Long> reviewIds, Long userId);
+    List<ReviewHelpfulReaction> findReviewWithHelpfulReactions(List<Long> reviewIds, Long userId);
 
 }

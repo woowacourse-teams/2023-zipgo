@@ -4,7 +4,7 @@ import java.util.List;
 import lombok.Builder;
 import zipgo.review.domain.Review;
 import zipgo.review.domain.repository.dto.FindReviewsQueryResponse;
-import zipgo.review.domain.repository.dto.ReviewWithHelpfulReaction;
+import zipgo.review.domain.repository.dto.ReviewHelpfulReaction;
 
 import static java.time.format.DateTimeFormatter.ofPattern;
 
@@ -65,7 +65,7 @@ public record GetReviewResponse(
     }
 
     public static GetReviewResponse of(FindReviewsQueryResponse review, List<String> adverseReactions,
-                                       ReviewWithHelpfulReaction helpfulReaction) {
+                                       ReviewHelpfulReaction helpfulReaction) {
 
         PetSizeResponse petSize = PetSizeResponse.builder().id(review.petSizeId()).name(review.petSizeName()).build();
         BreedResponse breed = BreedResponse.builder().id(review.breedId()).name(review.breedName()).size(petSize)

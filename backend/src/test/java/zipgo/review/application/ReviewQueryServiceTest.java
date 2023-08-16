@@ -1,6 +1,7 @@
 package zipgo.review.application;
 
 import java.util.List;
+import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import zipgo.brand.domain.Brand;
@@ -18,7 +19,7 @@ import zipgo.petfood.domain.PetFood;
 import zipgo.petfood.domain.repository.PetFoodRepository;
 import zipgo.review.domain.Review;
 import zipgo.review.domain.repository.ReviewRepository;
-import zipgo.review.domain.repository.dto.FindReviewsQueryRequest;
+import zipgo.review.domain.repository.dto.FindReviewsFilterRequest;
 import zipgo.review.dto.response.GetReviewMetadataResponse;
 import zipgo.review.dto.response.GetReviewResponse;
 import zipgo.review.dto.response.GetReviewsResponse;
@@ -66,44 +67,51 @@ class ReviewQueryServiceTest extends QueryServiceTest {
     @Autowired
     private ReviewQueryService reviewQueryService;
 
-    @Test
-    void 사이즈로_리뷰_목록_조회() {
-        //given
-        PetFood 식품 = petFoodRepository.save(모든_영양기준_만족_식품(브랜드_조회하기()));
-        Review 리뷰1 = 리뷰1_생성(식품);
-        Review 리뷰2 = 리뷰2_생성(식품);
-        GetReviewResponse 리뷰1_dto = GetReviewResponse.from(리뷰1);
-        GetReviewResponse 리뷰2_dto = GetReviewResponse.from(리뷰2);
+    @Nested
+    class 리뷰_목록_조회 {
 
-        //when
-        var 요청 = FindReviewsQueryRequest.builder()
-                .petFoodId(식품.getId())
-                .size(2)
-                .sortBy(SortBy.RECENT)
-                .build();
-        GetReviewsResponse 리뷰_리스트 = reviewQueryService.getReviews(요청);
+        @Test
+        void 사이즈로_리뷰_목록_조회() {
+            //given
+            PetFood 식품 = petFoodRepository.save(모든_영양기준_만족_식품(브랜드_조회하기()));
+            Review 리뷰1 = 리뷰1_생성(식품);
+            Review 리뷰2 = 리뷰2_생성(식품);
+            GetReviewResponse 리뷰1_dto = GetReviewResponse.from(리뷰1);
+            GetReviewResponse 리뷰2_dto = GetReviewResponse.from(리뷰2);
 
-        //then
-        assertThat(리뷰_리스트.reviews().size()).isEqualTo(2);
-        assertThat(리뷰_리스트.reviews().get(0)).usingRecursiveComparison().isEqualTo(리뷰2_dto);
-        assertThat(리뷰_리스트.reviews().get(1)).usingRecursiveComparison().isEqualTo(리뷰1_dto);
-    }
+            //when
+            var 요청 = FindReviewsFilterRequest.builder()
+                    .petFoodId(식품.getId())
+                    .size(2)
+                    .sortBy(SortBy.RECENT)
+                    .build();
+            GetReviewsResponse 리뷰_리스트 = reviewQueryService.getReviews(요청);
 
-    private Review 리뷰1_생성(PetFood 식품) {
-        Member 멤버 = memberRepository.save(무민());
-        PetSize 사이즈 = petSizeRepository.save(소형견());
-        Breeds 종류 = breedsRepository.save(견종(사이즈));
-        Pet 반려동물 = petRepository.save(반려동물(멤버, 종류));
-        return reviewRepository.save(극찬_리뷰_생성(반려동물, 식품, List.of("없어요")));
-    }
+            //then
+            System.out.println("리뷰_리스트 = " + 리뷰_리스트);
+            assertThat(리뷰_리스트.reviews().size()).isEqualTo(2);
+            assertThat(리뷰_리스트.reviews().get(0)).usingRecursiveComparison().isEqualTo(리뷰2_dto);
+            assertThat(리뷰_리스트.reviews().get(1)).usingRecursiveComparison().isEqualTo(리뷰1_dto);
+        }
 
-    private Review 리뷰2_생성(PetFood 식품) {
-        PetSize 사이즈 = petSizeRepository.save(소형견());
-        Member 멤버2 = memberRepository.save(멤버_이름("무민2"));
-        Breeds 종류 = breedsRepository.save(견종(사이즈));
-        Pet 반려동물2 = petRepository.save(반려동물(멤버2, 종류));
-        return reviewRepository.save(혹평_리뷰_생성(반려동물2, 식품, List.of(눈물_이상반응().getAdverseReactionType().getDescription(),
-                먹고_토_이상반응().getAdverseReactionType().getDescription())));
+        private Review 리뷰1_생성(PetFood 식품) {
+            Member 멤버 = memberRepository.save(무민());
+            PetSize 사이즈 = petSizeRepository.save(소형견());
+            Breeds 종류 = breedsRepository.save(견종(사이즈));
+            Pet 반려동물 = petRepository.save(반려동물(멤버, 종류));
+            return reviewRepository.save(극찬_리뷰_생성(반려동물, 식품, List.of("없어요")));
+        }
+
+        private Review 리뷰2_생성(PetFood 식품) {
+            PetSize 사이즈 = petSizeRepository.save(소형견());
+            Member 멤버2 = memberRepository.save(멤버_이름("무민2"));
+            Breeds 종류 = breedsRepository.save(견종(사이즈));
+            Pet 반려동물2 = petRepository.save(반려동물(멤버2, 종류));
+            return reviewRepository.save(
+                    혹평_리뷰_생성(반려동물2, 식품, List.of(눈물_이상반응().getAdverseReactionType().getDescription(),
+                            먹고_토_이상반응().getAdverseReactionType().getDescription())));
+        }
+
     }
 
     private Brand 브랜드_조회하기() {

@@ -4,7 +4,7 @@ import java.util.List;
 import java.util.Map;
 import zipgo.review.domain.Review;
 import zipgo.review.domain.repository.dto.FindReviewsQueryResponse;
-import zipgo.review.domain.repository.dto.ReviewWithHelpfulReaction;
+import zipgo.review.domain.repository.dto.ReviewHelpfulReaction;
 
 
 public record GetReviewsResponse(
@@ -18,7 +18,7 @@ public record GetReviewsResponse(
 
     public static GetReviewsResponse of(List<FindReviewsQueryResponse> reviews,
                                         Map<Long, List<String>> reviewIdToAdverseReactions,
-                                        Map<Long, ReviewWithHelpfulReaction> reviewIdToHelpfulReactions) {
+                                        Map<Long, ReviewHelpfulReaction> reviewIdToHelpfulReactions) {
         List<GetReviewResponse> getReviewResponses = reviews.stream()
                 .map(review -> GetReviewResponse.of(review, reviewIdToAdverseReactions.get(review.id()),
                         reviewIdToHelpfulReactions.get(review.id())))

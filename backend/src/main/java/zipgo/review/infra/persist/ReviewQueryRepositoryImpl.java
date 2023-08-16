@@ -17,7 +17,7 @@ import zipgo.review.domain.repository.ReviewQueryRepository;
 import zipgo.review.domain.repository.dto.FindReviewsFilterRequest;
 import zipgo.review.domain.repository.dto.FindReviewsQueryResponse;
 import zipgo.review.domain.repository.dto.QFindReviewsQueryResponse;
-import zipgo.review.domain.repository.dto.ReviewWithHelpfulReaction;
+import zipgo.review.domain.repository.dto.ReviewHelpfulReaction;
 
 import static zipgo.pet.domain.QBreeds.breeds;
 import static zipgo.pet.domain.QPet.pet;
@@ -136,7 +136,7 @@ public class ReviewQueryRepositoryImpl implements ReviewQueryRepository {
     }
 
     @Override
-    public List<ReviewWithHelpfulReaction> findReviewWithHelpfulReactions(List<Long> reviewIds, Long memberId) {
+    public List<ReviewHelpfulReaction> findReviewWithHelpfulReactions(List<Long> reviewIds, Long memberId) {
         List<Long> reviewIdsReactedByMember = queryFactory.select(review.id)
                 .from(helpfulReaction)
                 .join(helpfulReaction.review, review)
@@ -153,7 +153,7 @@ public class ReviewQueryRepositoryImpl implements ReviewQueryRepository {
         return idToCount.stream().map(tuple -> {
             Long reviewId = tuple.get(review.id);
             Long count = tuple.get(review.helpfulReactions.size()).longValue();
-            return new ReviewWithHelpfulReaction(reviewId, count, reviewIdsReactedByMember.contains(reviewId));
+            return new ReviewHelpfulReaction(reviewId, count, reviewIdsReactedByMember.contains(reviewId));
         }).toList();
     }
 

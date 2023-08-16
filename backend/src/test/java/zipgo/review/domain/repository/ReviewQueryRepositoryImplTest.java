@@ -33,7 +33,7 @@ import zipgo.review.domain.HelpfulReaction;
 import zipgo.review.domain.Review;
 import zipgo.review.domain.repository.dto.FindReviewsFilterRequest;
 import zipgo.review.domain.repository.dto.FindReviewsQueryResponse;
-import zipgo.review.domain.repository.dto.ReviewWithHelpfulReaction;
+import zipgo.review.domain.repository.dto.ReviewHelpfulReaction;
 import zipgo.review.domain.type.AdverseReactionType;
 
 import static java.util.Collections.emptyList;
@@ -570,7 +570,7 @@ class ReviewQueryRepositoryImplTest {
 
             //then
             assertThat(리뷰_목록)
-                    .extracting(ReviewWithHelpfulReaction::reacted)
+                    .extracting(ReviewHelpfulReaction::reacted)
                     .allMatch(reacted -> reacted);
         }
 
