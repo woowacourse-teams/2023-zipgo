@@ -25,7 +25,7 @@ import static lombok.EqualsAndHashCode.Include;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor(access = PROTECTED)
-@EqualsAndHashCode(onlyExplicitlyIncluded = true, callSuper = true)
+@EqualsAndHashCode(onlyExplicitlyIncluded = true, callSuper = false)
 public class AdverseReaction extends BaseTimeEntity {
 
     @Id
