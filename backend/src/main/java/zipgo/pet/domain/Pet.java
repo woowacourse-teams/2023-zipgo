@@ -58,4 +58,24 @@ public class Pet extends BaseTimeEntity {
 
     private String imageUrl;
 
+    public void updateName(String name) {
+        this.name = name;
+    }
+
+    public void updateBirthYear(String name) {
+        this.name = name;
+    }
+
+    public void updateBreeds(Breeds breeds) {
+        this.breeds = breeds;
+    }
+
+    public void updateWeight(double weight) {
+        this.weight = weight;
+    }
+
+    public void updateImageUrl(String imageUrl) {
+        this.imageUrl = imageUrl;
+    }
+
 }
