@@ -1,5 +1,6 @@
 package zipgo.pet.application;
 
+import java.time.Year;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import zipgo.common.service.ServiceTest;
@@ -12,9 +13,12 @@ import zipgo.pet.domain.repository.BreedsRepository;
 import zipgo.pet.domain.repository.PetRepository;
 import zipgo.pet.domain.repository.PetSizeRepository;
 import zipgo.pet.presentation.dto.request.CreatePetRequest;
+import zipgo.pet.presentation.dto.request.UpdatePetRequest;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.junit.jupiter.api.Assertions.assertAll;
+import static zipgo.pet.domain.Gender.MALE;
 
 
 class PetServiceTest extends ServiceTest {
@@ -42,15 +46,44 @@ class PetServiceTest extends ServiceTest {
         Member 가비 = 멤버_등록("가비");
 
         // when
-        Long petId = petService.createPet(가비.getId(), 반려견_등록_요청("갈비"));
+        Long petId = petService.createPet(가비.getId(), 반려견_등록_요청("쫑이"));
 
         // then
-        Pet 반려견 = petRepository.findById(petId).get();
+        Pet 쫑이 = petRepository.findById(petId).get();
         assertAll(
-                () -> assertThat(반려견.getOwner().getName()).isEqualTo("가비"),
-                () -> assertThat(반려견.getName()).isEqualTo("갈비"),
-                () -> assertThat(반려견.getBreeds().getName()).isEqualTo("포메라니안")
+                () -> assertThat(쫑이.getOwner().getName()).isEqualTo("가비"),
+                () -> assertThat(쫑이.getName()).isEqualTo("쫑이"),
+                () -> assertThat(쫑이.getBreeds().getName()).isEqualTo("포메라니안")
         );
+    }
+
+    @Test
+    void 반려견_정보를_수정할_수_있다() {
+        // given
+        Pet 생성된_쫑이 = 쫑이_등록하기();
+        Long 쫑이_주인_id = 생성된_쫑이.getOwner().getId();
+
+        // when
+        petService.updatePet(쫑이_주인_id, 생성된_쫑이.getId(), 반려견_몸무게_수정_요청("쫑이", 80.0));
+
+        // then
+        Pet 쫑이 = petRepository.findById(생성된_쫑이.getId()).get();
+        assertAll(
+                () -> assertThat(쫑이.getName()).isEqualTo("쫑이"),
+                () -> assertThat(쫑이.getWeight()).isEqualTo(80.0)
+        );
+    }
+
+    @Test
+    void 수정시_반려견과_주인이_일치하지_않으면_예외가_발생한다() {
+        // given
+        Pet 쫑이 = 쫑이_등록하기();
+        Long 다른사람_id = 99999L;
+
+        // expect
+        assertThatThrownBy(() -> petService.updatePet(다른사람_id, 쫑이.getId(), 반려견_몸무게_수정_요청("쫑이", 80.0)))
+                .isInstanceOf(IllegalArgumentException.class)
+                .hasMessageContaining("반려견과 주인이 일치하지 않습니다");
     }
 
     private PetSize 소형견_등록() {
@@ -70,12 +103,32 @@ class PetServiceTest extends ServiceTest {
     }
 
     private CreatePetRequest 반려견_등록_요청(String 반려견_이름) {
-        return new CreatePetRequest(반려견_이름,"남", 반려견_이름 + "img" ,5, "포메라니안", "소형견", 65.4);
+        return new CreatePetRequest(반려견_이름, "남", 반려견_이름 + "img", 5, "포메라니안", "소형견", 65.4);
+    }
+
+    private UpdatePetRequest 반려견_몸무게_수정_요청(String 반려견_이름, double 수정할_몸무게) {
+        return new UpdatePetRequest(반려견_이름, "남", 반려견_이름 + "img", 5, "포메라니안", "소형견", 수정할_몸무게);
     }
 
     private Member 멤버_등록(String 이름) {
         Member member = Member.builder().profileImgUrl("사진사진").email(이름 + "@zipgo.com").name(이름).build();
         return memberRepository.save(member);
+    }
+
+    private Pet 쫑이_등록하기() {
+        PetSize 소형견 = 소형견_등록();
+        Breeds 포메라니안 = 품종_등록("포메라니안", 소형견);
+        Member 가비 = 멤버_등록("가비");
+        Pet 쫑이 = Pet.builder()
+                .name("쫑이")
+                .owner(가비)
+                .gender(MALE)
+                .breeds(포메라니안)
+                .birthYear(Year.of(2005))
+                .imageUrl("쫑이_사진")
+                .weight(35.5)
+                .build();
+        return petRepository.save(쫑이);
     }
 
 }
