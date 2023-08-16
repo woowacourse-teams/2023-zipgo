@@ -27,7 +27,7 @@ public class ReviewQueryRepositoryImpl implements ReviewQueryRepository {
     private final JPAQueryFactory queryFactory;
 
     @Override
-    public List<FindReviewsQueryResponse> findReviewsBy(FindReviewsQueryRequest request) {
+    public List<FindReviewsQueryResponse> findReviewsBy(FindReviewsFilterRequest request) {
         Long petFoodId = request.petFoodId();
         int size = request.size();
         Long lastReviewId = request.lastReviewId();
@@ -41,10 +41,9 @@ public class ReviewQueryRepositoryImpl implements ReviewQueryRepository {
                                 review.comment,
                                 review.tastePreference,
                                 review.stoolCondition,
-                                review.adverseReactions,
-                                review.pet.id,
-                                review.pet.name,
-                                review.pet.birthYear,
+                                pet.id,
+                                pet.name,
+                                pet.birthYear,
                                 review.weight,
                                 breeds.id,
                                 breeds.name,

@@ -99,7 +99,7 @@ class ReviewQueryRepositoryImplTest {
             리뷰_여러개_생성(식품);
 
             // when
-            var 요청 = FindReviewsQueryRequest.builder()
+            var 요청 = FindReviewsFilterRequest.builder()
                     .petFoodId(식품.getId())
                     .size(10)
                     .lastReviewId(null)
@@ -144,7 +144,7 @@ class ReviewQueryRepositoryImplTest {
 
             // when
             long 중간에있는_리뷰의_id = 리뷰들.stream().map(Review::getId).sorted().toList().get(4);
-            var 요청 = FindReviewsQueryRequest.builder()
+            var 요청 = FindReviewsFilterRequest.builder()
                     .petFoodId(식품.getId())
                     .size(10)
                     .lastReviewId(중간에있는_리뷰의_id)
@@ -167,7 +167,7 @@ class ReviewQueryRepositoryImplTest {
             리뷰_여러개_생성(식품);
 
             // when
-            var 요청 = FindReviewsQueryRequest.builder()
+            var 요청 = FindReviewsFilterRequest.builder()
                     .petFoodId(식품.getId())
                     .size(20)
                     .sortBy(SortBy.RECENT)
@@ -182,7 +182,7 @@ class ReviewQueryRepositoryImplTest {
         void 결과가_없는경우_빈리스트를_반환한다() {
             //given
             PetFood 식품 = 식품_만들기();
-            var 요청 = FindReviewsQueryRequest.builder()
+            var 요청 = FindReviewsFilterRequest.builder()
                     .petFoodId(식품.getId())
                     .size(10)
                     .sortBy(SortBy.RECENT)
@@ -200,7 +200,7 @@ class ReviewQueryRepositoryImplTest {
             //given
             PetFood 식품 = 식품_만들기();
             리뷰_여러개_생성(식품);
-            var 요청 = FindReviewsQueryRequest.builder()
+            var 요청 = FindReviewsFilterRequest.builder()
                     .petFoodId(식품.getId())
                     .size(10)
                     .lastReviewId(-1L)
@@ -260,7 +260,7 @@ class ReviewQueryRepositoryImplTest {
             별점_리뷰_생성(식품);
 
             //when
-            var 요청 = FindReviewsQueryRequest.builder()
+            var 요청 = FindReviewsFilterRequest.builder()
                     .petFoodId(식품.getId())
                     .size(10)
                     .sortBy(SortBy.RAGING_DESC)
@@ -295,7 +295,7 @@ class ReviewQueryRepositoryImplTest {
             별점_리뷰_생성(식품);
 
             //when
-            var 요청 = FindReviewsQueryRequest.builder()
+            var 요청 = FindReviewsFilterRequest.builder()
                     .petFoodId(식품.getId())
                     .size(10)
                     .sortBy(SortBy.RATING_ASC)
@@ -315,7 +315,7 @@ class ReviewQueryRepositoryImplTest {
             아이디_내림차순으로_도움이_돼요_눌러주기(식품);
 
             //when
-            var 요청 = FindReviewsQueryRequest.builder()
+            var 요청 = FindReviewsFilterRequest.builder()
                     .petFoodId(식품.getId())
                     .size(10)
                     .sortBy(SortBy.HELPFUL)
@@ -348,6 +348,24 @@ class ReviewQueryRepositoryImplTest {
             reviewRepository.saveAll(리뷰들);
         }
 
+        @Test
+        void 도움이_돼요_없어도_조회된다() {
+            //given
+            PetFood 식품 = 식품_만들기();
+            리뷰_여러개_생성(식품);
+            아이디_내림차순으로_도움이_돼요_눌러주기(식품);
+
+            var 요청 = FindReviewsFilterRequest.builder()
+                    .petFoodId(식품.getId())
+                    .size(10)
+                    .sortBy(SortBy.HELPFUL)
+                    .build();
+            var 리뷰_리스트 = reviewQueryRepository.findReviewsBy(요청);
+
+            assertThat(리뷰_리스트)
+                    .hasSize(10);
+        }
+
     }
 
     @Nested
@@ -363,7 +381,7 @@ class ReviewQueryRepositoryImplTest {
             견종_리뷰_생성(식품, 종류);
 
             //when
-            var 요청 = FindReviewsQueryRequest.builder()
+            var 요청 = FindReviewsFilterRequest.builder()
                     .petFoodId(식품.getId())
                     .size(10)
                     .sortBy(SortBy.RECENT)
@@ -411,7 +429,7 @@ class ReviewQueryRepositoryImplTest {
             나이대_리뷰_생성(식품, 2023);
 
             //when
-            var 요청 = FindReviewsQueryRequest.builder()
+            var 요청 = FindReviewsFilterRequest.builder()
                     .petFoodId(식품.getId())
                     .size(10)
                     .sortBy(SortBy.RECENT)
