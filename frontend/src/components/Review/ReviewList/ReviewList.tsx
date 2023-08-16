@@ -13,8 +13,8 @@ const ReviewList = () => {
   const { petFoodId } = useValidParams(['petFoodId']);
   const { reviewList } = useReviewListQuery({ petFoodId });
 
-  const authResponse = localStorage.getItem('authResponse');
-  const { hasPet } = authResponse ? JSON.parse(authResponse) : null;
+  const authResponseJSON = localStorage.getItem('authResponse');
+  const authResponse = authResponseJSON ? JSON.parse(authResponseJSON) : null;
 
   const goReviewWrite = () => navigate(routerPath.reviewStarRating({ petFoodId }));
 
@@ -35,7 +35,7 @@ const ReviewList = () => {
           해당 식품의 첫 번째 리뷰어가 되어보세요!
         </NoReviewText>
       )}
-      {hasPet && (
+      {authResponse && authResponse.hasPet && (
         <ReviewAddButton type="button" aria-label="리뷰 작성" onClick={goReviewWrite}>
           <WriteIconImage src={WriteIcon} alt="" />
         </ReviewAddButton>
