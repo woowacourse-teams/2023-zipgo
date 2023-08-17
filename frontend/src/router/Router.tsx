@@ -9,7 +9,7 @@ import Login from '@/pages/Login/Login';
 import PetProfileAddition from '@/pages/PetProfile/PetProfileAddition';
 import PetProfileAgeAddition from '@/pages/PetProfile/PetProfileAgeAddition';
 import PetProfileBreedAddition from '@/pages/PetProfile/PetProfileBreedAddition';
-import PetProfileEdition from '@/pages/PetProfile/PetProfileEdition';
+import PetProfileEdition from '@/pages/PetProfile/PetProfileEdition/PetProfileEdition';
 import PetProfileGenderAddition from '@/pages/PetProfile/PetProfileGenderAddition';
 import PetProfileImageAddition from '@/pages/PetProfile/PetProfileImageAddition';
 import PetProfileNameAddition from '@/pages/PetProfile/PetProfileNameAddition';
