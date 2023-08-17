@@ -1,6 +1,6 @@
 package zipgo.pet.domain;
 
-import java.time.LocalDateTime;
+import java.time.Year;
 import java.util.stream.Stream;
 import org.junit.jupiter.api.DisplayNameGeneration;
 import org.junit.jupiter.api.DisplayNameGenerator;
@@ -81,7 +81,7 @@ class AgeGroupTest {
     }
 
     public static Stream<Arguments> 연령대별_최소_출생연도() {
-        int 테스트_작성_연도와의_차 = LocalDateTime.now().getYear() - 2023;
+        int 테스트_작성_연도와의_차 = Year.now().getValue() - 2023;
         return Stream.of(
                 Arguments.of(AgeGroup.ADULT, 2017 + 테스트_작성_연도와의_차),
                 Arguments.of(AgeGroup.SENIOR, 1974 + 테스트_작성_연도와의_차),
@@ -99,7 +99,7 @@ class AgeGroupTest {
     }
 
     public static Stream<Arguments> 연령대별_최대_출생연도() {
-        int 테스트_작성_연도와의_차 = LocalDateTime.now().getYear() - 2023;
+        int 테스트_작성_연도와의_차 = Year.now().getValue() - 2023;
         return Stream.of(
                 Arguments.of(AgeGroup.ADULT, 2022 + 테스트_작성_연도와의_차),
                 Arguments.of(AgeGroup.SENIOR, 2016 + 테스트_작성_연도와의_차),

@@ -1,6 +1,5 @@
 package zipgo.review.domain.repository;
 
-import java.time.LocalDateTime;
 import java.time.Year;
 import java.util.List;
 import java.util.stream.Stream;
@@ -106,7 +105,7 @@ public class ReviewRepositoryTest extends RepositoryTest {
     }
 
     public static Stream<Arguments> 생년별_나이() {
-        int 테스트_작성_연도와의_차 = LocalDateTime.now().getYear() - 2023;
+        int 테스트_작성_연도와의_차 = Year.now().getValue() - 2023;
         return Stream.of(
                 Arguments.of(1990, 33 + 테스트_작성_연도와의_차),
                 Arguments.of(2020, 3 + 테스트_작성_연도와의_차),
