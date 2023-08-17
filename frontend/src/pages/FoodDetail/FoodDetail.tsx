@@ -156,7 +156,7 @@ const NutritionText = styled.p`
 
 const FunctionalList = styled.div`
   display: flex;
-  flex-wrap: nowrap;
+  flex-wrap: wrap;
   gap: 0.8rem;
 `;
 

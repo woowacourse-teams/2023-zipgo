@@ -33,6 +33,7 @@ const ToolTip = (props: ToolTipProps) => {
 
   return (
     <ToolTipWrapper>
+      <BackDrop />
       {!showBubbleOnly && (
         <ToolTipContainer type="button" onClick={onClickToolTip}>
           <img src={ToolTipButton} alt="tooltip" />
@@ -52,6 +53,15 @@ export default ToolTip;
 
 interface BubbleWrapperProps
   extends StyledProps<Pick<ToolTipProps, 'width' | 'direction' | 'left' | 'edgeLeft'>> {}
+
+const BackDrop = styled.div`
+  position: fixed;
+  z-index: 1;
+  inset: 0;
+
+  width: 100vw;
+  height: 100vh;
+`;
 
 const ToolTipWrapper = styled.div`
   position: absolute;
