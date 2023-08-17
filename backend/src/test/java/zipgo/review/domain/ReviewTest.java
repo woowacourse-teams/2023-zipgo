@@ -8,6 +8,7 @@ import zipgo.auth.exception.AuthException;
 import zipgo.member.domain.Member;
 import zipgo.pet.domain.Pet;
 import zipgo.petfood.domain.PetFood;
+import zipgo.review.exception.ReviewSelfReactedException;
 import zipgo.review.fixture.ReviewFixture;
 
 import static java.util.Collections.emptyList;

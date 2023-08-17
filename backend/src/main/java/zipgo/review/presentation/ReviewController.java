@@ -84,7 +84,7 @@ public class ReviewController {
         return ResponseEntity.ok(metadata);
     }
 
-    @PostMapping("/reviews/{reviewId}/helpful-reactions")
+    @PostMapping("/{reviewId}/helpful-reactions")
     public ResponseEntity<Void> createHelpfulReaction(
             @Auth AuthDto authDto,
             @PathVariable Long reviewId
@@ -93,7 +93,7 @@ public class ReviewController {
         return ResponseEntity.ok().build();
     }
 
-    @DeleteMapping("/reviews/{reviewId}/helpful-reactions")
+    @DeleteMapping("/{reviewId}/helpful-reactions")
     public ResponseEntity<Void> deleteHelpfulReaction(
             @Auth AuthDto authDto,
             @PathVariable Long reviewId
