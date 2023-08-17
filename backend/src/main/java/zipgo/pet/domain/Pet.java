@@ -6,6 +6,7 @@ import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToOne;
 import java.time.Year;
 import lombok.AccessLevel;
@@ -46,7 +47,7 @@ public class Pet extends BaseTimeEntity {
     @Column(nullable = false)
     private Year birthYear;
 
-    @OneToOne(fetch = LAZY)
+    @ManyToOne(fetch = LAZY)
     @JoinColumn(nullable = false)
     private Breeds breeds;
 
@@ -82,6 +83,10 @@ public class Pet extends BaseTimeEntity {
         if (!this.owner.equals(other)) {
             throw new IllegalArgumentException("반려견과 주인이 일치하지 않습니다.");
         }
+    }
+
+    public int calculateCurrentAge() {
+        return Year.now().getValue() - birthYear.getValue();
     }
 
 }

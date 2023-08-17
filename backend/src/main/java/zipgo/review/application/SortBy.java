@@ -15,4 +15,13 @@ public enum SortBy {
     private final Long id;
     private final String name;
 
+    public static SortBy from(Long id) {
+        for (SortBy sortBy : SortBy.values()) {
+            if (sortBy.id.equals(id)) {
+                return sortBy;
+            }
+        }
+        throw new IllegalArgumentException("SortBy에 해당하는 id가 없습니다.");
+    }
+
 }

@@ -5,6 +5,7 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
 import java.util.Map;
+import java.util.function.Function;
 import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -14,20 +15,24 @@ import zipgo.pet.domain.repository.BreedsRepository;
 import zipgo.pet.domain.repository.PetSizeRepository;
 import zipgo.petfood.domain.PetFood;
 import zipgo.petfood.domain.repository.PetFoodQueryRepository;
-import zipgo.review.application.dto.GetReviewQueryRequest;
 import zipgo.review.domain.AdverseReaction;
 import zipgo.review.domain.Review;
 import zipgo.review.domain.repository.ReviewQueryRepository;
 import zipgo.review.domain.repository.ReviewRepository;
+import zipgo.review.domain.repository.dto.FindReviewsFilterRequest;
+import zipgo.review.domain.repository.dto.FindReviewsQueryResponse;
+import zipgo.review.domain.repository.dto.ReviewHelpfulReaction;
 import zipgo.review.domain.type.AdverseReactionType;
 import zipgo.review.domain.type.StoolCondition;
 import zipgo.review.domain.type.TastePreference;
 import zipgo.review.dto.response.GetReviewMetadataResponse;
 import zipgo.review.dto.response.GetReviewMetadataResponse.Metadata;
-import zipgo.review.dto.response.GetReviewsSummaryResponse;
 import zipgo.review.dto.response.GetReviewsResponse;
+import zipgo.review.dto.response.GetReviewsSummaryResponse;
 import zipgo.review.dto.response.RatingSummaryElement;
 import zipgo.review.dto.response.SummaryElement;
+
+import static java.util.stream.Collectors.toMap;
 
 @Service
 @RequiredArgsConstructor
@@ -38,13 +43,35 @@ public class ReviewQueryService {
 
     private final ReviewRepository reviewRepository;
     private final ReviewQueryRepository reviewQueryRepository;
+    private final PetFoodQueryRepository petFoodQueryRepository;
     private final BreedsRepository breedsRepository;
     private final PetSizeRepository petSizeRepository;
-    private final PetFoodQueryRepository petFoodQueryRepository;
 
-    public GetReviewsResponse getReviews(GetReviewQueryRequest dto) {
-        List<Review> reviews = reviewQueryRepository.findReviewsBy(dto.petFoodId(), dto.size(), dto.lastReviewId());
-        return GetReviewsResponse.from(reviews);
+    public GetReviewsResponse getReviews(FindReviewsFilterRequest request) {
+        List<FindReviewsQueryResponse> reviews = reviewQueryRepository.findReviewsBy(request);
+
+        Map<Long, List<String>> reviewIdToAdverseReactions = findAdverseReactionsBy(reviews);
+        Map<Long, ReviewHelpfulReaction> reviewIdToHelpfulReactions = findHelpfulReactionsBy(request.memberId(),
+                reviews);
+
+        return GetReviewsResponse.of(reviews, reviewIdToAdverseReactions, reviewIdToHelpfulReactions);
+    }
+
+    private Map<Long, ReviewHelpfulReaction> findHelpfulReactionsBy(Long memberId,
+                                                                    List<FindReviewsQueryResponse> reviews) {
+        List<Long> reviewIds = reviews.stream().map(FindReviewsQueryResponse::id).toList();
+        return reviewQueryRepository.findReviewWithHelpfulReactions(
+                        reviewIds, memberId).stream()
+                .collect(toMap(ReviewHelpfulReaction::reviewId, Function.identity()));
+    }
+
+    private Map<Long, List<String>> findAdverseReactionsBy(List<FindReviewsQueryResponse> reviews) {
+        List<Long> reviewIds = reviews.stream().map(FindReviewsQueryResponse::id).toList();
+        return reviewQueryRepository.findReviewWithAdverseReactions(reviewIds)
+                .stream()
+                .collect(toMap(Review::getId, review -> review.getAdverseReactions().stream()
+                        .map(adverse -> adverse.getAdverseReactionType().getDescription())
+                        .toList()));
     }
 
     public Review getReview(Long reviewId) {
@@ -96,7 +123,7 @@ public class ReviewQueryService {
         List<SummaryElement> tastePreference = summarizeTastePreference(reviews, reviewSize);
         List<SummaryElement> stoolCondition = summarizeStoolCondition(reviews, reviewSize);
         List<SummaryElement> adverseReaction = summarizeAdverseReaction(reviews);
-        
+
         return GetReviewsSummaryResponse.of(rating, tastePreference, stoolCondition, adverseReaction);
     }
 
@@ -158,7 +185,8 @@ public class ReviewQueryService {
         AdverseReactionType[] values = AdverseReactionType.values();
         for (AdverseReactionType value : values) {
             adverseReaction.add(new SummaryElement(value.getDescription(),
-                    groupByAdverseReaction.getOrDefault(value, new ArrayList<>()).size() * PERCENTAGE / allAdverseReaction.size()));
+                    groupByAdverseReaction.getOrDefault(value, new ArrayList<>()).size() * PERCENTAGE
+                            / allAdverseReaction.size()));
         }
         return adverseReaction;
     }
