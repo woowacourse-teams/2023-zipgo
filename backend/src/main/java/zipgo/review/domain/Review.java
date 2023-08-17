@@ -148,4 +148,8 @@ public class Review extends BaseTimeEntity {
                 .anyMatch(reaction -> reaction.getMadeBy().equals(member));
     }
 
+    public void removeReactionBy(Member member) {
+        helpfulReactions.removeIf(reaction -> reaction.getMadeBy().equals(member));
+    }
+
 }

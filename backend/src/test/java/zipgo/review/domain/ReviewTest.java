@@ -91,4 +91,46 @@ class ReviewTest {
 
     }
 
+    @Nested
+    class 도움이돼요_취소 {
+
+        @Test
+        void 도움이_돼요를_취소한다() {
+            //given
+            Member 작성자 = Member.builder().id(1L).build();
+            Review 리뷰 = 리뷰_작성(작성자);
+            Member 회원 = Member.builder()
+                    .id(2L)
+                    .build();
+            리뷰.reactedBy(회원);
+
+            //when
+            리뷰.removeReactionBy(회원);
+
+            //then
+            assertThat(리뷰.getHelpfulReactions())
+                    .extracting(HelpfulReaction::getMadeBy)
+                    .noneMatch(회원::equals);
+        }
+
+        @Test
+        void 누른적없는데_취소한다() {
+            //given
+            Member 작성자 = Member.builder().id(1L).build();
+            Review 리뷰 = 리뷰_작성(작성자);
+            Member 회원 = Member.builder()
+                    .id(2L)
+                    .build();
+
+            //when
+            리뷰.removeReactionBy(회원);
+
+            //then
+            assertThat(리뷰.getHelpfulReactions())
+                    .extracting(HelpfulReaction::getMadeBy)
+                    .noneMatch(회원::equals);
+        }
+
+    }
+
 }
