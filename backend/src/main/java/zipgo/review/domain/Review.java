@@ -131,9 +131,6 @@ public class Review extends BaseTimeEntity {
     }
 
     public boolean isReactedBy(Long memberId) {
-        if (memberId == null) {
-            return false;
-        }
         return helpfulReactions.stream()
                 .anyMatch(reaction -> reaction.getMadeBy().getId().equals(memberId));
     }
