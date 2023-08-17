@@ -64,14 +64,14 @@ export const getReviewSummary = async ({ petFoodId }: GetReviewSummaryReq) => {
 };
 
 export const getReviewsMeta = async () => {
-  const { data } = await client.get<GetReviewsMetaRes>('/reviews/metaData');
+  const { data } = await client.get<GetReviewsMetaRes>('/reviews/metadata');
 
   return data;
 };
 
 export const postHelpfulReactions = async ({ reviewId }: PostHelpfulReactionsReq) => {
   const { data } = await client.post<PostHelpfulReactionsRes>(
-    `/review/${reviewId}/helpfulReactions`,
+    `/reviews/${reviewId}/helpfulReactions`,
   );
 
   return data;
@@ -79,7 +79,7 @@ export const postHelpfulReactions = async ({ reviewId }: PostHelpfulReactionsReq
 
 export const deleteHelpfulReactions = async ({ reviewId }: DeleteHelpfulReactionsReq) => {
   const { data } = await client.delete<DeleteHelpfulReactionsRes>(
-    `/review/${reviewId}/helpfulReactions`,
+    `/reviews/${reviewId}/helpfulReactions`,
   );
 
   return data;
