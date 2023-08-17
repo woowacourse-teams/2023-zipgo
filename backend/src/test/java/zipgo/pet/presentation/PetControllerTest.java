@@ -155,7 +155,7 @@ class PetControllerTest extends AcceptanceTest {
         }
 
         @Test
-        void 반려견과_주인이_맞지_않으면_404_반환한다() {
+        void 반려견과_주인이_맞지_않으면_400_반환한다() {
             // given
             var 쫑이 = 반려견_생성();
             var 토큰 = jwtProvider.create("2");
