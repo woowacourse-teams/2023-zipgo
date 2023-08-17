@@ -553,13 +553,20 @@ public class ReviewControllerTest extends AcceptanceTest {
                     responseFields(
                             fieldWithPath("rating.average").description("리뷰 총 평점").type(JsonFieldType.NUMBER),
                             fieldWithPath("rating.rating[].name").description("rating 이름").type(JsonFieldType.STRING),
-                            fieldWithPath("rating.rating[].percentage").description("rating 해당 백분율").type(JsonFieldType.NUMBER),
-                            fieldWithPath("tastePreference[].name").description("tastePreference 이름").type(JsonFieldType.STRING),
-                            fieldWithPath("tastePreference[].percentage").description("tastePreference 해당 백분율").type(JsonFieldType.NUMBER),
-                            fieldWithPath("stoolCondition[].name").description("stoolCondition 이름").type(JsonFieldType.STRING),
-                            fieldWithPath("stoolCondition[].percentage").description("stoolCondition 해당 백분율").type(JsonFieldType.NUMBER),
-                            fieldWithPath("adverseReaction[].name").description("adverseReaction 이름").type(JsonFieldType.STRING),
-                            fieldWithPath("adverseReaction[].percentage").description("adverseReaction 해당 백분율").type(JsonFieldType.NUMBER)
+                            fieldWithPath("rating.rating[].percentage").description("rating 해당 백분율")
+                                    .type(JsonFieldType.NUMBER),
+                            fieldWithPath("tastePreference[].name").description("tastePreference 이름")
+                                    .type(JsonFieldType.STRING),
+                            fieldWithPath("tastePreference[].percentage").description("tastePreference 해당 백분율")
+                                    .type(JsonFieldType.NUMBER),
+                            fieldWithPath("stoolCondition[].name").description("stoolCondition 이름")
+                                    .type(JsonFieldType.STRING),
+                            fieldWithPath("stoolCondition[].percentage").description("stoolCondition 해당 백분율")
+                                    .type(JsonFieldType.NUMBER),
+                            fieldWithPath("adverseReaction[].name").description("adverseReaction 이름")
+                                    .type(JsonFieldType.STRING),
+                            fieldWithPath("adverseReaction[].percentage").description("adverseReaction 해당 백분율")
+                                    .type(JsonFieldType.NUMBER)
                     ));
         }
 
@@ -576,8 +583,8 @@ public class ReviewControllerTest extends AcceptanceTest {
         @Test
         void 도움이돼요_추가_성공() {
             //given
-            Member 다른_회원 = memberRepository.save(Member.builder().email("도움이돼요_추가할_회원").name("회원명").build());
-            String 다른_회원의_JWT = jwtProvider.create(다른_회원.getId().toString());
+            var 다른_회원 = memberRepository.save(Member.builder().email("도움이돼요_추가할_회원").name("회원명").build());
+            var 다른_회원의_JWT = jwtProvider.create(다른_회원.getId().toString());
 
             var 요청_준비 = given().spec(spec)
                     .contentType(JSON)
@@ -597,8 +604,8 @@ public class ReviewControllerTest extends AcceptanceTest {
         @Test
         void 작성자가_도움이돼요를_추가하면_예외가_발생() {
             //given
-            Long 리뷰_작성자_id = 리뷰.getPet().getOwner().getId();
-            String 리뷰_작성자_JWT = jwtProvider.create(리뷰_작성자_id.toString());
+            var 리뷰_작성자_id = 리뷰.getPet().getOwner().getId();
+            var 리뷰_작성자_JWT = jwtProvider.create(리뷰_작성자_id.toString());
 
             //when
             var 요청_준비 = given().spec(spec)
@@ -621,8 +628,8 @@ public class ReviewControllerTest extends AcceptanceTest {
         @Test
         void 이미_눌렀던_리뷰일_경우() {
             //given
-            Member 다른_회원 = memberRepository.save(Member.builder().email("도움이돼요_추가할_회원").name("회원명").build());
-            String 다른_회원의_JWT = jwtProvider.create(다른_회원.getId().toString());
+            var 다른_회원 = memberRepository.save(Member.builder().email("도움이돼요_추가할_회원").name("회원명").build());
+            var 다른_회원의_JWT = jwtProvider.create(다른_회원.getId().toString());
 
             given().spec(spec).contentType(JSON)
                     .pathParam("reviewId", 리뷰.getId())
@@ -666,8 +673,8 @@ public class ReviewControllerTest extends AcceptanceTest {
         @Test
         void 도움이돼요_취소_성공() {
             //given
-            Member 다른_회원 = memberRepository.save(Member.builder().email("도움이돼요_추가할_회원").name("회원명").build());
-            String 다른_회원의_JWT = jwtProvider.create(다른_회원.getId().toString());
+            var 다른_회원 = memberRepository.save(Member.builder().email("도움이돼요_추가할_회원").name("회원명").build());
+            var 다른_회원의_JWT = jwtProvider.create(다른_회원.getId().toString());
 
             given().spec(spec).contentType(JSON)
                     .pathParam("reviewId", 리뷰.getId())
@@ -691,8 +698,8 @@ public class ReviewControllerTest extends AcceptanceTest {
         @Test
         void 누르지_않은_리뷰에서_취소() {
             //given
-            Member 다른_회원 = memberRepository.save(Member.builder().email("도움이돼요_추가할_회원").name("회원명").build());
-            String 다른_회원의_JWT = jwtProvider.create(다른_회원.getId().toString());
+            var 다른_회원 = memberRepository.save(Member.builder().email("도움이돼요_추가할_회원").name("회원명").build());
+            var 다른_회원의_JWT = jwtProvider.create(다른_회원.getId().toString());
 
             var 요청_준비 = given().spec(spec)
                     .contentType(JSON)
