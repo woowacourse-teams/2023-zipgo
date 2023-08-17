@@ -26,8 +26,10 @@ export const getReview = async ({ reviewId }: GetReviewReq) => {
   return data;
 };
 
-export const getReviews = async ({ petFoodId }: GetReviewsReq) => {
-  const { data } = await client.get<GetReviewsRes>(`/pet-foods/${petFoodId}/reviews`);
+export const getReviews = async (payload: GetReviewsReq) => {
+  const { data } = await client.get<GetReviewsRes>('/reviews', {
+    params: payload,
+  });
 
   return data;
 };

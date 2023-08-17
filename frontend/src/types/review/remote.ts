@@ -16,6 +16,12 @@ interface GetReviewRes extends Review {}
 
 interface GetReviewsReq {
   petFoodId: string;
+  petSizeId?: string;
+  ageGroupId?: string;
+  breedId?: string;
+  sortBy?: string;
+  size?: number;
+  lastReviewId?: number;
 }
 
 interface GetReviewsRes {

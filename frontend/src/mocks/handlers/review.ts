@@ -33,7 +33,7 @@ const reviewHandlers = [
     res(ctx.status(200)),
   ),
 
-  rest.get(`${BASE_URL}/pet-foods/:petFoodId/reviews`, (req, res, ctx) => {
+  rest.get(`${BASE_URL}/reviews`, (req, res, ctx) => {
     const reviews = reviewFixture.getReviews();
 
     return res(ctx.status(200), ctx.json(reviews));

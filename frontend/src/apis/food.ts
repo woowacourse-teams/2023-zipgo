@@ -10,9 +10,7 @@ import { client } from '.';
 
 export const getFoodList = async (payload: GetFoodListReq) => {
   const { data } = await client.get<GetFoodListRes>('/pet-foods', {
-    params: {
-      ...payload,
-    },
+    params: payload,
   });
 
   return data;
