@@ -35,9 +35,9 @@ public class PetController {
     @PostMapping
     public ResponseEntity<Void> create(
             @Auth AuthDto authDto,
-            @RequestBody @Valid CreatePetRequest request
+            @RequestBody @Valid CreatePetRequest createPetRequest
     ) {
-        Long petId = petService.createPet(authDto.id(), request);
+        Long petId = petService.createPet(authDto.id(), createPetRequest.toDto());
         return ResponseEntity.created(URI.create("/pets/" + petId)).build();
     }
 
@@ -45,9 +45,9 @@ public class PetController {
     public ResponseEntity<Void> update(
             @Auth AuthDto authDto,
             @PathVariable("petId") Long petId,
-            @RequestBody @Valid UpdatePetRequest request
+            @RequestBody @Valid UpdatePetRequest updatePetRequest
     ) {
-        petService.updatePet(authDto.id(), petId, request);
+        petService.updatePet(authDto.id(), petId, updatePetRequest.toDto());
         return ResponseEntity.noContent().build();
     }
 

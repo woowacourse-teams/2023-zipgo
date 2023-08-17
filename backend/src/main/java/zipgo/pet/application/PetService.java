@@ -5,14 +5,13 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import zipgo.member.domain.Member;
 import zipgo.member.domain.repository.MemberRepository;
+import zipgo.pet.application.dto.PetDto;
 import zipgo.pet.domain.Breeds;
 import zipgo.pet.domain.Pet;
 import zipgo.pet.domain.PetSize;
 import zipgo.pet.domain.repository.BreedsRepository;
 import zipgo.pet.domain.repository.PetRepository;
 import zipgo.pet.domain.repository.PetSizeRepository;
-import zipgo.pet.presentation.dto.request.CreatePetRequest;
-import zipgo.pet.presentation.dto.request.UpdatePetRequest;
 
 @Service
 @Transactional
@@ -26,15 +25,22 @@ public class PetService {
     private final BreedsRepository breedsRepository;
     private final PetSizeRepository petSizeRepository;
 
-    public Long createPet(Long memberId, CreatePetRequest request) {
+    public Long createPet(Long memberId, PetDto petDto) {
         Member owner = memberRepository.getById(memberId);
-        PetSize petSize = petSizeRepository.getByName(request.petSize());
-        Breeds breeds = breedsRepository.getByNameAndPetSizeId(request.breed(), petSize.getId());
+        Breeds breeds = findBreeds(petDto);
 
-        Pet pet = request.toEntity(owner, breeds);
+        Pet pet = petDto.toEntity(owner, breeds);
         updateDefaultImage(pet);
 
         return petRepository.save(pet).getId();
+    }
+
+    private Breeds findBreeds(PetDto petDto) {
+        if (petDto.petSize() == null) {
+            return breedsRepository.getByName(petDto.breed());
+        }
+        PetSize petSize = petSizeRepository.getByName(petDto.petSize());
+        return breedsRepository.getByPetSizeAndName(petSize, petDto.breed());
     }
 
     private void updateDefaultImage(Pet pet) {
@@ -43,24 +49,22 @@ public class PetService {
         }
     }
 
-    public void updatePet(Long memberId, Long petId, UpdatePetRequest request) {
+    public void updatePet(Long memberId, Long petId, PetDto petDto) {
         Pet pet = petRepository.getById(petId);
 
         pet.validateOwner(memberId);
 
-        PetSize petSize = petSizeRepository.getByName(request.petSize());
-        Breeds breeds = breedsRepository.getByNameAndPetSizeId(request.breed(), petSize.getId());
-
-        update(request, pet, breeds);
+        Breeds breeds = findBreeds(petDto);
+        update(petDto, pet, breeds);
     }
 
-    private void update(UpdatePetRequest request, Pet pet, Breeds breeds) {
-        pet.updateName(request.name());
-        pet.updateImageUrl(request.imageUrl());
+    private void update(PetDto petDto, Pet pet, Breeds breeds) {
+        pet.updateName(petDto.name());
+        pet.updateImageUrl(petDto.imageUrl());
         updateDefaultImage(pet);
         pet.updateBreeds(breeds);
-        pet.updateBirthYear(request.calculateBirthYear());
-        pet.updateWeight(request.weight());
+        pet.updateBirthYear(petDto.calculateBirthYear());
+        pet.updateWeight(petDto.weight());
     }
 
 }
