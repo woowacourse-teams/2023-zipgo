@@ -36,7 +36,7 @@ public class PetService {
     }
 
     private Breeds findBreeds(PetDto petDto) {
-        if (petDto.petSize() == null) {
+        if (petDto.petSize() == null || petDto.petSize().isBlank()) {
             return breedsRepository.getByName(petDto.breed());
         }
         PetSize petSize = petSizeRepository.getByName(petDto.petSize());

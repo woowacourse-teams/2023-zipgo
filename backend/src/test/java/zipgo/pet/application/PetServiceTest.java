@@ -139,7 +139,6 @@ class PetServiceTest extends ServiceTest {
                 .hasMessageContaining("반려견과 주인이 일치하지 않습니다");
     }
 
-
     private PetSize 견종_크기_등록(String 견종_크기) {
         PetSize petSize = PetSize
                 .builder()
