@@ -20,11 +20,13 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import zipgo.auth.exception.AuthException;
 import zipgo.common.entity.BaseTimeEntity;
+import zipgo.member.domain.Member;
 import zipgo.pet.domain.Pet;
 import zipgo.petfood.domain.PetFood;
 import zipgo.review.domain.type.AdverseReactionType;
 import zipgo.review.domain.type.StoolCondition;
 import zipgo.review.domain.type.TastePreference;
+import zipgo.review.exception.ReviewException;
 
 import static jakarta.persistence.CascadeType.MERGE;
 import static jakarta.persistence.CascadeType.PERSIST;
@@ -128,6 +130,22 @@ public class Review extends BaseTimeEntity {
         int createdYear = getCreatedAt().getYear();
         int birthYear = pet.getBirthYear().getValue();
         return createdYear - birthYear;
+    }
+
+    public void reactedBy(Member member) {
+        if (member.equals(pet.getOwner())) {
+            throw new ReviewException.SelfReacted();
+        }
+        if (isAlreadyReactedBy(member)) {
+            return;
+        }
+        HelpfulReaction helpfulReaction = HelpfulReaction.builder().review(this).madeBy(member).build();
+        helpfulReactions.add(helpfulReaction);
+    }
+
+    private boolean isAlreadyReactedBy(Member member) {
+        return helpfulReactions.stream()
+                .anyMatch(reaction -> reaction.getMadeBy().equals(member));
     }
 
 }
