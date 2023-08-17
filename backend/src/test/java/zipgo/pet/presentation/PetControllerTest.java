@@ -13,11 +13,13 @@ import zipgo.member.domain.repository.MemberRepository;
 import zipgo.pet.domain.Breeds;
 import zipgo.pet.domain.Pet;
 import zipgo.pet.domain.PetSize;
+import zipgo.pet.domain.fixture.BreedsFixture;
 import zipgo.pet.domain.repository.BreedsRepository;
 import zipgo.pet.domain.repository.PetRepository;
 import zipgo.pet.domain.repository.PetSizeRepository;
 import zipgo.pet.presentation.dto.request.CreatePetRequest;
 import zipgo.pet.presentation.dto.request.UpdatePetRequest;
+import zipgo.review.fixture.MemberFixture;
 
 import static com.epages.restdocs.apispec.RestAssuredRestDocumentationWrapper.document;
 import static com.epages.restdocs.apispec.RestAssuredRestDocumentationWrapper.resourceDetails;
@@ -38,6 +40,7 @@ import static org.springframework.restdocs.request.RequestDocumentation.pathPara
 import static zipgo.pet.domain.Gender.MALE;
 import static zipgo.pet.domain.fixture.BreedsFixture.견종_생성;
 import static zipgo.pet.domain.fixture.PetSizeFixture.대형견;
+import static zipgo.pet.domain.fixture.PetSizeFixture.소형견;
 import static zipgo.review.fixture.MemberFixture.멤버_이름;
 
 class PetControllerTest extends AcceptanceTest {
@@ -69,10 +72,29 @@ class PetControllerTest extends AcceptanceTest {
     class 반려동물_등록시 {
 
         @Test
-        void 성공하면_201_반환한다() {
+        void 성공하면_201_반환한다_허스키() {
             // given
             var token = jwtProvider.create("1");
-            var 반려견_생성_요청 = new CreatePetRequest("상근이", "남", "아기사진", 3, "시베리안 허스키", "대형견", 57.8);
+            var 반려견_생성_요청 = new CreatePetRequest("상근이", "남", "아기사진", 3, "시베리안 허스키", "", 57.8);
+            var 요청_준비 = given(spec).header("Authorization", "Bearer " + token).body(반려견_생성_요청)
+                    .contentType(JSON).filter(반려동물_등록_성공_API_문서_생성());
+
+            // when
+            var 응답 = 요청_준비.when().post("/pets");
+
+            // then
+            응답.then().statusCode(CREATED.value());
+        }
+
+        @Test
+        void 성공하면_201_반환한다_믹스견() {
+            // given
+            대형견 = petSizeRepository.save(대형견());
+            var 소형견 = petSizeRepository.save(소형견());
+            breedsRepository.save(견종_생성("믹스견", 대형견));
+            breedsRepository.save(견종_생성("믹스견", 소형견));
+            var token = jwtProvider.create("1");
+            var 반려견_생성_요청 = new CreatePetRequest("나만의소중한", "남", "아기사진", 3, "믹스견", "소형견", 57.8);
             var 요청_준비 = given(spec).header("Authorization", "Bearer " + token).body(반려견_생성_요청)
                     .contentType(JSON).filter(반려동물_등록_성공_API_문서_생성());
 
@@ -145,7 +167,7 @@ class PetControllerTest extends AcceptanceTest {
             var 응답 = 요청_준비.when().put("/pets/{petId}", 쫑이.getId());
 
             // then
-            응답.then().statusCode(BAD_REQUEST.value());
+            응답.then().statusCode(NOT_FOUND.value());
         }
 
         @Test
@@ -162,6 +184,42 @@ class PetControllerTest extends AcceptanceTest {
 
             // then
             응답.then().statusCode(NOT_FOUND.value());
+        }
+
+    }
+
+    @Nested
+    class 반려동물_삭제시 {
+
+        @Test
+        void 성공하면_204를_반환한다() {
+            // given
+            var 쫑이 = 반려견_생성();
+            var 토큰 = jwtProvider.create(String.valueOf(갈비.getId()));
+            var 요청_준비 = given(spec).header("Authorization", "Bearer " + 토큰)
+                    .contentType(JSON).filter(반려동물_삭제_API_성공());
+
+            // when
+            var 응답 = 요청_준비.when().delete("/pets/{petId}", 쫑이.getId());
+
+            // then
+            응답.then().statusCode(NO_CONTENT.value());
+        }
+
+        @Test
+        void 반려견_주인이_일치하지_않으면_예외가_발생한다() {
+            // given
+            var 쫑이 = 반려견_생성();
+            Member 주인_아닌_사람 = memberRepository.save(MemberFixture.무민());
+            var 토큰 = jwtProvider.create(String.valueOf(주인_아닌_사람.getId()));
+            var 요청_준비 = given(spec).header("Authorization", "Bearer " + 토큰)
+                    .contentType(JSON).filter(API_반려동물_삭제_예외응답_문서_생성());
+
+            // when
+            var 응답 = 요청_준비.when().put("/pets/{petId}", 쫑이.getId());
+
+            // then
+            응답.then().statusCode(BAD_REQUEST.value());
         }
 
     }
@@ -188,7 +246,7 @@ class PetControllerTest extends AcceptanceTest {
 
         var 요청_준비 = given(spec)
                 .header("Authorization", "Bearer " + 토큰)
-                .contentType(JSON).filter(사용자_반려동물_조회_API_성공());
+                .contentType(JSON).filter(API_반려동물_삭제_예외응답_문서_생성());
 
         // when
         var 응답 = 요청_준비.when()
@@ -243,6 +301,13 @@ class PetControllerTest extends AcceptanceTest {
         );
     }
 
+    private RestDocumentationFilter 반려동물_삭제_API_성공() {
+        return document("반려동물 삭제 - 성공", resourceDetails().summary("반려동물 삭제하기").description("반려동물을 삭제합니다."),
+                requestHeaders(headerWithName("Authorization").description("인증을 위한 JWT")),
+                pathParameters(parameterWithName("petId").description("반려견 식별자"))
+        );
+    }
+
     private RestDocumentationFilter 견종_목록_조회_API_성공() {
         return document("견종 목록 조회 - 성공", resourceDetails().summary("견종 목록 조회").description("견종 목록을 조회합니다."),
                 responseFields(
@@ -256,7 +321,7 @@ class PetControllerTest extends AcceptanceTest {
         return document("사용자 반려견 조회 - 성공", resourceDetails().summary("사용자의 반려견 조회").description("사용자의 반려견을 조회합니다."),
                 responseFields(
                         fieldWithPath("pets[]").description("반려견 목록").type(JsonFieldType.ARRAY),
-                        fieldWithPath("pets[].petId").description("반려견 식별자").type(JsonFieldType.NUMBER),
+                        fieldWithPath("pets[].id").description("반려견 식별자").type(JsonFieldType.NUMBER),
                         fieldWithPath("pets[].name").description("반려견 이름").type(JsonFieldType.STRING),
                         fieldWithPath("pets[].age").description("반려견 나이").type(JsonFieldType.NUMBER),
                         fieldWithPath("pets[].breed").description("반려견 견종").type(JsonFieldType.STRING),
@@ -270,7 +335,7 @@ class PetControllerTest extends AcceptanceTest {
     private RestDocumentationFilter 반려동물_조회_API_성공() {
         return document("반려견 정보 조회 - 성공", resourceDetails().summary("반려견 정보 조회").description("반려견의 정보를 조회합니다."),
                 responseFields(
-                        fieldWithPath("petId").description("반려견 식별자").type(JsonFieldType.NUMBER),
+                        fieldWithPath("id").description("반려견 식별자").type(JsonFieldType.NUMBER),
                         fieldWithPath("name").description("반려견 이름").type(JsonFieldType.STRING),
                         fieldWithPath("age").description("반려견 나이").type(JsonFieldType.NUMBER),
                         fieldWithPath("breed").description("반려견 견종").type(JsonFieldType.STRING),
@@ -281,7 +346,6 @@ class PetControllerTest extends AcceptanceTest {
                 ));
     }
 
-
     private RestDocumentationFilter API_반려동물_등록_예외응답_문서_생성() {
         return document("반려견 등록 - 실패(없는 견종)", resourceDetails().summary("반려동물 등록하기").description("반려동물을 등록합니다.").responseSchema(에러_응답_형식),
                 requestHeaders(headerWithName("Authorization").description("인증을 위한 JWT")));
@@ -289,6 +353,11 @@ class PetControllerTest extends AcceptanceTest {
 
     private RestDocumentationFilter API_반려동물_수정_예외응답_문서_생성() {
         return document("반려견 수정 - 실패(반려견 주인과 사용자 불일치)", resourceDetails().summary("반려동물 수정하기").description("반려동물을 정보를 수정합니다.").responseSchema(에러_응답_형식),
+                requestHeaders(headerWithName("Authorization").description("인증을 위한 JWT")));
+    }
+
+    private RestDocumentationFilter API_반려동물_삭제_예외응답_문서_생성() {
+        return document("반려견 수정 - 실패(반려견 주인과 사용자 불일치)", resourceDetails().summary("반려동물 삭제하기").description("반려동물 삭제합니다.").responseSchema(에러_응답_형식),
                 requestHeaders(headerWithName("Authorization").description("인증을 위한 JWT")));
     }
 

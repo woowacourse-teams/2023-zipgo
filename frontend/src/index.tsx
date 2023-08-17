@@ -2,6 +2,7 @@ import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import React from 'react';
 import ReactDOM from 'react-dom/client';
 
+import LoadingSpinner from './components/@common/LoadingSpinner';
 import QueryBoundary from './components/@common/QueryBoundary';
 import { startWorker } from './mocks/worker';
 import Router from './router/Router';
@@ -24,7 +25,7 @@ const queryClient = new QueryClient({
 
 const root = ReactDOM.createRoot(document.getElementById('root') as HTMLElement);
 
-const loadingFallback = <div>loading...</div>;
+const loadingFallback = <LoadingSpinner />;
 const errorFallback = ({ reset }: ErrorBoundaryValue) => (
   <button type="button" onClick={reset}>
     retry

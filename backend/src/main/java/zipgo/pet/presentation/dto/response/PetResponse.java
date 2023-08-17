@@ -4,7 +4,7 @@ import java.time.Year;
 import zipgo.pet.domain.Pet;
 
 public record PetResponse(
-        Long petId,
+        Long id,
         String name,
         int age,
         String breed,

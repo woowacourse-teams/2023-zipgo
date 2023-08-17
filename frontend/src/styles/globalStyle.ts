@@ -24,6 +24,10 @@ const globalStyle = css`
     font-family: Pretandard, sans-serif;
   }
 
+  a {
+    text-decoration: none;
+  }
+
   button,
   ul,
   li,

@@ -3,6 +3,7 @@ import { ThemeProvider } from 'styled-components';
 
 import App from '@/App';
 import GlobalStyle from '@/components/@common/GlobalStyle';
+import ErrorPage from '@/pages/Error/ErrorPage';
 import FoodDetail from '@/pages/FoodDetail/FoodDetail';
 import Landing from '@/pages/Landing/Landing';
 import Login from '@/pages/Login/Login';
@@ -25,7 +26,7 @@ export const router = createBrowserRouter([
   {
     path: PATH.HOME,
     element: <App />,
-    errorElement: <div>error</div>,
+    errorElement: <ErrorPage />,
     children: [
       {
         index: true,
