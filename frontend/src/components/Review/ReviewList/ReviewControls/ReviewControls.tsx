@@ -9,7 +9,7 @@ const ReviewControls = () => (
   <Layout>
     <Description>﹒우리 아이 맞춤 리뷰 보기</Description>
     <ControlsContainer>
-      <QueryBoundary>
+      <QueryBoundary loadingFallback={null}>
         <AlignSelect />
         <FilterDialog />
       </QueryBoundary>
