@@ -21,22 +21,19 @@ const PetProfileImageAdditionContent = () => {
 
   useEffect(() => {
     updateCurrentStep(PET_PROFILE_ADDITION_STEP.IMAGE_FILE);
-  }, []);
+  }, [updateCurrentStep]);
 
   const onSubmitPetProfile = () => {
     addPetProfileMutation
       .addPetProfile(petProfile)
-      .then(async () => {
-        const userInfo = JSON.parse(
-          localStorage.getItem('userInfo') ??
-            JSON.stringify({ name: '노아이즈', profileImageUrl: null, hasPet: false }),
-        );
+      .then(async res => {
+        const userInfo = JSON.parse(localStorage.getItem('userInfo')!);
 
         const userPetBreed = breedList?.find(breed => breed.name === petProfile.breed);
         const petProfileWithId = {
           ...petProfile,
           id: 1,
-          petSize: userPetBreed || '소형견',
+          petSize: userPetBreed?.name === '믹스견' ? petProfile.petSize : undefined,
         } as PetProfile;
 
         updatePetProfile(petProfileWithId); // 헤더 유저 프로필 정보 업데이트
