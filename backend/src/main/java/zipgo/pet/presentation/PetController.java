@@ -5,6 +5,7 @@ import java.net.URI;
 import java.util.List;
 import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -51,6 +52,15 @@ public class PetController {
         return ResponseEntity.noContent().build();
     }
 
+    @DeleteMapping("/{petId}")
+    public ResponseEntity<Void> delete(
+            @Auth AuthDto authDto,
+            @PathVariable("petId") Long petId
+    ) {
+        petService.deletePet(authDto.id(), petId);
+        return ResponseEntity.noContent().build();
+    }
+
     @GetMapping
     public ResponseEntity<PetResponses> readMemberPets(@Auth AuthDto authDto) {
         List<Pet> pets = petQueryService.readMemberPets(authDto.id());
@@ -72,3 +82,4 @@ public class PetController {
     }
 
 }
+
