@@ -17,7 +17,7 @@ const Header = () => {
           로그아웃
         </LogoutButton>
       ) : (
-        <LinkButton to="logout">로그인</LinkButton>
+        <LinkButton to="login">로그인</LinkButton>
       )}
     </HeaderContainer>
   );

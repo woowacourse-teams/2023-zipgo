@@ -15,7 +15,7 @@ export const useAuth = () => {
 
     if (isLogout) {
       localStorage.removeItem('auth');
-      localStorage.removeItem('authResponse');
+      localStorage.removeItem('userInfo');
       localStorage.removeItem('petProfile');
     }
   };
@@ -25,7 +25,7 @@ export const useAuth = () => {
 
 export const useUser = () => {
   const accessToken = localStorage.getItem('auth');
-  const userData = localStorage.getItem('authResponse');
+  const userData = localStorage.getItem('userInfo');
 
   const [userInfo, setUserInfo] = useState<User | null>(null);
 

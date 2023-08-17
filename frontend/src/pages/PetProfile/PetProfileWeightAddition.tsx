@@ -51,7 +51,7 @@ const PetProfileWeightAddition = () => {
           onChange={onChangeWeight}
           design="underline"
           fontSize="1.3rem"
-          inputMode="numeric"
+          inputMode="decimal"
         />
         <Kg>kg</Kg>
       </WeightInputContainer>

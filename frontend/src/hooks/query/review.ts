@@ -109,7 +109,7 @@ export const useReviewSummaryQuery = (payload: Parameter<typeof getReviewSummary
 
 export const useReviewListFilterMeta = () => {
   const { data, ...restQuery } = useQuery({
-    queryKey: [QUERY_KEY.reviewItem],
+    queryKey: [QUERY_KEY.reviewListMeta],
     queryFn: getReviewsMeta,
     select: ({ sortBy, ...restMeta }) => restMeta,
   });
