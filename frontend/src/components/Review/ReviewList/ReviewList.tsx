@@ -8,6 +8,7 @@ import { routerPath } from '@/router/routes';
 
 import ReviewItem from '../ReviewItem/ReviewItem';
 import ReviewControls from './ReviewControls/ReviewControls';
+import SummaryChart from './SummaryChart/SummaryChart';
 
 const ReviewList = () => {
   const navigate = useNavigate();
@@ -23,6 +24,7 @@ const ReviewList = () => {
 
   return (
     <ReviewListContainer>
+      <SummaryChart />
       <ReviewControls />
       {Boolean(reviewList.length) ? (
         reviewList.map(review => (

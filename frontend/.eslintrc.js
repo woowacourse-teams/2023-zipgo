@@ -52,6 +52,7 @@ module.exports = {
     'react/require-default-props': 'off',
     'react/function-component-definition': [2, { namedComponents: 'arrow-function' }],
     'react/jsx-filename-extension': [2, { extensions: ['.js', '.jsx', '.ts', '.tsx'] }],
+    'react/jsx-one-expression-per-line': 'off',
 
     'jsx-a11y/click-events-have-key-events': 'warn',
     'jsx-a11y/interactive-supports-focus': 'warn',

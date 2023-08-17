@@ -5,6 +5,7 @@ import {
   getReview,
   getReviews,
   getReviewsMeta,
+  getReviewSummary,
   postReview,
   putReview,
 } from '@/apis/review';
@@ -13,6 +14,7 @@ import { Parameter } from '@/types/common/utility';
 const QUERY_KEY = {
   reviewItem: 'reviewItem',
   reviewList: 'reviewList',
+  reviewSummary: 'reviewSummary',
   reviewListMeta: 'reviewListMeta',
 };
 
@@ -89,6 +91,18 @@ export const useReviewListAlignMeta = () => {
 
   return {
     metaData: data,
+    ...restQuery,
+  };
+};
+
+export const useReviewSummaryQuery = (payload: Parameter<typeof getReviewSummary>) => {
+  const { data, ...restQuery } = useQuery({
+    queryKey: [QUERY_KEY.reviewSummary],
+    queryFn: () => getReviewSummary(payload),
+  });
+
+  return {
+    summaryInfo: data,
     ...restQuery,
   };
 };

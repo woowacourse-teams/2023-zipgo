@@ -11,6 +11,13 @@ const reviewHandlers = [
 
     return res(ctx.status(200), ctx.json(metaData));
   }),
+
+  rest.get(`${BASE_URL}/reviews/summary?petFoodId`, (req, res, ctx) => {
+    const reviewSummary = reviewFixture.getReviewSummary();
+
+    return res(ctx.delay(2000), ctx.status(200), ctx.json(reviewSummary));
+  }),
+
   rest.get(`${BASE_URL}/reviews/:reviewId`, (req, res, ctx) => {
     const { reviews } = reviewFixture.getReviews();
     const review = reviews.find(review => review.id === Number(req.params.reviewId)) as Review;
