@@ -3,7 +3,6 @@ import {
   ComponentPropsWithoutRef,
   createContext,
   PropsWithChildren,
-  RefObject,
   useCallback,
   useEffect,
   useMemo,

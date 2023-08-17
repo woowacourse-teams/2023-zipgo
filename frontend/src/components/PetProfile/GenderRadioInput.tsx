@@ -73,6 +73,8 @@ const ImageAndTextWrapper = styled.div<{ checked?: boolean }>`
   border-radius: 15px;
   box-shadow: 0 4px 10px 3px rgb(0 0 0 / 15%);
 
+  transition: all 0.2s ease-in-out;
+
   ${({ checked }) =>
     checked &&
     css`
