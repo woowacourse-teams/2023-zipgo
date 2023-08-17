@@ -52,8 +52,8 @@ export const useAddReviewMutation = () => {
 
   const { mutateAsync: addReview, ...addReviewRestMutation } = useMutation({
     mutationFn: postReview,
-    onSuccess: () => {
-      queryClient.invalidateQueries([QUERY_KEY.reviewList]);
+    onSuccess: (_, { petFoodId }) => {
+      queryClient.invalidateQueries([QUERY_KEY.reviewList, petFoodId]);
     },
   });
 
@@ -65,8 +65,8 @@ export const useEditReviewMutation = () => {
 
   const { mutateAsync: editReview, ...editReviewRestMutation } = useMutation({
     mutationFn: putReview,
-    onSuccess: () => {
-      queryClient.invalidateQueries([QUERY_KEY.reviewList]);
+    onSuccess: (_, { petFoodId }) => {
+      queryClient.invalidateQueries([QUERY_KEY.reviewList, petFoodId]);
     },
   });
 
@@ -78,8 +78,8 @@ export const useRemoveReviewMutation = () => {
 
   const { mutate: removeReview, ...removeReviewRestMutation } = useMutation({
     mutationFn: deleteReview,
-    onSuccess: () => {
-      queryClient.invalidateQueries([QUERY_KEY.reviewList]);
+    onSuccess: (_, { petFoodId }) => {
+      queryClient.invalidateQueries([QUERY_KEY.reviewList, petFoodId]);
     },
   });
 

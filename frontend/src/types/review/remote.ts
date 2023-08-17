@@ -40,6 +40,7 @@ interface PutReviewReq extends PostReviewReq {
 interface PutReviewRes {}
 
 interface DeleteReviewReq {
+  petFoodId: string;
   reviewId: number;
 }
 
