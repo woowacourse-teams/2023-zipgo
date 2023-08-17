@@ -58,4 +58,31 @@ public class Pet extends BaseTimeEntity {
 
     private String imageUrl;
 
+    public void updateName(String name) {
+        this.name = name;
+    }
+
+    public void updateBirthYear(Year year) {
+        this.birthYear = year;
+    }
+
+    public void updateBreeds(Breeds breeds) {
+        this.breeds = breeds;
+    }
+
+    public void updateWeight(double weight) {
+        this.weight = weight;
+    }
+
+    public void updateImageUrl(String imageUrl) {
+        this.imageUrl = imageUrl;
+    }
+
+    public void validateOwner(Member other) {
+        if (!this.owner.equals(other)) {
+            throw new IllegalArgumentException("반려견과 주인이 일치하지 않습니다.");
+        }
+    }
+
 }
+

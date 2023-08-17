@@ -7,19 +7,25 @@ import { useReviewListQuery } from '@/hooks/query/review';
 import { routerPath } from '@/router/routes';
 
 import ReviewItem from '../ReviewItem/ReviewItem';
+import ReviewControls from './ReviewControls/ReviewControls';
+import SummaryChart from './SummaryChart/SummaryChart';
 
 const ReviewList = () => {
   const navigate = useNavigate();
   const { petFoodId } = useValidParams(['petFoodId']);
   const { reviewList } = useReviewListQuery({ petFoodId });
 
-  const authData = localStorage.getItem('auth');
+  const authResponseJSON = localStorage.getItem('authResponse');
+  const authResponse = authResponseJSON ? JSON.parse(authResponseJSON) : null;
+
   const goReviewWrite = () => navigate(routerPath.reviewStarRating({ petFoodId }));
 
   if (!reviewList) throw new Error('리뷰 리스트를 찾을 수 없습니다.');
 
   return (
     <ReviewListContainer>
+      <SummaryChart />
+      <ReviewControls />
       {Boolean(reviewList.length) ? (
         reviewList.map(review => (
           <ReviewItemWrapper key={review.id}>
@@ -33,7 +39,7 @@ const ReviewList = () => {
           해당 식품의 첫 번째 리뷰어가 되어보세요!
         </NoReviewText>
       )}
-      {authData !== null && (
+      {authResponse && authResponse.hasPet && (
         <ReviewAddButton type="button" aria-label="리뷰 작성" onClick={goReviewWrite}>
           <WriteIconImage src={WriteIcon} alt="" />
         </ReviewAddButton>

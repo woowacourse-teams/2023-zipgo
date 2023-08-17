@@ -5,6 +5,7 @@ const loginZipgoAuth = (): LoginZipgoAuthRes => ({
   authResponse: {
     name: 'Zipgo',
     profileImgUrl: 'url',
+    hasPet: false,
   },
 });
 

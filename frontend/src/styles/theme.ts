@@ -9,6 +9,7 @@ const color = {
   lightRed: '#FFDBDE',
 
   white: '#FFFFFF',
+  grey100: '#DCDEE1',
   grey200: '#F2F4F6',
   grey250: '#C7CFD7',
   grey300: '#AFB8C1',

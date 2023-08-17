@@ -28,7 +28,7 @@ import static jakarta.persistence.FetchType.LAZY;
 @Getter
 @Builder
 @AllArgsConstructor
-@EqualsAndHashCode(onlyExplicitlyIncluded = true, callSuper = true)
+@EqualsAndHashCode(onlyExplicitlyIncluded = true, callSuper = false)
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class PetFood extends BaseTimeEntity {
 
