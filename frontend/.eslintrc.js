@@ -46,6 +46,11 @@ module.exports = {
     'react/jsx-curly-newline': 'off',
     'no-alert': 'off',
     'no-restricted-globals': 'off',
+    indent: 'off',
+    'react/prop-types': 'off',
+    '@typescript-eslint/ban-ts-comment': 'off',
+    'consistent-return': 'off',
+    'prefer-destructuring': 'off',
 
     'react/jsx-props-no-spreading': 'off',
     'react/react-in-jsx-scope': 'off',
