@@ -186,6 +186,8 @@ public class ReviewControllerTest extends AcceptanceTest {
                             fieldWithPath("reviews[].petProfile.id").description("반려동물 id").type(JsonFieldType.NUMBER),
                             fieldWithPath("reviews[].petProfile.name").description("반려동물 이름")
                                     .type(JsonFieldType.STRING),
+                            fieldWithPath("reviews[].petProfile.profileUrl").description("반려동물 이름")
+                                    .type(JsonFieldType.STRING),
                             fieldWithPath("reviews[].petProfile.writtenAge").description("반려동물 나이")
                                     .type(JsonFieldType.NUMBER),
                             fieldWithPath("reviews[].petProfile.writtenWeight").description("반려동물 몸무게")
@@ -280,6 +282,8 @@ public class ReviewControllerTest extends AcceptanceTest {
                             fieldWithPath("adverseReactions").description("이상 반응들").type(JsonFieldType.ARRAY),
                             fieldWithPath("petProfile.id").description("반려동물 id").type(JsonFieldType.NUMBER),
                             fieldWithPath("petProfile.name").description("반려동물 이름")
+                                    .type(JsonFieldType.STRING),
+                            fieldWithPath("petProfile.profileUrl").description("반려동물 이름")
                                     .type(JsonFieldType.STRING),
                             fieldWithPath("petProfile.writtenAge").description("반려동물 나이")
                                     .type(JsonFieldType.NUMBER),

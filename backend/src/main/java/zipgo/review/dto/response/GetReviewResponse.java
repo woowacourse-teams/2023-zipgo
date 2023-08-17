@@ -29,6 +29,7 @@ public record GetReviewResponse(
     public record PetProfileResponse(
             Long id,
             String name,
+            String profileUrl,
             int writtenAge,
             double writtenWeight,
             BreedResponse breed
@@ -62,6 +63,7 @@ public record GetReviewResponse(
         PetProfileResponse petProfileResponse = PetProfileResponse.builder()
                 .id(review.getPet().getId())
                 .name(review.getPet().getName())
+                .profileUrl(review.getPet().getImageUrl())
                 .breed(breedResponse)
                 .writtenAge(review.getPetAge())
                 .writtenWeight(review.getWeight())
@@ -91,6 +93,7 @@ public record GetReviewResponse(
         BreedResponse breed = BreedResponse.builder().id(review.breedId()).name(review.breedName()).size(petSize)
                 .build();
         PetProfileResponse petProfile = PetProfileResponse.builder().id(review.petId()).name(review.petName())
+                .profileUrl(review.petProfileImageUrl())
                 .breed(breed).writtenWeight(review.petWrittenWeight()).writtenAge(review.getPetAge()).build();
         HelpfulReactionResponse helpful = HelpfulReactionResponse.builder()
                 .count(helpfulReaction.helpfulReactionCount()).reacted(helpfulReaction.reacted()).build();

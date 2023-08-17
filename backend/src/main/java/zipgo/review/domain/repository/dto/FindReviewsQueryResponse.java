@@ -15,6 +15,7 @@ public record FindReviewsQueryResponse(
         StoolCondition stoolCondition,
         Long petId,
         String petName,
+        String petProfileImageUrl,
         Year petBirthYear,
         double petWrittenWeight,
         Long breedId,

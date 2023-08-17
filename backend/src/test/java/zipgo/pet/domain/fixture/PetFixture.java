@@ -10,6 +10,7 @@ public class PetFixture {
     public static Pet 반려동물(Member 주인, Breeds 종류) {
         return Pet.builder()
                 .name("무민이")
+                .imageUrl("https://image.zipgo.pet/dev/pet-image/dog_icon.svg")
                 .owner(주인)
                 .birthYear(Year.of(2019))
                 .breeds(종류)

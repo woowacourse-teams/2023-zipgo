@@ -458,6 +458,7 @@ class ReviewQueryRepositoryImplTest {
                 PetSize 사이즈 = petSizeRepository.save(소형견());
                 Breeds 종류 = breedsRepository.save(견종(사이즈));
                 Pet 반려동물 = petRepository.save(Pet.builder().name("무민이").owner(멤버)
+                        .imageUrl("https://image.zipgo.pet/dev/pet-image/dog_icon.svg")
                         .birthYear(Year.of(출생연도)).breeds(종류).weight(5.0).build());
                 Review 리뷰 = 극찬_리뷰_생성(반려동물, 식품, List.of("없어요"));
                 리뷰들.add(리뷰);

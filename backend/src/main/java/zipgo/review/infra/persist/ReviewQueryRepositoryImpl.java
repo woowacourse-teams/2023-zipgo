@@ -49,6 +49,7 @@ public class ReviewQueryRepositoryImpl implements ReviewQueryRepository {
                                 review.stoolCondition,
                                 pet.id,
                                 pet.name,
+                                pet.imageUrl,
                                 pet.birthYear,
                                 review.weight,
                                 breeds.id,
