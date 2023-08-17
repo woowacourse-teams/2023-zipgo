@@ -96,7 +96,7 @@ public class ReviewController {
             @Auth AuthDto authDto,
             @PathVariable Long reviewId
     ) {
-//        reviewService.deleteHelpfulReaction(authDto.id(), reviewId);
+        reviewService.removeHelpfulReaction(authDto.id(), reviewId);
         return ResponseEntity.noContent().build();
     }
 
