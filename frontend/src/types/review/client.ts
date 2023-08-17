@@ -15,17 +15,42 @@ type SummaryKeywordsEn = keyof typeof REVIEW_SUMMARY_KEYWORDS;
 
 type SummaryKeywordsKo = Values<typeof REVIEW_SUMMARY_KEYWORDS>;
 
-type Review = {
+interface Review {
   id: number;
-  profileImageUrl?: string;
-  reviewerName: string;
   rating: number;
   date: string;
   comment: string;
   tastePreference: TastePreference;
   stoolCondition: StoolCondition;
   adverseReactions: AdverseReaction[];
-};
+  petProfile: PetProfile;
+  helpfulReaction: HelpfulReaction;
+}
+
+interface PetProfile {
+  id: number;
+  name: string;
+  profileUrl: string;
+  writtenAge: number;
+  writtenWeight: number;
+  breed: Breed;
+}
+
+interface Breed {
+  id: number;
+  name: string;
+  size: Size;
+}
+
+interface Size {
+  id: number;
+  name: string;
+}
+
+interface HelpfulReaction {
+  count: number;
+  reacted: boolean;
+}
 
 type AlignControlsMeta = {
   id: number;
@@ -47,6 +72,7 @@ export type {
   AlignControlsMeta,
   ChartInfo,
   FilterControlsMeta,
+  PetProfile,
   Review,
   StoolCondition,
   SummaryKeywordsEn,
