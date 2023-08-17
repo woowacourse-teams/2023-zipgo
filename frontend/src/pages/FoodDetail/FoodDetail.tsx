@@ -2,11 +2,13 @@
 import { useEffect, useRef, useState } from 'react';
 import { styled } from 'styled-components';
 
+import ToolTipButton from '@/assets/svg/tool_tip_btn.svg';
 import Button from '@/components/@common/Button/Button';
 import InfoBlock from '@/components/@common/InfoBlock/InfoBlock';
 import Label from '@/components/@common/Label/Label';
 import NavigationBar from '@/components/@common/NavigationBar/NavigationBar';
 import PageHeader from '@/components/@common/PageHeader/PageHeader';
+import ToolTip from '@/components/@common/ToolTip/ToolTip';
 import BrandBlock from '@/components/Food/BrandBlock/BrandBlock';
 import FoodProfile from '@/components/Food/FoodProfile/FoodProfile';
 import NutritionStandardBlock, {
@@ -52,15 +54,15 @@ const FoodDetail = () => {
     };
   }, [pageIndex]);
 
+  const [onStandardTip, setOnStandardTip] = useState<boolean>(false);
+
   return (
     <>
       <PageHeader title={name} />
-
       <FoodDetailWrapper>
         <FoodProfileContainer>
           <FoodProfile {...foodData} />
         </FoodProfileContainer>
-
         <NavigationBar
           navData={[{ title: '상세정보' }, { title: '리뷰' }]}
           navIndex={pageIndex}
@@ -69,7 +71,24 @@ const FoodDetail = () => {
         />
         {pageIndex === 0 && (
           <FoodDetailInfoWrapper>
-            <InfoBlock headText="기준 충족 여부">
+            <InfoBlock
+              headText="기준 충족 여부"
+              subChild={
+                <StandardToolTip type="button" onClick={() => setOnStandardTip(prev => !prev)}>
+                  왜 필요한가요?
+                  <img src={ToolTipButton} alt="tooltip" style={{ width: 16, height: 16 }} />
+                  {onStandardTip && (
+                    <ToolTip
+                      showBubbleOnly
+                      content="AAFCO(미국 기준), FEDIAF(유럽 기준) 이 두 단체는 반려동물이 필요로하는 하루 최소 요구치를 정해 업계에 알려주고 있어요. 즉 '장기 급여가 가능한 사료'라고 할 수 있어요."
+                      title="이 기준들이 왜 필요한가요?"
+                      left="-20rem"
+                      edgeLeft="23rem"
+                    />
+                  )}
+                </StandardToolTip>
+              }
+            >
               <NutritionStandard>
                 <NutritionStandardBlock state={State.us} satisfied={hasStandard.us} />
                 <NutritionStandardBlock state={State.eu} satisfied={hasStandard.eu} />
@@ -87,7 +106,10 @@ const FoodDetail = () => {
                 )}
               </FunctionalList>
             </InfoBlock>
-            <InfoBlock headText="브랜드 정보를 꼭 확인하세요!">
+            <InfoBlock
+              headText="브랜드 정보를 꼭 확인하세요!"
+              subChild={<BrandIconInfo>아이콘을 클릭해보세요</BrandIconInfo>}
+            >
               <BrandBlock {...brand} />
             </InfoBlock>
           </FoodDetailInfoWrapper>
@@ -136,4 +158,25 @@ const FunctionalList = styled.div`
   display: flex;
   flex-wrap: nowrap;
   gap: 0.8rem;
+`;
+
+const BrandIconInfo = styled.p`
+  font-size: 1.2rem;
+  font-weight: 400;
+  color: ${({ theme }) => theme.color.grey300};
+  letter-spacing: -0.05rem;
+`;
+
+const StandardToolTip = styled.button`
+  display: flex;
+  gap: 0.8rem;
+  align-items: center;
+
+  font-size: 1.2rem;
+  font-weight: 400;
+  color: ${({ theme }) => theme.color.grey300};
+  letter-spacing: -0.05rem;
+
+  background-color: transparent;
+  border: none;
 `;

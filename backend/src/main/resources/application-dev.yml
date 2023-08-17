@@ -7,7 +7,7 @@ server:
 # database
 spring:
   datasource:
-    driver-class-name: com.mysql.cj.jdbc.Driver
+    driver-class-name: net.sf.log4jdbc.sql.jdbcapi.DriverSpy
     url: ${JDBC_URL}
     username: ${DB_USERNAME}
     password: ${DB_PASSWORD}
@@ -44,3 +44,13 @@ oauth:
 jwt:
   secret-key: ${ZIPGO_SECRET_KEY}
   expire-length: ${EXPIRE_LENGTH}
+
+---
+# aws
+cloud:
+  aws:
+    s3:
+      bucket: ${BUCKET_NAME}
+      zipgo-directory-name: ${ZIPGO_DIRECTORY_NAME}
+      pet-image-directory: ${PET_IMAGE_DIRECTORY}
+      image-url: ${DEV_SERVER_IMAGE_URL}

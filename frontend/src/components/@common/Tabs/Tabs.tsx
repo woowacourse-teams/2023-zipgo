@@ -45,9 +45,7 @@ const List = (props: PropsWithAsChild<ListProps>) => {
 interface TriggerProps extends ComponentPropsWithoutRef<'button'> {
   value: string;
 }
-const k: ComponentPropsWithoutRef<'button'> = {
-  children: null,
-};
+
 const Trigger = (props: PropsWithRenderProps<TriggerProps & AsChild, { selected: boolean }>) => {
   const {
     resolveChildren,

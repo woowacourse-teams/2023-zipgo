@@ -10,7 +10,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.restdocs.AutoConfigureRestDocs;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.data.jpa.mapping.JpaMetamodelMappingContext;
 import org.springframework.restdocs.mockmvc.RestDocumentationResultHandler;
 import org.springframework.restdocs.payload.JsonFieldType;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
@@ -33,7 +32,6 @@ import static zipgo.member.domain.fixture.MemberFixture.식별자_있는_멤버;
 @AutoConfigureRestDocs
 @ExtendWith(SpringExtension.class)
 @SuppressWarnings("NonAsciiCharacters")
-@MockBean(JpaMetamodelMappingContext.class)
 @WebMvcTest(controllers = AuthController.class)
 @DisplayNameGeneration(DisplayNameGenerator.ReplaceUnderscores.class)
 class AuthControllerTest {

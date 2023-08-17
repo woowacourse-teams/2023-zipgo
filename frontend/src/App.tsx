@@ -1,9 +1,5 @@
 import { useEffect } from 'react';
 import { Outlet } from 'react-router-dom';
-import { ThemeProvider } from 'styled-components';
-
-import GlobalStyle from '@/components/@common/GlobalStyle';
-import theme from '@/styles/theme';
 
 import AxiosInterceptors from './components/@common/AxiosInterceptors/AxiosInterceptors';
 import { setScreenSize } from './utils/setScreenSize';
@@ -26,12 +22,9 @@ const App = () => {
   }, []);
 
   return (
-    <ThemeProvider theme={theme}>
-      <GlobalStyle />
-      <AxiosInterceptors>
-        <Outlet />
-      </AxiosInterceptors>
-    </ThemeProvider>
+    <AxiosInterceptors>
+      <Outlet />
+    </AxiosInterceptors>
   );
 };
 export default App;

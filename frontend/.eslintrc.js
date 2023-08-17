@@ -51,12 +51,14 @@ module.exports = {
     '@typescript-eslint/ban-ts-comment': 'off',
     'consistent-return': 'off',
     'prefer-destructuring': 'off',
+    'react/jsx-wrap-multilines': 'off',
 
     'react/jsx-props-no-spreading': 'off',
     'react/react-in-jsx-scope': 'off',
     'react/require-default-props': 'off',
     'react/function-component-definition': [2, { namedComponents: 'arrow-function' }],
     'react/jsx-filename-extension': [2, { extensions: ['.js', '.jsx', '.ts', '.tsx'] }],
+    'react/jsx-one-expression-per-line': 'off',
 
     'jsx-a11y/click-events-have-key-events': 'warn',
     'jsx-a11y/interactive-supports-focus': 'warn',

@@ -22,6 +22,7 @@ const Button = (buttonProps: ButtonProps) => {
         $fixed={fixed}
         style={style}
         $disabled={disabled}
+        disabled={disabled}
         {...restProps}
       >
         {text}
@@ -40,6 +41,7 @@ const ButtonOuter = styled.div<ButtonStyleProps>`
   ${({ $fixed, theme }) =>
     $fixed &&
     `
+    z-index: 10;
     width: 100%;
     bottom: 0;
     display: flex;

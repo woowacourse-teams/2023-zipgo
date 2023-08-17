@@ -26,7 +26,6 @@ oauth:
     client-id: this1-is2-zipgo3-test4-client5-id7
     redirect-uri: test-redirect-uri
     client-secret: my_secret
-
 logging:
   level:
     org:
@@ -34,3 +33,10 @@ logging:
         type:
           descriptor:
             sql: trace
+cloud:
+  aws:
+    s3:
+      bucket: 버킷이름
+      zipgo-directory-name: 집고_디렉토리_이름
+      pet-image-directory: 집고_디렉토리_이미지
+      image-url: 집고_이미지_서버_유알엘

@@ -1,3 +1,10 @@
+export const REVIEW_SUMMARY_KEYWORDS = {
+  rating: '평점',
+  tastePreference: '기호성',
+  stoolCondition: '대변상태',
+  adverseReaction: '이상반응',
+} as const;
+
 export const REACTIONS = {
   TASTE_PREFERENCE: '기호성',
   STOOL_CONDITION: '대변상태',

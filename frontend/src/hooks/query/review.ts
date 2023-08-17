@@ -1,9 +1,22 @@
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 
-import { deleteReview, getReview, getReviews, postReview, putReview } from '@/apis/review';
+import {
+  deleteReview,
+  getReview,
+  getReviews,
+  getReviewsMeta,
+  getReviewSummary,
+  postReview,
+  putReview,
+} from '@/apis/review';
 import { Parameter } from '@/types/common/utility';
 
-const QUERY_KEY = { reviewItem: 'reviewItem', reviewList: 'reviewList' };
+const QUERY_KEY = {
+  reviewItem: 'reviewItem',
+  reviewList: 'reviewList',
+  reviewSummary: 'reviewSummary',
+  reviewListMeta: 'reviewListMeta',
+};
 
 export const useReviewItemQuery = (payload: Parameter<typeof getReview>) => {
   const { data, ...restQuery } = useQuery({
@@ -67,4 +80,42 @@ export const useRemoveReviewMutation = () => {
   });
 
   return { removeReviewMutation: { removeReview, ...removeReviewRestMutation } };
+};
+
+export const useReviewListAlignMeta = () => {
+  const { data, ...restQuery } = useQuery({
+    queryKey: [QUERY_KEY.reviewItem],
+    queryFn: getReviewsMeta,
+    select: ({ sortBy, ...restMeta }) => sortBy,
+  });
+
+  return {
+    metaData: data,
+    ...restQuery,
+  };
+};
+
+export const useReviewSummaryQuery = (payload: Parameter<typeof getReviewSummary>) => {
+  const { data, ...restQuery } = useQuery({
+    queryKey: [QUERY_KEY.reviewSummary],
+    queryFn: () => getReviewSummary(payload),
+  });
+
+  return {
+    summaryInfo: data,
+    ...restQuery,
+  };
+};
+
+export const useReviewListFilterMeta = () => {
+  const { data, ...restQuery } = useQuery({
+    queryKey: [QUERY_KEY.reviewItem],
+    queryFn: getReviewsMeta,
+    select: ({ sortBy, ...restMeta }) => restMeta,
+  });
+
+  return {
+    metaData: data,
+    ...restQuery,
+  };
 };
