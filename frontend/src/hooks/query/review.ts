@@ -82,19 +82,6 @@ export const useRemoveReviewMutation = () => {
   return { removeReviewMutation: { removeReview, ...removeReviewRestMutation } };
 };
 
-export const useReviewListAlignMeta = () => {
-  const { data, ...restQuery } = useQuery({
-    queryKey: [QUERY_KEY.reviewItem],
-    queryFn: getReviewsMeta,
-    select: ({ sortBy, ...restMeta }) => sortBy,
-  });
-
-  return {
-    metaData: data,
-    ...restQuery,
-  };
-};
-
 export const useReviewSummaryQuery = (payload: Parameter<typeof getReviewSummary>) => {
   const { data, ...restQuery } = useQuery({
     queryKey: [QUERY_KEY.reviewSummary],
@@ -103,6 +90,19 @@ export const useReviewSummaryQuery = (payload: Parameter<typeof getReviewSummary
 
   return {
     summaryInfo: data,
+    ...restQuery,
+  };
+};
+
+export const useReviewListAlignMeta = () => {
+  const { data, ...restQuery } = useQuery({
+    queryKey: [QUERY_KEY.reviewListMeta],
+    queryFn: getReviewsMeta,
+    select: ({ sortBy }) => sortBy,
+  });
+
+  return {
+    metaData: data,
     ...restQuery,
   };
 };
