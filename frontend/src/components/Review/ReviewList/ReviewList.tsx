@@ -7,6 +7,7 @@ import { useReviewListQuery } from '@/hooks/query/review';
 import { routerPath } from '@/router/routes';
 
 import ReviewItem from '../ReviewItem/ReviewItem';
+import ReviewControls from './ReviewControls/ReviewControls';
 
 const ReviewList = () => {
   const navigate = useNavigate();
@@ -22,6 +23,7 @@ const ReviewList = () => {
 
   return (
     <ReviewListContainer>
+      <ReviewControls />
       {Boolean(reviewList.length) ? (
         reviewList.map(review => (
           <ReviewItemWrapper key={review.id}>

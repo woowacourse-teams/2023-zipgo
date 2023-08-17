@@ -1,4 +1,4 @@
-import { GetReviewsRes } from '@/types/review/remote';
+import { GetReviewsMetaRes, GetReviewsRes } from '@/types/review/remote';
 
 const getReviews = (): GetReviewsRes => ({
   reviews: [
@@ -36,5 +36,69 @@ const getReviews = (): GetReviewsRes => ({
   ],
 });
 
-const reviewFixture = { getReviews };
+const getReviewsMeta = (): GetReviewsMetaRes => ({
+  petSizes: [
+    {
+      id: 1,
+      name: '소형견',
+    },
+    {
+      id: 2,
+      name: '중형견',
+    },
+    {
+      id: 3,
+      name: '대형견',
+    },
+  ],
+  sortBy: [
+    {
+      id: 1,
+      name: '최신순',
+    },
+    {
+      id: 2,
+      name: '별점 높은 순',
+    },
+    {
+      id: 3,
+      name: '별점 낮은 순',
+    },
+    {
+      id: 4,
+      name: '도움이 되는 순',
+    },
+  ],
+  ageGroups: [
+    {
+      id: 1,
+      name: '퍼피',
+    },
+    {
+      id: 2,
+      name: '어덜트',
+    },
+    {
+      id: 3,
+      name: '시니어',
+    },
+  ],
+  breeds: [
+    {
+      id: 1,
+      name: '말티즈',
+    },
+    {
+      id: 2,
+      name: '진돗개',
+    },
+    {
+      id: 3,
+      name: '리트리버',
+    },
+  ],
+});
+
+const reviewFixture = { getReviews, getReviewsMeta };
+
 export default reviewFixture;

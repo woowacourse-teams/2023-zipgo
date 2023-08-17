@@ -1,4 +1,11 @@
-import { AdverseReaction, Review, StoolCondition, TastePreference } from './client';
+import {
+  AdverseReaction,
+  AlignControlsMeta,
+  FilterControlsMeta,
+  Review,
+  StoolCondition,
+  TastePreference,
+} from './client';
 
 interface GetReviewReq {
   reviewId: number;
@@ -37,11 +44,19 @@ interface DeleteReviewReq {
 
 interface DeleteReviewRes {}
 
+interface GetReviewsMetaRes {
+  petSizes: FilterControlsMeta;
+  sortBy: AlignControlsMeta;
+  ageGroups: FilterControlsMeta;
+  breeds: FilterControlsMeta;
+}
+
 export type {
   DeleteReviewReq,
   DeleteReviewRes,
   GetReviewReq,
   GetReviewRes,
+  GetReviewsMetaRes,
   GetReviewsReq,
   GetReviewsRes,
   PostReviewReq,
