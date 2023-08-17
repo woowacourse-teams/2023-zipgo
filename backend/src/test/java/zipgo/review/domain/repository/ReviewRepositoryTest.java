@@ -76,6 +76,24 @@ public class ReviewRepositoryTest extends RepositoryTest {
                 .anyMatch(helpfulReaction -> helpfulReaction.getMadeBy().equals(모르는_베베));
     }
 
+    @Test
+    void 도움이_돼요_취소하기() {
+        //given
+        Review 아는_리뷰 = 도움이_돼요를_누르고싶은_리뷰();
+        Member 모르는_베베 = memberRepository.save(MemberFixture.멤버_이름("모르는_베베"));
+        아는_리뷰.reactedBy(모르는_베베);
+        reviewRepository.save(아는_리뷰);
+
+        //when
+        아는_리뷰.removeReactionBy(모르는_베베);
+        reviewRepository.save(아는_리뷰);
+
+        //then
+        Review 조회한_리뷰 = reviewRepository.getById(아는_리뷰.getId());
+        assertThat(조회한_리뷰.getHelpfulReactions())
+                .noneMatch(helpfulReaction -> helpfulReaction.getMadeBy().equals(모르는_베베));
+    }
+
     private Review 도움이_돼요를_누르고싶은_리뷰() {
         Brand 브랜드 = brandRepository.save(BrandFixture.오리젠_식품_브랜드_생성());
         PetFood 식품 = petFoodRepository.save(PetFoodFixture.모든_영양기준_만족_식품(브랜드));
