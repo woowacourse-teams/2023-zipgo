@@ -22,6 +22,7 @@ const Button = (buttonProps: ButtonProps) => {
         $fixed={fixed}
         style={style}
         $disabled={disabled}
+        disabled={disabled}
         {...restProps}
       >
         {text}
