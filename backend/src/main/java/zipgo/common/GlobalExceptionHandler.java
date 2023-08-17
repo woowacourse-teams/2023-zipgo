@@ -60,7 +60,7 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
         return ResponseEntity.status(FORBIDDEN).body(ErrorResponse.of(exception));
     }
 
-    @ExceptionHandler({IllegalArgumentException.class})
+    @ExceptionHandler({IllegalArgumentException.class, ReviewException.SelfReacted.class})
     public ResponseEntity<ErrorResponse> handleBadRequestException(Exception exception) {
         return ResponseEntity.status(BAD_REQUEST).body(ErrorResponse.of(exception));
     }

@@ -87,6 +87,7 @@ public class ReviewController {
             @Auth AuthDto authDto,
             @PathVariable Long reviewId
     ) {
+        reviewService.addHelpfulReaction(authDto.id(), reviewId);
         return ResponseEntity.ok().build();
     }
 

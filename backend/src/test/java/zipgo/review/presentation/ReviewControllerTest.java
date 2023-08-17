@@ -524,7 +524,9 @@ public class ReviewControllerTest extends AcceptanceTest {
 
             //then
             응답.then()
-                    .assertThat().statusCode(BAD_REQUEST.value());
+                    .log().all()
+                    .assertThat()
+                    .statusCode(BAD_REQUEST.value());
         }
 
         @Test
@@ -533,13 +535,13 @@ public class ReviewControllerTest extends AcceptanceTest {
             Member 다른_회원 = memberRepository.save(Member.builder().email("도움이돼요_추가할_회원").name("회원명").build());
             String 다른_회원의_JWT = jwtProvider.create(다른_회원.getId().toString());
 
-            spec.contentType(JSON)
+            given().spec(spec).contentType(JSON)
                     .pathParam("reviewId", 리뷰.getId())
                     .post("/reviews/{reviewId}/helpful-reactions");
 
             var 요청_준비 = given().spec(spec)
                     .contentType(JSON)
-                    .filter(실패_API_문서("리뷰 도움이 돼요 추가 - 실패 (이미 누른 리뷰)"));
+                    .filter(실패_API_문서("리뷰 도움이 돼요 추가 - 성공 (이미 누른 리뷰)"));
 
             //when
             var 응답 = 요청_준비.when()
@@ -549,7 +551,7 @@ public class ReviewControllerTest extends AcceptanceTest {
 
             //then
             응답.then()
-                    .assertThat().statusCode(BAD_REQUEST.value());
+                    .assertThat().statusCode(OK.value());
         }
 
         private RestDocumentationFilter API_문서(String name) {
