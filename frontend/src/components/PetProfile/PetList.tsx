@@ -18,7 +18,7 @@ const PetList = () => {
         <PetItem
           key={pet.id}
           petInfo={pet}
-          selected={pet.id === petProfile?.id}
+          selected={pet.id === petProfile?.id || (petList.length === 1 && petProfile !== null)}
           onClick={() => updatePetProfile(pet)}
         />
       ))}
