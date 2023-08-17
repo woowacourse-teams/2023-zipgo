@@ -279,10 +279,10 @@ const NavItem = styled.button<{
   ${({ $selected }) =>
     $selected
       ? css`
-          border-bottom: 4px solid ${({ theme }) => theme.color.primary};
+          border-bottom: 3px solid ${({ theme }) => theme.color.primary};
         `
       : css`
-          border-bottom: 4px solid #d9d9d9;
+          border-bottom: 3px solid #d9d9d9;
         `}
 `;
 
