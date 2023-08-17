@@ -1,21 +1,24 @@
 import { styled } from 'styled-components';
 
+import PetProfileProvider from '@/context/petProfile/PetProfileContext';
+
 import { Dialog } from '../@common/Dialog/Dialog';
+import UserProfile from '../@common/Header/UserProfile';
 import QueryBoundary from '../@common/QueryBoundary';
 import PetList from './PetList';
 
 const PetListBottomSheet = () => (
   <QueryBoundary>
     <Dialog>
-      <Dialog.Trigger asChild>
-        <button type="button">반려동물 목록보기</button>
-      </Dialog.Trigger>
-      <Dialog.Portal>
-        <Dialog.BackDrop />
-        <Dialog.Content asChild>
-          {({ openHandler }) => <PetListContainer toggleDialog={openHandler} />}
-        </Dialog.Content>
-      </Dialog.Portal>
+      <PetProfileProvider>
+        <UserProfile />
+        <Dialog.Portal>
+          <Dialog.BackDrop />
+          <Dialog.Content asChild>
+            {({ openHandler }) => <PetListContainer toggleDialog={openHandler} />}
+          </Dialog.Content>
+        </Dialog.Portal>
+      </PetProfileProvider>
     </Dialog>
   </QueryBoundary>
 );
