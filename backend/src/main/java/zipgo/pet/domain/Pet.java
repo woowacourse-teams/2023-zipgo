@@ -9,7 +9,6 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToOne;
 import java.time.Year;
-import java.util.Objects;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -80,8 +79,8 @@ public class Pet extends BaseTimeEntity {
         this.imageUrl = imageUrl;
     }
 
-    public void validateOwner(Long memberId) {
-        if (!Objects.equals(this.owner.getId(), memberId)) {
+    public void validateOwner(Member other) {
+        if (!this.owner.equals(other)) {
             throw new IllegalArgumentException("반려견과 주인이 일치하지 않습니다.");
         }
     }
@@ -91,3 +90,4 @@ public class Pet extends BaseTimeEntity {
     }
 
 }
+

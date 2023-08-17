@@ -21,6 +21,7 @@ export interface LoginZipgoAuthRes {
   authResponse: {
     name: string;
     profileImgUrl: string;
+    hasPet: boolean;
   };
 }
 

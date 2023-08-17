@@ -1,4 +1,12 @@
-import { AdverseReaction, Review, StoolCondition, TastePreference } from './client';
+import {
+  AdverseReaction,
+  AlignControlsMeta,
+  ChartInfo,
+  FilterControlsMeta,
+  Review,
+  StoolCondition,
+  TastePreference,
+} from './client';
 
 interface GetReviewReq {
   reviewId: number;
@@ -37,13 +45,34 @@ interface DeleteReviewReq {
 
 interface DeleteReviewRes {}
 
+interface GetReviewSummaryReq {
+  petFoodId: string;
+}
+
+interface GetReviewSummaryRes {
+  rating: { average: number; rating: ChartInfo };
+  tastePreference: ChartInfo;
+  stoolCondition: ChartInfo;
+  adverseReaction: ChartInfo;
+}
+
+interface GetReviewsMetaRes {
+  petSizes: FilterControlsMeta;
+  sortBy: AlignControlsMeta;
+  ageGroups: FilterControlsMeta;
+  breeds: FilterControlsMeta;
+}
+
 export type {
   DeleteReviewReq,
   DeleteReviewRes,
   GetReviewReq,
   GetReviewRes,
+  GetReviewsMetaRes,
   GetReviewsReq,
   GetReviewsRes,
+  GetReviewSummaryReq,
+  GetReviewSummaryRes,
   PostReviewReq,
   PostReviewRes,
   PutReviewReq,

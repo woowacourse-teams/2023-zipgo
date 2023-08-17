@@ -2,13 +2,14 @@ import styled from 'styled-components';
 
 import ZipgoBanner from '@/assets/png/landing_banner.png';
 import Header from '@/components/@common/Header/Header';
+import LoadingSpinner from '@/components/@common/LoadingSpinner';
 import Template from '@/components/@common/Template';
 import FilterBottomSheet from '@/components/Food/FilterBottomSheet/FilterBottomSheet';
 import FoodList from '@/components/Food/FoodList/FoodList';
 import { useInfiniteFoodListScroll } from '@/hooks/food';
 
 const Landing = () => {
-  const { foodList, hasNextPage, targetRef } = useInfiniteFoodListScroll();
+  const { foodList, hasNextPage, targetRef, isFetching } = useInfiniteFoodListScroll();
 
   if (!foodList) return null;
 
@@ -37,6 +38,7 @@ const Landing = () => {
           />
         </ListSection>
       </Layout>
+      {isFetching && <LoadingSpinner />}
     </Template>
   );
 };
