@@ -75,6 +75,8 @@ const PetItemContainer = styled.li<{ selected: boolean }>`
 
   background-color: ${({ selected }) => (selected ? '#D0E6F9' : 'transparent')};
   border-radius: 10px;
+
+  transition: all 0.3s ease-in-out;
 `;
 
 const PetItemContent = styled.div`

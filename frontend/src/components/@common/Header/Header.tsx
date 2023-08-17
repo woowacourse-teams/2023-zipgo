@@ -1,15 +1,24 @@
 import { Link } from 'react-router-dom';
 import { styled } from 'styled-components';
 
-import ZipgoLogo from '@/assets/svg/zipgo_logo_light.svg';
+import PetListBottomSheet from '@/components/PetProfile/PetListBottomSheet';
+import { useAuth, useUser } from '@/hooks/auth';
 
 const Header = () => {
-  const authData = localStorage.getItem('auth');
+  const { logout } = useAuth();
+  const { accessToken } = useUser();
 
   return (
     <HeaderContainer>
-      <img src={ZipgoLogo} alt="집사의고민 로고" />
-      {authData === null && <LinkButton to="login">로그인</LinkButton>}
+      <PetListBottomSheet />
+
+      {accessToken ? (
+        <LogoutButton type="button" onClick={logout}>
+          로그아웃
+        </LogoutButton>
+      ) : (
+        <LinkButton to="logout">로그인</LinkButton>
+      )}
     </HeaderContainer>
   );
 };
@@ -27,7 +36,6 @@ const HeaderContainer = styled.header`
   justify-content: space-between;
 
   width: 100vw;
-  height: 8rem;
   padding: 2rem;
 
   background: transparent;
@@ -40,4 +48,16 @@ const LinkButton = styled(Link)`
   color: ${({ theme }) => theme.color.white};
   text-decoration: none;
   letter-spacing: -0.5px;
+`;
+
+const LogoutButton = styled.button`
+  font-size: 1.6rem;
+  font-weight: 700;
+  line-height: 1.7rem;
+  color: ${({ theme }) => theme.color.white};
+  text-decoration: none;
+  letter-spacing: -0.5px;
+
+  background-color: transparent;
+  border: none;
 `;

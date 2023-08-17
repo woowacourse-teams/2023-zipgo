@@ -52,6 +52,7 @@ module.exports = {
     'consistent-return': 'off',
     'prefer-destructuring': 'off',
     'react/jsx-wrap-multilines': 'off',
+    'no-nested-ternary': 'off',
 
     'react/jsx-props-no-spreading': 'off',
     'react/react-in-jsx-scope': 'off',
