@@ -1,8 +1,10 @@
+import { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { styled } from 'styled-components';
 
 import WriteIcon from '@/assets/svg/write_btn.svg';
 import { useValidParams } from '@/hooks/@common/useValidParams';
+import useValidQueryString from '@/hooks/common/useValidQueryString';
 import { useReviewListQuery } from '@/hooks/query/review';
 import { routerPath } from '@/router/routes';
 
@@ -13,7 +15,15 @@ import SummaryChart from './SummaryChart/SummaryChart';
 const ReviewList = () => {
   const navigate = useNavigate();
   const { petFoodId } = useValidParams(['petFoodId']);
-  const { reviewList } = useReviewListQuery({ petFoodId });
+  const queryString = useValidQueryString(['petSizes', 'ageGroups', 'breeds', 'sortBy']);
+  const { reviewList, refetch } = useReviewListQuery({
+    petFoodId,
+    size: 100,
+    petSizeId: queryString.petSizes,
+    breedId: queryString.breeds,
+    ageGroupId: queryString.ageGroups,
+    sortBy: queryString.sortBy,
+  });
 
   const { hasPet } = JSON.parse(
     localStorage.getItem('userInfo') ??
@@ -22,7 +32,13 @@ const ReviewList = () => {
 
   const goReviewWrite = () => navigate(routerPath.reviewStarRating({ petFoodId }));
 
+  useEffect(() => {
+    refetch();
+  }, [Object.values(queryString).join()]);
+
   if (!reviewList) return null;
+
+  if (!reviewList) throw new Error('리뷰 리스트를 찾을 수 없습니다.');
 
   return (
     <ReviewListContainer>
