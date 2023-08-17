@@ -25,6 +25,7 @@ const Layout = styled.div`
   justify-content: space-between;
 
   width: 100%;
+  height: 3.5rem;
   padding: 0 2rem;
 `;
 
