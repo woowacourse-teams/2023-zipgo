@@ -57,4 +57,19 @@ public class ReviewService {
         reviewRepository.delete(review);
     }
 
+    public void addHelpfulReaction(Long memberId, Long reviewId) {
+        Review review = reviewRepository.getById(reviewId);
+        Member member = memberRepository.getById(memberId);
+
+        review.reactedBy(member);
+    }
+
+
+    public void removeHelpfulReaction(Long memberId, Long reviewId) {
+        Review review = reviewRepository.getById(reviewId);
+        Member member = memberRepository.getById(memberId);
+
+        review.removeReactionBy(member);
+    }
+
 }

@@ -84,6 +84,25 @@ public class ReviewController {
         return ResponseEntity.ok(metadata);
     }
 
+    @PostMapping("/{reviewId}/helpful-reactions")
+    public ResponseEntity<Void> createHelpfulReaction(
+            @Auth AuthDto authDto,
+            @PathVariable Long reviewId
+    ) {
+        reviewService.addHelpfulReaction(authDto.id(), reviewId);
+        return ResponseEntity.ok().build();
+    }
+
+    @DeleteMapping("/{reviewId}/helpful-reactions")
+    public ResponseEntity<Void> deleteHelpfulReaction(
+            @Auth AuthDto authDto,
+            @PathVariable Long reviewId
+    ) {
+        reviewService.removeHelpfulReaction(authDto.id(), reviewId);
+        return ResponseEntity.noContent().build();
+    }
+
+
     @GetMapping("/summary")
     public ResponseEntity<GetReviewsSummaryResponse> getReviewsSummary(Long petFoodId) {
         GetReviewsSummaryResponse reviewsSummary = reviewQueryService.getReviewsSummary(petFoodId);
