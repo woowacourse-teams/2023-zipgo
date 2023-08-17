@@ -25,7 +25,7 @@ import { PetSize } from '@/types/petProfile/client';
 const PetProfileEditionContent = () => {
   const navigate = useNavigate();
   const { petId } = useValidParams(['petId']);
-  const { petItem, refetch: petItemRefetch } = usePetItemQuery({ petId: Number(petId) });
+  const { petItem, resetPetItemQuery } = usePetItemQuery({ petId: Number(petId) });
   const { removePetMutation } = useRemovePetMutation();
   const { updatePetProfile, resetPetProfile } = usePetProfile();
   const {
@@ -46,17 +46,10 @@ const PetProfileEditionContent = () => {
 
   const { editPetMutation } = useEditPetMutation();
 
-  useEffect(() => {
-    petItemRefetch();
-  }, []);
-
   const onClickRemoveButton = (petId: number) => {
     confirm('정말 삭제하시겠어요?') &&
       removePetMutation.removePet({ petId }).then(() => {
-        const userInfo = JSON.parse(
-          localStorage.getItem('userInfo') ??
-            JSON.stringify({ name: '노아이즈', profileImageUrl: null, hasPet: false }),
-        );
+        const userInfo = JSON.parse(localStorage.getItem('userInfo')!);
 
         localStorage.setItem('userInfo', JSON.stringify({ ...userInfo, hasPet: false }));
 
@@ -105,6 +98,7 @@ const PetProfileEditionContent = () => {
         .editPet(newPetProfile)
         .then(() => {
           updatePetProfile(newPetProfile);
+          resetPetItemQuery();
           alert('반려동물 정보 수정이 완료되었습니다.');
           navigate(PATH.HOME);
         })

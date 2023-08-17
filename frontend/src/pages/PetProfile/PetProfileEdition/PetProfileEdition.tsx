@@ -1,11 +1,5 @@
-import PetProfileProvider from '@/context/petProfile/PetProfileContext';
-
 import PetProfileEditionContent from './PetProfileEditionContent';
 
-const PetProfileEdition = () => (
-  <PetProfileProvider>
-    <PetProfileEditionContent />
-  </PetProfileProvider>
-);
+const PetProfileEdition = () => <PetProfileEditionContent />;
 
 export default PetProfileEdition;
