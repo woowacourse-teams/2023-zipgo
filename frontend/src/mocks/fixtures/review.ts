@@ -4,7 +4,25 @@ const getReviews = (): GetReviewsRes => ({
   reviews: [
     {
       id: 1,
-      reviewerName: '에디',
+      petProfile: {
+        id: 1,
+        name: '에디',
+        profileUrl: '',
+        writtenAge: 132,
+        writtenWeight: 72.3,
+        breed: {
+          id: 3,
+          name: '말티즈',
+          size: {
+            id: 1,
+            name: '대형견',
+          },
+        },
+      },
+      helpfulReaction: {
+        count: 3,
+        reacted: false,
+      },
       rating: 5,
       date: '2023-05-26',
       comment:
@@ -15,7 +33,25 @@ const getReviews = (): GetReviewsRes => ({
     },
     {
       id: 2,
-      reviewerName: '노아이즈',
+      petProfile: {
+        id: 2,
+        name: '노아이즈',
+        profileUrl: '',
+        writtenAge: 102,
+        writtenWeight: 72.3,
+        breed: {
+          id: 4,
+          name: '시바',
+          size: {
+            id: 41,
+            name: '대형견',
+          },
+        },
+      },
+      helpfulReaction: {
+        count: 3,
+        reacted: false,
+      },
       rating: 3,
       date: '2023-07-01',
       comment: '제가 먹어봤는데 별로에요',
@@ -25,7 +61,25 @@ const getReviews = (): GetReviewsRes => ({
     },
     {
       id: 3,
-      reviewerName: '롤로노아 로지',
+      petProfile: {
+        id: 11,
+        name: '롤로노아 로지',
+        profileUrl: '',
+        writtenAge: 112,
+        writtenWeight: 72.3,
+        breed: {
+          id: 33,
+          name: '퍼그',
+          size: {
+            id: 121,
+            name: '중형견',
+          },
+        },
+      },
+      helpfulReaction: {
+        count: 3,
+        reacted: false,
+      },
       rating: 4,
       date: '2023-07-26',
       comment: '저희집 베베가 잘 먹어요',
