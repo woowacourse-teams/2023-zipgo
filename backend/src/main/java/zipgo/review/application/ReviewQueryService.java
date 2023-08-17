@@ -134,16 +134,19 @@ public class ReviewQueryService {
         Map<Integer, List<Review>> groupByRating = reviews.stream()
                 .collect(Collectors.groupingBy(Review::getRating));
 
-        rating.add(new SummaryElement("5", calculateRankPercent(5, groupByRating) / reviewSize));
-        rating.add(new SummaryElement("4", calculateRankPercent(4, groupByRating) / reviewSize));
-        rating.add(new SummaryElement("3", calculateRankPercent(3, groupByRating) / reviewSize));
-        rating.add(new SummaryElement("2", calculateRankPercent(2, groupByRating) / reviewSize));
-        rating.add(new SummaryElement("1", calculateRankPercent(1, groupByRating) / reviewSize));
+        rating.add(new SummaryElement("5", getZeroOrCalculateRankPercent(5, groupByRating, reviewSize)));
+        rating.add(new SummaryElement("4", getZeroOrCalculateRankPercent(4, groupByRating, reviewSize)));
+        rating.add(new SummaryElement("3", getZeroOrCalculateRankPercent(3, groupByRating, reviewSize)));
+        rating.add(new SummaryElement("2", getZeroOrCalculateRankPercent(2, groupByRating, reviewSize)));
+        rating.add(new SummaryElement("1", getZeroOrCalculateRankPercent(1, groupByRating, reviewSize)));
         return rating;
     }
 
-    private int calculateRankPercent(int rank, Map<Integer, List<Review>> groupByRating) {
-        return groupByRating.getOrDefault(rank, new ArrayList<>()).size() * PERCENTAGE;
+    private int getZeroOrCalculateRankPercent(int rank, Map<Integer, List<Review>> groupByRating, int reviewSize) {
+        if (reviewSize == 0) {
+            return 0;
+        }
+        return groupByRating.getOrDefault(rank, new ArrayList<>()).size() * PERCENTAGE /reviewSize;
     }
 
     private List<SummaryElement> summarizeTastePreference(List<Review> reviews, int reviewSize) {
@@ -154,9 +157,16 @@ public class ReviewQueryService {
         TastePreference[] values = TastePreference.values();
         for (TastePreference value : values) {
             tastePreference.add(new SummaryElement(value.getDescription(),
-                    groupByTastePreference.getOrDefault(value, new ArrayList<>()).size() * PERCENTAGE / reviewSize));
+                    getZeroOrTastePreferencePercentage(reviewSize, groupByTastePreference, value)));
         }
         return tastePreference;
+    }
+
+    private int getZeroOrTastePreferencePercentage(int reviewSize, Map<TastePreference, List<Review>> groupByTastePreference, TastePreference value) {
+        if (reviewSize == 0) {
+            return 0;
+        }
+        return groupByTastePreference.getOrDefault(value, new ArrayList<>()).size() * PERCENTAGE / reviewSize;
     }
 
     private List<SummaryElement> summarizeStoolCondition(List<Review> reviews, int reviewSize) {
@@ -167,9 +177,16 @@ public class ReviewQueryService {
         StoolCondition[] values = StoolCondition.values();
         for (StoolCondition value : values) {
             stoolCondition.add(new SummaryElement(value.getDescription(),
-                    groupByStoolCondition.getOrDefault(value, new ArrayList<>()).size() * PERCENTAGE / reviewSize));
+                    getZeroOrStoolConditionPercentage(reviewSize, groupByStoolCondition, value)));
         }
         return stoolCondition;
+    }
+
+    private int getZeroOrStoolConditionPercentage(int reviewSize, Map<StoolCondition, List<Review>> groupByStoolCondition, StoolCondition value) {
+        if (reviewSize == 0) {
+            return 0;
+        }
+        return groupByStoolCondition.getOrDefault(value, new ArrayList<>()).size() * PERCENTAGE / reviewSize;
     }
 
     private List<SummaryElement> summarizeAdverseReaction(List<Review> reviews) {
@@ -185,10 +202,16 @@ public class ReviewQueryService {
         AdverseReactionType[] values = AdverseReactionType.values();
         for (AdverseReactionType value : values) {
             adverseReaction.add(new SummaryElement(value.getDescription(),
-                    groupByAdverseReaction.getOrDefault(value, new ArrayList<>()).size() * PERCENTAGE
-                            / allAdverseReaction.size()));
+                    getZeroOrAdverseReactionPercentage(allAdverseReaction, groupByAdverseReaction, value)));
         }
         return adverseReaction;
+    }
+
+    private int getZeroOrAdverseReactionPercentage(List<AdverseReaction> allAdverseReaction, Map<AdverseReactionType, List<AdverseReaction>> groupByAdverseReaction, AdverseReactionType value) {
+        if (allAdverseReaction.size() == 0) {
+            return 0;
+        }
+        return groupByAdverseReaction.getOrDefault(value, new ArrayList<>()).size() * PERCENTAGE / allAdverseReaction.size();
     }
 
 }
