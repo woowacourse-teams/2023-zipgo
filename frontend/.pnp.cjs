@@ -44,7 +44,10 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["@storybook/react-webpack5", "virtual:d9650954c7f1725ea712d2e40695de9ea5d1c0fa9b89379134c62909d440d91b03d6c37e2823804a3404472b90a5bec73c82193190dd3c4db4c9e9edd75db91e#npm:7.0.27"],\
             ["@storybook/testing-library", "npm:0.2.0"],\
             ["@tanstack/react-query", "virtual:d9650954c7f1725ea712d2e40695de9ea5d1c0fa9b89379134c62909d440d91b03d6c37e2823804a3404472b90a5bec73c82193190dd3c4db4c9e9edd75db91e#npm:4.29.25"],\
+            ["@testing-library/dom", "npm:9.3.1"],\
             ["@testing-library/jest-dom", "npm:5.16.5"],\
+            ["@testing-library/react", "virtual:d9650954c7f1725ea712d2e40695de9ea5d1c0fa9b89379134c62909d440d91b03d6c37e2823804a3404472b90a5bec73c82193190dd3c4db4c9e9edd75db91e#npm:14.0.0"],\
+            ["@testing-library/user-event", "virtual:3a29b7ba9c6cbda27ff9bc37bb2973be83c8694cdd00e9dc1ddaf5b4e00ccd9fe7c28f8b7d3bde47f6b1483d58a55426da0989f3832560b0e9d6d4e3ec82a5f7#npm:14.4.3"],\
             ["@types/babel__core", "npm:7.20.1"],\
             ["@types/babel__preset-env", "npm:7.9.2"],\
             ["@types/node", "npm:20.4.2"],\
@@ -8449,6 +8452,34 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           "linkType": "HARD"\
         }]\
       ]],\
+      ["@testing-library/react", [\
+        ["npm:14.0.0", {\
+          "packageLocation": "./.yarn/cache/@testing-library-react-npm-14.0.0-84fecd033b-4a54c8f56c.zip/node_modules/@testing-library/react/",\
+          "packageDependencies": [\
+            ["@testing-library/react", "npm:14.0.0"]\
+          ],\
+          "linkType": "SOFT"\
+        }],\
+        ["virtual:d9650954c7f1725ea712d2e40695de9ea5d1c0fa9b89379134c62909d440d91b03d6c37e2823804a3404472b90a5bec73c82193190dd3c4db4c9e9edd75db91e#npm:14.0.0", {\
+          "packageLocation": "./.yarn/__virtual__/@testing-library-react-virtual-7d9a1e8a46/0/cache/@testing-library-react-npm-14.0.0-84fecd033b-4a54c8f56c.zip/node_modules/@testing-library/react/",\
+          "packageDependencies": [\
+            ["@testing-library/react", "virtual:d9650954c7f1725ea712d2e40695de9ea5d1c0fa9b89379134c62909d440d91b03d6c37e2823804a3404472b90a5bec73c82193190dd3c4db4c9e9edd75db91e#npm:14.0.0"],\
+            ["@babel/runtime", "npm:7.22.6"],\
+            ["@testing-library/dom", "npm:9.3.1"],\
+            ["@types/react", "npm:18.2.15"],\
+            ["@types/react-dom", "npm:18.2.7"],\
+            ["react", "npm:18.2.0"],\
+            ["react-dom", "virtual:d9650954c7f1725ea712d2e40695de9ea5d1c0fa9b89379134c62909d440d91b03d6c37e2823804a3404472b90a5bec73c82193190dd3c4db4c9e9edd75db91e#npm:18.2.0"]\
+          ],\
+          "packagePeers": [\
+            "@types/react-dom",\
+            "@types/react",\
+            "react-dom",\
+            "react"\
+          ],\
+          "linkType": "HARD"\
+        }]\
+      ]],\
       ["@testing-library/user-event", [\
         ["npm:14.4.3", {\
           "packageLocation": "./.yarn/cache/@testing-library-user-event-npm-14.4.3-2d1a75355f-852c48ea6d.zip/node_modules/@testing-library/user-event/",\
@@ -14044,7 +14075,10 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["@storybook/react-webpack5", "virtual:d9650954c7f1725ea712d2e40695de9ea5d1c0fa9b89379134c62909d440d91b03d6c37e2823804a3404472b90a5bec73c82193190dd3c4db4c9e9edd75db91e#npm:7.0.27"],\
             ["@storybook/testing-library", "npm:0.2.0"],\
             ["@tanstack/react-query", "virtual:d9650954c7f1725ea712d2e40695de9ea5d1c0fa9b89379134c62909d440d91b03d6c37e2823804a3404472b90a5bec73c82193190dd3c4db4c9e9edd75db91e#npm:4.29.25"],\
+            ["@testing-library/dom", "npm:9.3.1"],\
             ["@testing-library/jest-dom", "npm:5.16.5"],\
+            ["@testing-library/react", "virtual:d9650954c7f1725ea712d2e40695de9ea5d1c0fa9b89379134c62909d440d91b03d6c37e2823804a3404472b90a5bec73c82193190dd3c4db4c9e9edd75db91e#npm:14.0.0"],\
+            ["@testing-library/user-event", "virtual:3a29b7ba9c6cbda27ff9bc37bb2973be83c8694cdd00e9dc1ddaf5b4e00ccd9fe7c28f8b7d3bde47f6b1483d58a55426da0989f3832560b0e9d6d4e3ec82a5f7#npm:14.4.3"],\
             ["@types/babel__core", "npm:7.20.1"],\
             ["@types/babel__preset-env", "npm:7.9.2"],\
             ["@types/node", "npm:20.4.2"],\
