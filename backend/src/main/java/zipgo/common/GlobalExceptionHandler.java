@@ -16,6 +16,7 @@ import zipgo.pet.exception.PetException;
 import zipgo.petfood.exception.PetFoodException;
 import zipgo.petfood.presentation.dto.ErrorResponse;
 import zipgo.review.exception.ReviewException;
+import zipgo.review.exception.ReviewSelfReactedException;
 
 import static org.springframework.http.HttpStatus.BAD_REQUEST;
 import static org.springframework.http.HttpStatus.FORBIDDEN;
@@ -60,7 +61,7 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
         return ResponseEntity.status(FORBIDDEN).body(ErrorResponse.of(exception));
     }
 
-    @ExceptionHandler({IllegalArgumentException.class, ReviewException.SelfReacted.class})
+    @ExceptionHandler({IllegalArgumentException.class, ReviewSelfReactedException.class})
     public ResponseEntity<ErrorResponse> handleBadRequestException(Exception exception) {
         return ResponseEntity.status(BAD_REQUEST).body(ErrorResponse.of(exception));
     }

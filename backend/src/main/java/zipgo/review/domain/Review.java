@@ -26,7 +26,7 @@ import zipgo.petfood.domain.PetFood;
 import zipgo.review.domain.type.AdverseReactionType;
 import zipgo.review.domain.type.StoolCondition;
 import zipgo.review.domain.type.TastePreference;
-import zipgo.review.exception.ReviewException;
+import zipgo.review.exception.ReviewSelfReactedException;
 
 import static jakarta.persistence.CascadeType.MERGE;
 import static jakarta.persistence.CascadeType.PERSIST;
@@ -134,7 +134,7 @@ public class Review extends BaseTimeEntity {
 
     public void reactedBy(Member member) {
         if (member.equals(pet.getOwner())) {
-            throw new ReviewException.SelfReacted();
+            throw new ReviewSelfReactedException();
         }
         if (isAlreadyReactedBy(member)) {
             return;

@@ -16,12 +16,4 @@ public class ReviewException extends RuntimeException {
 
     }
 
-    public static class SelfReacted extends ReviewException {
-
-        public SelfReacted() {
-            super("본인의 리뷰에는 도움이 돼요를 추가할 수 없습니다.");
-        }
-
-    }
-
 }
