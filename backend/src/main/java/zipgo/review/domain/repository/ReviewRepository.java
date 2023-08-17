@@ -1,6 +1,7 @@
 package zipgo.review.domain.repository;
 
 import org.springframework.data.jpa.repository.JpaRepository;
+import zipgo.pet.domain.Pet;
 import zipgo.review.domain.Review;
 import zipgo.review.exception.ReviewException;
 
@@ -10,5 +11,7 @@ public interface ReviewRepository extends JpaRepository<Review, Long> {
         return findById(id)
                 .orElseThrow(() -> new ReviewException.NotFound(id));
     }
+
+    void deleteByPet(Pet pet);
 
 }
