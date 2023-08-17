@@ -119,9 +119,9 @@ public class PetFoodQueryRepository implements zipgo.petfood.domain.repository.P
     public PetFood findPetFoodWithReviewsByPetFoodId(Long petFoodId) {;
         return queryFactory
                 .selectFrom(petFood)
-                .join(petFood.reviews.reviews, review)
+                .leftJoin(petFood.reviews.reviews, review)
                 .fetchJoin()
-                .join(review.adverseReactions, adverseReaction)
+                .leftJoin(review.adverseReactions, adverseReaction)
                 .where(petFood.id.eq(petFoodId))
                 .fetchOne();
     }
