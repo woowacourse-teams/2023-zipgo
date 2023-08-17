@@ -23,7 +23,6 @@ import zipgo.pet.domain.repository.PetSizeRepository;
 import zipgo.petfood.domain.PetFood;
 import zipgo.petfood.domain.fixture.PetFoodFixture;
 import zipgo.petfood.domain.repository.PetFoodRepository;
-import zipgo.review.domain.HelpfulReaction;
 import zipgo.review.domain.Review;
 import zipgo.review.exception.ReviewException;
 import zipgo.review.fixture.MemberFixture;
@@ -66,12 +65,7 @@ public class ReviewRepositoryTest extends RepositoryTest {
         Member 모르는_베베 = memberRepository.save(MemberFixture.멤버_이름("모르는_베베"));
 
         //when
-        HelpfulReaction 도움이_돼요 = HelpfulReaction.builder()
-                .review(아는_리뷰)
-                .madeBy(모르는_베베)
-                .build();
-
-        아는_리뷰.getHelpfulReactions().add(도움이_돼요);
+        아는_리뷰.reactedBy(모르는_베베);
         reviewRepository.save(아는_리뷰);
 
         //then
@@ -79,6 +73,24 @@ public class ReviewRepositoryTest extends RepositoryTest {
                 .orElseThrow(() -> new ReviewException.NotFound(아는_리뷰.getId()));
         assertThat(조회한_리뷰.getHelpfulReactions())
                 .anyMatch(helpfulReaction -> helpfulReaction.getMadeBy().equals(모르는_베베));
+    }
+
+    @Test
+    void 도움이_돼요_취소하기() {
+        //given
+        Review 아는_리뷰 = 도움이_돼요를_누르고싶은_리뷰();
+        Member 모르는_베베 = memberRepository.save(MemberFixture.멤버_이름("모르는_베베"));
+        아는_리뷰.reactedBy(모르는_베베);
+        reviewRepository.save(아는_리뷰);
+
+        //when
+        아는_리뷰.removeReactionBy(모르는_베베);
+        reviewRepository.save(아는_리뷰);
+
+        //then
+        Review 조회한_리뷰 = reviewRepository.getById(아는_리뷰.getId());
+        assertThat(조회한_리뷰.getHelpfulReactions())
+                .noneMatch(helpfulReaction -> helpfulReaction.getMadeBy().equals(모르는_베베));
     }
 
     private Review 도움이_돼요를_누르고싶은_리뷰() {

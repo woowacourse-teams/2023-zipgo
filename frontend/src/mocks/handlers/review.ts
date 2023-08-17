@@ -22,10 +22,18 @@ const reviewHandlers = [
     const { reviews } = reviewFixture.getReviews();
     const review = reviews.find(review => review.id === Number(req.params.reviewId)) as Review;
 
-    return res(ctx.status(200), ctx.json(review));
+    return res(ctx.json(review));
   }),
 
-  rest.get(`${BASE_URL}/pet-foods/:petFoodId/reviews`, (req, res, ctx) => {
+  rest.post(`${BASE_URL}/review/:reviewId/helpfulReactions`, (req, res, ctx) =>
+    res(ctx.delay(2000), ctx.status(200)),
+  ),
+
+  rest.delete(`${BASE_URL}/review/:reviewId/helpfulReactions`, (req, res, ctx) =>
+    res(ctx.status(200)),
+  ),
+
+  rest.get(`${BASE_URL}/reviews`, (req, res, ctx) => {
     const reviews = reviewFixture.getReviews();
 
     return res(ctx.status(200), ctx.json(reviews));

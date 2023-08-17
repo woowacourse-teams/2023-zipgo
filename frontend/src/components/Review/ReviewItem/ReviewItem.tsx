@@ -3,31 +3,33 @@ import { useNavigate } from 'react-router-dom';
 import styled, { css } from 'styled-components';
 
 import DogIcon from '@/assets/svg/dog_icon.svg';
+import ReactedIcon from '@/assets/svg/reacted_icon.svg';
+import UnReactedIcon from '@/assets/svg/un_reacted_icon.svg';
 import StarRatingDisplay from '@/components/@common/StarRating/StarRatingDisplay/StartRatingDisplay';
 import { COMMENT_VISIABLE_LINE_LIMIT, REACTIONS } from '@/constants/review';
 import { useValidParams } from '@/hooks/@common/useValidParams';
-import { useRemoveReviewMutation } from '@/hooks/query/review';
+import { useRemoveReviewMutation, useToggleHelpfulReactionMutation } from '@/hooks/query/review';
 import { routerPath } from '@/router/routes';
 import { Review } from '@/types/review/client';
 
 interface ReviewItemProps extends Review {}
 
 const ReviewItem = (reviewItemProps: ReviewItemProps) => {
-  const { name } = JSON.parse(
-    localStorage.getItem('userInfo') ??
-      JSON.stringify({ name: '노아이즈', profileImageUrl: null, hasPet: false }),
+  /** @todo 본인 리뷰 확인 - 추후 id로 변경 */
+  const { name: userName } = JSON.parse(
+    localStorage.getItem('userInfo') ?? JSON.stringify({ name: '노아이즈' }),
   );
 
   const {
-    id,
-    profileImageUrl = DogIcon,
-    reviewerName,
+    id: reviewId,
     rating,
     date,
     tastePreference,
     stoolCondition,
     adverseReactions,
     comment,
+    petProfile: { name: reviewerName, profileUrl },
+    helpfulReaction: { count, reacted },
   } = reviewItemProps;
 
   const navigate = useNavigate();
@@ -35,31 +37,37 @@ const ReviewItem = (reviewItemProps: ReviewItemProps) => {
   const { removeReviewMutation } = useRemoveReviewMutation();
   const [isCommentExpanded, setIsCommentExpanded] = useState(false);
 
+  const { toggleHelpfulReaction } = useToggleHelpfulReactionMutation(reacted);
+
   const onClickEditButton = () => {
     navigate(routerPath.reviewStarRating({ petFoodId }), {
       state: {
         selectedRating: rating,
         isEditMode: true,
-        reviewId: id,
+        reviewId,
       },
     });
   };
 
   const onClickRemoveButton = () => {
-    confirm('정말 삭제하시곘어요?') && removeReviewMutation.removeReview({ reviewId: id });
+    confirm('정말 삭제하시곘어요?') && removeReviewMutation.removeReview({ reviewId, petFoodId });
+  };
+
+  const onClickHelpfulButton = () => {
+    toggleHelpfulReaction({ reviewId, petFoodId });
   };
 
   return (
-    <div>
+    <Layout>
       <ReviewHeader>
         <ReviewImageAndNameContainer>
           <ReviewerImageWrapper>
-            <ReviewerImage src={profileImageUrl} alt={`${reviewerName} 프로필`} />
+            <ReviewerImage src={profileUrl || DogIcon} alt={`${reviewerName} 프로필`} />
           </ReviewerImageWrapper>
           <ReviewerName>{reviewerName}</ReviewerName>
         </ReviewImageAndNameContainer>
         <ButtonContainer>
-          {name === reviewerName && (
+          {userName === reviewerName && (
             <>
               <TextButton type="button" aria-label="리뷰 수정" onClick={onClickEditButton}>
                 수정
@@ -98,11 +106,23 @@ const ReviewItem = (reviewItemProps: ReviewItemProps) => {
           ..더보기
         </ShowMoreButton>
       )}
-    </div>
+      <HelpfulButton reacted={reacted} onClick={onClickHelpfulButton}>
+        <HelpfulButtonIcon src={reacted ? ReactedIcon : UnReactedIcon} />
+        <span>도움이 돼요</span>
+        <span>{count}</span>
+      </HelpfulButton>
+    </Layout>
   );
 };
 
 export default ReviewItem;
+
+const Layout = styled.div`
+  position: relative;
+
+  display: flex;
+  flex-direction: column;
+`;
 
 const ReviewHeader = styled.div`
   position: relative;
@@ -237,4 +257,49 @@ const ShowMoreButton = styled.button`
 
   font-size: 1.3rem;
   color: ${({ theme }) => theme.color.grey300};
+`;
+
+const HelpfulButtonIcon = styled.img`
+  width: 1.5rem;
+`;
+
+const HelpfulButton = styled.button<{
+  reacted: boolean;
+}>`
+  display: flex;
+  gap: 1rem;
+  align-items: center;
+
+  max-width: 14rem;
+  margin: 1.6rem 0 0 auto;
+  padding: 0.8rem 1.2rem;
+
+  border-radius: 4px;
+
+  & > span {
+    padding-top: 0.2rem;
+
+    font-size: 1.3rem;
+    font-weight: 500;
+    font-style: normal;
+  }
+
+  ${({ reacted }) =>
+    reacted
+      ? css`
+          background: #e5f0ff;
+          border: 1px solid ${({ theme }) => theme.color.primary};
+
+          & > span {
+            color: ${({ theme }) => theme.color.primary};
+          }
+        `
+      : css`
+          background: ${({ theme }) => theme.color.white};
+          border: 1px solid ${({ theme }) => theme.color.grey300};
+
+          & > span {
+            color: ${({ theme }) => theme.color.grey300};
+          }
+        `}
 `;

@@ -12,6 +12,7 @@ import zipgo.pet.domain.PetSize;
 import zipgo.pet.domain.repository.BreedsRepository;
 import zipgo.pet.domain.repository.PetRepository;
 import zipgo.pet.domain.repository.PetSizeRepository;
+import zipgo.review.domain.repository.ReviewRepository;
 
 @Service
 @Transactional
@@ -24,6 +25,7 @@ public class PetService {
     private final MemberRepository memberRepository;
     private final BreedsRepository breedsRepository;
     private final PetSizeRepository petSizeRepository;
+    private final ReviewRepository reviewRepository;
 
     public Long createPet(Long memberId, PetDto petDto) {
         Member owner = memberRepository.getById(memberId);
@@ -73,6 +75,7 @@ public class PetService {
         Member owner = memberRepository.getById(memberId);
 
         pet.validateOwner(owner);
+        reviewRepository.deleteByPet(pet);
 
         petRepository.delete(pet);
     }

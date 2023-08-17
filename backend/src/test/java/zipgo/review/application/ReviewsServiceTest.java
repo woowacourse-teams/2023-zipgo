@@ -19,6 +19,7 @@ import zipgo.pet.domain.repository.PetRepository;
 import zipgo.pet.domain.repository.PetSizeRepository;
 import zipgo.petfood.domain.PetFood;
 import zipgo.petfood.domain.repository.PetFoodRepository;
+import zipgo.review.domain.HelpfulReaction;
 import zipgo.review.domain.Review;
 import zipgo.review.domain.repository.ReviewRepository;
 import zipgo.review.dto.request.CreateReviewRequest;
@@ -40,6 +41,7 @@ import static zipgo.review.domain.type.TastePreference.EATS_MODERATELY;
 import static zipgo.review.domain.type.TastePreference.EATS_VERY_WELL;
 import static zipgo.review.fixture.AdverseReactionFixture.눈물_이상반응;
 import static zipgo.review.fixture.AdverseReactionFixture.먹고_토_이상반응;
+import static zipgo.review.fixture.MemberFixture.멤버_이름;
 import static zipgo.review.fixture.MemberFixture.무민;
 import static zipgo.review.fixture.ReviewFixture.리뷰_생성_요청;
 import static zipgo.review.fixture.ReviewFixture.리뷰_수정_요청;
@@ -211,6 +213,68 @@ class ReviewsServiceTest extends ServiceTest {
         //then
         assertThatThrownBy(() -> reviewRepository.getById(리뷰.getId()))
                 .isInstanceOf(ReviewException.NotFound.class);
+    }
+
+    @Test
+    void 도움이_돼요를_추가할_수_있다() {
+        //given
+        PetFood 식품 = 모든_영양기준_만족_식품(브랜드);
+        Member 작성자 = memberRepository.save(무민());
+        petFoodRepository.save(식품);
+        Review 리뷰 = 혹평리뷰(식품, 작성자);
+
+        Member 다른회원 = memberRepository.save(멤버_이름("무지"));
+
+        //when
+        reviewService.addHelpfulReaction(다른회원.getId(), 리뷰.getId());
+
+        //then
+        Review 저장된_리뷰 = reviewRepository.getById(리뷰.getId());
+        assertThat(저장된_리뷰.getHelpfulReactions())
+                .extracting(HelpfulReaction::getMadeBy)
+                .anyMatch(member -> member.equals(다른회원));
+    }
+
+    @Test
+    void 도움이_돼요를_취소할_수_있다() {
+        //given
+        PetFood 식품 = 모든_영양기준_만족_식품(브랜드);
+        Member 작성자 = memberRepository.save(무민());
+        petFoodRepository.save(식품);
+        Review 리뷰 = 혹평리뷰(식품, 작성자);
+
+        Member 다른회원 = memberRepository.save(멤버_이름("무지"));
+        리뷰.reactedBy(다른회원);
+        reviewRepository.save(리뷰);
+
+        //when
+        reviewService.removeHelpfulReaction(다른회원.getId(), 리뷰.getId());
+
+        //then
+        Review 저장된_리뷰 = reviewRepository.getById(리뷰.getId());
+        assertThat(저장된_리뷰.getHelpfulReactions())
+                .extracting(HelpfulReaction::getMadeBy)
+                .noneMatch(member -> member.equals(다른회원));
+    }
+
+    @Test
+    void 누른적없을때_도움이_돼요를_취소할_수_있다() {
+        //given
+        PetFood 식품 = 모든_영양기준_만족_식품(브랜드);
+        Member 작성자 = memberRepository.save(무민());
+        petFoodRepository.save(식품);
+        Review 리뷰 = 혹평리뷰(식품, 작성자);
+
+        Member 다른회원 = memberRepository.save(멤버_이름("무지"));
+
+        //when
+        reviewService.removeHelpfulReaction(다른회원.getId(), 리뷰.getId());
+
+        //then
+        Review 저장된_리뷰 = reviewRepository.getById(리뷰.getId());
+        assertThat(저장된_리뷰.getHelpfulReactions())
+                .extracting(HelpfulReaction::getMadeBy)
+                .noneMatch(member -> member.equals(다른회원));
     }
 
 }

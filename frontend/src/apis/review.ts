@@ -1,4 +1,6 @@
 import {
+  DeleteHelpfulReactionsReq,
+  DeleteHelpfulReactionsRes,
   DeleteReviewReq,
   DeleteReviewRes,
   GetReviewReq,
@@ -8,6 +10,8 @@ import {
   GetReviewsRes,
   GetReviewSummaryReq,
   GetReviewSummaryRes,
+  PostHelpfulReactionsReq,
+  PostHelpfulReactionsRes,
   PostReviewReq,
   PostReviewRes,
   PutReviewReq,
@@ -22,8 +26,10 @@ export const getReview = async ({ reviewId }: GetReviewReq) => {
   return data;
 };
 
-export const getReviews = async ({ petFoodId }: GetReviewsReq) => {
-  const { data } = await client.get<GetReviewsRes>(`/pet-foods/${petFoodId}/reviews`);
+export const getReviews = async (payload: GetReviewsReq) => {
+  const { data } = await client.get<GetReviewsRes>('/reviews', {
+    params: payload,
+  });
 
   return data;
 };
@@ -59,6 +65,22 @@ export const getReviewSummary = async ({ petFoodId }: GetReviewSummaryReq) => {
 
 export const getReviewsMeta = async () => {
   const { data } = await client.get<GetReviewsMetaRes>('/reviews/metaData');
+
+  return data;
+};
+
+export const postHelpfulReactions = async ({ reviewId }: PostHelpfulReactionsReq) => {
+  const { data } = await client.post<PostHelpfulReactionsRes>(
+    `/review/${reviewId}/helpfulReactions`,
+  );
+
+  return data;
+};
+
+export const deleteHelpfulReactions = async ({ reviewId }: DeleteHelpfulReactionsReq) => {
+  const { data } = await client.delete<DeleteHelpfulReactionsRes>(
+    `/review/${reviewId}/helpfulReactions`,
+  );
 
   return data;
 };

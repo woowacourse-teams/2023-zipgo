@@ -11,7 +11,6 @@ const Header = () => {
   return (
     <HeaderContainer>
       <PetListBottomSheet />
-
       {accessToken ? (
         <LogoutButton type="button" onClick={logout}>
           로그아웃

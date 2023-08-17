@@ -4,7 +4,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 import org.springframework.web.multipart.MultipartFile;
 import zipgo.common.config.AwsS3Credentials;
-import zipgo.pet.application.ImageClient;
+import zipgo.image.application.ImageClient;
 
 @Component
 @RequiredArgsConstructor

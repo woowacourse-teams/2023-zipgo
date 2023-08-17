@@ -38,6 +38,7 @@ import static io.restassured.RestAssured.given;
 import static io.restassured.http.ContentType.JSON;
 import static org.hamcrest.Matchers.is;
 import static org.hamcrest.Matchers.lessThan;
+import static org.springframework.http.HttpHeaders.AUTHORIZATION;
 import static org.springframework.http.HttpStatus.BAD_REQUEST;
 import static org.springframework.http.HttpStatus.CREATED;
 import static org.springframework.http.HttpStatus.FORBIDDEN;
@@ -60,6 +61,7 @@ import static zipgo.review.fixture.MemberFixture.무민;
 import static zipgo.review.fixture.ReviewFixture.극찬_리뷰_생성;
 import static zipgo.review.fixture.ReviewFixture.리뷰_생성_요청;
 import static zipgo.review.fixture.ReviewFixture.리뷰_수정_요청;
+
 
 public class ReviewControllerTest extends AcceptanceTest {
 
@@ -551,14 +553,177 @@ public class ReviewControllerTest extends AcceptanceTest {
                     responseFields(
                             fieldWithPath("rating.average").description("리뷰 총 평점").type(JsonFieldType.NUMBER),
                             fieldWithPath("rating.rating[].name").description("rating 이름").type(JsonFieldType.STRING),
-                            fieldWithPath("rating.rating[].percentage").description("rating 해당 백분율").type(JsonFieldType.NUMBER),
-                            fieldWithPath("tastePreference[].name").description("tastePreference 이름").type(JsonFieldType.STRING),
-                            fieldWithPath("tastePreference[].percentage").description("tastePreference 해당 백분율").type(JsonFieldType.NUMBER),
-                            fieldWithPath("stoolCondition[].name").description("stoolCondition 이름").type(JsonFieldType.STRING),
-                            fieldWithPath("stoolCondition[].percentage").description("stoolCondition 해당 백분율").type(JsonFieldType.NUMBER),
-                            fieldWithPath("adverseReaction[].name").description("adverseReaction 이름").type(JsonFieldType.STRING),
-                            fieldWithPath("adverseReaction[].percentage").description("adverseReaction 해당 백분율").type(JsonFieldType.NUMBER)
+                            fieldWithPath("rating.rating[].percentage").description("rating 해당 백분율")
+                                    .type(JsonFieldType.NUMBER),
+                            fieldWithPath("tastePreference[].name").description("tastePreference 이름")
+                                    .type(JsonFieldType.STRING),
+                            fieldWithPath("tastePreference[].percentage").description("tastePreference 해당 백분율")
+                                    .type(JsonFieldType.NUMBER),
+                            fieldWithPath("stoolCondition[].name").description("stoolCondition 이름")
+                                    .type(JsonFieldType.STRING),
+                            fieldWithPath("stoolCondition[].percentage").description("stoolCondition 해당 백분율")
+                                    .type(JsonFieldType.NUMBER),
+                            fieldWithPath("adverseReaction[].name").description("adverseReaction 이름")
+                                    .type(JsonFieldType.STRING),
+                            fieldWithPath("adverseReaction[].percentage").description("adverseReaction 해당 백분율")
+                                    .type(JsonFieldType.NUMBER)
                     ));
+        }
+
+    }
+
+    @Nested
+    @DisplayName("리뷰 도움이 돼요 추가 API")
+    class AddHelpfulReaction {
+
+        private Schema 성공_응답_형식 = schema("PostHelpfulReactionResponse");
+        private ResourceSnippetDetails 문서_정보 = resourceDetails().summary("도움이 돼요 추가하기")
+                .description("리뷰에 도움이 돼요를 추가합니다.");
+
+        @Test
+        void 도움이돼요_추가_성공() {
+            //given
+            var 다른_회원 = memberRepository.save(Member.builder().email("도움이돼요_추가할_회원").name("회원명").build());
+            var 다른_회원의_JWT = jwtProvider.create(다른_회원.getId().toString());
+
+            var 요청_준비 = given().spec(spec)
+                    .contentType(JSON)
+                    .filter(API_문서("리뷰 도움이 돼요 추가 - 성공"));
+
+            //when
+            var 응답 = 요청_준비.when()
+                    .header(AUTHORIZATION, "Bearer " + 다른_회원의_JWT)
+                    .pathParam("reviewId", 리뷰.getId())
+                    .post("/reviews/{reviewId}/helpful-reactions");
+
+            //then
+            응답.then()
+                    .assertThat().statusCode(OK.value());
+        }
+
+        @Test
+        void 작성자가_도움이돼요를_추가하면_예외가_발생() {
+            //given
+            var 리뷰_작성자_id = 리뷰.getPet().getOwner().getId();
+            var 리뷰_작성자_JWT = jwtProvider.create(리뷰_작성자_id.toString());
+
+            //when
+            var 요청_준비 = given().spec(spec)
+                    .contentType(JSON)
+                    .filter(실패_API_문서("리뷰 도움이 돼요 추가 - 실패 (작성자 본인시도)"));
+
+            //when
+            var 응답 = 요청_준비.when()
+                    .header(AUTHORIZATION, "Bearer " + 리뷰_작성자_JWT)
+                    .pathParam("reviewId", 리뷰.getId())
+                    .post("/reviews/{reviewId}/helpful-reactions");
+
+            //then
+            응답.then()
+                    .log().all()
+                    .assertThat()
+                    .statusCode(BAD_REQUEST.value());
+        }
+
+        @Test
+        void 이미_눌렀던_리뷰일_경우() {
+            //given
+            var 다른_회원 = memberRepository.save(Member.builder().email("도움이돼요_추가할_회원").name("회원명").build());
+            var 다른_회원의_JWT = jwtProvider.create(다른_회원.getId().toString());
+
+            given().spec(spec).contentType(JSON)
+                    .pathParam("reviewId", 리뷰.getId())
+                    .post("/reviews/{reviewId}/helpful-reactions");
+
+            var 요청_준비 = given().spec(spec)
+                    .contentType(JSON)
+                    .filter(실패_API_문서("리뷰 도움이 돼요 추가 - 성공 (이미 누른 리뷰)"));
+
+            //when
+            var 응답 = 요청_준비.when()
+                    .header(AUTHORIZATION, "Bearer " + 다른_회원의_JWT)
+                    .pathParam("reviewId", 리뷰.getId())
+                    .post("/reviews/{reviewId}/helpful-reactions");
+
+            //then
+            응답.then()
+                    .assertThat().statusCode(OK.value());
+        }
+
+        private RestDocumentationFilter API_문서(String name) {
+            return document(name, 문서_정보.responseSchema(성공_응답_형식),
+                    requestHeaders(headerWithName("Authorization").description("인증을 위한 JWT")),
+                    pathParameters(parameterWithName("reviewId").description("리뷰 id")));
+        }
+
+        private RestDocumentationFilter 실패_API_문서(String name) {
+            return document(name, 문서_정보.responseSchema(에러_응답_형식));
+        }
+
+    }
+
+    @Nested
+    @DisplayName("리뷰 도움이 돼요 취소 API")
+    class DeleteHelpfulReaction {
+
+        private Schema 성공_응답_형식 = schema("PostHelpfulReactionResponse");
+        private ResourceSnippetDetails 문서_정보 = resourceDetails().summary("도움이 돼요 취소하기")
+                .description("눌렀던 도움이 돼요를 취소합니다.");
+
+        @Test
+        void 도움이돼요_취소_성공() {
+            //given
+            var 다른_회원 = memberRepository.save(Member.builder().email("도움이돼요_추가할_회원").name("회원명").build());
+            var 다른_회원의_JWT = jwtProvider.create(다른_회원.getId().toString());
+
+            given().spec(spec).contentType(JSON)
+                    .pathParam("reviewId", 리뷰.getId())
+                    .post("/reviews/{reviewId}/helpful-reactions");
+
+            var 요청_준비 = given().spec(spec)
+                    .contentType(JSON)
+                    .filter(API_문서("리뷰 도움이 돼요 취소 - 성공"));
+
+            //when
+            var 응답 = 요청_준비.when()
+                    .header(AUTHORIZATION, "Bearer " + 다른_회원의_JWT)
+                    .pathParam("reviewId", 리뷰.getId())
+                    .delete("/reviews/{reviewId}/helpful-reactions");
+
+            //then
+            응답.then()
+                    .assertThat().statusCode(NO_CONTENT.value());
+        }
+
+        @Test
+        void 누르지_않은_리뷰에서_취소() {
+            //given
+            var 다른_회원 = memberRepository.save(Member.builder().email("도움이돼요_추가할_회원").name("회원명").build());
+            var 다른_회원의_JWT = jwtProvider.create(다른_회원.getId().toString());
+
+            var 요청_준비 = given().spec(spec)
+                    .contentType(JSON)
+                    .filter(실패_API_문서("리뷰 도움이 돼요 추가 - 성공 (이미 누른 리뷰)"));
+
+            //when
+            var 응답 = 요청_준비.when()
+                    .header(AUTHORIZATION, "Bearer " + 다른_회원의_JWT)
+                    .pathParam("reviewId", 리뷰.getId())
+                    .delete("/reviews/{reviewId}/helpful-reactions");
+
+            //then
+            응답.then()
+                    .assertThat().statusCode(NO_CONTENT.value());
+        }
+
+        private RestDocumentationFilter API_문서(String name) {
+            return document(name, 문서_정보.responseSchema(성공_응답_형식),
+                    requestHeaders(headerWithName("Authorization").description("인증을 위한 JWT")),
+                    pathParameters(parameterWithName("reviewId").description("리뷰 id")));
+        }
+
+        private RestDocumentationFilter 실패_API_문서(String name) {
+            return document(name, 문서_정보.responseSchema(에러_응답_형식));
         }
 
     }

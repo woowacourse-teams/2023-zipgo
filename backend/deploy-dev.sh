@@ -3,7 +3,7 @@ PROJECT_NAME=zipgo-backend
 
 echo '> development 서버를 실행합니다'
 echo '> 현재 구동중인 애플리케이션 PID 확인'
-CURRENT_PID=$(sudo netstat -lntp | grep 8081 | awk '{print $7}' | cut -d'/' -f1)
+CURRENT_PID=$(sudo netstat -lntp | grep 8080 | awk '{print $7}' | cut -d'/' -f1)
 
 echo "현재 구동중인 애플리케이션 PID: $CURRENT_PID"
 
@@ -21,8 +21,8 @@ else
     fi
 fi
 
-sudo chmod +x ~/develop/zipgo-backend-0.0.1-SNAPSHOT.jar
+sudo chmod +x ~/zipgo-backend-0.0.1-SNAPSHOT.jar
 sudo nohup java -jar \
 -Dspring.profiles.active=dev \
--Dspring.config.import=file:/home/ubuntu/develop/env.properties \
-~/develop/zipgo-backend-0.0.1-SNAPSHOT.jar > ~/develop/application.log 2>&1 &
+-Dspring.config.import=file:/home/ubuntu/env.properties \
+~/zipgo-backend-0.0.1-SNAPSHOT.jar > ~/application.log 2>&1 &

@@ -1,9 +1,15 @@
+---
+# port
+server:
+  port: 8081
 
 ---
 # database
 spring:
+  config:
+    import: classpath:/env.properties
   datasource:
-    driver-class-name: net.sf.log4jdbc.sql.jdbcapi.DriverSpy
+    driver-class-name: com.mysql.cj.jdbc.Driver
     url: ${JDBC_URL}
     username: ${DB_USERNAME}
     password: ${DB_PASSWORD}
@@ -21,8 +27,6 @@ spring:
       hibernate:
         format_sql: true
         show_sql: true
-        default_batch_fetch_size: 30
-    defer-datasource-initialization: true
 
   sql:
     init:

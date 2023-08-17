@@ -1,15 +1,19 @@
+/* eslint-disable indent */
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 
 import {
+  deleteHelpfulReactions,
   deleteReview,
   getReview,
   getReviews,
   getReviewsMeta,
   getReviewSummary,
+  postHelpfulReactions,
   postReview,
   putReview,
 } from '@/apis/review';
 import { Parameter } from '@/types/common/utility';
+import { GetReviewsRes } from '@/types/review/remote';
 
 const QUERY_KEY = {
   reviewItem: 'reviewItem',
@@ -20,7 +24,7 @@ const QUERY_KEY = {
 
 export const useReviewItemQuery = (payload: Parameter<typeof getReview>) => {
   const { data, ...restQuery } = useQuery({
-    queryKey: [QUERY_KEY.reviewItem],
+    queryKey: [QUERY_KEY.reviewItem, payload.reviewId],
     queryFn: () => getReview(payload),
     enabled: payload.reviewId > 0,
   });
@@ -33,7 +37,7 @@ export const useReviewItemQuery = (payload: Parameter<typeof getReview>) => {
 
 export const useReviewListQuery = (payload: Parameter<typeof getReviews>) => {
   const { data, ...restQuery } = useQuery({
-    queryKey: [QUERY_KEY.reviewList],
+    queryKey: [QUERY_KEY.reviewList, payload.petFoodId],
     queryFn: () => getReviews(payload),
   });
 
@@ -48,8 +52,8 @@ export const useAddReviewMutation = () => {
 
   const { mutateAsync: addReview, ...addReviewRestMutation } = useMutation({
     mutationFn: postReview,
-    onSuccess: () => {
-      queryClient.invalidateQueries([QUERY_KEY.reviewList]);
+    onSuccess: (_, { petFoodId }) => {
+      queryClient.invalidateQueries([QUERY_KEY.reviewList, petFoodId]);
     },
   });
 
@@ -61,8 +65,8 @@ export const useEditReviewMutation = () => {
 
   const { mutateAsync: editReview, ...editReviewRestMutation } = useMutation({
     mutationFn: putReview,
-    onSuccess: () => {
-      queryClient.invalidateQueries([QUERY_KEY.reviewList]);
+    onSuccess: (_, { petFoodId }) => {
+      queryClient.invalidateQueries([QUERY_KEY.reviewList, petFoodId]);
     },
   });
 
@@ -74,25 +78,12 @@ export const useRemoveReviewMutation = () => {
 
   const { mutate: removeReview, ...removeReviewRestMutation } = useMutation({
     mutationFn: deleteReview,
-    onSuccess: () => {
-      queryClient.invalidateQueries([QUERY_KEY.reviewList]);
+    onSuccess: (_, { petFoodId }) => {
+      queryClient.invalidateQueries([QUERY_KEY.reviewList, petFoodId]);
     },
   });
 
   return { removeReviewMutation: { removeReview, ...removeReviewRestMutation } };
-};
-
-export const useReviewListAlignMeta = () => {
-  const { data, ...restQuery } = useQuery({
-    queryKey: [QUERY_KEY.reviewItem],
-    queryFn: getReviewsMeta,
-    select: ({ sortBy, ...restMeta }) => sortBy,
-  });
-
-  return {
-    metaData: data,
-    ...restQuery,
-  };
 };
 
 export const useReviewSummaryQuery = (payload: Parameter<typeof getReviewSummary>) => {
@@ -107,6 +98,19 @@ export const useReviewSummaryQuery = (payload: Parameter<typeof getReviewSummary
   };
 };
 
+export const useReviewListAlignMeta = () => {
+  const { data, ...restQuery } = useQuery({
+    queryKey: [QUERY_KEY.reviewListMeta],
+    queryFn: getReviewsMeta,
+    select: ({ sortBy }) => sortBy,
+  });
+
+  return {
+    metaData: data,
+    ...restQuery,
+  };
+};
+
 export const useReviewListFilterMeta = () => {
   const { data, ...restQuery } = useQuery({
     queryKey: [QUERY_KEY.reviewListMeta],
@@ -117,5 +121,56 @@ export const useReviewListFilterMeta = () => {
   return {
     metaData: data,
     ...restQuery,
+  };
+};
+
+export const useToggleHelpfulReactionMutation = (reacted: boolean) => {
+  const queryClient = useQueryClient();
+
+  const { mutate: toggleHelpfulReaction, ...restMutation } = useMutation({
+    mutationFn: reacted ? deleteHelpfulReactions : postHelpfulReactions,
+    onMutate: async ({ petFoodId, reviewId }) => {
+      await queryClient.cancelQueries({ queryKey: [QUERY_KEY.reviewList, petFoodId] });
+
+      const previousReviewList = queryClient.getQueryData<GetReviewsRes>([
+        QUERY_KEY.reviewList,
+        petFoodId,
+      ]);
+
+      queryClient.setQueryData(
+        [QUERY_KEY.reviewList, petFoodId],
+        (previousReviewList?: GetReviewsRes) =>
+          previousReviewList
+            ? {
+                ...previousReviewList,
+                reviews: previousReviewList.reviews.map(review => {
+                  if (review.id === reviewId) {
+                    const cloned = review;
+
+                    cloned.helpfulReaction.count += 1;
+                    cloned.helpfulReaction.reacted = !cloned.helpfulReaction.reacted;
+
+                    return cloned;
+                  }
+
+                  return review;
+                }),
+              }
+            : previousReviewList,
+      );
+
+      return { previousReviewList };
+    },
+    onError: (err, { petFoodId }, context) => {
+      queryClient.setQueryData([QUERY_KEY.reviewList, petFoodId], context?.previousReviewList);
+    },
+    onSettled: (_, __, { petFoodId }) => {
+      queryClient.invalidateQueries({ queryKey: [QUERY_KEY.reviewList, petFoodId] });
+    },
+  });
+
+  return {
+    toggleHelpfulReaction,
+    ...restMutation,
   };
 };
