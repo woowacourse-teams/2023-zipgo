@@ -14,7 +14,10 @@ const STATIC: Record<Uppercase<CamelToSnake<keyof typeof generateStaticPath>>, s
   PET_PROFILE_IMAGE_FILE_ADDITION: '/pets/write/imageFile',
 };
 
-const DYNAMIC: Record<Uppercase<CamelToSnake<keyof typeof generateDynamicPath>>, string> = {
+const DYNAMIC: Omit<
+  Record<Uppercase<CamelToSnake<keyof typeof generateDynamicPath>>, string>,
+  'BASE_URL'
+> = {
   FOOD_DETAIL: '/pet-food/:petFoodId',
   REVIEW_STAR_RATING: '/pet-food/:petFoodId/reviews/write',
   REVIEW_ADDITION: '/pet-food/:petFoodId/reviews/write/detail',
@@ -40,6 +43,7 @@ export const generateStaticPath = {
 };
 
 export const generateDynamicPath = {
+  baseUrl: () => location.pathname,
   foodDetail: ({ petFoodId }: PathParams<'petFoodId'>) => `/pet-food/${petFoodId}`,
   reviewStarRating: ({ petFoodId }: PathParams<'petFoodId'>) =>
     `/pet-food/${petFoodId}/reviews/write`,
