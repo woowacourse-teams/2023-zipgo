@@ -1,4 +1,4 @@
-package zipgo.pet.application;
+package zipgo.image.application;
 
 import org.springframework.web.multipart.MultipartFile;
 
