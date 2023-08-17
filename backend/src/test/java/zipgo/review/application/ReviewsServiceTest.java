@@ -235,4 +235,46 @@ class ReviewsServiceTest extends ServiceTest {
                 .anyMatch(member -> member.equals(다른회원));
     }
 
+    @Test
+    void 도움이_돼요를_취소할_수_있다() {
+        //given
+        PetFood 식품 = 모든_영양기준_만족_식품(브랜드);
+        Member 작성자 = memberRepository.save(무민());
+        petFoodRepository.save(식품);
+        Review 리뷰 = 혹평리뷰(식품, 작성자);
+
+        Member 다른회원 = memberRepository.save(멤버_이름("무지"));
+        리뷰.reactedBy(다른회원);
+        reviewRepository.save(리뷰);
+
+        //when
+        reviewService.removeHelpfulReaction(다른회원.getId(), 리뷰.getId());
+
+        //then
+        Review 저장된_리뷰 = reviewRepository.getById(리뷰.getId());
+        assertThat(저장된_리뷰.getHelpfulReactions())
+                .extracting(HelpfulReaction::getMadeBy)
+                .noneMatch(member -> member.equals(다른회원));
+    }
+
+    @Test
+    void 누른적없을때_도움이_돼요를_취소할_수_있다() {
+        //given
+        PetFood 식품 = 모든_영양기준_만족_식품(브랜드);
+        Member 작성자 = memberRepository.save(무민());
+        petFoodRepository.save(식품);
+        Review 리뷰 = 혹평리뷰(식품, 작성자);
+
+        Member 다른회원 = memberRepository.save(멤버_이름("무지"));
+
+        //when
+        reviewService.removeHelpfulReaction(다른회원.getId(), 리뷰.getId());
+
+        //then
+        Review 저장된_리뷰 = reviewRepository.getById(리뷰.getId());
+        assertThat(저장된_리뷰.getHelpfulReactions())
+                .extracting(HelpfulReaction::getMadeBy)
+                .noneMatch(member -> member.equals(다른회원));
+    }
+
 }
