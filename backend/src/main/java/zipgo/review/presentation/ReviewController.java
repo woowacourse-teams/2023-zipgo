@@ -91,5 +91,14 @@ public class ReviewController {
         return ResponseEntity.ok().build();
     }
 
+    @DeleteMapping("/reviews/{reviewId}/helpful-reactions")
+    public ResponseEntity<Void> deleteHelpfulReaction(
+            @Auth AuthDto authDto,
+            @PathVariable Long reviewId
+    ) {
+//        reviewService.deleteHelpfulReaction(authDto.id(), reviewId);
+        return ResponseEntity.noContent().build();
+    }
+
 
 }
