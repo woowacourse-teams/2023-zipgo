@@ -12,6 +12,7 @@ const getPetProfileLocalStorage = () => {
 const PetProfileContext = createContext<PetProfileContext>({
   petProfile: getPetProfileLocalStorage(),
   updatePetProfile() {},
+  resetPetProfile() {},
   inScope: false,
 });
 
@@ -22,6 +23,7 @@ export const usePetProfile = () => useContextInScope(PetProfileContext);
 interface PetProfileContext {
   petProfile: PetProfile | null;
   updatePetProfile(petProfile: PetProfile): void;
+  resetPetProfile: VoidFunction;
   inScope: boolean;
 }
 
@@ -37,6 +39,11 @@ const PetProfileProvider = (props: PropsWithChildren<PetProfileProviderProps>) =
     localStorage.setItem('petProfile', JSON.stringify(petProfile));
   };
 
+  const resetPetProfileLocalStorage = () => {
+    setPetProfile(null);
+    localStorage.removeItem('petProfile');
+  };
+
   useEffect(() => {
     setPetProfile(getPetProfileLocalStorage());
   }, []);
@@ -45,6 +52,7 @@ const PetProfileProvider = (props: PropsWithChildren<PetProfileProviderProps>) =
     () => ({
       petProfile,
       updatePetProfile: updatePetProfileLocalStorage,
+      resetPetProfile: resetPetProfileLocalStorage,
       inScope: true,
     }),
     [petProfile],
