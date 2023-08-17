@@ -16,4 +16,21 @@ type Review = {
   adverseReactions: AdverseReaction[];
 };
 
-export type { AdverseReaction, Review, StoolCondition, TastePreference };
+type AlignControlsMeta = {
+  id: number;
+  name: string;
+}[];
+
+type FilterControlsMeta = {
+  id: number;
+  name: string;
+}[];
+
+export type {
+  AdverseReaction,
+  AlignControlsMeta,
+  FilterControlsMeta,
+  Review,
+  StoolCondition,
+  TastePreference,
+};
