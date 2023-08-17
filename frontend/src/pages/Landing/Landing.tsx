@@ -2,16 +2,22 @@ import styled from 'styled-components';
 
 import ZipgoBanner from '@/assets/png/landing_banner.png';
 import Header from '@/components/@common/Header/Header';
-import LoadingSpinner from '@/components/@common/LoadingSpinner';
 import Template from '@/components/@common/Template';
+import ToastContainer from '@/components/@common/Toast/ToastContainer';
 import FilterBottomSheet from '@/components/Food/FilterBottomSheet/FilterBottomSheet';
 import FoodList from '@/components/Food/FoodList/FoodList';
 import { useInfiniteFoodListScroll } from '@/hooks/food';
+import useToast from '@/hooks/toast/useToast';
 
 const Landing = () => {
-  const { foodList, hasNextPage, targetRef, isFetching } = useInfiniteFoodListScroll();
+  const { foodList, hasNextPage, targetRef } = useInfiniteFoodListScroll();
+  const { toast, currentToast } = useToast();
 
   if (!foodList) return null;
+
+  const onToast = () => {
+    toast.warning('강아지를 괴롭히지 마세요!');
+  };
 
   return (
     <Template staticHeader={Header}>
@@ -27,7 +33,7 @@ const Landing = () => {
               <BannerTitle>집사의 고민</BannerTitle>
             </TitleContainer>
           </BannerText>
-          <BannerImg src={ZipgoBanner} />
+          <BannerImg src={ZipgoBanner} onClick={onToast} />
         </BannerSection>
         <ListSection>
           <FilterBottomSheet />
@@ -38,7 +44,7 @@ const Landing = () => {
           />
         </ListSection>
       </Layout>
-      {isFetching && <LoadingSpinner />}
+      <ToastContainer currentToast={currentToast} />
     </Template>
   );
 };

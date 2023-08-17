@@ -24,6 +24,7 @@ import zipgo.review.dto.request.GetReviewsRequest;
 import zipgo.review.dto.request.UpdateReviewRequest;
 import zipgo.review.dto.response.GetReviewMetadataResponse;
 import zipgo.review.dto.response.GetReviewResponse;
+import zipgo.review.dto.response.GetReviewsSummaryResponse;
 import zipgo.review.dto.response.GetReviewsResponse;
 
 @RestController
@@ -81,6 +82,12 @@ public class ReviewController {
     public ResponseEntity<GetReviewMetadataResponse> getMetadata() {
         GetReviewMetadataResponse metadata = reviewQueryService.getReviewMetadata();
         return ResponseEntity.ok(metadata);
+    }
+
+    @GetMapping("/reviews/summary")
+    public ResponseEntity<GetReviewsSummaryResponse> getReviewsSummary(Long petFoodId) {
+        GetReviewsSummaryResponse reviewsSummary = reviewQueryService.getReviewsSummary(petFoodId);
+        return ResponseEntity.ok(reviewsSummary);
     }
 
 }

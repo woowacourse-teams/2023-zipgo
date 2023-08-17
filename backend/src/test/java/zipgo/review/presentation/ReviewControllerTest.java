@@ -520,4 +520,47 @@ public class ReviewControllerTest extends AcceptanceTest {
 
     }
 
+    @Nested
+    @DisplayName("리뷰 요약 조회 API")
+    class GetReviewsSummary {
+
+        private Schema 성공_응답_형식 = schema("ReviewSummaryResponse");
+        private ResourceSnippetDetails 문서_정보 = resourceDetails().summary("리뷰 요약 조회하기")
+                .description("리뷰 요약 정보를 조회합니다.");
+
+        @Test
+        void 리뷰_요약_조회하기() {
+            //given
+            var 요청_준비 = given(spec)
+                    .contentType(JSON)
+                    .filter(리뷰_요약_조회_API_문서_생성());
+
+            //when
+            var 응답 = 요청_준비.when()
+                    .param("petFoodId", 식품.getId())
+                    .get("/reviews/summary");
+
+            //then
+            응답.then().log().all()
+                    .assertThat().statusCode(OK.value());
+        }
+
+        private RestDocumentationFilter 리뷰_요약_조회_API_문서_생성() {
+            return document("리뷰 요약 조회 - 성공", 문서_정보.responseSchema(성공_응답_형식),
+                    queryParameters(parameterWithName("petFoodId").description("식품 id")),
+                    responseFields(
+                            fieldWithPath("rating.average").description("리뷰 총 평점").type(JsonFieldType.NUMBER),
+                            fieldWithPath("rating.rating[].name").description("rating 이름").type(JsonFieldType.STRING),
+                            fieldWithPath("rating.rating[].percentage").description("rating 해당 백분율").type(JsonFieldType.NUMBER),
+                            fieldWithPath("tastePreference[].name").description("tastePreference 이름").type(JsonFieldType.STRING),
+                            fieldWithPath("tastePreference[].percentage").description("tastePreference 해당 백분율").type(JsonFieldType.NUMBER),
+                            fieldWithPath("stoolCondition[].name").description("stoolCondition 이름").type(JsonFieldType.STRING),
+                            fieldWithPath("stoolCondition[].percentage").description("stoolCondition 해당 백분율").type(JsonFieldType.NUMBER),
+                            fieldWithPath("adverseReaction[].name").description("adverseReaction 이름").type(JsonFieldType.STRING),
+                            fieldWithPath("adverseReaction[].percentage").description("adverseReaction 해당 백분율").type(JsonFieldType.NUMBER)
+                    ));
+        }
+
+    }
+
 }

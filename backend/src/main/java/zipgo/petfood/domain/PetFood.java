@@ -20,6 +20,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import zipgo.brand.domain.Brand;
 import zipgo.common.entity.BaseTimeEntity;
+import zipgo.review.domain.Review;
 
 import static jakarta.persistence.CascadeType.REMOVE;
 import static jakarta.persistence.FetchType.LAZY;
@@ -77,6 +78,10 @@ public class PetFood extends BaseTimeEntity {
 
     public void addPetFoodPrimaryIngredient(PetFoodPrimaryIngredient petFoodPrimaryIngredient) {
         this.petFoodPrimaryIngredients.add(petFoodPrimaryIngredient);
+    }
+
+    public void addReview(Review review) {
+        this.reviews.addReview(review);
     }
 
 }

@@ -3,13 +3,14 @@ import { ThemeProvider } from 'styled-components';
 
 import App from '@/App';
 import GlobalStyle from '@/components/@common/GlobalStyle';
+import ErrorPage from '@/pages/Error/ErrorPage';
 import FoodDetail from '@/pages/FoodDetail/FoodDetail';
 import Landing from '@/pages/Landing/Landing';
 import Login from '@/pages/Login/Login';
 import PetProfileAddition from '@/pages/PetProfile/PetProfileAddition';
 import PetProfileAgeAddition from '@/pages/PetProfile/PetProfileAgeAddition';
 import PetProfileBreedAddition from '@/pages/PetProfile/PetProfileBreedAddition';
-import PetProfileEdition from '@/pages/PetProfile/PetProfileEdition';
+import PetProfileEdition from '@/pages/PetProfile/PetProfileEdition/PetProfileEdition';
 import PetProfileGenderAddition from '@/pages/PetProfile/PetProfileGenderAddition';
 import PetProfileImageAddition from '@/pages/PetProfile/PetProfileImageAddition';
 import PetProfileNameAddition from '@/pages/PetProfile/PetProfileNameAddition';
@@ -25,7 +26,7 @@ export const router = createBrowserRouter([
   {
     path: PATH.HOME,
     element: <App />,
-    errorElement: <div>error</div>,
+    errorElement: <ErrorPage />,
     children: [
       {
         index: true,
