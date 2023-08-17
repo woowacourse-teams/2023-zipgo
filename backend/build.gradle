@@ -141,7 +141,7 @@ jacocoTestCoverageVerification {
 
             excludes = [
                     '*.*Application',
-                    '*.*Exception',
+                    '*.*Exception*',
                     '*.*Dto',
                     '*.S3*',
                     '*.*Response',

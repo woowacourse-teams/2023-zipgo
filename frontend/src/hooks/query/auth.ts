@@ -3,7 +3,6 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { useNavigate } from 'react-router-dom';
 
-import { client } from '@/apis';
 import { loginKakaoAuth, loginZipgoAuth, logoutKaKaoAuth } from '@/apis/auth';
 import { routerPath } from '@/router/routes';
 
@@ -31,6 +30,7 @@ export const useAuthMutation = () => {
     mutationFn: loginZipgoAuth,
     onSuccess({ accessToken, authResponse }) {
       localStorage.setItem('auth', accessToken);
+      localStorage.setItem('userInfo', JSON.stringify(authResponse));
       navigate(routerPath.home());
     },
   });

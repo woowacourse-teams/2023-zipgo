@@ -10,6 +10,7 @@ import lombok.Builder.Default;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import zipgo.review.domain.Review;
 
 @Getter
 @Builder
@@ -37,6 +38,11 @@ public class Reviews {
 
     public int countReviews() {
         return reviews.size();
+    }
+
+
+    public void addReview(Review review) {
+        this.reviews.add(review);
     }
 
 }

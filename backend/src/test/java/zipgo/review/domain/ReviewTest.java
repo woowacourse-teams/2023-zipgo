@@ -8,7 +8,6 @@ import zipgo.auth.exception.AuthException;
 import zipgo.member.domain.Member;
 import zipgo.pet.domain.Pet;
 import zipgo.petfood.domain.PetFood;
-import zipgo.review.exception.ReviewSelfReactedException;
 import zipgo.review.fixture.ReviewFixture;
 
 import static java.util.Collections.emptyList;
@@ -131,6 +130,21 @@ class ReviewTest {
                     .noneMatch(회원::equals);
         }
 
+    }
+
+    @Test
+    void 회원_아이디가_null일경우_false_반환() {
+        //given
+        Member 작성자 = Member.builder().id(1L).build();
+        PetFood 식품 = PetFood.builder().build();
+        Pet 반려동물 = Pet.builder().owner(작성자).build();
+        Review 리뷰 = ReviewFixture.극찬_리뷰_생성(반려동물, 식품, emptyList());
+
+        //when
+        boolean reactedBy = 리뷰.isReactedBy(null);
+
+        //then
+        assertThat(reactedBy).isFalse();
     }
 
 }

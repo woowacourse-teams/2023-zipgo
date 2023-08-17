@@ -14,6 +14,7 @@ import zipgo.review.presentation.ReviewController;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.BDDMockito.given;
 
 @DisplayNameGeneration(ReplaceUnderscores.class)
@@ -25,7 +26,7 @@ class GlobalExceptionHandlerTest extends AcceptanceTest {
     @Test
     void 서버_내부_에러가_발생하면_500을_반환한다() {
         // given
-        given(reviewController.getReview(any()))
+        given(reviewController.getReview(any(), anyLong()))
                 .willThrow(new TestException());
 
         // when
@@ -42,7 +43,7 @@ class GlobalExceptionHandlerTest extends AcceptanceTest {
     @Test
     void 스프링_예외가_발생했을때_에러_응답_형식을_반환한다() {
         // given
-        given(reviewController.getReview(any()))
+        given(reviewController.getReview(any(), anyLong()))
                 .willAnswer((a) -> {
                     throw new HttpMediaTypeNotSupportedException("스프링 예외 메시지");
                 });

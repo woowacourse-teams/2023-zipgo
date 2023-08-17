@@ -28,6 +28,7 @@ public class ReviewService {
         Review review = request.toEntity(member.getPet(), petFood);
         review.addAdverseReactions(request.adverseReactions());
 
+        petFood.addReview(review);
         reviewRepository.save(review);
         return review.getId();
     }

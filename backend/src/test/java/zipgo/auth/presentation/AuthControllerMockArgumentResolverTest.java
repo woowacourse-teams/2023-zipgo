@@ -41,7 +41,7 @@ import static zipgo.member.domain.fixture.MemberFixture.식별자_있는_멤버;
 class AuthControllerMockArgumentResolverTest {
 
     private MockMvc mockMvc;
-    private HandlerMethodArgumentResolver mockArgumentResolver = mock(JwtArgumentResolver.class);
+    private HandlerMethodArgumentResolver mockArgumentResolver = mock(JwtMandatoryArgumentResolver.class);
 
     @InjectMocks
     private AuthController authController;

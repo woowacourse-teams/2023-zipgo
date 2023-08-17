@@ -1,6 +1,10 @@
+export type Unpack<T> = T extends (infer U)[] ? U : T extends Set<infer U> ? U : T;
+
 export type Parameter<T extends (arg: never) => unknown> = Parameters<T>[0];
 
 export type StyledProps<T> = { [K in keyof T as `$${string & K}`]: T[K] };
+
+export type Values<T extends object> = T[keyof T];
 
 type Separator = '_';
 

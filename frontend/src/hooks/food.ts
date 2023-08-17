@@ -1,7 +1,8 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
 
-import { initialSelectedFilterList, SelectedFilterList } from '@/context/food';
+import { initialSelectedFilterList } from '@/context/food';
 import type { KeywordEn } from '@/types/food/client';
+import { parseCheckList } from '@/utils/parseCheckList';
 
 import useValidQueryString from './common/useValidQueryString';
 import { useFoodListInfiniteQuery } from './query/food';
@@ -9,10 +10,7 @@ import { useFoodListInfiniteQuery } from './query/food';
 export const useFoodListFilter = () => {
   const [selectedFilterList, setSelectedFilterList] = useState(initialSelectedFilterList);
 
-  const parsedSelectedFilterList = Object.entries(selectedFilterList).reduce(
-    (acc, [keyword, filterList]) => ({ ...acc, [keyword]: Array.from(filterList) }),
-    {},
-  ) as Partial<Record<keyof SelectedFilterList, string[]>>;
+  const parsedSelectedFilterList = parseCheckList(selectedFilterList);
 
   const toggleFilter = (keyword: KeywordEn, filter: string) => {
     const targetFilterList = structuredClone(selectedFilterList)[keyword];
@@ -40,8 +38,15 @@ export const useInfiniteFoodListScroll = () => {
 
   const queriesString = Object.values(queries).join();
 
-  const { foodList, fetchNextPage, hasNextPage, isFetchingNextPage, remove, refetch } =
-    useFoodListInfiniteQuery(queries);
+  const {
+    foodList,
+    fetchNextPage,
+    hasNextPage,
+    isFetchingNextPage,
+    remove,
+    refetch,
+    ...restQuery
+  } = useFoodListInfiniteQuery(queries);
 
   const executeFoodListInfiniteQuery = useCallback(
     (entries: IntersectionObserverEntry[]) => {
@@ -69,5 +74,5 @@ export const useInfiniteFoodListScroll = () => {
     refetch();
   }, [queriesString, refetch, remove]);
 
-  return { foodList, hasNextPage, refetch, targetRef };
+  return { foodList, hasNextPage, refetch, targetRef, ...restQuery };
 };

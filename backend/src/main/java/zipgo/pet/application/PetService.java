@@ -1,69 +1,80 @@
 package zipgo.pet.application;
 
-import java.util.ArrayList;
-import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import zipgo.member.domain.Member;
 import zipgo.member.domain.repository.MemberRepository;
+import zipgo.pet.application.dto.PetDto;
 import zipgo.pet.domain.Breeds;
 import zipgo.pet.domain.Pet;
 import zipgo.pet.domain.PetSize;
 import zipgo.pet.domain.repository.BreedsRepository;
 import zipgo.pet.domain.repository.PetRepository;
 import zipgo.pet.domain.repository.PetSizeRepository;
-import zipgo.pet.presentation.dto.request.CreatePetRequest;
-import zipgo.pet.presentation.dto.request.UpdatePetRequest;
 
 @Service
 @Transactional
 @RequiredArgsConstructor
 public class PetService {
 
+    private static final String DEFAULT_PET_IMAGE = "https://image.zipgo.pet/dev/pet-image/dog_icon.svg";
+
     private final PetRepository petRepository;
     private final MemberRepository memberRepository;
     private final BreedsRepository breedsRepository;
     private final PetSizeRepository petSizeRepository;
 
-    public Long createPet(Long memberId, CreatePetRequest request) {
+    public Long createPet(Long memberId, PetDto petDto) {
         Member owner = memberRepository.getById(memberId);
-        PetSize petSize = petSizeRepository.getByName(request.petSize());
-        Breeds breeds = breedsRepository.getByNameAndPetSizeId(request.breed(), petSize.getId());
+        Breeds breeds = findBreeds(petDto);
 
-        Pet pet = petRepository.save(request.toEntity(owner, breeds));
-        return pet.getId();
+        Pet pet = petDto.toEntity(owner, breeds);
+        updateDefaultImage(pet);
+
+        return petRepository.save(pet).getId();
     }
 
-    public void updatePet(Long memberId, Long petId, UpdatePetRequest request) {
+    private Breeds findBreeds(PetDto petDto) {
+        if (petDto.petSize() == null || petDto.petSize().isBlank()) {
+            return breedsRepository.getByName(petDto.breed());
+        }
+        PetSize petSize = petSizeRepository.getByName(petDto.petSize());
+        return breedsRepository.getByPetSizeAndName(petSize, petDto.breed());
+    }
+
+    private void updateDefaultImage(Pet pet) {
+        if ("".equals(pet.getImageUrl())) {
+            pet.updateImageUrl(DEFAULT_PET_IMAGE);
+        }
+    }
+
+    public void updatePet(Long memberId, Long petId, PetDto petDto) {
         Pet pet = petRepository.getById(petId);
+        Member owner = memberRepository.getById(memberId);
 
-        pet.validateOwner(memberId);
+        pet.validateOwner(owner);
 
-        PetSize petSize = petSizeRepository.getByName(request.petSize());
-        Breeds breeds = breedsRepository.getByNameAndPetSizeId(request.breed(), petSize.getId());
-
-        update(request, pet, breeds);
+        Breeds breeds = findBreeds(petDto);
+        update(petDto, pet, breeds);
     }
 
-    private void update(UpdatePetRequest request, Pet pet, Breeds breeds) {
-        pet.updateName(request.name());
-        pet.updateImageUrl(request.image());
+    private void update(PetDto petDto, Pet pet, Breeds breeds) {
+        pet.updateName(petDto.name());
+        pet.updateImageUrl(petDto.imageUrl());
+        updateDefaultImage(pet);
         pet.updateBreeds(breeds);
-        pet.updateBirthYear(request.calculateBirthYear());
-        pet.updateWeight(request.weight());
+        pet.updateBirthYear(petDto.calculateBirthYear());
+        pet.updateWeight(petDto.weight());
     }
 
-    public List<Breeds> readBreeds() {
-        String excludeName = "믹스견";
-        List<Breeds> breeds = breedsRepository.findByNameNotContaining(excludeName);
+    public void deletePet(Long memberId, Long petId) {
+        Pet pet = petRepository.getById(petId);
+        Member owner = memberRepository.getById(memberId);
 
-        Breeds mixedBreeds = Breeds.builder()
-                .id(0L)
-                .name(excludeName)
-                .build();
-        breeds.add(mixedBreeds);
-        return new ArrayList<>(breeds);
+        pet.validateOwner(owner);
+
+        petRepository.delete(pet);
     }
 
 }

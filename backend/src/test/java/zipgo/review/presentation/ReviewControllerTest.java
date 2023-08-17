@@ -120,8 +120,9 @@ public class ReviewControllerTest extends AcceptanceTest {
             var 요청_준비 = given(spec).contentType(JSON).filter(리뷰_전체_목록_조회_API_문서_생성("리뷰 전체 조회 - 성공"));
 
             // when
-            var 응답 = 요청_준비.when().pathParam("id", 식품.getId())
-                    .get("/pet-foods/{id}/reviews");
+            var 응답 = 요청_준비.when()
+                    .queryParam("petFoodId", 식품.getId())
+                    .get("/reviews");
 
             // then
             응답.then()
@@ -138,9 +139,9 @@ public class ReviewControllerTest extends AcceptanceTest {
 
             // when
             var 응답 = 요청_준비.when()
+                    .queryParam("petFoodId", 식품.getId())
                     .queryParam("size", 10)
-                    .pathParam("id", 식품.getId())
-                    .get("/pet-foods/{id}/reviews");
+                    .get("/reviews");
 
             // then
             응답.then()
@@ -156,9 +157,9 @@ public class ReviewControllerTest extends AcceptanceTest {
 
             // when
             var 응답 = 요청_준비.when()
+                    .queryParam("petFoodId", 식품.getId())
                     .queryParam("size", 10)
-                    .pathParam("id", 식품.getId())
-                    .get("/pet-foods/{id}/reviews");
+                    .get("/reviews");
 
             // then
             응답.then()
@@ -168,18 +169,44 @@ public class ReviewControllerTest extends AcceptanceTest {
 
         private RestDocumentationFilter 리뷰_전체_목록_조회_API_문서_생성(String uniqueName) {
             return document(uniqueName, 문서_정보.responseSchema(성공_응답_형식),
-                    queryParameters(parameterWithName("size").description("조회하고자 하는 리뷰의 개수").optional(),
-                            parameterWithName("lastReviewId").description("이전 페이지의 마지막 리뷰 id").optional()),
-                    pathParameters(parameterWithName("id").description("식품 id")),
+                    queryParameters(
+                            parameterWithName("petFoodId").description("식품 id"),
+                            parameterWithName("size").description("조회하고자 하는 리뷰의 개수").optional(),
+                            parameterWithName("lastReviewId").description("이전 페이지의 마지막 리뷰 id").optional(),
+                            parameterWithName("petSizeId").description("반려동물의 견종 크기 id").optional(),
+                            parameterWithName("ageGroupId").description("반려동물의 나이 그룹 id").optional(),
+                            parameterWithName("breedId").description("반려동물의 견종 id").optional(),
+                            parameterWithName("sortBy").description("정렬 기준").optional()),
                     responseFields(fieldWithPath("reviews[].id").description("리뷰 id").type(JsonFieldType.NUMBER),
-                            fieldWithPath("reviews[].reviewerName").description("리뷰 작성자 이름").type(JsonFieldType.STRING),
                             fieldWithPath("reviews[].rating").description("리뷰 별점").type(JsonFieldType.NUMBER),
                             fieldWithPath("reviews[].date").description("리뷰 생성일").type(JsonFieldType.STRING),
                             fieldWithPath("reviews[].comment").description("리뷰 코멘트").type(JsonFieldType.STRING),
                             fieldWithPath("reviews[].tastePreference").description("기호성").type(JsonFieldType.STRING),
                             fieldWithPath("reviews[].stoolCondition").description("대변 상태").type(JsonFieldType.STRING),
                             fieldWithPath("reviews[].adverseReactions").description("이상 반응들")
-                                    .type(JsonFieldType.ARRAY)));
+                                    .type(JsonFieldType.ARRAY),
+                            fieldWithPath("reviews[].petProfile.id").description("반려동물 id").type(JsonFieldType.NUMBER),
+                            fieldWithPath("reviews[].petProfile.name").description("반려동물 이름")
+                                    .type(JsonFieldType.STRING),
+                            fieldWithPath("reviews[].petProfile.profileUrl").description("반려동물 이름")
+                                    .type(JsonFieldType.STRING),
+                            fieldWithPath("reviews[].petProfile.writtenAge").description("반려동물 나이")
+                                    .type(JsonFieldType.NUMBER),
+                            fieldWithPath("reviews[].petProfile.writtenWeight").description("반려동물 몸무게")
+                                    .type(JsonFieldType.NUMBER),
+                            fieldWithPath("reviews[].petProfile.breed.id").description("반려동물 견종 id")
+                                    .type(JsonFieldType.NUMBER),
+                            fieldWithPath("reviews[].petProfile.breed.name").description("반려동물 견종 이름")
+                                    .type(JsonFieldType.STRING),
+                            fieldWithPath("reviews[].petProfile.breed.size.id").description("반려동물 견종 크기 id")
+                                    .type(JsonFieldType.NUMBER),
+                            fieldWithPath("reviews[].petProfile.breed.size.name").description("반려동물 견종 크기 이름")
+                                    .type(JsonFieldType.STRING),
+                            fieldWithPath("reviews[].helpfulReaction.count").description("도움이 되었어요 수")
+                                    .type(JsonFieldType.NUMBER),
+                            fieldWithPath("reviews[].helpfulReaction.reacted").description("도움이 되었어요를 눌렀는지")
+                                    .type(JsonFieldType.BOOLEAN)));
+
         }
 
         private void 리뷰_여러개_생성() {
@@ -210,14 +237,13 @@ public class ReviewControllerTest extends AcceptanceTest {
 
             // when
             var 응답 = 요청_준비.when()
+                    .queryParam("petFoodId", 식품.getId())
                     .queryParam("size", 0)
-                    .pathParam("id", 식품.getId())
-                    .get("/pet-foods/{id}/reviews");
+                    .get("/reviews");
 
             // then
             응답.then()
-                    .assertThat().statusCode(BAD_REQUEST.value())
-                    .assertThat().body("message", is("size는 0보다 커야 합니다."));
+                    .assertThat().statusCode(BAD_REQUEST.value());
         }
 
         private RestDocumentationFilter API_예외응답_문서_생성(String uniqueName) {
@@ -250,13 +276,33 @@ public class ReviewControllerTest extends AcceptanceTest {
             return document("리뷰 개별 조회 - 성공", 문서_정보.responseSchema(성공_응답_형식),
                     pathParameters(parameterWithName("reviewId").description("리뷰 id")),
                     responseFields(fieldWithPath("id").description("리뷰 id").type(JsonFieldType.NUMBER),
-                            fieldWithPath("reviewerName").description("리뷰 작성자 이름").type(JsonFieldType.STRING),
                             fieldWithPath("rating").description("리뷰 별점").type(JsonFieldType.NUMBER),
                             fieldWithPath("date").description("리뷰 생성일").type(JsonFieldType.STRING),
                             fieldWithPath("comment").description("리뷰 코멘트").type(JsonFieldType.STRING),
                             fieldWithPath("tastePreference").description("기호성").type(JsonFieldType.STRING),
                             fieldWithPath("stoolCondition").description("대변 상태").type(JsonFieldType.STRING),
-                            fieldWithPath("adverseReactions").description("이상 반응들").type(JsonFieldType.ARRAY)));
+                            fieldWithPath("adverseReactions").description("이상 반응들").type(JsonFieldType.ARRAY),
+                            fieldWithPath("petProfile.id").description("반려동물 id").type(JsonFieldType.NUMBER),
+                            fieldWithPath("petProfile.name").description("반려동물 이름")
+                                    .type(JsonFieldType.STRING),
+                            fieldWithPath("petProfile.profileUrl").description("반려동물 이름")
+                                    .type(JsonFieldType.STRING),
+                            fieldWithPath("petProfile.writtenAge").description("반려동물 나이")
+                                    .type(JsonFieldType.NUMBER),
+                            fieldWithPath("petProfile.writtenWeight").description("반려동물 몸무게")
+                                    .type(JsonFieldType.NUMBER),
+                            fieldWithPath("petProfile.breed.id").description("반려동물 견종 id")
+                                    .type(JsonFieldType.NUMBER),
+                            fieldWithPath("petProfile.breed.name").description("반려동물 견종 이름")
+                                    .type(JsonFieldType.STRING),
+                            fieldWithPath("petProfile.breed.size.id").description("반려동물 견종 크기 id")
+                                    .type(JsonFieldType.NUMBER),
+                            fieldWithPath("petProfile.breed.size.name").description("반려동물 견종 크기 이름")
+                                    .type(JsonFieldType.STRING),
+                            fieldWithPath("helpfulReaction.count").description("도움이 되었어요 수")
+                                    .type(JsonFieldType.NUMBER),
+                            fieldWithPath("helpfulReaction.reacted").description("도움이 되었어요를 눌렀는지")
+                                    .type(JsonFieldType.BOOLEAN)));
         }
 
     }
@@ -472,6 +518,49 @@ public class ReviewControllerTest extends AcceptanceTest {
                             fieldWithPath("breeds[].name").description("품종 이름").type(JsonFieldType.STRING)
                     )
             );
+        }
+
+    }
+
+    @Nested
+    @DisplayName("리뷰 요약 조회 API")
+    class GetReviewsSummary {
+
+        private Schema 성공_응답_형식 = schema("ReviewSummaryResponse");
+        private ResourceSnippetDetails 문서_정보 = resourceDetails().summary("리뷰 요약 조회하기")
+                .description("리뷰 요약 정보를 조회합니다.");
+
+        @Test
+        void 리뷰_요약_조회하기() {
+            //given
+            var 요청_준비 = given(spec)
+                    .contentType(JSON)
+                    .filter(리뷰_요약_조회_API_문서_생성());
+
+            //when
+            var 응답 = 요청_준비.when()
+                    .param("petFoodId", 식품.getId())
+                    .get("/reviews/summary");
+
+            //then
+            응답.then().log().all()
+                    .assertThat().statusCode(OK.value());
+        }
+
+        private RestDocumentationFilter 리뷰_요약_조회_API_문서_생성() {
+            return document("리뷰 요약 조회 - 성공", 문서_정보.responseSchema(성공_응답_형식),
+                    queryParameters(parameterWithName("petFoodId").description("식품 id")),
+                    responseFields(
+                            fieldWithPath("rating.average").description("리뷰 총 평점").type(JsonFieldType.NUMBER),
+                            fieldWithPath("rating.rating[].name").description("rating 이름").type(JsonFieldType.STRING),
+                            fieldWithPath("rating.rating[].percentage").description("rating 해당 백분율").type(JsonFieldType.NUMBER),
+                            fieldWithPath("tastePreference[].name").description("tastePreference 이름").type(JsonFieldType.STRING),
+                            fieldWithPath("tastePreference[].percentage").description("tastePreference 해당 백분율").type(JsonFieldType.NUMBER),
+                            fieldWithPath("stoolCondition[].name").description("stoolCondition 이름").type(JsonFieldType.STRING),
+                            fieldWithPath("stoolCondition[].percentage").description("stoolCondition 해당 백분율").type(JsonFieldType.NUMBER),
+                            fieldWithPath("adverseReaction[].name").description("adverseReaction 이름").type(JsonFieldType.STRING),
+                            fieldWithPath("adverseReaction[].percentage").description("adverseReaction 해당 백분율").type(JsonFieldType.NUMBER)
+                    ));
         }
 
     }

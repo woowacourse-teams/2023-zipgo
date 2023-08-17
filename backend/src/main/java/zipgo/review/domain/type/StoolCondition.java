@@ -7,10 +7,10 @@ import zipgo.review.exception.StoolConditionException;
 @Getter
 public enum StoolCondition {
 
-    UNCERTAIN("잘 모르겠어요"),
-    HARD("딱딱해요"),
+    SOFT_MOIST("촉촉 말랑해요"),
     DIARRHEA("설사를 해요"),
-    SOFT_MOIST("촉촉 말랑해요");
+    HARD("딱딱해요"),
+    UNCERTAIN("잘 모르겠어요");
 
     private String description;
 
