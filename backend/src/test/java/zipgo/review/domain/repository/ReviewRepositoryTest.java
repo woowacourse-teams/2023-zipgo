@@ -24,7 +24,6 @@ import zipgo.pet.domain.repository.PetSizeRepository;
 import zipgo.petfood.domain.PetFood;
 import zipgo.petfood.domain.fixture.PetFoodFixture;
 import zipgo.petfood.domain.repository.PetFoodRepository;
-import zipgo.review.domain.HelpfulReaction;
 import zipgo.review.domain.Review;
 import zipgo.review.exception.ReviewException;
 import zipgo.review.fixture.MemberFixture;
@@ -67,12 +66,7 @@ public class ReviewRepositoryTest extends RepositoryTest {
         Member 모르는_베베 = memberRepository.save(MemberFixture.멤버_이름("모르는_베베"));
 
         //when
-        HelpfulReaction 도움이_돼요 = HelpfulReaction.builder()
-                .review(아는_리뷰)
-                .madeBy(모르는_베베)
-                .build();
-
-        아는_리뷰.getHelpfulReactions().add(도움이_돼요);
+        아는_리뷰.reactedBy(모르는_베베);
         reviewRepository.save(아는_리뷰);
 
         //then
