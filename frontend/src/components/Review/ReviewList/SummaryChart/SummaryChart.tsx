@@ -130,7 +130,7 @@ const DataName = styled.div`
   font-style: normal;
   line-height: 12px;
   color: ${({ theme }) => theme.color.grey500};
-  text-align: start;
+  text-align: center;
   text-overflow: ellipsis;
   letter-spacing: -0.5px;
   white-space: nowrap;
@@ -144,6 +144,10 @@ const Bar = styled.div`
   max-width: 18rem;
   height: 0.6rem;
   margin-left: auto;
+
+  @media (width >= 500px) {
+    max-width: 30rem;
+  }
 `;
 
 const BarBackground = styled.div`
@@ -194,7 +198,9 @@ const ChartContentLayout = styled.div<{
   justify-content: center;
 
   width: 100%;
-  height: 13.8rem;
+  max-width: 50rem;
+  height: 15rem;
+  margin: 0 auto;
 
   background: ${({ theme }) => theme.color.grey200};
   border-radius: 15px;
@@ -273,10 +279,10 @@ const NavItem = styled.button<{
   ${({ $selected }) =>
     $selected
       ? css`
-          border-bottom: 4px solid ${({ theme }) => theme.color.primary};
+          border-bottom: 3px solid ${({ theme }) => theme.color.primary};
         `
       : css`
-          border-bottom: 4px solid #d9d9d9;
+          border-bottom: 3px solid #d9d9d9;
         `}
 `;
 
@@ -284,6 +290,7 @@ const AverageContainer = styled.div`
   display: flex;
   flex-direction: column;
   gap: 1.6rem;
+  align-items: center;
 
   width: 50%;
   padding: 2.5rem;

@@ -18,24 +18,24 @@ import MainIngredientsFilterList from './MainIngredientsFilterList/MainIngredien
 import NutritionStandardsFilterList from './NutritionStandardsFilterList/NutritionStandardsFilterList';
 
 const FilterBottomSheet = () => (
-  <QueryBoundary>
-    <FoodFilterProvider>
-      <Dialog>
-        <Dialog.Trigger asChild>
-          <DialogTrigger type="button">
-            <img src={SettingsIcon} alt="필터 버튼 아이콘" />
-            <span>필터</span>
-          </DialogTrigger>
-        </Dialog.Trigger>
-        <Dialog.Portal>
+  <FoodFilterProvider>
+    <Dialog>
+      <Dialog.Trigger asChild>
+        <DialogTrigger type="button">
+          <img src={SettingsIcon} alt="필터 버튼 아이콘" />
+          <span>필터</span>
+        </DialogTrigger>
+      </Dialog.Trigger>
+      <Dialog.Portal>
+        <QueryBoundary>
           <Dialog.BackDrop />
           <Dialog.Content asChild>
             {({ openHandler }) => <KeywordContent toggleDialog={openHandler} />}
           </Dialog.Content>
-        </Dialog.Portal>
-      </Dialog>
-    </FoodFilterProvider>
-  </QueryBoundary>
+        </QueryBoundary>
+      </Dialog.Portal>
+    </Dialog>
+  </FoodFilterProvider>
 );
 
 interface KeywordContentProps {

@@ -25,7 +25,6 @@ const queryClient = new QueryClient({
 
 const root = ReactDOM.createRoot(document.getElementById('root') as HTMLElement);
 
-const loadingFallback = <LoadingSpinner />;
 const errorFallback = ({ reset }: ErrorBoundaryValue) => (
   <button type="button" onClick={reset}>
     retry
@@ -35,7 +34,7 @@ const errorFallback = ({ reset }: ErrorBoundaryValue) => (
 root.render(
   <React.StrictMode>
     <QueryClientProvider client={queryClient}>
-      <QueryBoundary loadingFallback={loadingFallback} errorFallback={errorFallback}>
+      <QueryBoundary errorFallback={errorFallback}>
         <Router />
       </QueryBoundary>
     </QueryClientProvider>
