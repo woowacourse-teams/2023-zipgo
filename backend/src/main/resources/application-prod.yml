@@ -1,7 +1,3 @@
----
-# port
-server:
-  port: 8080
 
 ---
 # database
@@ -58,5 +54,3 @@ cloud:
       zipgo-directory-name: ${ZIPGO_DIRECTORY_NAME}
       pet-image-directory: ${PET_IMAGE_DIRECTORY}
       image-url: ${DEV_SERVER_IMAGE_URL}
-    region:
-      static: ap-northeast-2
