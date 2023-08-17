@@ -3,6 +3,7 @@ import { ThemeProvider } from 'styled-components';
 
 import App from '@/App';
 import GlobalStyle from '@/components/@common/GlobalStyle';
+import PetProfileProvider from '@/context/petProfile/PetProfileContext';
 import ErrorPage from '@/pages/Error/ErrorPage';
 import FoodDetail from '@/pages/FoodDetail/FoodDetail';
 import Landing from '@/pages/Landing/Landing';
@@ -92,8 +93,10 @@ export const router = createBrowserRouter([
 
 const Router = () => (
   <ThemeProvider theme={theme}>
-    <GlobalStyle />
-    <RouterProvider router={router} />
+    <PetProfileProvider>
+      <GlobalStyle />
+      <RouterProvider router={router} />
+    </PetProfileProvider>
   </ThemeProvider>
 );
 

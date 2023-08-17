@@ -22,7 +22,14 @@ const PetItem = (petItemProps: PetItemProps) => {
       <PetItemContent>
         <PetImageAndDetail>
           <PetImageWrapper>
-            <PetImage src={petInfo.imageUrl} alt={petInfo.name} />
+            <PetImage
+              src={
+                petInfo.imageUrl.length
+                  ? petInfo.imageUrl
+                  : 'https://velog.velcdn.com/images/chex/post/9505d4fb-5850-4ce8-9575-04cece41a185/image.png'
+              }
+              alt={petInfo.name}
+            />
           </PetImageWrapper>
           <div>
             <GenderAndName>

@@ -16,7 +16,14 @@ const UserProfile = () => {
       <UserInfoContainer>
         {petProfile ? (
           <>
-            <UserProfileImg src={petProfile.imageUrl} alt="반려견 프로필 사진" />
+            <UserProfileImg
+              src={
+                petProfile.imageUrl.length
+                  ? petProfile.imageUrl
+                  : 'https://velog.velcdn.com/images/chex/post/9505d4fb-5850-4ce8-9575-04cece41a185/image.png'
+              }
+              alt="반려견 프로필 사진"
+            />
             <UserNickname>{petProfile.name}</UserNickname>
           </>
         ) : (
@@ -45,6 +52,7 @@ const UserProfileImg = styled.img`
   width: 5.5rem;
   height: 5.5rem;
 
+  object-fit: cover;
   border: 1px solid ${({ theme }) => theme.color.white};
   border-radius: 50%;
 `;

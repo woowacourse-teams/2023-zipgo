@@ -1,4 +1,4 @@
-import { useMutation, useQuery } from '@tanstack/react-query';
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 
 import { deletePet, getBreeds, getPet, getPets, postPetProfile, putPet } from '@/apis/petProfile';
 import { Parameter } from '@/types/common/utility';
@@ -22,10 +22,13 @@ export const usePetItemQuery = (payload: Parameter<typeof getPet>) => {
     queryKey: [QUERY_KEY.petItem],
     queryFn: () => getPet(payload),
   });
+  const queryClient = useQueryClient();
+  const resetPetItemQuery = () => queryClient.removeQueries([QUERY_KEY.petItem]);
 
   return {
     petItem: data,
     ...restQuery,
+    resetPetItemQuery,
   };
 };
 
