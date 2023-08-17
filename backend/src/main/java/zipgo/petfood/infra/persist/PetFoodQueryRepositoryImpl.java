@@ -9,6 +9,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 import zipgo.petfood.domain.PetFood;
+import zipgo.petfood.domain.repository.PetFoodQueryRepository;
 
 import static zipgo.brand.domain.QBrand.brand;
 import static zipgo.petfood.domain.QPetFood.petFood;
@@ -21,7 +22,7 @@ import static zipgo.review.domain.QReview.review;
 @Repository
 @RequiredArgsConstructor
 @Transactional(readOnly = true)
-public class PetFoodQueryRepository implements zipgo.petfood.domain.repository.PetFoodQueryRepository {
+public class PetFoodQueryRepositoryImpl implements PetFoodQueryRepository {
 
     private final JPAQueryFactory queryFactory;
 
