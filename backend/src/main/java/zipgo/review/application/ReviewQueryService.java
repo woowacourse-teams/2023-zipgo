@@ -13,6 +13,9 @@ import org.springframework.transaction.annotation.Transactional;
 import zipgo.pet.domain.AgeGroup;
 import zipgo.pet.domain.repository.BreedsRepository;
 import zipgo.pet.domain.repository.PetSizeRepository;
+import zipgo.petfood.domain.PetFood;
+import zipgo.petfood.domain.repository.PetFoodQueryRepository;
+import zipgo.review.domain.AdverseReaction;
 import zipgo.review.domain.Review;
 import zipgo.review.domain.repository.ReviewQueryRepository;
 import zipgo.review.domain.repository.ReviewRepository;
@@ -24,8 +27,8 @@ import zipgo.review.domain.type.StoolCondition;
 import zipgo.review.domain.type.TastePreference;
 import zipgo.review.dto.response.GetReviewMetadataResponse;
 import zipgo.review.dto.response.GetReviewMetadataResponse.Metadata;
-import zipgo.review.dto.response.GetReviewsSummaryResponse;
 import zipgo.review.dto.response.GetReviewsResponse;
+import zipgo.review.dto.response.GetReviewsSummaryResponse;
 import zipgo.review.dto.response.RatingSummaryElement;
 import zipgo.review.dto.response.SummaryElement;
 
@@ -36,8 +39,11 @@ import static java.util.stream.Collectors.toMap;
 @Transactional(readOnly = true)
 public class ReviewQueryService {
 
+    private static final int PERCENTAGE = 100;
+
     private final ReviewRepository reviewRepository;
     private final ReviewQueryRepository reviewQueryRepository;
+    private final PetFoodQueryRepository petFoodQueryRepository;
     private final BreedsRepository breedsRepository;
     private final PetSizeRepository petSizeRepository;
 
@@ -179,7 +185,8 @@ public class ReviewQueryService {
         AdverseReactionType[] values = AdverseReactionType.values();
         for (AdverseReactionType value : values) {
             adverseReaction.add(new SummaryElement(value.getDescription(),
-                    groupByAdverseReaction.getOrDefault(value, new ArrayList<>()).size() * PERCENTAGE / allAdverseReaction.size()));
+                    groupByAdverseReaction.getOrDefault(value, new ArrayList<>()).size() * PERCENTAGE
+                            / allAdverseReaction.size()));
         }
         return adverseReaction;
     }

@@ -22,8 +22,8 @@ import zipgo.review.domain.repository.ReviewRepository;
 import zipgo.review.domain.repository.dto.FindReviewsFilterRequest;
 import zipgo.review.dto.response.GetReviewMetadataResponse;
 import zipgo.review.dto.response.GetReviewResponse;
-import zipgo.review.dto.response.GetReviewsSummaryResponse;
 import zipgo.review.dto.response.GetReviewsResponse;
+import zipgo.review.dto.response.GetReviewsSummaryResponse;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertAll;
@@ -96,6 +96,8 @@ class ReviewQueryServiceTest extends QueryServiceTest {
             );
         }
 
+    }
+
     private Review 리뷰1_생성(PetFood 식품) {
         Member 멤버 = memberRepository.save(무민());
         PetSize 사이즈 = petSizeRepository.save(소형견());
@@ -116,8 +118,6 @@ class ReviewQueryServiceTest extends QueryServiceTest {
                         먹고_토_이상반응().getAdverseReactionType().getDescription())));
         식품.addReview(review);
         return review;
-    }
-
     }
 
     private Brand 브랜드_조회하기() {
