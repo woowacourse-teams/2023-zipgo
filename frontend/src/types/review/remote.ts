@@ -40,6 +40,7 @@ interface PutReviewReq extends PostReviewReq {
 interface PutReviewRes {}
 
 interface DeleteReviewReq {
+  petFoodId: string;
   reviewId: number;
 }
 
@@ -63,7 +64,23 @@ interface GetReviewsMetaRes {
   breeds: FilterControlsMeta;
 }
 
+interface PostHelpfulReactionsReq {
+  petFoodId: string;
+  reviewId: number;
+}
+
+interface PostHelpfulReactionsRes {}
+
+interface DeleteHelpfulReactionsReq {
+  petFoodId: string;
+  reviewId: number;
+}
+
+interface DeleteHelpfulReactionsRes {}
+
 export type {
+  DeleteHelpfulReactionsReq,
+  DeleteHelpfulReactionsRes,
   DeleteReviewReq,
   DeleteReviewRes,
   GetReviewReq,
@@ -73,6 +90,8 @@ export type {
   GetReviewsRes,
   GetReviewSummaryReq,
   GetReviewSummaryRes,
+  PostHelpfulReactionsReq,
+  PostHelpfulReactionsRes,
   PostReviewReq,
   PostReviewRes,
   PutReviewReq,

@@ -22,7 +22,7 @@ const ReviewList = () => {
 
   const goReviewWrite = () => navigate(routerPath.reviewStarRating({ petFoodId }));
 
-  if (!reviewList) throw new Error('리뷰 리스트를 찾을 수 없습니다.');
+  if (!reviewList) return null;
 
   return (
     <ReviewListContainer>
