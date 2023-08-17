@@ -51,8 +51,9 @@ public class PetService {
 
     public void updatePet(Long memberId, Long petId, PetDto petDto) {
         Pet pet = petRepository.getById(petId);
+        Member owner = memberRepository.getById(memberId);
 
-        pet.validateOwner(memberId);
+        pet.validateOwner(owner);
 
         Breeds breeds = findBreeds(petDto);
         update(petDto, pet, breeds);
@@ -65,6 +66,15 @@ public class PetService {
         pet.updateBreeds(breeds);
         pet.updateBirthYear(petDto.calculateBirthYear());
         pet.updateWeight(petDto.weight());
+    }
+
+    public void deletePet(Long memberId, Long petId) {
+        Pet pet = petRepository.getById(petId);
+        Member owner = memberRepository.getById(memberId);
+
+        pet.validateOwner(owner);
+
+        petRepository.delete(pet);
     }
 
 }
