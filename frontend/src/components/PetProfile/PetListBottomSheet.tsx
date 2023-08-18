@@ -6,17 +6,17 @@ import QueryBoundary from '../@common/QueryBoundary';
 import PetList from './PetList';
 
 const PetListBottomSheet = () => (
-  <QueryBoundary>
-    <Dialog>
-      <UserProfile />
-      <Dialog.Portal>
+  <Dialog>
+    <UserProfile />
+    <Dialog.Portal>
+      <QueryBoundary>
         <Dialog.BackDrop />
         <Dialog.Content asChild>
           {({ openHandler }) => <PetListContainer toggleDialog={openHandler} />}
         </Dialog.Content>
-      </Dialog.Portal>
-    </Dialog>
-  </QueryBoundary>
+      </QueryBoundary>
+    </Dialog.Portal>
+  </Dialog>
 );
 
 interface PetListContainerProps {

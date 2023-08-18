@@ -28,7 +28,16 @@ const ReviewItem = (reviewItemProps: ReviewItemProps) => {
     stoolCondition,
     adverseReactions,
     comment,
-    petProfile: { name: petName, profileUrl },
+    petProfile: {
+      name: petName,
+      profileUrl,
+      writtenAge,
+      writtenWeight,
+      breed: {
+        name: breedName,
+        size: { name: sizeName },
+      },
+    },
     helpfulReaction: { count, reacted },
   } = reviewItemProps;
 
@@ -66,7 +75,15 @@ const ReviewItem = (reviewItemProps: ReviewItemProps) => {
           <ReviewerImageWrapper>
             <ReviewerImage src={profileUrl || DogIcon} alt={`${petName} 프로필`} />
           </ReviewerImageWrapper>
-          <ReviewerName>{petName}</ReviewerName>
+          <InfoContainer>
+            <ReviewerName>{petName}</ReviewerName>
+            <InfoDetail>
+              {breedName} / {writtenAge}살
+            </InfoDetail>
+            <InfoDetail>
+              {sizeName} / {writtenWeight}kg
+            </InfoDetail>
+          </InfoContainer>
         </ReviewImageAndNameContainer>
         <ButtonContainer>
           {isMyReview && (
@@ -168,6 +185,8 @@ const ReviewerImage = styled.img`
 `;
 
 const ReviewerName = styled.p`
+  margin-bottom: 0.5rem;
+
   font-size: 1.6rem;
   font-weight: bold;
   color: ${({ theme }) => theme.color.grey500};
@@ -306,4 +325,17 @@ const HelpfulButton = styled.button<{
             color: ${({ theme }) => theme.color.grey300};
           }
         `}
+`;
+
+const InfoDetail = styled.p`
+  font-size: 1.2rem;
+  font-weight: 500;
+  color: ${({ theme }) => theme.color.grey400};
+  letter-spacing: -0.5px;
+`;
+
+const InfoContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
 `;

@@ -85,22 +85,34 @@ const TitleContainer = styled.div`
 `;
 
 const BannerSubTitle = styled.span`
+  user-select: none;
+
   font-size: 1.8rem;
   font-weight: 500;
   color: #f3f3f3;
+
+  -webkit-user-drag: none;
 `;
 
 const BannerTitle = styled.span`
+  user-select: none;
+
   flex-grow: 1;
 
   font-size: 3rem;
   font-weight: 700;
   color: ${({ theme }) => theme.color.white};
+
+  -webkit-user-drag: none;
 `;
 
 const BannerImg = styled.img`
+  user-select: none;
+
   width: 21.9rem;
   height: 20.9rem;
+
+  -webkit-user-drag: none;
 `;
 
 const ListSection = styled.section`
