@@ -38,8 +38,6 @@ const ReviewList = () => {
 
   if (!reviewList) return null;
 
-  if (!reviewList) throw new Error('리뷰 리스트를 찾을 수 없습니다.');
-
   return (
     <ReviewListContainer>
       <SummaryChart />
