@@ -256,7 +256,7 @@ const NavItem = styled.button<{
   cursor: pointer;
 
   display: flex;
-  flex-grow: 1;
+  flex: 1;
   align-items: center;
   justify-content: center;
 
