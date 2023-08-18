@@ -3,15 +3,15 @@ import { styled } from 'styled-components';
 import BottomDropIcon from '@/assets/svg/bottom_drop_icon.svg';
 import ZipgoLogo from '@/assets/svg/zipgo_logo_light.svg';
 import { usePetProfile } from '@/context/petProfile/PetProfileContext';
-import { useUser } from '@/hooks/auth';
+import { useAuth } from '@/hooks/auth';
 
 import { Dialog } from '../Dialog/Dialog';
 
 const UserProfile = () => {
   const { petProfile } = usePetProfile();
-  const { accessToken } = useUser();
+  const { isLoggedIn } = useAuth();
 
-  return accessToken ? (
+  return isLoggedIn ? (
     <Dialog.Trigger asChild>
       <UserInfoContainer>
         {petProfile ? (

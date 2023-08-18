@@ -22,7 +22,7 @@ const ReviewList = () => {
     petSizeId: queryString.petSizes,
     breedId: queryString.breeds,
     ageGroupId: queryString.ageGroups,
-    sortBy: queryString.sortBy,
+    sortById: queryString.sortBy,
   });
 
   const { hasPet } = JSON.parse(
@@ -37,8 +37,6 @@ const ReviewList = () => {
   }, [Object.values(queryString).join()]);
 
   if (!reviewList) return null;
-
-  if (!reviewList) throw new Error('리뷰 리스트를 찾을 수 없습니다.');
 
   return (
     <ReviewListContainer>

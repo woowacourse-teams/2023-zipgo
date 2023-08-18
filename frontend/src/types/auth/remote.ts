@@ -36,3 +36,5 @@ export interface LogoutKakaoAuthRes {
 }
 
 export interface LogoutKaKaoAuthError extends KakaoApiError {}
+
+export interface AuthenticateUserRes {}

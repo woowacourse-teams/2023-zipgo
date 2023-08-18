@@ -28,6 +28,9 @@ const AxiosInterceptors = (props: PropsWithChildren) => {
 
         if (error.response && error.response.status === 401) {
           alert('세션이 만료되었습니다.');
+          localStorage.removeItem('auth');
+          localStorage.removeItem('userInfo');
+          localStorage.removeItem('petProfile');
           navigate('/login');
         }
 

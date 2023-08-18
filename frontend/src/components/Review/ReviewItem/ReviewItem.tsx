@@ -8,6 +8,7 @@ import UnReactedIcon from '@/assets/svg/un_reacted_icon.svg';
 import StarRatingDisplay from '@/components/@common/StarRating/StarRatingDisplay/StartRatingDisplay';
 import { COMMENT_VISIABLE_LINE_LIMIT, REACTIONS } from '@/constants/review';
 import { useValidParams } from '@/hooks/@common/useValidParams';
+import { useAuth, useUser } from '@/hooks/auth';
 import { useRemoveReviewMutation, useToggleHelpfulReactionMutation } from '@/hooks/query/review';
 import { routerPath } from '@/router/routes';
 import { Review } from '@/types/review/client';
@@ -16,9 +17,8 @@ interface ReviewItemProps extends Review {}
 
 const ReviewItem = (reviewItemProps: ReviewItemProps) => {
   /** @todo 본인 리뷰 확인 - 추후 id로 변경 */
-  const { name: userName } = JSON.parse(
-    localStorage.getItem('userInfo') ?? JSON.stringify({ name: '노아이즈' }),
-  );
+  const { isLoggedIn } = useAuth();
+  const { petProfile } = useUser();
 
   const {
     id: reviewId,
@@ -28,7 +28,7 @@ const ReviewItem = (reviewItemProps: ReviewItemProps) => {
     stoolCondition,
     adverseReactions,
     comment,
-    petProfile: { name: reviewerName, profileUrl },
+    petProfile: { name: petName, profileUrl },
     helpfulReaction: { count, reacted },
   } = reviewItemProps;
 
@@ -36,6 +36,8 @@ const ReviewItem = (reviewItemProps: ReviewItemProps) => {
   const { petFoodId } = useValidParams(['petFoodId']);
   const { removeReviewMutation } = useRemoveReviewMutation();
   const [isCommentExpanded, setIsCommentExpanded] = useState(false);
+
+  const isMyReview = petProfile?.name === petName;
 
   const { toggleHelpfulReaction } = useToggleHelpfulReactionMutation(reacted);
 
@@ -62,12 +64,12 @@ const ReviewItem = (reviewItemProps: ReviewItemProps) => {
       <ReviewHeader>
         <ReviewImageAndNameContainer>
           <ReviewerImageWrapper>
-            <ReviewerImage src={profileUrl || DogIcon} alt={`${reviewerName} 프로필`} />
+            <ReviewerImage src={profileUrl || DogIcon} alt={`${petName} 프로필`} />
           </ReviewerImageWrapper>
-          <ReviewerName>{reviewerName}</ReviewerName>
+          <ReviewerName>{petName}</ReviewerName>
         </ReviewImageAndNameContainer>
         <ButtonContainer>
-          {userName === reviewerName && (
+          {isMyReview && (
             <>
               <TextButton type="button" aria-label="리뷰 수정" onClick={onClickEditButton}>
                 수정
@@ -106,11 +108,13 @@ const ReviewItem = (reviewItemProps: ReviewItemProps) => {
           ..더보기
         </ShowMoreButton>
       )}
-      <HelpfulButton reacted={reacted} onClick={onClickHelpfulButton}>
-        <HelpfulButtonIcon src={reacted ? ReactedIcon : UnReactedIcon} />
-        <span>도움이 돼요</span>
-        <span>{count}</span>
-      </HelpfulButton>
+      {isLoggedIn && !isMyReview && (
+        <HelpfulButton reacted={reacted} onClick={onClickHelpfulButton}>
+          <HelpfulButtonIcon src={reacted ? ReactedIcon : UnReactedIcon} />
+          <span>도움이 돼요</span>
+          <span>{count}</span>
+        </HelpfulButton>
+      )}
     </Layout>
   );
 };
