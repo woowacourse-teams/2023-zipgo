@@ -6,7 +6,7 @@ import { Review } from '@/types/review/client';
 import reviewFixture from '../fixtures/review';
 
 const reviewHandlers = [
-  rest.get(`${BASE_URL}/reviews/metaData`, async (req, res, ctx) => {
+  rest.get(`${BASE_URL}/reviews/metadata`, async (req, res, ctx) => {
     const metaData = reviewFixture.getReviewsMeta();
 
     return res(ctx.status(200), ctx.json(metaData));
@@ -25,11 +25,11 @@ const reviewHandlers = [
     return res(ctx.json(review));
   }),
 
-  rest.post(`${BASE_URL}/review/:reviewId/helpfulReactions`, (req, res, ctx) =>
+  rest.post(`${BASE_URL}/reviews/:reviewId/helpful-reactions`, (req, res, ctx) =>
     res(ctx.delay(2000), ctx.status(200)),
   ),
 
-  rest.delete(`${BASE_URL}/review/:reviewId/helpfulReactions`, (req, res, ctx) =>
+  rest.delete(`${BASE_URL}/reviews/:reviewId/helpful-reactions`, (req, res, ctx) =>
     res(ctx.status(200)),
   ),
 

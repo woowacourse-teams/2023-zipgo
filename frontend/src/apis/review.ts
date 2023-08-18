@@ -71,7 +71,7 @@ export const getReviewsMeta = async () => {
 
 export const postHelpfulReactions = async ({ reviewId }: PostHelpfulReactionsReq) => {
   const { data } = await client.post<PostHelpfulReactionsRes>(
-    `/reviews/${reviewId}/helpfulReactions`,
+    `/reviews/${reviewId}/helpful-reactions`,
   );
 
   return data;
@@ -79,7 +79,7 @@ export const postHelpfulReactions = async ({ reviewId }: PostHelpfulReactionsReq
 
 export const deleteHelpfulReactions = async ({ reviewId }: DeleteHelpfulReactionsReq) => {
   const { data } = await client.delete<DeleteHelpfulReactionsRes>(
-    `/reviews/${reviewId}/helpfulReactions`,
+    `/reviews/${reviewId}/helpful-reactions`,
   );
 
   return data;
