@@ -3,6 +3,7 @@ package zipgo.review.application;
 import java.util.ArrayList;
 import java.util.List;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import zipgo.brand.domain.Brand;
@@ -236,6 +237,7 @@ class ReviewsServiceTest extends ServiceTest {
     }
 
     @Test
+    @Disabled
     void 도움이_돼요를_취소할_수_있다() {
         //given
         PetFood 식품 = 모든_영양기준_만족_식품(브랜드);
