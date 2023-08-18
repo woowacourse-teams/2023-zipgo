@@ -2,16 +2,15 @@ import { Link } from 'react-router-dom';
 import { styled } from 'styled-components';
 
 import PetListBottomSheet from '@/components/PetProfile/PetListBottomSheet';
-import { useAuth, useUser } from '@/hooks/auth';
+import { useAuth } from '@/hooks/auth';
 
 const Header = () => {
-  const { logout } = useAuth();
-  const { accessToken } = useUser();
+  const { isLoggedIn, logout } = useAuth();
 
   return (
     <HeaderContainer>
       <PetListBottomSheet />
-      {accessToken ? (
+      {isLoggedIn ? (
         <LogoutButton type="button" onClick={logout}>
           로그아웃
         </LogoutButton>
