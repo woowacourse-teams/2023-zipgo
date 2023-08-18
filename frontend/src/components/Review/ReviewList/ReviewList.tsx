@@ -22,7 +22,7 @@ const ReviewList = () => {
     petSizeId: queryString.petSizes,
     breedId: queryString.breeds,
     ageGroupId: queryString.ageGroups,
-    sortBy: queryString.sortBy,
+    sortById: queryString.sortBy,
   });
 
   const { hasPet } = JSON.parse(

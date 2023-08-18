@@ -19,7 +19,7 @@ interface GetReviewsReq {
   petSizeId?: string;
   ageGroupId?: string;
   breedId?: string;
-  sortBy?: string;
+  sortById?: string;
   size?: number;
   lastReviewId?: number;
 }
