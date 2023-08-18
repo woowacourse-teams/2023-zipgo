@@ -62,6 +62,7 @@ public class ReviewService {
         Member member = memberRepository.getById(memberId);
 
         review.reactedBy(member);
+        reviewRepository.save(review);
     }
 
 
