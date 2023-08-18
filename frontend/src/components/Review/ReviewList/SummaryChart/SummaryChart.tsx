@@ -128,7 +128,6 @@ const DataName = styled.div`
   font-size: 1.2rem;
   font-weight: 500;
   font-style: normal;
-  line-height: 12px;
   color: ${({ theme }) => theme.color.grey500};
   text-align: center;
   text-overflow: ellipsis;
