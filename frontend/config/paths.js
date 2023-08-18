@@ -21,7 +21,9 @@ const resolveLib = lib => {
 const moduleFileExtensions = ['js', 'ts', 'tsx', 'json', 'jsx'];
 
 const resolveModule = (resolveFn, filePath) => {
-  const extension = moduleFileExtensions.find(extension => fs.existsSync(resolveFn(`${filePath}.${extension}`)));
+  const extension = moduleFileExtensions.find(extension =>
+    fs.existsSync(resolveFn(`${filePath}.${extension}`)),
+  );
 
   if (extension) {
     return resolveFn(`${filePath}.${extension}`);
@@ -32,6 +34,7 @@ const resolveModule = (resolveFn, filePath) => {
 
 module.exports = {
   appHtml: resolveApp('public/index.html'),
+  appFavicon: resolveApp('public/favicon.ico'),
   appIndex: resolveModule(resolveApp, 'src/index'),
   appOutput: resolveApp('dist'),
   appTsConfig: resolveApp('tsconfig.json'),

@@ -57,6 +57,8 @@ module.exports = {
   plugins: [
     new HtmlWebpackPlugin({
       template: paths.appHtml,
+      hash: true,
+      favicon: paths.appFavicon,
     }),
     new DefinePlugin({ ...env.stringified, isDevelopment, isProduction }),
     new ForkTsCheckerWebpackPlugin({
