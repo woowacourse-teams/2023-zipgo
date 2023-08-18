@@ -1,25 +1,21 @@
-// hooks/query/auth.ts
-
-import { useMutation, useQueryClient } from '@tanstack/react-query';
+import { useMutation, useQuery } from '@tanstack/react-query';
 import { useNavigate } from 'react-router-dom';
 
-import { loginKakaoAuth, loginZipgoAuth, logoutKaKaoAuth } from '@/apis/auth';
+import { authenticateUser, loginZipgoAuth, logoutKaKaoAuth } from '@/apis/auth';
 import { routerPath } from '@/router/routes';
 
-const QUERY_KEY = { kakaoAuth: 'kakaoAuth' };
+const QUERY_KEY = { authenticateUser: 'authenticateUser' };
 
 export const useAuthQuery = () => {
-  const queryClient = useQueryClient();
-
-  const getKakaoAuth = () => {
-    queryClient.fetchQuery({
-      queryKey: [QUERY_KEY.kakaoAuth],
-      queryFn: loginKakaoAuth,
-    });
-  };
+  const { isSuccess } = useQuery({
+    queryKey: [QUERY_KEY.authenticateUser],
+    queryFn: authenticateUser,
+    useErrorBoundary: false,
+    refetchOnWindowFocus: false,
+  });
 
   return {
-    getKakaoAuth,
+    isLoggedIn: isSuccess,
   };
 };
 

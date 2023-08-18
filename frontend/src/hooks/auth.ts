@@ -2,13 +2,15 @@ import { useEffect, useState } from 'react';
 
 import { User } from '@/types/auth/client';
 
-import { useAuthMutation } from './query/auth';
+import { useAuthMutation, useAuthQuery } from './query/auth';
 
 export const useAuth = () => {
   const {
     loginZipgoMutation: { loginZipgo },
     logoutKakaoMutation: { logoutKakao },
   } = useAuthMutation();
+
+  const { isLoggedIn } = useAuthQuery();
 
   const logout = () => {
     const isLogout = confirm('로그아웃하시겠어요?');
@@ -19,7 +21,7 @@ export const useAuth = () => {
     }
   };
 
-  return { loginZipgo, logout };
+  return { isLoggedIn, loginZipgo, logout };
 };
 
 export const useUser = () => {
