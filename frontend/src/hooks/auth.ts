@@ -16,7 +16,6 @@ export const useAuth = () => {
     if (isLogout) {
       localStorage.removeItem('auth');
       localStorage.removeItem('userInfo');
-      localStorage.removeItem('petProfile');
     }
   };
 
