@@ -1,4 +1,4 @@
-import { useMutation, useQuery } from '@tanstack/react-query';
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { useNavigate } from 'react-router-dom';
 
 import { authenticateUser, loginZipgoAuth, logoutKaKaoAuth } from '@/apis/auth';
@@ -21,12 +21,16 @@ export const useAuthQuery = () => {
 
 export const useAuthMutation = () => {
   const navigate = useNavigate();
+  const queryClient = useQueryClient();
 
   const { mutate: loginZipgo, ...loginRestMutation } = useMutation({
     mutationFn: loginZipgoAuth,
     onSuccess({ accessToken, authResponse }) {
       localStorage.setItem('auth', accessToken);
       localStorage.setItem('userInfo', JSON.stringify(authResponse));
+
+      queryClient.invalidateQueries([QUERY_KEY.authenticateUser]);
+
       navigate(routerPath.home());
     },
   });
