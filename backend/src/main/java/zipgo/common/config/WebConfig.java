@@ -9,6 +9,7 @@ import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 import zipgo.auth.presentation.AuthInterceptor;
 import zipgo.auth.presentation.JwtMandatoryArgumentResolver;
+import zipgo.auth.presentation.OptionalJwtArgumentResolver;
 import zipgo.auth.support.JwtProvider;
 
 import static org.springframework.http.HttpHeaders.LOCATION;
@@ -43,6 +44,7 @@ public class WebConfig implements WebMvcConfigurer {
     @Override
     public void addArgumentResolvers(List<HandlerMethodArgumentResolver> resolvers) {
         resolvers.add(new JwtMandatoryArgumentResolver(jwtProvider));
+        resolvers.add(new OptionalJwtArgumentResolver(jwtProvider));
     }
 
 }
