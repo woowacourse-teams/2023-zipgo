@@ -2,6 +2,7 @@ package zipgo.review.presentation;
 
 import com.epages.restdocs.apispec.ResourceSnippetDetails;
 import com.epages.restdocs.apispec.Schema;
+import io.restassured.response.Response;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -591,14 +592,20 @@ public class ReviewControllerTest extends AcceptanceTest {
                     .filter(API_문서("리뷰 도움이 돼요 추가 - 성공"));
 
             //when
-            var 응답 = 요청_준비.when()
+            요청_준비.when()
                     .header(AUTHORIZATION, "Bearer " + 다른_회원의_JWT)
                     .pathParam("reviewId", 리뷰.getId())
                     .post("/reviews/{reviewId}/helpful-reactions");
 
             //then
-            응답.then()
-                    .assertThat().statusCode(OK.value());
+            Response 조회_응답 = given().spec(spec)
+                    .contentType(JSON)
+                    .header(AUTHORIZATION, "Bearer " + 다른_회원의_JWT)
+                    .get("/reviews/{reviewId}", 리뷰.getId());
+
+            조회_응답.then()
+                    .log().all()
+                    .assertThat().body("helpfulReaction.reacted", is(true));
         }
 
         @Test
