@@ -16,7 +16,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import zipgo.auth.presentation.Auth;
 import zipgo.auth.presentation.OptionalAuth;
-import zipgo.auth.presentation.dto.AuthDto;
+import zipgo.auth.presentation.dto.AuthCredentials;
 import zipgo.review.application.ReviewQueryService;
 import zipgo.review.application.ReviewService;
 import zipgo.review.domain.Review;
@@ -38,50 +38,50 @@ public class ReviewController {
 
     @PostMapping
     public ResponseEntity<Void> create(
-            @Auth AuthDto authDto,
+            @Auth AuthCredentials authCredentials,
             @RequestBody @Valid CreateReviewRequest createReviewRequest
     ) {
-        Long reviewId = reviewService.createReview(authDto.id(), createReviewRequest);
+        Long reviewId = reviewService.createReview(authCredentials.id(), createReviewRequest);
         return ResponseEntity.created(URI.create("/reviews/" + reviewId)).build();
     }
 
     @GetMapping
     public ResponseEntity<GetReviewsResponse> getAllReviews(
-            @OptionalAuth AuthDto authDto,
+            @OptionalAuth AuthCredentials authCredentials,
             @ModelAttribute @Valid GetReviewsRequest request) {
-        Long memberId = getMemberId(authDto);
+        Long memberId = getMemberId(authCredentials);
         GetReviewsResponse reviews = reviewQueryService.getReviews(request.toQueryRequest(memberId));
 
         return ResponseEntity.ok(reviews);
     }
 
-    private Long getMemberId(AuthDto authDto) {
-        return Optional.ofNullable(authDto).map(AuthDto::id).orElse(null);
+    private Long getMemberId(AuthCredentials authCredentials) {
+        return Optional.ofNullable(authCredentials).map(AuthCredentials::id).orElse(null);
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<GetReviewResponse> getReview(@OptionalAuth AuthDto authDto, @PathVariable Long id) {
+    public ResponseEntity<GetReviewResponse> getReview(@OptionalAuth AuthCredentials authCredentials, @PathVariable Long id) {
         Review review = reviewQueryService.getReview(id);
-        Long memberId = getMemberId(authDto);
+        Long memberId = getMemberId(authCredentials);
         return ResponseEntity.ok(GetReviewResponse.from(review, memberId));
     }
 
     @PutMapping("/{reviewId}")
     public ResponseEntity<Void> update(
-            @Auth AuthDto authDto,
+            @Auth AuthCredentials authCredentials,
             @PathVariable Long reviewId,
             @RequestBody @Valid UpdateReviewRequest updateReviewRequest
     ) {
-        reviewService.updateReview(authDto.id(), reviewId, updateReviewRequest);
+        reviewService.updateReview(authCredentials.id(), reviewId, updateReviewRequest);
         return ResponseEntity.noContent().build();
     }
 
     @DeleteMapping("/{reviewId}")
     public ResponseEntity<Void> delete(
-            @Auth AuthDto authDto,
+            @Auth AuthCredentials authCredentials,
             @PathVariable Long reviewId
     ) {
-        reviewService.deleteReview(authDto.id(), reviewId);
+        reviewService.deleteReview(authCredentials.id(), reviewId);
         return ResponseEntity.noContent().build();
     }
 
@@ -93,19 +93,19 @@ public class ReviewController {
 
     @PostMapping("/{reviewId}/helpful-reactions")
     public ResponseEntity<Void> createHelpfulReaction(
-            @Auth AuthDto authDto,
+            @Auth AuthCredentials authCredentials,
             @PathVariable Long reviewId
     ) {
-        reviewService.addHelpfulReaction(authDto.id(), reviewId);
+        reviewService.addHelpfulReaction(authCredentials.id(), reviewId);
         return ResponseEntity.ok().build();
     }
 
     @DeleteMapping("/{reviewId}/helpful-reactions")
     public ResponseEntity<Void> deleteHelpfulReaction(
-            @Auth AuthDto authDto,
+            @Auth AuthCredentials authCredentials,
             @PathVariable Long reviewId
     ) {
-        reviewService.removeHelpfulReaction(authDto.id(), reviewId);
+        reviewService.removeHelpfulReaction(authCredentials.id(), reviewId);
         return ResponseEntity.noContent().build();
     }
 
