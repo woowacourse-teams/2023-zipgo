@@ -37,6 +37,7 @@ public record CreateReviewRequest(
                 .petFood(petFood)
                 .rating(rating())
                 .comment(comment)
+                .weight(pet.getWeight())
                 .tastePreference(TastePreference.from(tastePreference()))
                 .stoolCondition(StoolCondition.from(stoolCondition()))
                 .build();
