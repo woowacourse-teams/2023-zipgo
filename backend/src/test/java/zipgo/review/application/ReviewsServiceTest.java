@@ -11,7 +11,7 @@ import zipgo.brand.domain.repository.BrandRepository;
 import zipgo.common.service.ServiceTest;
 import zipgo.member.domain.Member;
 import zipgo.member.domain.repository.MemberRepository;
-import zipgo.member.exception.MemberException;
+import zipgo.member.exception.MemberNotFoundException;
 import zipgo.pet.domain.Breeds;
 import zipgo.pet.domain.Pet;
 import zipgo.pet.domain.PetSize;
@@ -152,7 +152,8 @@ class ReviewsServiceTest extends ServiceTest {
 
         //when, then
         assertThatThrownBy(() -> reviewService.createReview(1004L, 리뷰_생성_요청(저장된_식품.getId())))
-                .isInstanceOf(MemberException.NotFound.class);
+                .isInstanceOf(MemberNotFoundException.class)
+                .hasMessage("회원을 찾을 수 없습니다. 알맞은 회원인지 확인해주세요.");
     }
 
     @Test

@@ -6,7 +6,6 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import zipgo.pet.domain.Breeds;
 import zipgo.pet.domain.PetSize;
 import zipgo.pet.exception.BreedsNotFoundException;
-import zipgo.pet.exception.PetNotFoundException;
 
 public interface BreedsRepository extends JpaRepository<Breeds, Long> {
 

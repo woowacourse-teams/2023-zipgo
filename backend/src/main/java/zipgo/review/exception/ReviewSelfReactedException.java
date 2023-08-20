@@ -1,9 +1,14 @@
 package zipgo.review.exception;
 
-public class ReviewSelfReactedException extends RuntimeException { // TODO: ZipgoException 상속 받도록 변경하기
+import zipgo.common.error.ErrorCode;
+import zipgo.common.error.ZipgoException;
+
+import static org.springframework.http.HttpStatus.BAD_REQUEST;
+
+public class ReviewSelfReactedException extends ZipgoException {
 
     public ReviewSelfReactedException() {
-        super("본인의 리뷰에는 도움이 돼요를 추가할 수 없습니다.");
+        super(new ErrorCode(BAD_REQUEST, "본인의 리뷰에는 도움이 돼요를 추가할 수 없습니다."));
     }
 
 }

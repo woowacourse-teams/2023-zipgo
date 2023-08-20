@@ -13,7 +13,6 @@ import zipgo.member.domain.repository.MemberRepository;
 import zipgo.pet.domain.Breeds;
 import zipgo.pet.domain.Pet;
 import zipgo.pet.domain.PetSize;
-import zipgo.pet.domain.fixture.BreedsFixture;
 import zipgo.pet.domain.repository.BreedsRepository;
 import zipgo.pet.domain.repository.PetRepository;
 import zipgo.pet.domain.repository.PetSizeRepository;
@@ -155,7 +154,7 @@ class PetControllerTest extends AcceptanceTest {
         }
 
         @Test
-        void 반려견과_주인이_맞지_않으면_400_반환한다() {
+        void 반려견과_주인이_맞지_않으면_404_반환한다() {
             // given
             var 쫑이 = 반려견_생성();
             var 토큰 = jwtProvider.create("2");
@@ -347,17 +346,20 @@ class PetControllerTest extends AcceptanceTest {
     }
 
     private RestDocumentationFilter API_반려동물_등록_예외응답_문서_생성() {
-        return document("반려견 등록 - 실패(없는 견종)", resourceDetails().summary("반려동물 등록하기").description("반려동물을 등록합니다.").responseSchema(에러_응답_형식),
+        return document("반려견 등록 - 실패(없는 견종)",
+                resourceDetails().summary("반려동물 등록하기").description("반려동물을 등록합니다.").responseSchema(에러_응답_형식),
                 requestHeaders(headerWithName("Authorization").description("인증을 위한 JWT")));
     }
 
     private RestDocumentationFilter API_반려동물_수정_예외응답_문서_생성() {
-        return document("반려견 수정 - 실패(반려견 주인과 사용자 불일치)", resourceDetails().summary("반려동물 수정하기").description("반려동물을 정보를 수정합니다.").responseSchema(에러_응답_형식),
+        return document("반려견 수정 - 실패(반려견 주인과 사용자 불일치)",
+                resourceDetails().summary("반려동물 수정하기").description("반려동물을 정보를 수정합니다.").responseSchema(에러_응답_형식),
                 requestHeaders(headerWithName("Authorization").description("인증을 위한 JWT")));
     }
 
     private RestDocumentationFilter API_반려동물_삭제_예외응답_문서_생성() {
-        return document("반려견 수정 - 실패(반려견 주인과 사용자 불일치)", resourceDetails().summary("반려동물 삭제하기").description("반려동물 삭제합니다.").responseSchema(에러_응답_형식),
+        return document("반려견 수정 - 실패(반려견 주인과 사용자 불일치)",
+                resourceDetails().summary("반려동물 삭제하기").description("반려동물 삭제합니다.").responseSchema(에러_응답_형식),
                 requestHeaders(headerWithName("Authorization").description("인증을 위한 JWT")));
     }
 
