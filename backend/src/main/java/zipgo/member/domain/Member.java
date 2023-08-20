@@ -45,4 +45,11 @@ public class Member extends BaseTimeEntity {
         return pet != null;
     }
 
+    public void addPet(Pet pet) {
+        if (hasPet()) {
+            throw new IllegalStateException("이미 반려동물이 있습니다.");
+        }
+        this.pet = pet;
+    }
+
 }

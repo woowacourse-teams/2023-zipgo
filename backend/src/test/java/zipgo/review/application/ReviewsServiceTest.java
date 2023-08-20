@@ -15,6 +15,7 @@ import zipgo.member.exception.MemberException;
 import zipgo.pet.domain.Breeds;
 import zipgo.pet.domain.Pet;
 import zipgo.pet.domain.PetSize;
+import zipgo.pet.domain.fixture.BreedsFixture;
 import zipgo.pet.domain.repository.BreedsRepository;
 import zipgo.pet.domain.repository.PetRepository;
 import zipgo.pet.domain.repository.PetSizeRepository;
@@ -88,6 +89,8 @@ class ReviewsServiceTest extends ServiceTest {
         //given
         Member 멤버 = memberRepository.save(무민());
         PetFood 저장된_식품 = petFoodRepository.save(식품);
+        PetSize 크기 = petSizeRepository.save(소형견());
+        petRepository.save(반려동물(멤버, breedsRepository.save(BreedsFixture.견종(크기))));
 
         //when
         reviewService.createReview(멤버.getId(), 리뷰_생성_요청(저장된_식품.getId()));
@@ -109,6 +112,10 @@ class ReviewsServiceTest extends ServiceTest {
     void 잘못된_기호성으로_리뷰를_생성할_시_예외_처리() {
         //given
         Member 멤버 = memberRepository.save(무민());
+        PetSize 크기 = petSizeRepository.save(소형견());
+        Pet 반려동물 = 반려동물(멤버, breedsRepository.save(견종(크기)));
+        petRepository.save(반려동물);
+
         PetFood 저장된_식품 = petFoodRepository.save(식품);
         CreateReviewRequest request = new CreateReviewRequest(
                 저장된_식품.getId(),
@@ -129,6 +136,8 @@ class ReviewsServiceTest extends ServiceTest {
         //given
         PetFood 식품 = 모든_영양기준_만족_식품(브랜드);
         Member 멤버 = memberRepository.save(무민());
+        PetSize 크기 = petSizeRepository.save(소형견());
+        petRepository.save(반려동물(멤버, breedsRepository.save(BreedsFixture.견종(크기))));
         PetFood 저장된_식품 = petFoodRepository.save(식품);
         CreateReviewRequest request = new CreateReviewRequest(
                 저장된_식품.getId(),
