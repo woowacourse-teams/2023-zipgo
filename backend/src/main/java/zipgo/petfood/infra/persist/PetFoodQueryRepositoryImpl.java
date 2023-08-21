@@ -121,7 +121,6 @@ public class PetFoodQueryRepositoryImpl implements PetFoodQueryRepository {
     }
 
     public PetFood findPetFoodWithReviewsByPetFoodId(Long petFoodId) {
-        ;
         JPAQuery<PetFood> where = queryFactory
                 .selectFrom(petFood)
                 .leftJoin(petFood.reviews.reviews, review)
@@ -129,12 +128,7 @@ public class PetFoodQueryRepositoryImpl implements PetFoodQueryRepository {
                 .leftJoin(review.adverseReactions, adverseReaction)
                 .where(petFood.id.eq(petFoodId));
 
-        log.info("----------------1-----------");
-        log.info(where.toString());
-        log.info("----------------2----------");
-
-        return where
-                .fetchOne();
+        return where.fetchOne();
     }
 
 }
