@@ -44,8 +44,7 @@ public class PetFoodController {
                 convertStringsToCollection(mainIngredients),
                 convertStringsToCollection(functionalities)
         );
-        List<FilteredPetFoodResponse> petFoods = petFoodQueryService.getPetFoodsByFilters(filterRequest, lastPetFoodId,
-                size);
+        List<FilteredPetFoodResponse> petFoods = petFoodQueryService.getPetFoodsByFilters(filterRequest, lastPetFoodId, size);
         Long count = petFoodQueryService.getPetFoodsCountByFilters(filterRequest);
         return ResponseEntity.ok(GetPetFoodsResponse.from(count, petFoods));
     }
