@@ -5,7 +5,6 @@ import com.querydsl.jpa.impl.JPAQuery;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 import zipgo.petfood.domain.PetFood;
@@ -18,7 +17,6 @@ import static zipgo.petfood.domain.QPetFoodPrimaryIngredient.petFoodPrimaryIngre
 import static zipgo.review.domain.QAdverseReaction.adverseReaction;
 import static zipgo.review.domain.QReview.review;
 
-@Slf4j
 @Repository
 @RequiredArgsConstructor
 @Transactional(readOnly = true)
