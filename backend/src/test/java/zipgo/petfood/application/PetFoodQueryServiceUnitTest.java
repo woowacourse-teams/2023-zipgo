@@ -8,7 +8,7 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import zipgo.brand.domain.repository.BrandRepository;
 import zipgo.petfood.domain.repository.PetFoodRepository;
-import zipgo.petfood.infra.persist.PetFoodQueryRepository;
+import zipgo.petfood.infra.persist.PetFoodQueryRepositoryImpl;
 
 @ExtendWith(MockitoExtension.class)
 @DisplayNameGeneration(ReplaceUnderscores.class)
@@ -18,7 +18,7 @@ class PetFoodQueryServiceUnitTest {
     private PetFoodQueryService petFoodQueryService;
 
     @Mock
-    private PetFoodQueryRepository petFoodQueryRepository;
+    private PetFoodQueryRepositoryImpl petFoodQueryRepository;
 
     @Mock
     private BrandRepository brandRepository;

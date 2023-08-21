@@ -9,7 +9,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.web.HttpMediaTypeNotSupportedException;
 import zipgo.common.acceptance.AcceptanceTest;
-import zipgo.petfood.presentation.dto.ErrorResponse;
+import zipgo.common.error.ErrorResponse;
 import zipgo.review.presentation.ReviewController;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -37,7 +37,7 @@ class GlobalExceptionHandlerTest extends AcceptanceTest {
         // then
         ErrorResponse errorResponse = response.as(ErrorResponse.class);
         assertThat(response.statusCode()).isEqualTo(500);
-        assertThat(errorResponse.message()).isEqualTo("서버 내부 오류");
+        assertThat(errorResponse.message()).isEqualTo("서버에서 알 수 없는 오류가 발생했습니다.");
     }
 
     @Test

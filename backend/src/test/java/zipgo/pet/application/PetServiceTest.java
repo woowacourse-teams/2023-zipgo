@@ -6,14 +6,15 @@ import org.springframework.beans.factory.annotation.Autowired;
 import zipgo.common.service.ServiceTest;
 import zipgo.member.domain.Member;
 import zipgo.member.domain.repository.MemberRepository;
-import zipgo.member.exception.MemberException;
+import zipgo.member.exception.MemberNotFoundException;
 import zipgo.pet.domain.Breeds;
 import zipgo.pet.domain.Pet;
 import zipgo.pet.domain.PetSize;
 import zipgo.pet.domain.repository.BreedsRepository;
 import zipgo.pet.domain.repository.PetRepository;
 import zipgo.pet.domain.repository.PetSizeRepository;
-import zipgo.pet.exception.PetException;
+import zipgo.pet.exception.OwnerNotMatchException;
+import zipgo.pet.exception.PetNotFoundException;
 import zipgo.pet.presentation.dto.request.CreatePetRequest;
 import zipgo.pet.presentation.dto.request.UpdatePetRequest;
 import zipgo.review.fixture.MemberFixture;
@@ -108,8 +109,8 @@ class PetServiceTest extends ServiceTest {
 
         // expect
         assertThatThrownBy(() -> petService.updatePet(다른사람_id, 쫑이.getId(), 반려견_몸무게_수정_요청("쫑이", 80.0).toDto()))
-                .isInstanceOf(MemberException.NotFound.class)
-                .hasMessageContaining("멤버를 찾을 수 없습니다");
+                .isInstanceOf(MemberNotFoundException.class)
+                .hasMessageContaining("회원을 찾을 수 없습니다. 알맞은 회원인지 확인해주세요.");
     }
 
     @Test
@@ -123,8 +124,8 @@ class PetServiceTest extends ServiceTest {
 
         // then
         assertThatThrownBy(() -> petRepository.getById(생성된_쫑이.getId()))
-                .isInstanceOf(PetException.PetNotFound.class)
-                .hasMessageContaining("존재하지 않는 반려견입니다");
+                .isInstanceOf(PetNotFoundException.class)
+                .hasMessageContaining("존재하지 않는 반려동물입니다. 다시 확인해주세요.");
     }
 
     @Test
@@ -135,8 +136,8 @@ class PetServiceTest extends ServiceTest {
 
         // expect
         assertThatThrownBy(() -> petService.deletePet(무민.getId(), 생성된_쫑이.getId()))
-                .isInstanceOf(IllegalArgumentException.class)
-                .hasMessageContaining("반려견과 주인이 일치하지 않습니다");
+                .isInstanceOf(OwnerNotMatchException.class)
+                .hasMessageContaining("반려견과 주인이 일치하지 않습니다. 다시 확인해주세요.");
     }
 
     private PetSize 견종_크기_등록(String 견종_크기) {
