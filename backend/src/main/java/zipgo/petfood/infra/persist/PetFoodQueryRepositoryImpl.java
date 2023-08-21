@@ -5,7 +5,6 @@ import com.querydsl.jpa.impl.JPAQuery;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 import zipgo.petfood.domain.PetFood;
@@ -18,7 +17,6 @@ import static zipgo.petfood.domain.QPetFoodPrimaryIngredient.petFoodPrimaryIngre
 import static zipgo.review.domain.QAdverseReaction.adverseReaction;
 import static zipgo.review.domain.QReview.review;
 
-@Slf4j
 @Repository
 @RequiredArgsConstructor
 @Transactional(readOnly = true)
@@ -121,7 +119,6 @@ public class PetFoodQueryRepositoryImpl implements PetFoodQueryRepository {
     }
 
     public PetFood findPetFoodWithReviewsByPetFoodId(Long petFoodId) {
-        ;
         JPAQuery<PetFood> where = queryFactory
                 .selectFrom(petFood)
                 .leftJoin(petFood.reviews.reviews, review)
@@ -129,12 +126,7 @@ public class PetFoodQueryRepositoryImpl implements PetFoodQueryRepository {
                 .leftJoin(review.adverseReactions, adverseReaction)
                 .where(petFood.id.eq(petFoodId));
 
-        log.info("----------------1-----------");
-        log.info(where.toString());
-        log.info("----------------2----------");
-
-        return where
-                .fetchOne();
+        return where.fetchOne();
     }
 
 }
