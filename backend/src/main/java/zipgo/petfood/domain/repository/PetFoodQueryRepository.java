@@ -2,10 +2,11 @@ package zipgo.petfood.domain.repository;
 
 import java.util.List;
 import zipgo.petfood.domain.PetFood;
+import zipgo.petfood.domain.repository.dto.FilteredPetFoodResponse;
 
 public interface PetFoodQueryRepository {
 
-    List<PetFood> findPagingPetFoods(
+    List<FilteredPetFoodResponse> findPagingPetFoods(
             List<String> brandsName,
             List<String> standards,
             List<String> primaryIngredientList,

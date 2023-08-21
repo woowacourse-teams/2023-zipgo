@@ -60,7 +60,8 @@ public class ReviewController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<GetReviewResponse> getReview(@OptionalAuth AuthCredentials authCredentials, @PathVariable Long id) {
+    public ResponseEntity<GetReviewResponse> getReview(@OptionalAuth AuthCredentials authCredentials,
+                                                       @PathVariable Long id) {
         Review review = reviewQueryService.getReview(id);
         Long memberId = getMemberId(authCredentials);
         return ResponseEntity.ok(GetReviewResponse.from(review, memberId));

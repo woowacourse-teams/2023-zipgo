@@ -16,6 +16,7 @@ import zipgo.petfood.domain.PrimaryIngredient;
 import zipgo.petfood.domain.repository.FunctionalityRepository;
 import zipgo.petfood.domain.repository.PetFoodRepository;
 import zipgo.petfood.domain.repository.PrimaryIngredientRepository;
+import zipgo.petfood.domain.repository.dto.FilteredPetFoodResponse;
 import zipgo.petfood.presentation.dto.FilterRequest;
 import zipgo.petfood.presentation.dto.FilterResponse;
 import zipgo.petfood.presentation.dto.FilterResponse.BrandResponse;
@@ -112,7 +113,7 @@ class PetFoodQueryServiceTest extends ServiceTest {
             Long lastPetFoodId = getLastPetFoodId(allFoods);
 
             // when
-            List<PetFood> petFoods = petFoodQueryService.getPetFoodsByFilters(
+            List<FilteredPetFoodResponse> petFoods = petFoodQueryService.getPetFoodsByFilters(
                     FilterRequest.of(
                             List.of("퓨리나"),
                             EMPTY_LIST,
@@ -126,7 +127,7 @@ class PetFoodQueryServiceTest extends ServiceTest {
             // then
             assertAll(
                     () -> assertThat(petFoods).hasSize(1),
-                    () -> assertThat(petFoods).extracting(petFood -> petFood.getBrand().getName())
+                    () -> assertThat(petFoods).extracting(petFood -> petFood.brandName())
                             .isEqualTo(List.of("퓨리나"))
             );
         }
@@ -138,7 +139,7 @@ class PetFoodQueryServiceTest extends ServiceTest {
             Long lastPetFoodId = getLastPetFoodId(allFoods);
 
             // when
-            List<PetFood> petFoods = petFoodQueryService.getPetFoodsByFilters(
+            List<FilteredPetFoodResponse> petFoods = petFoodQueryService.getPetFoodsByFilters(
                     FilterRequest.of(
                             List.of("퓨리나"),
                             EMPTY_LIST,
@@ -162,7 +163,7 @@ class PetFoodQueryServiceTest extends ServiceTest {
             Long lastPetFoodId = getLastPetFoodId(allFoods);
 
             // when
-            List<PetFood> petFoods = petFoodQueryService.getPetFoodsByFilters(
+            List<FilteredPetFoodResponse> petFoods = petFoodQueryService.getPetFoodsByFilters(
                     FilterRequest.of(
                             EMPTY_LIST,
                             List.of("유럽"),
@@ -184,7 +185,7 @@ class PetFoodQueryServiceTest extends ServiceTest {
             Long lastPetFoodId = getLastPetFoodId(allFoods);
 
             // when
-            List<PetFood> petFoods = petFoodQueryService.getPetFoodsByFilters(
+            List<FilteredPetFoodResponse> petFoods = petFoodQueryService.getPetFoodsByFilters(
                     FilterRequest.of(
                             EMPTY_LIST,
                             EMPTY_LIST,
@@ -196,12 +197,7 @@ class PetFoodQueryServiceTest extends ServiceTest {
             );
 
             // then
-            assertAll(
-                    () -> assertThat(petFoods).hasSize(1),
-                    () -> assertThat(petFoods).extracting(
-                                    petFood -> petFood.getPetFoodPrimaryIngredients().get(0).getPrimaryIngredient().getName())
-                            .isEqualTo(List.of("소고기"))
-            );
+            assertThat(petFoods).hasSize(1);
         }
 
         @Test
@@ -211,7 +207,7 @@ class PetFoodQueryServiceTest extends ServiceTest {
             Long lastPetFoodId = getLastPetFoodId(allFoods);
 
             // when
-            List<PetFood> petFoods = petFoodQueryService.getPetFoodsByFilters(
+            List<FilteredPetFoodResponse> petFoods = petFoodQueryService.getPetFoodsByFilters(
                     FilterRequest.of(
                             EMPTY_LIST,
                             EMPTY_LIST,
@@ -223,12 +219,7 @@ class PetFoodQueryServiceTest extends ServiceTest {
             );
 
             // then
-            assertAll(
-                    () -> assertThat(petFoods).hasSize(1),
-                    () -> assertThat(petFoods).extracting(
-                                    petFood -> petFood.getPetFoodFunctionalities().get(0).getFunctionality().getName())
-                            .isEqualTo(List.of("튼튼"))
-            );
+            assertThat(petFoods).hasSize(1);
         }
 
         // 아카나, 미국, 튼튼, 소고기
@@ -239,7 +230,7 @@ class PetFoodQueryServiceTest extends ServiceTest {
             Long lastPetFoodId = allFoods.get(allFoods.size() - 1).getId();
 
             // when
-            List<PetFood> petFoods = petFoodQueryService.getPetFoodsByFilters(
+            List<FilteredPetFoodResponse> petFoods = petFoodQueryService.getPetFoodsByFilters(
                     FilterRequest.of(
                             List.of("아카나", "오리젠"),
                             List.of("미국"),
@@ -251,17 +242,7 @@ class PetFoodQueryServiceTest extends ServiceTest {
             );
 
             // then
-            assertAll(
-                    () -> assertThat(petFoods).hasSize(1),
-                    () -> assertThat(petFoods).extracting(petFood -> petFood.getHasStandard().getEurope())
-                            .contains(true),
-                    () -> assertThat(petFoods).extracting(
-                                    petFood -> petFood.getPetFoodPrimaryIngredients().get(0).getPrimaryIngredient().getName())
-                            .isEqualTo(List.of("소고기")),
-                    () -> assertThat(petFoods).extracting(
-                                    petFood -> petFood.getPetFoodFunctionalities().get(0).getFunctionality().getName())
-                            .isEqualTo(List.of("튼튼"))
-            );
+            assertThat(petFoods).hasSize(1);
         }
 
         @Test
@@ -271,7 +252,7 @@ class PetFoodQueryServiceTest extends ServiceTest {
             Long lastPetFoodId = getLastPetFoodId(allFoods);
 
             // when
-            List<PetFood> petFoods = petFoodQueryService.getPetFoodsByFilters(
+            List<FilteredPetFoodResponse> petFoods = petFoodQueryService.getPetFoodsByFilters(
                     FilterRequest.of(
                             EMPTY_LIST,
                             EMPTY_LIST,
@@ -293,7 +274,7 @@ class PetFoodQueryServiceTest extends ServiceTest {
             Long lastPetFoodId = getLastPetFoodId(allFoods);
 
             // when
-            List<PetFood> petFoods = petFoodQueryService.getPetFoodsByFilters(
+            List<FilteredPetFoodResponse> petFoods = petFoodQueryService.getPetFoodsByFilters(
                     FilterRequest.of(
                             EMPTY_LIST,
                             EMPTY_LIST,
@@ -325,7 +306,7 @@ class PetFoodQueryServiceTest extends ServiceTest {
             }
 
             // when
-            List<PetFood> petFoods = petFoodQueryService.getPetFoodsByFilters(
+            List<FilteredPetFoodResponse> petFoods = petFoodQueryService.getPetFoodsByFilters(
                     FilterRequest.of(
                             EMPTY_LIST,
                             EMPTY_LIST,

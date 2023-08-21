@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import zipgo.petfood.application.PetFoodQueryService;
-import zipgo.petfood.domain.PetFood;
+import zipgo.petfood.domain.repository.dto.FilteredPetFoodResponse;
 import zipgo.petfood.presentation.dto.FilterMetadataResponse;
 import zipgo.petfood.presentation.dto.FilterRequest;
 import zipgo.petfood.presentation.dto.FilterResponse;
@@ -44,7 +44,8 @@ public class PetFoodController {
                 convertStringsToCollection(mainIngredients),
                 convertStringsToCollection(functionalities)
         );
-        List<PetFood> petFoods = petFoodQueryService.getPetFoodsByFilters(filterRequest, lastPetFoodId, size);
+        List<FilteredPetFoodResponse> petFoods = petFoodQueryService.getPetFoodsByFilters(filterRequest, lastPetFoodId,
+                size);
         Long count = petFoodQueryService.getPetFoodsCountByFilters(filterRequest);
         return ResponseEntity.ok(GetPetFoodsResponse.from(count, petFoods));
     }

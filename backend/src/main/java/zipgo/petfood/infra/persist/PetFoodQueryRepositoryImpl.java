@@ -9,6 +9,8 @@ import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 import zipgo.petfood.domain.PetFood;
 import zipgo.petfood.domain.repository.PetFoodQueryRepository;
+import zipgo.petfood.domain.repository.dto.FilteredPetFoodResponse;
+import zipgo.petfood.domain.repository.dto.QFilteredPetFoodResponse;
 
 import static zipgo.brand.domain.QBrand.brand;
 import static zipgo.petfood.domain.QPetFood.petFood;
@@ -24,7 +26,8 @@ public class PetFoodQueryRepositoryImpl implements PetFoodQueryRepository {
 
     private final JPAQueryFactory queryFactory;
 
-    public List<PetFood> findPagingPetFoods(
+    @Override
+    public List<FilteredPetFoodResponse> findPagingPetFoods(
             List<String> brandsName,
             List<String> standards,
             List<String> primaryIngredientList,
@@ -33,10 +36,15 @@ public class PetFoodQueryRepositoryImpl implements PetFoodQueryRepository {
             int size
     ) {
         return queryFactory
-                .selectDistinct(petFood)
+                .selectDistinct(new QFilteredPetFoodResponse(
+                        petFood.id,
+                        petFood.imageUrl,
+                        brand.name,
+                        petFood.name,
+                        petFood.purchaseLink
+                ))
                 .from(petFood)
                 .join(petFood.brand, brand)
-                .fetchJoin()
                 .join(petFood.petFoodPrimaryIngredients, petFoodPrimaryIngredient)
                 .join(petFood.petFoodFunctionalities, petFoodFunctionality)
                 .where(
