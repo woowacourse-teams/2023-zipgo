@@ -7,7 +7,7 @@ import zipgo.common.error.ZipgoException;
 public class NonPositiveSizeException extends ZipgoException {
 
     public NonPositiveSizeException() {
-        super(new ErrorCode(HttpStatus.BAD_REQUEST, "size 는 양수 이어야 합니다."));
+        super(new ErrorCode(HttpStatus.BAD_REQUEST, "size는 양수 이어야 합니다."));
     }
 
 }
