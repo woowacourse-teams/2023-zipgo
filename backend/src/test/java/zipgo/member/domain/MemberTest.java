@@ -2,6 +2,7 @@ package zipgo.member.domain;
 
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
+import zipgo.member.exception.PetAlreadyRegisteredException;
 import zipgo.pet.domain.Pet;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -57,7 +58,7 @@ class MemberTest {
 
             //expect
             assertThatThrownBy(() -> 주인.addPet(반려동물))
-                    .isInstanceOf(IllegalStateException.class)
+                    .isInstanceOf(PetAlreadyRegisteredException.class)
                     .hasMessage("이미 반려동물이 있습니다.");
         }
 

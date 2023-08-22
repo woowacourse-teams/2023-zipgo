@@ -12,6 +12,7 @@ import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import zipgo.common.entity.BaseTimeEntity;
+import zipgo.member.exception.PetAlreadyRegisteredException;
 import zipgo.pet.domain.Pet;
 
 import static lombok.AccessLevel.PROTECTED;
@@ -47,7 +48,7 @@ public class Member extends BaseTimeEntity {
 
     public void addPet(Pet pet) {
         if (hasPet()) {
-            throw new IllegalStateException("이미 반려동물이 있습니다.");
+            throw new PetAlreadyRegisteredException();
         }
         this.pet = pet;
     }
