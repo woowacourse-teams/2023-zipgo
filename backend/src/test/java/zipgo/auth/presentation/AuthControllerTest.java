@@ -24,7 +24,7 @@ import zipgo.pet.application.PetQueryService;
 import zipgo.pet.domain.fixture.PetFixture;
 
 import static com.epages.restdocs.apispec.RestAssuredRestDocumentationWrapper.resourceDetails;
-import static java.util.Collections.*;
+import static java.util.Collections.EMPTY_LIST;
 import static org.mockito.Mockito.when;
 import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.post;
 import static org.springframework.restdocs.payload.PayloadDocumentation.fieldWithPath;
@@ -33,9 +33,6 @@ import static org.springframework.restdocs.request.RequestDocumentation.paramete
 import static org.springframework.restdocs.request.RequestDocumentation.queryParameters;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import static zipgo.member.domain.fixture.MemberFixture.식별자_있는_멤버;
-import static zipgo.pet.domain.fixture.BreedsFixture.견종;
-import static zipgo.pet.domain.fixture.PetFixture.반려동물_생성;
-import static zipgo.pet.domain.fixture.PetSizeFixture.대형견;
 
 @AutoConfigureRestDocs
 @ExtendWith(SpringExtension.class)
@@ -46,8 +43,8 @@ class AuthControllerTest {
 
     private static final Schema 응답_형식 = Schema.schema("TokenResponse");
     private static final ResourceSnippetDetails 문서_정보 = resourceDetails().summary("로그인")
-                .description("로그인 합니다.")
-                .responseSchema(응답_형식);
+            .description("로그인 합니다.")
+            .responseSchema(응답_형식);
 
     @Autowired
     private MockMvc mockMvc;
@@ -86,7 +83,7 @@ class AuthControllerTest {
     }
 
     @Test
-    void 로그인_성공_후_사용자의_반려동물이_없을시_petProfile은_반환되지_않는다() throws Exception {
+    void 로그인_성공_후_사용자의_반려동물이_없다면_pets는_빈_배열이다() throws Exception {
         // given
         when(authService.createToken("인가_코드"))
                 .thenReturn("생성된_토큰");
