@@ -9,9 +9,8 @@ import zipgo.pet.domain.Pet;
 
 public class PetFixture {
 
-    public static Pet 반려동물_생성(){
+    public static Pet 반려동물_생성() {
         return Pet.builder()
-                .id(1L)
                 .name("첵스네강아지")
                 .imageUrl("https://image.zipgo.pet/dev/pet-image/dog_icon.svg")
                 .owner(MemberFixture.식별자_있는_멤버())

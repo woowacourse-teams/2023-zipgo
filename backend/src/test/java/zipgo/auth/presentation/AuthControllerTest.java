@@ -132,7 +132,7 @@ class AuthControllerTest {
                         fieldWithPath("authResponse.email").description("사용자 이메일").type(JsonFieldType.STRING),
                         fieldWithPath("authResponse.profileImageUrl").description("사용자 프로필 사진").type(JsonFieldType.STRING),
                         fieldWithPath("authResponse.hasPet").description("반려동물 등록 여부").type(JsonFieldType.BOOLEAN),
-                        fieldWithPath("authResponse.pets[].id").description("반려동물 식별자").type(JsonFieldType.NUMBER),
+                        fieldWithPath("authResponse.pets[].id").description("반려동물 식별자"),
                         fieldWithPath("authResponse.pets[].name").description("반려동물 이름").type(JsonFieldType.STRING),
                         fieldWithPath("authResponse.pets[].age").description("반려동물 나이").type(JsonFieldType.NUMBER),
                         fieldWithPath("authResponse.pets[].breed").description("반려동물 견종").type(JsonFieldType.STRING),
