@@ -124,7 +124,7 @@ public class ReviewQueryService {
 
         RatingSummaryElement ratingSummary = getSummarizeRating(petFoodId);
         List<SummaryElement> tastePreference = reviewQueryRepository.getReviewTastesAverageDistribution(petFoodId);
-        List<SummaryElement> stoolCondition = summarizeStoolCondition(reviews, reviewSize);
+        List<SummaryElement> stoolCondition = reviewQueryRepository.getReviewStoolConditionAverageDistribution(petFoodId);
         List<SummaryElement> adverseReaction = summarizeAdverseReaction(reviews);
 
         return GetReviewsSummaryResponse.of(ratingSummary, tastePreference, stoolCondition, adverseReaction);

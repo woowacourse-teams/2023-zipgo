@@ -661,6 +661,27 @@ class ReviewQueryRepositoryImplTest {
             }
         }
 
+        @Nested
+        class 리뷰_평균_대변_상태_조회 {
+            @Test
+            void 리뷰_평균_입맛_분포도를_조회한다() {
+                // given
+                PetFood 식품 = 식품_만들기();
+                리뷰_여러개_생성(식품);
+
+                // when
+                List<SummaryElement> reviewTastesAverageDistribution = reviewQueryRepository.getReviewStoolConditionAverageDistribution(식품.getId());
+
+                // then
+                assertAll(
+                        () -> assertThat(reviewTastesAverageDistribution).extracting(SummaryElement::name)
+                                .contains("촉촉 말랑해요", "설사를 해요", "딱딱해요", "잘 모르겠어요"),
+                        () -> assertThat(reviewTastesAverageDistribution).extracting(SummaryElement::percentage)
+                                .contains(0, 100)
+                );
+            }
+        }
+
     }
 
 

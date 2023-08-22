@@ -23,6 +23,7 @@ import zipgo.review.domain.repository.dto.FindReviewsFilterRequest;
 import zipgo.review.domain.repository.dto.FindReviewsQueryResponse;
 import zipgo.review.domain.repository.dto.QFindReviewsQueryResponse;
 import zipgo.review.domain.repository.dto.ReviewHelpfulReaction;
+import zipgo.review.domain.type.StoolCondition;
 import zipgo.review.domain.type.TastePreference;
 import zipgo.review.dto.response.SummaryElement;
 
@@ -239,6 +240,30 @@ public class ReviewQueryRepositoryImpl implements ReviewQueryRepository {
                     Long ratingCount = ratingCountMap.getOrDefault(tastePreference, 0L);
                     Integer percentage = calculatePercentage(ratingCount, reviewTotalCount);
                     return new SummaryElement(tastePreference.getDescription(), percentage);
+                })
+                .toList();
+    }
+
+    @Override
+    public List<SummaryElement> getReviewStoolConditionAverageDistribution(Long petFoodId) {
+        Map<StoolCondition, Long> ratingCountMap = queryFactory
+                .select(review.stoolCondition, review.stoolCondition.count())
+                .from(review)
+                .where(equalsPetFoodId(petFoodId))
+                .fetch()
+                .stream()
+                .collect(toMap(
+                        tuple -> tuple.get(0, StoolCondition.class),
+                        tuple -> tuple.get(1, Long.class)
+                ));
+
+        Long reviewTotalCount = getReviewTotalCountByReviewId(petFoodId);
+
+        return Arrays.stream(StoolCondition.values())
+                .map(stoolCondition -> {
+                    Long ratingCount = ratingCountMap.getOrDefault(stoolCondition, 0L);
+                    Integer percentage = calculatePercentage(ratingCount, reviewTotalCount);
+                    return new SummaryElement(stoolCondition.getDescription(), percentage);
                 })
                 .toList();
     }
