@@ -640,26 +640,26 @@ class ReviewQueryRepositoryImplTest {
             }
         }
 
-//        @Nested
-//        class 리뷰_평균_입맛_조회 {
-//            @Test
-//            void 리뷰_평균_입맛_분포도를_조회한다() {
-//                // given
-//                PetFood 식품 = 식품_만들기();
-//                리뷰_여러개_생성(식품);
-//
-//                // when
-//                List<SummaryElement> reviewTastesAverageDistribution = reviewQueryRepository.getReviewTastesAverageDistribution(식품.getId());
-//
-//                // then
-//                assertAll(
-//                        () -> assertThat(reviewTastesAverageDistribution).extracting(SummaryElement::name)
-//                                .contains("정말 잘 먹어요", "잘 먹는 편이에요", "잘 안 먹어요", "전혀 안 먹어요"),
-//                        () -> assertThat(reviewTastesAverageDistribution).extracting(SummaryElement::percentage)
-//                                .contains(0, 100)
-//                );
-//            }
-//        }
+        @Nested
+        class 리뷰_평균_입맛_조회 {
+            @Test
+            void 리뷰_평균_입맛_분포도를_조회한다() {
+                // given
+                PetFood 식품 = 식품_만들기();
+                리뷰_여러개_생성(식품);
+
+                // when
+                List<SummaryElement> reviewTastesAverageDistribution = reviewQueryRepository.getReviewTastesAverageDistribution(식품.getId());
+
+                // then
+                assertAll(
+                        () -> assertThat(reviewTastesAverageDistribution).extracting(SummaryElement::name)
+                                .contains("정말 잘 먹어요", "잘 먹는 편이에요", "잘 안 먹어요", "전혀 안 먹어요"),
+                        () -> assertThat(reviewTastesAverageDistribution).extracting(SummaryElement::percentage)
+                                .contains(0, 100)
+                );
+            }
+        }
 
     }
 

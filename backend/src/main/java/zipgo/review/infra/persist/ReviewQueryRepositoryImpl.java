@@ -219,29 +219,29 @@ public class ReviewQueryRepositoryImpl implements ReviewQueryRepository {
         return (int) (obtained * PERCENTAGE / total);
     }
 
-//    @Override
-//    public List<SummaryElement> getReviewTastesAverageDistribution(Long petFoodId) {
-//        Map<TastePreference, Long> ratingCountMap = queryFactory
-//                .select(review.tastePreference, review.tastePreference.count())
-//                .from(review)
-//                .where(equalsPetFoodId(petFoodId))
-//                .fetch()
-//                .stream()
-//                .collect(toMap(
-//                        tuple -> tuple.get(0, TastePreference.class),
-//                        tuple -> tuple.get(1, Long.class)
-//                ));
-//
-//        Long reviewTotalCount = getReviewTotalCountByReviewId(petFoodId);
-//
-//        return Arrays.stream(TastePreference.values())
-//                .map(tastePreference -> {
-//                    Long ratingCount = ratingCountMap.getOrDefault(tastePreference, 0L);
-//                    Integer percentage = calculatePercentage(ratingCount, reviewTotalCount);
-//                    return new SummaryElement(tastePreference.getDescription(), percentage);
-//                })
-//                .toList();
-//    }
+    @Override
+    public List<SummaryElement> getReviewTastesAverageDistribution(Long petFoodId) {
+        Map<TastePreference, Long> ratingCountMap = queryFactory
+                .select(review.tastePreference, review.tastePreference.count())
+                .from(review)
+                .where(equalsPetFoodId(petFoodId))
+                .fetch()
+                .stream()
+                .collect(toMap(
+                        tuple -> tuple.get(0, TastePreference.class),
+                        tuple -> tuple.get(1, Long.class)
+                ));
+
+        Long reviewTotalCount = getReviewTotalCountByReviewId(petFoodId);
+
+        return Arrays.stream(TastePreference.values())
+                .map(tastePreference -> {
+                    Long ratingCount = ratingCountMap.getOrDefault(tastePreference, 0L);
+                    Integer percentage = calculatePercentage(ratingCount, reviewTotalCount);
+                    return new SummaryElement(tastePreference.getDescription(), percentage);
+                })
+                .toList();
+    }
 
     private Long getReviewTotalCountByReviewId(Long petFoodId) {
         Long reviewTotalCount = queryFactory

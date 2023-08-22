@@ -123,7 +123,7 @@ public class ReviewQueryService {
         int reviewSize = reviews.size();
 
         RatingSummaryElement ratingSummary = getSummarizeRating(petFoodId);
-//        List<SummaryElement> tastePreference = reviewQueryRepository.getReviewTastesAverageDistribution(petFoodId);
+        List<SummaryElement> tastePreference = reviewQueryRepository.getReviewTastesAverageDistribution(petFoodId);
         List<SummaryElement> stoolCondition = summarizeStoolCondition(reviews, reviewSize);
         List<SummaryElement> adverseReaction = summarizeAdverseReaction(reviews);
 
