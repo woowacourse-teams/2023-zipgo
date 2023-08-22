@@ -11,10 +11,9 @@ import static java.util.Collections.emptyList;
 import static java.util.Objects.requireNonNullElse;
 
 public record GetReviewsRequest(
-
-        @NotNull
+        @NotNull(message = "식품 id를 입력해주세요.")
         Long petFoodId,
-        @Positive
+        @Positive(message = "size는 0보다 커야합니다.")
         Integer size,
         Long lastReviewId,
         Long sortById,
