@@ -111,22 +111,11 @@ public class ReviewQueryService {
                 .toList();
     }
 
-    // rating(평균 별점)
-    // 1점~5점까지 각 점수별 평균 별점 %
-    // 1점~5점까지 각 점수별 평균 입맛 %
-    // 1점~5점까지 각 점수별 평균 똥 %
-    // 1점~5점까지 각 점수별 평균 이상 반응 %
     public GetReviewsSummaryResponse getReviewsSummary(Long petFoodId) {
-        PetFood petFood = petFoodQueryRepository.findPetFoodWithReviewsByPetFoodId(petFoodId);
-        List<Review> reviews = petFood.getReviews().getReviews();
-
-        int reviewSize = reviews.size();
-
         RatingSummaryElement ratingSummary = getSummarizeRating(petFoodId);
         List<SummaryElement> tastePreference = reviewQueryRepository.getReviewTastesAverageDistribution(petFoodId);
         List<SummaryElement> stoolCondition = reviewQueryRepository.getReviewStoolConditionAverageDistribution(petFoodId);
-        List<SummaryElement> adverseReaction = summarizeAdverseReaction(reviews);
-
+        List<SummaryElement> adverseReaction = reviewQueryRepository.getReviewAdverseReactionAverageDistribution(petFoodId);
         return GetReviewsSummaryResponse.of(ratingSummary, tastePreference, stoolCondition, adverseReaction);
     }
 
@@ -134,56 +123,6 @@ public class ReviewQueryService {
         double reviewsAverageRating = reviewQueryRepository.getReviewsAverageRating(petFoodId);
         List<SummaryElement> summaryElements = reviewQueryRepository.getReviewRatingsAverageDistribution(petFoodId);
         return new RatingSummaryElement(reviewsAverageRating, summaryElements);
-    }
-
-    private List<SummaryElement> summarizeStoolCondition(List<Review> reviews, int reviewSize) {
-        List<SummaryElement> stoolCondition = new ArrayList<>();
-        Map<StoolCondition, List<Review>> groupByStoolCondition = reviews.stream()
-                .collect(Collectors.groupingBy(Review::getStoolCondition));
-
-        StoolCondition[] values = StoolCondition.values();
-        for (StoolCondition value : values) {
-            stoolCondition.add(new SummaryElement(value.getDescription(),
-                    getZeroOrStoolConditionPercentage(reviewSize, groupByStoolCondition, value)));
-        }
-        return stoolCondition;
-    }
-
-    private int getZeroOrStoolConditionPercentage(int reviewSize,
-                                                  Map<StoolCondition, List<Review>> groupByStoolCondition,
-                                                  StoolCondition value) {
-        if (reviewSize == 0) {
-            return 0;
-        }
-        return groupByStoolCondition.getOrDefault(value, new ArrayList<>()).size() * PERCENTAGE / reviewSize;
-    }
-
-    private List<SummaryElement> summarizeAdverseReaction(List<Review> reviews) {
-        List<SummaryElement> adverseReaction = new ArrayList<>();
-
-        List<AdverseReaction> allAdverseReaction = reviews.stream()
-                .map(Review::getAdverseReactions)
-                .flatMap(Collection::stream)
-                .toList();
-        Map<AdverseReactionType, List<AdverseReaction>> groupByAdverseReaction = allAdverseReaction.stream()
-                .collect(Collectors.groupingBy(AdverseReaction::getAdverseReactionType));
-
-        AdverseReactionType[] values = AdverseReactionType.values();
-        for (AdverseReactionType value : values) {
-            adverseReaction.add(new SummaryElement(value.getDescription(),
-                    getZeroOrAdverseReactionPercentage(allAdverseReaction, groupByAdverseReaction, value)));
-        }
-        return adverseReaction;
-    }
-
-    private int getZeroOrAdverseReactionPercentage(List<AdverseReaction> allAdverseReaction,
-                                                   Map<AdverseReactionType, List<AdverseReaction>> groupByAdverseReaction,
-                                                   AdverseReactionType value) {
-        if (allAdverseReaction.size() == 0) {
-            return 0;
-        }
-        return groupByAdverseReaction.getOrDefault(value, new ArrayList<>()).size() * PERCENTAGE
-                / allAdverseReaction.size();
     }
 
 }

@@ -17,12 +17,14 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 import zipgo.pet.domain.AgeGroup;
 import zipgo.review.application.SortBy;
+import zipgo.review.domain.AdverseReaction;
 import zipgo.review.domain.Review;
 import zipgo.review.domain.repository.ReviewQueryRepository;
 import zipgo.review.domain.repository.dto.FindReviewsFilterRequest;
 import zipgo.review.domain.repository.dto.FindReviewsQueryResponse;
 import zipgo.review.domain.repository.dto.QFindReviewsQueryResponse;
 import zipgo.review.domain.repository.dto.ReviewHelpfulReaction;
+import zipgo.review.domain.type.AdverseReactionType;
 import zipgo.review.domain.type.StoolCondition;
 import zipgo.review.domain.type.TastePreference;
 import zipgo.review.dto.response.SummaryElement;
@@ -198,6 +200,7 @@ public class ReviewQueryRepositoryImpl implements ReviewQueryRepository {
                 .select(review.rating, review.rating.count())
                 .from(review)
                 .where(equalsPetFoodId(petFoodId))
+                .groupBy(review.rating)
                 .fetch()
                 .stream()
                 .collect(toMap(
@@ -226,6 +229,7 @@ public class ReviewQueryRepositoryImpl implements ReviewQueryRepository {
                 .select(review.tastePreference, review.tastePreference.count())
                 .from(review)
                 .where(equalsPetFoodId(petFoodId))
+                .groupBy(review.tastePreference)
                 .fetch()
                 .stream()
                 .collect(toMap(
@@ -250,6 +254,7 @@ public class ReviewQueryRepositoryImpl implements ReviewQueryRepository {
                 .select(review.stoolCondition, review.stoolCondition.count())
                 .from(review)
                 .where(equalsPetFoodId(petFoodId))
+                .groupBy(review.stoolCondition)
                 .fetch()
                 .stream()
                 .collect(toMap(
@@ -264,6 +269,33 @@ public class ReviewQueryRepositoryImpl implements ReviewQueryRepository {
                     Long ratingCount = ratingCountMap.getOrDefault(stoolCondition, 0L);
                     Integer percentage = calculatePercentage(ratingCount, reviewTotalCount);
                     return new SummaryElement(stoolCondition.getDescription(), percentage);
+                })
+                .toList();
+    }
+
+    @Override
+    public List<SummaryElement> getReviewAdverseReactionAverageDistribution(Long petFoodId) {
+        List<Review> reviews = queryFactory
+                .selectFrom(review)
+                .where(equalsPetFoodId(petFoodId))
+                .fetch();
+
+        Map<AdverseReactionType, Long> reactionCountMap = reviews.stream()
+                .flatMap(review -> review.getAdverseReactions().stream())
+                .collect(Collectors.groupingBy(
+                        AdverseReaction::getAdverseReactionType,
+                        Collectors.counting()
+                ));
+
+        int totalAdverseReactions = reviews.stream()
+                .mapToInt(review -> review.getAdverseReactions().size())
+                .sum();
+
+        return Arrays.stream(AdverseReactionType.values())
+                .map(reactionType -> {
+                    Long reactionCount = reactionCountMap.getOrDefault(reactionType, 0L);
+                    Integer percentage = calculatePercentage(reactionCount, totalAdverseReactions);
+                    return new SummaryElement(reactionType.getDescription(), percentage);
                 })
                 .toList();
     }

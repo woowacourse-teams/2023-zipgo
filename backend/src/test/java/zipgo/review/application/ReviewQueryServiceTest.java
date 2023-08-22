@@ -75,8 +75,8 @@ class ReviewQueryServiceTest extends QueryServiceTest {
         void 사이즈로_리뷰_목록_조회() {
             //given
             PetFood 식품 = petFoodRepository.save(모든_영양기준_만족_식품(브랜드_조회하기()));
-            Review 리뷰1 = 리뷰1_생성(식품);
-            Review 리뷰2 = 리뷰2_생성(식품);
+            Review 리뷰1 = 평점_5점_정말_잘_먹어요_촉촉_말랑해요_없어요_리뷰_생성(식품);
+            Review 리뷰2 = 평점_1점_전혀_안_먹어요_설사를_해요_눈물_이상_먹고_토_반응_리뷰_생성(식품);
             GetReviewResponse 리뷰1_dto = GetReviewResponse.from(리뷰1, null);
             GetReviewResponse 리뷰2_dto = GetReviewResponse.from(리뷰2, null);
 
@@ -98,7 +98,7 @@ class ReviewQueryServiceTest extends QueryServiceTest {
 
     }
 
-    private Review 리뷰1_생성(PetFood 식품) {
+    private Review 평점_5점_정말_잘_먹어요_촉촉_말랑해요_없어요_리뷰_생성(PetFood 식품) {
         Member 멤버 = memberRepository.save(무민());
         PetSize 사이즈 = petSizeRepository.save(소형견());
         Breeds 종류 = breedsRepository.save(견종(사이즈));
@@ -108,7 +108,7 @@ class ReviewQueryServiceTest extends QueryServiceTest {
         return review;
     }
 
-    private Review 리뷰2_생성(PetFood 식품) {
+    private Review 평점_1점_전혀_안_먹어요_설사를_해요_눈물_이상_먹고_토_반응_리뷰_생성(PetFood 식품) {
         PetSize 사이즈 = petSizeRepository.save(소형견());
         Member 멤버2 = memberRepository.save(멤버_이름("무민2"));
         Breeds 종류 = breedsRepository.save(견종(사이즈));
@@ -177,8 +177,8 @@ class ReviewQueryServiceTest extends QueryServiceTest {
     void 리뷰_요약을_조회할_수_있다() {
         //given
         PetFood 식품 = petFoodRepository.save(모든_영양기준_만족_식품(브랜드_조회하기()));
-        Review 평점_5점_정말_잘_먹어요_촉촉_말랑해요_없어요_리뷰 = 리뷰1_생성(식품);
-        Review 평점_1점_전혀_안_먹어요_설사를_해요_눈물_이상_먹고_토_반응_리뷰 = 리뷰2_생성(식품);
+        평점_5점_정말_잘_먹어요_촉촉_말랑해요_없어요_리뷰_생성(식품);
+        평점_1점_전혀_안_먹어요_설사를_해요_눈물_이상_먹고_토_반응_리뷰_생성(식품);
 
         //when
         GetReviewsSummaryResponse reviewsSummary = reviewQueryService.getReviewsSummary(식품.getId());
@@ -186,18 +186,19 @@ class ReviewQueryServiceTest extends QueryServiceTest {
         //then
         assertAll(
                 () -> assertThat(reviewsSummary.rating().average()).isEqualTo(3.0),
-                () -> assertThat(reviewsSummary.rating().rating().get(0).name()).isEqualTo("5"),
+
+                () -> assertThat(reviewsSummary.rating().rating().get(0).name()).isEqualTo("1"),
                 () -> assertThat(reviewsSummary.rating().rating().get(0).percentage()).isEqualTo(50),
-                () -> assertThat(reviewsSummary.rating().rating().get(1).name()).isEqualTo("4"),
+                () -> assertThat(reviewsSummary.rating().rating().get(1).name()).isEqualTo("2"),
                 () -> assertThat(reviewsSummary.rating().rating().get(1).percentage()).isEqualTo(0),
                 () -> assertThat(reviewsSummary.rating().rating().get(2).name()).isEqualTo("3"),
                 () -> assertThat(reviewsSummary.rating().rating().get(2).percentage()).isEqualTo(0),
-                () -> assertThat(reviewsSummary.rating().rating().get(3).name()).isEqualTo("2"),
+                () -> assertThat(reviewsSummary.rating().rating().get(3).name()).isEqualTo("4"),
                 () -> assertThat(reviewsSummary.rating().rating().get(3).percentage()).isEqualTo(0),
-                () -> assertThat(reviewsSummary.rating().rating().get(4).name()).isEqualTo("1"),
-                () -> assertThat(reviewsSummary.rating().rating().get(4).percentage()).isEqualTo(50),
-                () -> assertThat(reviewsSummary.rating().rating().get(4).name()).isEqualTo("1"),
-                () -> assertThat(reviewsSummary.rating().rating().get(4).percentage()).isEqualTo(50),
+                () -> assertThat(reviewsSummary.rating().rating().get(4).name()).isEqualTo("5"),
+                () -> assertThat(reviewsSummary.rating().rating().get(4).percentage()).isEqualTo(50)
+        );
+        assertAll(
                 () -> assertThat(reviewsSummary.tastePreference().get(0).name()).isEqualTo("정말 잘 먹어요"),
                 () -> assertThat(reviewsSummary.tastePreference().get(0).percentage()).isEqualTo(50),
                 () -> assertThat(reviewsSummary.tastePreference().get(1).name()).isEqualTo("잘 먹는 편이에요"),
@@ -205,15 +206,24 @@ class ReviewQueryServiceTest extends QueryServiceTest {
                 () -> assertThat(reviewsSummary.tastePreference().get(2).name()).isEqualTo("잘 안 먹어요"),
                 () -> assertThat(reviewsSummary.tastePreference().get(2).percentage()).isEqualTo(0),
                 () -> assertThat(reviewsSummary.tastePreference().get(3).name()).isEqualTo("전혀 안 먹어요"),
-                () -> assertThat(reviewsSummary.tastePreference().get(3).percentage()).isEqualTo(50),
+                () -> assertThat(reviewsSummary.tastePreference().get(3).percentage()).isEqualTo(50)
+        );
+
+        assertAll(
                 () -> assertThat(reviewsSummary.stoolCondition().get(0).name()).isEqualTo("촉촉 말랑해요"),
                 () -> assertThat(reviewsSummary.stoolCondition().get(0).percentage()).isEqualTo(50),
                 () -> assertThat(reviewsSummary.stoolCondition().get(1).name()).isEqualTo("설사를 해요"),
                 () -> assertThat(reviewsSummary.stoolCondition().get(1).percentage()).isEqualTo(50),
                 () -> assertThat(reviewsSummary.stoolCondition().get(2).name()).isEqualTo("딱딱해요"),
-                () -> assertThat(reviewsSummary.stoolCondition().get(2).percentage()).isEqualTo(0),
+                () -> assertThat(reviewsSummary.stoolCondition().get(2).percentage()).isEqualTo(0)
+        );
+
+        assertAll(
                 () -> assertThat(reviewsSummary.stoolCondition().get(3).name()).isEqualTo("잘 모르겠어요"),
-                () -> assertThat(reviewsSummary.stoolCondition().get(3).percentage()).isEqualTo(0),
+                () -> assertThat(reviewsSummary.stoolCondition().get(3).percentage()).isEqualTo(0)
+        );
+
+        assertAll(
                 () -> assertThat(reviewsSummary.adverseReaction().get(0).name()).isEqualTo("털이 푸석해요"),
                 () -> assertThat(reviewsSummary.adverseReaction().get(0).percentage()).isEqualTo(0),
                 () -> assertThat(reviewsSummary.adverseReaction().get(1).name()).isEqualTo("먹고 토해요"),

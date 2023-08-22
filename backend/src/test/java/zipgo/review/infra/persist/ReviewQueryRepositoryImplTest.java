@@ -682,6 +682,28 @@ class ReviewQueryRepositoryImplTest {
             }
         }
 
+        @Nested
+        class 리뷰_평균_이상반응_조회 {
+
+            @Test
+            void 리뷰_평균_이상반응_분포도를_조회한다() {
+                // given
+                PetFood 식품 = 식품_만들기();
+                리뷰_여러개_생성(식품);
+
+                // when
+                List<SummaryElement> reviewAdverseReactionAverageDistribution = reviewQueryRepository.getReviewAdverseReactionAverageDistribution(식품.getId());
+
+                // then
+                assertAll(
+                        () -> assertThat(reviewAdverseReactionAverageDistribution).extracting(SummaryElement::name)
+                                .contains("털이 푸석해요", "먹고 토해요", "눈물이 나요", "몸을 긁어요", "발을 핥아요", "없어요"),
+                        () -> assertThat(reviewAdverseReactionAverageDistribution).extracting(SummaryElement::percentage)
+                                .contains(0, 100)
+                );
+            }
+        }
+
     }
 
 

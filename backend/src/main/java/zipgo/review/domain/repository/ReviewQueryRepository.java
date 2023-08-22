@@ -23,4 +23,6 @@ public interface ReviewQueryRepository {
 
     List<SummaryElement> getReviewStoolConditionAverageDistribution(Long petFoodId);
 
+    List<SummaryElement> getReviewAdverseReactionAverageDistribution(Long petFoodId);
+
 }
