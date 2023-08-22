@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import zipgo.auth.presentation.Auth;
-import zipgo.auth.presentation.dto.AuthDto;
+import zipgo.auth.presentation.dto.AuthCredentials;
 import zipgo.pet.application.PetQueryService;
 import zipgo.pet.application.PetService;
 import zipgo.pet.domain.Breeds;
@@ -35,35 +35,35 @@ public class PetController {
 
     @PostMapping
     public ResponseEntity<Void> create(
-            @Auth AuthDto authDto,
+            @Auth AuthCredentials authCredentials,
             @RequestBody @Valid CreatePetRequest createPetRequest
     ) {
-        Long petId = petService.createPet(authDto.id(), createPetRequest.toDto());
+        Long petId = petService.createPet(authCredentials.id(), createPetRequest.toDto());
         return ResponseEntity.created(URI.create("/pets/" + petId)).build();
     }
 
     @PutMapping("/{petId}")
     public ResponseEntity<Void> update(
-            @Auth AuthDto authDto,
+            @Auth AuthCredentials authCredentials,
             @PathVariable("petId") Long petId,
             @RequestBody @Valid UpdatePetRequest updatePetRequest
     ) {
-        petService.updatePet(authDto.id(), petId, updatePetRequest.toDto());
+        petService.updatePet(authCredentials.id(), petId, updatePetRequest.toDto());
         return ResponseEntity.noContent().build();
     }
 
     @DeleteMapping("/{petId}")
     public ResponseEntity<Void> delete(
-            @Auth AuthDto authDto,
+            @Auth AuthCredentials authCredentials,
             @PathVariable("petId") Long petId
     ) {
-        petService.deletePet(authDto.id(), petId);
+        petService.deletePet(authCredentials.id(), petId);
         return ResponseEntity.noContent().build();
     }
 
     @GetMapping
-    public ResponseEntity<PetResponses> readMemberPets(@Auth AuthDto authDto) {
-        List<Pet> pets = petQueryService.readMemberPets(authDto.id());
+    public ResponseEntity<PetResponses> readMemberPets(@Auth AuthCredentials authCredentials) {
+        List<Pet> pets = petQueryService.readMemberPets(authCredentials.id());
         return ResponseEntity.ok(PetResponses.from(pets));
     }
 

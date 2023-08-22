@@ -18,7 +18,7 @@ import lombok.EqualsAndHashCode;
 import lombok.EqualsAndHashCode.Include;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import zipgo.auth.exception.AuthException;
+import zipgo.auth.exception.AuthForbiddenException;
 import zipgo.common.entity.BaseTimeEntity;
 import zipgo.member.domain.Member;
 import zipgo.pet.domain.Pet;
@@ -110,7 +110,7 @@ public class Review extends BaseTimeEntity {
 
     public void validateOwner(Long memberId) {
         if (!isWrittenBy(memberId)) {
-            throw new AuthException.Forbidden();
+            throw new AuthForbiddenException();
         }
     }
 

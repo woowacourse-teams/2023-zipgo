@@ -11,7 +11,8 @@ import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.RestTemplate;
 import zipgo.auth.application.OAuthClient;
 import zipgo.auth.application.dto.OAuthMemberResponse;
-import zipgo.auth.exception.AuthException;
+import zipgo.auth.exception.OAuthResourceNotBringException;
+import zipgo.auth.exception.OAuthTokenNotBringException;
 import zipgo.auth.infra.kakao.config.KakaoCredentials;
 import zipgo.auth.infra.kakao.dto.KakaoMemberResponse;
 import zipgo.auth.infra.kakao.dto.KakaoTokenResponse;
@@ -37,7 +38,6 @@ public class KakaoOAuthClient implements OAuthClient {
         HttpHeaders header = createRequestHeader();
         MultiValueMap<String, String> body = createRequestBodyWithAuthCode(authCode);
         HttpEntity<MultiValueMap<String, String>> request = new HttpEntity<>(body, header);
-
         ResponseEntity<KakaoTokenResponse> kakaoTokenResponse = getKakaoToken(request);
 
         return requireNonNull(requireNonNull(kakaoTokenResponse.getBody())).accessToken();
@@ -68,16 +68,14 @@ public class KakaoOAuthClient implements OAuthClient {
                     KakaoTokenResponse.class
             );
         } catch (HttpClientErrorException e) {
-            throw new AuthException.ResourceNotFound("카카오 토큰을 가져오는 데 실패했습니다.", e);
+            throw new OAuthTokenNotBringException();
         }
     }
 
     @Override
     public OAuthMemberResponse getMember(String accessToken) {
         HttpEntity<HttpHeaders> request = createRequest(accessToken);
-
         ResponseEntity<KakaoMemberResponse> response = getKakaoMember(request);
-
         return response.getBody();
     }
 
@@ -96,7 +94,7 @@ public class KakaoOAuthClient implements OAuthClient {
                     KakaoMemberResponse.class
             );
         } catch (HttpClientErrorException e) {
-            throw new AuthException.ResourceNotFound("카카오 사용자 정보를 가져오는 데 실패했습니다.", e);
+            throw new OAuthResourceNotBringException();
         }
     }
 

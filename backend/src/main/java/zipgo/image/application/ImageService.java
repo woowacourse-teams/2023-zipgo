@@ -13,7 +13,7 @@ public class ImageService {
 
     public String save(MultipartFile image) {
         UUID uuid = UUID.randomUUID();
-        return imageClient.upload(uuid.toString() ,image);
+        return imageClient.upload(uuid.toString(), image);
     }
 
 }

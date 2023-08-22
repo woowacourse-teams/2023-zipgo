@@ -17,6 +17,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import zipgo.common.entity.BaseTimeEntity;
 import zipgo.member.domain.Member;
+import zipgo.pet.exception.OwnerNotMatchException;
 
 import static jakarta.persistence.EnumType.STRING;
 import static jakarta.persistence.FetchType.LAZY;
@@ -81,7 +82,7 @@ public class Pet extends BaseTimeEntity {
 
     public void validateOwner(Member other) {
         if (!this.owner.equals(other)) {
-            throw new IllegalArgumentException("반려견과 주인이 일치하지 않습니다.");
+            throw new OwnerNotMatchException();
         }
     }
 

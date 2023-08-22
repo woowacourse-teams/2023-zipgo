@@ -4,7 +4,7 @@ import org.junit.jupiter.api.DisplayNameGeneration;
 import org.junit.jupiter.api.DisplayNameGenerator;
 import org.junit.jupiter.api.Test;
 import org.springframework.mock.web.MockHttpServletRequest;
-import zipgo.auth.exception.AuthException;
+import zipgo.auth.exception.TokenInvalidException;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
@@ -34,8 +34,8 @@ class BearerTokenExtractorTest {
 
         // expect
         assertThatThrownBy(() -> BearerTokenExtractor.extract(요청))
-                .isInstanceOf(AuthException.class)
-                .hasMessageContaining("사용자 인증이 필요합니다.");
+                .isInstanceOf(TokenInvalidException.class)
+                .hasMessageContaining("잘못된 토큰입니다. 올바른 토큰으로 다시 시도해주세요.");
     }
 
     @Test
@@ -46,8 +46,8 @@ class BearerTokenExtractorTest {
 
         // expect
         assertThatThrownBy(() -> BearerTokenExtractor.extract(요청))
-                .isInstanceOf(AuthException.class)
-                .hasMessageContaining("유효하지 않은 인증 형식입니다.");
+                .isInstanceOf(TokenInvalidException.class)
+                .hasMessageContaining("잘못된 토큰입니다. 올바른 토큰으로 다시 시도해주세요.");
     }
 
     @Test
@@ -58,8 +58,8 @@ class BearerTokenExtractorTest {
 
         // expect
         assertThatThrownBy(() -> BearerTokenExtractor.extract(요청))
-                .isInstanceOf(AuthException.class)
-                .hasMessageContaining("유효하지 않은 인증 형식입니다.");
+                .isInstanceOf(TokenInvalidException.class)
+                .hasMessageContaining("잘못된 토큰입니다. 올바른 토큰으로 다시 시도해주세요.");
     }
 
 }

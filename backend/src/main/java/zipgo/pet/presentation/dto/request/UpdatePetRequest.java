@@ -30,6 +30,7 @@ public record UpdatePetRequest(
         @Min(0)
         Double weight
 ) {
+
     public PetDto toDto() {
         return new PetDto(name, gender, imageUrl, age, breed, petSize, weight);
     }

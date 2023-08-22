@@ -6,7 +6,7 @@
         </layout>
     </appender>
 
-    <property name="LOG_PATH" value="./logs" />
+    <property name="LOG_PATH" value="./logs"/>
 
     <turboFilter class="ch.qos.logback.classic.turbo.MarkerFilter">
         <Marker>LOG4JDBC_NON_STATEMENT</Marker>
@@ -14,9 +14,9 @@
         <OnMismatch>NEUTRAL</OnMismatch>
     </turboFilter>
 
-    <include resource="info-appender.xml" />
-    <include resource="warn-appender.xml" />
-    <include resource="error-appender.xml" />
+    <include resource="info-appender.xml"/>
+    <include resource="warn-appender.xml"/>
+    <include resource="error-appender.xml"/>
 
     <logger name="jdbc.sqltiming" level="INFO"/>
 

@@ -10,7 +10,7 @@ import zipgo.brand.domain.fixture.BrandFixture;
 import zipgo.brand.domain.repository.BrandRepository;
 import zipgo.common.repository.RepositoryTest;
 import zipgo.petfood.domain.PetFood;
-import zipgo.petfood.exception.PetFoodException;
+import zipgo.petfood.exception.PetFoodNotFoundException;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
@@ -61,7 +61,7 @@ class PetFoodRepositoryTest extends RepositoryTest {
     void 존재하지_않는_아이디로_조회하면_예외가_발생한다(Long 존재하지_않는_아이디) {
         //when, then
         assertThatThrownBy(() -> petFoodRepository.getById(존재하지_않는_아이디))
-                .isInstanceOf(PetFoodException.NotFound.class);
+                .isInstanceOf(PetFoodNotFoundException.class);
 
     }
 

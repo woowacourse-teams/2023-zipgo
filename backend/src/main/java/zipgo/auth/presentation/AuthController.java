@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import zipgo.auth.application.AuthService;
-import zipgo.auth.presentation.dto.AuthDto;
+import zipgo.auth.presentation.dto.AuthCredentials;
 import zipgo.auth.presentation.dto.AuthResponse;
 import zipgo.auth.presentation.dto.TokenResponse;
 import zipgo.auth.support.JwtProvider;
@@ -33,8 +33,8 @@ public class AuthController {
     }
 
     @GetMapping
-    public ResponseEntity<AuthResponse> getMemberDetail(@Auth AuthDto authDto) {
-        Member member = memberQueryService.findById(authDto.id());
+    public ResponseEntity<AuthResponse> getMemberDetail(@Auth AuthCredentials authCredentials) {
+        Member member = memberQueryService.findById(authCredentials.id());
         return ResponseEntity.ok(AuthResponse.from(member));
     }
 

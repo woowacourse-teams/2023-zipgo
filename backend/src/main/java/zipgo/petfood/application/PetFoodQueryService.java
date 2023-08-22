@@ -12,7 +12,7 @@ import zipgo.petfood.domain.PrimaryIngredient;
 import zipgo.petfood.domain.repository.FunctionalityRepository;
 import zipgo.petfood.domain.repository.PetFoodRepository;
 import zipgo.petfood.domain.repository.PrimaryIngredientRepository;
-import zipgo.petfood.infra.persist.PetFoodQueryRepository;
+import zipgo.petfood.infra.persist.PetFoodQueryRepositoryImpl;
 import zipgo.petfood.presentation.dto.FilterRequest;
 import zipgo.petfood.presentation.dto.FilterResponse;
 import zipgo.petfood.presentation.dto.GetPetFoodResponse;
@@ -24,7 +24,7 @@ import zipgo.petfood.presentation.dto.GetPetFoodResponse;
 public class PetFoodQueryService {
 
     private final PetFoodRepository petFoodRepository;
-    private final PetFoodQueryRepository petFoodQueryRepository;
+    private final PetFoodQueryRepositoryImpl petFoodQueryRepository;
     private final BrandRepository brandRepository;
     private final FunctionalityRepository functionalityRepository;
     private final PrimaryIngredientRepository primaryIngredientRepository;

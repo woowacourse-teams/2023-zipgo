@@ -7,7 +7,7 @@ import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import zipgo.pet.application.dto.PetDto;
 
-public record CreatePetRequest (
+public record CreatePetRequest(
         @NotBlank(message = "Null 또는 공백이 포함될 수 없습니다. 올바른 값인지 확인해주세요.")
         String name,
 
@@ -32,8 +32,8 @@ public record CreatePetRequest (
         Double weight
 ) {
 
-        public PetDto toDto() {
-                return new PetDto(name, gender, imageUrl, age, breed, petSize, weight);
-        }
+    public PetDto toDto() {
+        return new PetDto(name, gender, imageUrl, age, breed, petSize, weight);
+    }
 
 }

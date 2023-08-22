@@ -1,6 +1,6 @@
 package zipgo.image.presentaion.dto;
 
-public record ImageResponse (
+public record ImageResponse(
         String imageUrl
 ) {
 

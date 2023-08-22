@@ -46,7 +46,7 @@ class PetFoodQueryRepositoryTest {
     private PetFoodRepository petFoodRepository;
 
     @Autowired
-    private PetFoodQueryRepository petFoodQueryRepository;
+    private PetFoodQueryRepositoryImpl petFoodQueryRepository;
 
     @Autowired
     private BrandRepository brandRepository;
