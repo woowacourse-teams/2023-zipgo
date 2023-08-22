@@ -2,6 +2,7 @@ package zipgo.review.application;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
+import zipgo.review.exception.SortByNotFoundException;
 
 @Getter
 @AllArgsConstructor
@@ -21,7 +22,7 @@ public enum SortBy {
                 return sortBy;
             }
         }
-        throw new IllegalArgumentException("SortBy에 해당하는 id가 없습니다.");
+        throw new SortByNotFoundException();
     }
 
 }
