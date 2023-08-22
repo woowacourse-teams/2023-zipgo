@@ -4,6 +4,8 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
 import zipgo.review.application.SortBy;
+import zipgo.review.exception.NoPetFoodIdException;
+import zipgo.review.exception.NonPositiveSizeException;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThatThrownBy;
 
@@ -19,7 +21,7 @@ class FindReviewsFilterRequestTest {
                         .lastReviewId(null)
                         .sortBy(null)
                         .build())
-                .isInstanceOf(IllegalArgumentException.class);
+                .isInstanceOf(NoPetFoodIdException.class);
     }
 
     @ParameterizedTest
@@ -34,7 +36,7 @@ class FindReviewsFilterRequestTest {
                         .lastReviewId(null)
                         .sortBy(SortBy.RECENT)
                         .build())
-                .isInstanceOf(IllegalArgumentException.class);
+                .isInstanceOf(NonPositiveSizeException.class);
     }
 
 }
