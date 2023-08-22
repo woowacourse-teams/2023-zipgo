@@ -2,6 +2,7 @@ package zipgo.auth.presentation;
 
 import com.epages.restdocs.apispec.MockMvcRestDocumentationWrapper;
 import com.epages.restdocs.apispec.Schema;
+import java.util.List;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayNameGeneration;
 import org.junit.jupiter.api.DisplayNameGenerator;
@@ -13,12 +14,15 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.restdocs.RestDocumentationContextProvider;
 import org.springframework.restdocs.RestDocumentationExtension;
 import org.springframework.restdocs.mockmvc.RestDocumentationResultHandler;
+import org.springframework.restdocs.payload.JsonFieldType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.method.support.HandlerMethodArgumentResolver;
 import org.springframework.web.servlet.mvc.method.annotation.ExceptionHandlerExceptionResolver;
 import zipgo.auth.presentation.dto.AuthCredentials;
 import zipgo.member.application.MemberQueryService;
+import zipgo.pet.application.PetQueryService;
+import zipgo.pet.domain.fixture.PetFixture;
 
 import static com.epages.restdocs.apispec.RestAssuredRestDocumentationWrapper.resourceDetails;
 import static org.mockito.ArgumentMatchers.any;
@@ -33,6 +37,8 @@ import static org.springframework.restdocs.payload.PayloadDocumentation.fieldWit
 import static org.springframework.restdocs.payload.PayloadDocumentation.responseFields;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import static zipgo.member.domain.fixture.MemberFixture.식별자_있는_멤버;
+import static zipgo.pet.domain.fixture.BreedsFixture.*;
+import static zipgo.pet.domain.fixture.PetSizeFixture.*;
 
 
 @SuppressWarnings("NonAsciiCharacters")
@@ -48,6 +54,9 @@ class AuthControllerMockArgumentResolverTest {
 
     @Mock
     private MemberQueryService memberQueryService;
+
+    @Mock
+    private PetQueryService petQueryService;
 
     @BeforeEach
     void setUp(RestDocumentationContextProvider restDocumentationContextProvider) {
@@ -67,6 +76,8 @@ class AuthControllerMockArgumentResolverTest {
                 .thenReturn(new AuthCredentials(1L));
         when(memberQueryService.findById(1L))
                 .thenReturn(식별자_있는_멤버());
+        when(petQueryService.readMemberPets(1L))
+                .thenReturn(List.of(PetFixture.반려동물_생성(식별자_있는_멤버(), 견종(대형견()))));
 
         // when
         var 요청 = mockMvc.perform(get("/auth")
@@ -89,9 +100,19 @@ class AuthControllerMockArgumentResolverTest {
                         headerWithName(AUTHORIZATION).description("Bearer + accessToken")
                 ),
                 responseFields(
-                        fieldWithPath("name").description("사용자 이름"),
-                        fieldWithPath("profileImgUrl").description("사용자 프로필 사진"),
-                        fieldWithPath("hasPet").description("반려동물 등록 여부")
+                        fieldWithPath("name").description("사용자 이름").type(JsonFieldType.STRING),
+                        fieldWithPath("profileImageUrl").description("사용자 프로필 사진").description("사용자 프로필 사진").type(JsonFieldType.STRING),
+                        fieldWithPath("email").description("사용자 이메일").type(JsonFieldType.STRING),
+                        fieldWithPath("hasPet").description("반려동물 등록 여부").type(JsonFieldType.BOOLEAN),
+                        fieldWithPath("pets[].id").description("사용자 반려동물 식별자"),
+                        fieldWithPath("pets[].name").description("사용자 반려동물 이름").type(JsonFieldType.STRING),
+                        fieldWithPath("pets[].age").description("사용자 반려동물 나이").type(JsonFieldType.NUMBER),
+                        fieldWithPath("pets[].breed").description("사용자 반려동물 견종").type(JsonFieldType.STRING),
+                        fieldWithPath("pets[].breed").description("사용자 반려동물 견종").type(JsonFieldType.STRING),
+                        fieldWithPath("pets[].petSize").description("사용자 반려동물 견종 크기").type(JsonFieldType.STRING),
+                        fieldWithPath("pets[].gender").description("사용자 반려동물 견종 성별").type(JsonFieldType.STRING),
+                        fieldWithPath("pets[].weight").description("사용자 반려동물 견종 몸무게").type(JsonFieldType.NUMBER),
+                        fieldWithPath("pets[].imageUrl").description("사용자 반려동물 견종 사진").type(JsonFieldType.STRING)
                 ));
     }
 
