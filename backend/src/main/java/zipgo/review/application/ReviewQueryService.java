@@ -24,7 +24,6 @@ import zipgo.review.domain.repository.dto.FindReviewsQueryResponse;
 import zipgo.review.domain.repository.dto.ReviewHelpfulReaction;
 import zipgo.review.domain.type.AdverseReactionType;
 import zipgo.review.domain.type.StoolCondition;
-import zipgo.review.domain.type.TastePreference;
 import zipgo.review.dto.response.GetReviewMetadataResponse;
 import zipgo.review.dto.response.GetReviewMetadataResponse.Metadata;
 import zipgo.review.dto.response.GetReviewsResponse;
@@ -112,63 +111,29 @@ public class ReviewQueryService {
                 .toList();
     }
 
+    // rating(평균 별점)
+    // 1점~5점까지 각 점수별 평균 별점 %
+    // 1점~5점까지 각 점수별 평균 입맛 %
+    // 1점~5점까지 각 점수별 평균 똥 %
+    // 1점~5점까지 각 점수별 평균 이상 반응 %
     public GetReviewsSummaryResponse getReviewsSummary(Long petFoodId) {
         PetFood petFood = petFoodQueryRepository.findPetFoodWithReviewsByPetFoodId(petFoodId);
         List<Review> reviews = petFood.getReviews().getReviews();
 
         int reviewSize = reviews.size();
 
-        List<SummaryElement> ratingSummary = summarizeRating(reviews, reviewSize);
-        RatingSummaryElement rating = new RatingSummaryElement(petFood.calculateRatingAverage(), ratingSummary);
-        List<SummaryElement> tastePreference = summarizeTastePreference(reviews, reviewSize);
+        RatingSummaryElement ratingSummary = getSummarizeRating(petFoodId);
+//        List<SummaryElement> tastePreference = reviewQueryRepository.getReviewTastesAverageDistribution(petFoodId);
         List<SummaryElement> stoolCondition = summarizeStoolCondition(reviews, reviewSize);
         List<SummaryElement> adverseReaction = summarizeAdverseReaction(reviews);
 
-        return GetReviewsSummaryResponse.of(rating, tastePreference, stoolCondition, adverseReaction);
+        return GetReviewsSummaryResponse.of(ratingSummary, tastePreference, stoolCondition, adverseReaction);
     }
 
-    private List<SummaryElement> summarizeRating(List<Review> reviews, int reviewSize) {
-        //TODO 5, 4, 3, 2, 1 하드 코딩을 없애기 위해 Rating을 Enum으로 리팩터링 할 예정
-        //TODO 많은 컨플릭트 예상으로 로지꺼 머지 되면 따로 리팩터링 할 예정
-        List<SummaryElement> rating = new ArrayList<>();
-        Map<Integer, List<Review>> groupByRating = reviews.stream()
-                .collect(Collectors.groupingBy(Review::getRating));
-
-        rating.add(new SummaryElement("5", getZeroOrCalculateRankPercent(5, groupByRating, reviewSize)));
-        rating.add(new SummaryElement("4", getZeroOrCalculateRankPercent(4, groupByRating, reviewSize)));
-        rating.add(new SummaryElement("3", getZeroOrCalculateRankPercent(3, groupByRating, reviewSize)));
-        rating.add(new SummaryElement("2", getZeroOrCalculateRankPercent(2, groupByRating, reviewSize)));
-        rating.add(new SummaryElement("1", getZeroOrCalculateRankPercent(1, groupByRating, reviewSize)));
-        return rating;
-    }
-
-    private int getZeroOrCalculateRankPercent(int rank, Map<Integer, List<Review>> groupByRating, int reviewSize) {
-        if (reviewSize == 0) {
-            return 0;
-        }
-        return groupByRating.getOrDefault(rank, new ArrayList<>()).size() * PERCENTAGE / reviewSize;
-    }
-
-    private List<SummaryElement> summarizeTastePreference(List<Review> reviews, int reviewSize) {
-        List<SummaryElement> tastePreference = new ArrayList<>();
-        Map<TastePreference, List<Review>> groupByTastePreference = reviews.stream()
-                .collect(Collectors.groupingBy(Review::getTastePreference));
-
-        TastePreference[] values = TastePreference.values();
-        for (TastePreference value : values) {
-            tastePreference.add(new SummaryElement(value.getDescription(),
-                    getZeroOrTastePreferencePercentage(reviewSize, groupByTastePreference, value)));
-        }
-        return tastePreference;
-    }
-
-    private int getZeroOrTastePreferencePercentage(int reviewSize,
-                                                   Map<TastePreference, List<Review>> groupByTastePreference,
-                                                   TastePreference value) {
-        if (reviewSize == 0) {
-            return 0;
-        }
-        return groupByTastePreference.getOrDefault(value, new ArrayList<>()).size() * PERCENTAGE / reviewSize;
+    private RatingSummaryElement getSummarizeRating(Long petFoodId) {
+        double reviewsAverageRating = reviewQueryRepository.getReviewsAverageRating(petFoodId);
+        List<SummaryElement> summaryElements = reviewQueryRepository.getReviewRatingsAverageDistribution(petFoodId);
+        return new RatingSummaryElement(reviewsAverageRating, summaryElements);
     }
 
     private List<SummaryElement> summarizeStoolCondition(List<Review> reviews, int reviewSize) {

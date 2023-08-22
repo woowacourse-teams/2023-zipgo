@@ -1,4 +1,4 @@
-package zipgo.review.domain.repository;
+package zipgo.review.infra.persist;
 
 import java.time.LocalDateTime;
 import java.time.Year;
@@ -6,6 +6,8 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Random;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,14 +33,18 @@ import zipgo.petfood.domain.repository.PetFoodRepository;
 import zipgo.review.application.SortBy;
 import zipgo.review.domain.HelpfulReaction;
 import zipgo.review.domain.Review;
+import zipgo.review.domain.repository.ReviewQueryRepository;
+import zipgo.review.domain.repository.ReviewRepository;
 import zipgo.review.domain.repository.dto.FindReviewsFilterRequest;
 import zipgo.review.domain.repository.dto.FindReviewsQueryResponse;
 import zipgo.review.domain.repository.dto.ReviewHelpfulReaction;
 import zipgo.review.domain.type.AdverseReactionType;
+import zipgo.review.dto.response.SummaryElement;
 
 import static java.util.Collections.emptyList;
 import static java.util.Collections.reverseOrder;
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.*;
 import static zipgo.pet.domain.AgeGroup.PUPPY;
 import static zipgo.pet.domain.fixture.BreedsFixture.견종;
 import static zipgo.pet.domain.fixture.PetFixture.반려동물;
@@ -594,6 +600,66 @@ class ReviewQueryRepositoryImplTest {
             }
             return 도움이_돼요_누른_리뷰.stream().map(Review::getId).toList();
         }
+
+    }
+
+    @Nested
+    class 리뷰_정보_요약_조회 {
+
+        @Nested
+        class 별점_정보_요약_조회 {
+            @Test
+            void 리뷰_평균_별점을_조회한다() {
+                // given
+                PetFood 식품 = 식품_만들기();
+                리뷰_여러개_생성(식품);
+
+                // when
+                double reviewsAverageRating = reviewQueryRepository.getReviewsAverageRating(식품.getId());
+
+                // then
+                assertThat(reviewsAverageRating).isEqualTo(5.0);
+            }
+
+            @Test
+            void 리뷰_평균_별점_분포도를_조회한다() {
+                // given
+                PetFood 식품 = 식품_만들기();
+                리뷰_여러개_생성(식품);
+
+                // when
+                List<SummaryElement> reviewsAverageDistribution = reviewQueryRepository.getReviewRatingsAverageDistribution(식품.getId());
+
+                // then
+                assertAll(
+                        () -> assertThat(reviewsAverageDistribution).extracting(SummaryElement::name)
+                                .contains("1", "2", "3", "4", "5"),
+                        () -> assertThat(reviewsAverageDistribution).extracting(SummaryElement::percentage)
+                                .contains(0, 100)
+                );
+            }
+        }
+
+//        @Nested
+//        class 리뷰_평균_입맛_조회 {
+//            @Test
+//            void 리뷰_평균_입맛_분포도를_조회한다() {
+//                // given
+//                PetFood 식품 = 식품_만들기();
+//                리뷰_여러개_생성(식품);
+//
+//                // when
+//                List<SummaryElement> reviewTastesAverageDistribution = reviewQueryRepository.getReviewTastesAverageDistribution(식품.getId());
+//
+//                // then
+//                assertAll(
+//                        () -> assertThat(reviewTastesAverageDistribution).extracting(SummaryElement::name)
+//                                .contains("정말 잘 먹어요", "잘 먹는 편이에요", "잘 안 먹어요", "전혀 안 먹어요"),
+//                        () -> assertThat(reviewTastesAverageDistribution).extracting(SummaryElement::percentage)
+//                                .contains(0, 100)
+//                );
+//            }
+//        }
 
     }
 
