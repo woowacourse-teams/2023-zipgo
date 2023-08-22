@@ -7,13 +7,15 @@ import zipgo.pet.domain.Breeds;
 import zipgo.pet.domain.Gender;
 import zipgo.pet.domain.Pet;
 
+import static zipgo.member.domain.fixture.MemberFixture.*;
+
 public class PetFixture {
 
     public static Pet 반려동물_생성() {
         return Pet.builder()
                 .name("첵스네강아지")
                 .imageUrl("https://image.zipgo.pet/dev/pet-image/dog_icon.svg")
-                .owner(MemberFixture.식별자_있는_멤버())
+                .owner(식별자_없는_멤버())
                 .gender(Gender.MALE)
                 .birthYear(Year.of(2019))
                 .breeds(BreedsFixture.견종(PetSizeFixture.대형견()))
