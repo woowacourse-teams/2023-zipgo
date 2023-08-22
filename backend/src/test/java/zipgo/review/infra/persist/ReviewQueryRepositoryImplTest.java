@@ -6,8 +6,6 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Random;
-import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -44,7 +42,7 @@ import zipgo.review.dto.response.SummaryElement;
 import static java.util.Collections.emptyList;
 import static java.util.Collections.reverseOrder;
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertAll;
 import static zipgo.pet.domain.AgeGroup.PUPPY;
 import static zipgo.pet.domain.fixture.BreedsFixture.견종;
 import static zipgo.pet.domain.fixture.PetFixture.반려동물;
@@ -606,102 +604,108 @@ class ReviewQueryRepositoryImplTest {
     @Nested
     class 리뷰_정보_요약_조회 {
 
-        @Nested
-        class 별점_정보_요약_조회 {
-            @Test
-            void 리뷰_평균_별점을_조회한다() {
-                // given
-                PetFood 식품 = 식품_만들기();
-                리뷰_여러개_생성(식품);
+        @Test
+        void 리뷰_평균_별점을_조회한다() {
+            // given
+            PetFood 식품 = 식품_만들기();
+            리뷰_여러개_생성(식품);
 
-                // when
-                double reviewsAverageRating = reviewQueryRepository.getReviewsAverageRating(식품.getId());
+            // when
+            double reviewsAverageRating = reviewQueryRepository.getReviewsAverageRating(식품.getId());
 
-                // then
-                assertThat(reviewsAverageRating).isEqualTo(5.0);
-            }
-
-            @Test
-            void 리뷰_평균_별점_분포도를_조회한다() {
-                // given
-                PetFood 식품 = 식품_만들기();
-                리뷰_여러개_생성(식품);
-
-                // when
-                List<SummaryElement> reviewsAverageDistribution = reviewQueryRepository.getReviewRatingsAverageDistribution(식품.getId());
-
-                // then
-                assertAll(
-                        () -> assertThat(reviewsAverageDistribution).extracting(SummaryElement::name)
-                                .contains("1", "2", "3", "4", "5"),
-                        () -> assertThat(reviewsAverageDistribution).extracting(SummaryElement::percentage)
-                                .contains(0, 100)
-                );
-            }
+            // then
+            assertThat(reviewsAverageRating).isEqualTo(5.0);
         }
 
-        @Nested
-        class 리뷰_평균_입맛_조회 {
-            @Test
-            void 리뷰_평균_입맛_분포도를_조회한다() {
-                // given
-                PetFood 식품 = 식품_만들기();
-                리뷰_여러개_생성(식품);
+        @Test
+        void 리뷰_평균_별점_분포도를_조회한다() {
+            // given
+            PetFood 식품 = 식품_만들기();
+            리뷰_여러개_생성(식품);
 
-                // when
-                List<SummaryElement> reviewTastesAverageDistribution = reviewQueryRepository.getReviewTastesAverageDistribution(식품.getId());
+            // when
+            List<SummaryElement> reviewsAverageDistribution = reviewQueryRepository.getReviewRatingsAverageDistribution(
+                    식품.getId());
 
-                // then
-                assertAll(
-                        () -> assertThat(reviewTastesAverageDistribution).extracting(SummaryElement::name)
-                                .contains("정말 잘 먹어요", "잘 먹는 편이에요", "잘 안 먹어요", "전혀 안 먹어요"),
-                        () -> assertThat(reviewTastesAverageDistribution).extracting(SummaryElement::percentage)
-                                .contains(0, 100)
-                );
-            }
+            // then
+            assertAll(
+                    () -> assertThat(reviewsAverageDistribution).extracting(SummaryElement::name)
+                            .contains("1", "2", "3", "4", "5"),
+                    () -> assertThat(reviewsAverageDistribution).extracting(SummaryElement::percentage)
+                            .contains(0, 100)
+            );
         }
 
-        @Nested
-        class 리뷰_평균_대변_상태_조회 {
-            @Test
-            void 리뷰_평균_입맛_분포도를_조회한다() {
-                // given
-                PetFood 식품 = 식품_만들기();
-                리뷰_여러개_생성(식품);
+    }
 
-                // when
-                List<SummaryElement> reviewTastesAverageDistribution = reviewQueryRepository.getReviewStoolConditionAverageDistribution(식품.getId());
+    @Nested
+    class 리뷰_평균_입맛_조회 {
 
-                // then
-                assertAll(
-                        () -> assertThat(reviewTastesAverageDistribution).extracting(SummaryElement::name)
-                                .contains("촉촉 말랑해요", "설사를 해요", "딱딱해요", "잘 모르겠어요"),
-                        () -> assertThat(reviewTastesAverageDistribution).extracting(SummaryElement::percentage)
-                                .contains(0, 100)
-                );
-            }
+        @Test
+        void 리뷰_평균_입맛_분포도를_조회한다() {
+            // given
+            PetFood 식품 = 식품_만들기();
+            리뷰_여러개_생성(식품);
+
+            // when
+            List<SummaryElement> reviewTastesAverageDistribution = reviewQueryRepository.getReviewTastesAverageDistribution(
+                    식품.getId());
+
+            // then
+            assertAll(
+                    () -> assertThat(reviewTastesAverageDistribution).extracting(SummaryElement::name)
+                            .contains("정말 잘 먹어요", "잘 먹는 편이에요", "잘 안 먹어요", "전혀 안 먹어요"),
+                    () -> assertThat(reviewTastesAverageDistribution).extracting(SummaryElement::percentage)
+                            .contains(0, 100)
+            );
         }
 
-        @Nested
-        class 리뷰_평균_이상반응_조회 {
+    }
 
-            @Test
-            void 리뷰_평균_이상반응_분포도를_조회한다() {
-                // given
-                PetFood 식품 = 식품_만들기();
-                리뷰_여러개_생성(식품);
+    @Nested
+    class 리뷰_평균_대변_상태_조회 {
 
-                // when
-                List<SummaryElement> reviewAdverseReactionAverageDistribution = reviewQueryRepository.getReviewAdverseReactionAverageDistribution(식품.getId());
+        @Test
+        void 리뷰_평균_입맛_분포도를_조회한다() {
+            // given
+            PetFood 식품 = 식품_만들기();
+            리뷰_여러개_생성(식품);
 
-                // then
-                assertAll(
-                        () -> assertThat(reviewAdverseReactionAverageDistribution).extracting(SummaryElement::name)
-                                .contains("털이 푸석해요", "먹고 토해요", "눈물이 나요", "몸을 긁어요", "발을 핥아요", "없어요"),
-                        () -> assertThat(reviewAdverseReactionAverageDistribution).extracting(SummaryElement::percentage)
-                                .contains(0, 100)
-                );
-            }
+            // when
+            List<SummaryElement> reviewTastesAverageDistribution = reviewQueryRepository.getReviewStoolConditionAverageDistribution(
+                    식품.getId());
+
+            // then
+            assertAll(
+                    () -> assertThat(reviewTastesAverageDistribution).extracting(SummaryElement::name)
+                            .contains("촉촉 말랑해요", "설사를 해요", "딱딱해요", "잘 모르겠어요"),
+                    () -> assertThat(reviewTastesAverageDistribution).extracting(SummaryElement::percentage)
+                            .contains(0, 100)
+            );
+        }
+
+    }
+
+    @Nested
+    class 리뷰_평균_이상반응_조회 {
+
+        @Test
+        void 리뷰_평균_이상반응_분포도를_조회한다() {
+            // given
+            PetFood 식품 = 식품_만들기();
+            리뷰_여러개_생성(식품);
+
+            // when
+            List<SummaryElement> reviewAdverseReactionAverageDistribution = reviewQueryRepository.getReviewAdverseReactionAverageDistribution(
+                    식품.getId());
+
+            // then
+            assertAll(
+                    () -> assertThat(reviewAdverseReactionAverageDistribution).extracting(SummaryElement::name)
+                            .contains("털이 푸석해요", "먹고 토해요", "눈물이 나요", "몸을 긁어요", "발을 핥아요", "없어요"),
+                    () -> assertThat(reviewAdverseReactionAverageDistribution).extracting(SummaryElement::percentage)
+                            .contains(0, 100)
+            );
         }
 
     }

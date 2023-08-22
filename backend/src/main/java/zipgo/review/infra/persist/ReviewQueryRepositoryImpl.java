@@ -152,7 +152,6 @@ public class ReviewQueryRepositoryImpl implements ReviewQueryRepository {
 
     @Override
     public List<ReviewHelpfulReaction> findReviewWithHelpfulReactions(List<Long> reviewIds, Long memberId) {
-
         List<Long> reviewIdsReactedByMember = findReviewIdsReactedBy(reviewIds, memberId);
         List<Tuple> reviewIdToReactionCount = queryFactory
                 .select(review.id, review.helpfulReactions.size())
