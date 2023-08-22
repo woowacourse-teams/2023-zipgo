@@ -1,29 +1,22 @@
 package zipgo.review.application;
 
-import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 import java.util.function.Function;
-import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import zipgo.pet.domain.AgeGroup;
 import zipgo.pet.domain.repository.BreedsRepository;
 import zipgo.pet.domain.repository.PetSizeRepository;
-import zipgo.petfood.domain.PetFood;
 import zipgo.petfood.domain.repository.PetFoodQueryRepository;
-import zipgo.review.domain.AdverseReaction;
 import zipgo.review.domain.Review;
 import zipgo.review.domain.repository.ReviewQueryRepository;
 import zipgo.review.domain.repository.ReviewRepository;
 import zipgo.review.domain.repository.dto.FindReviewsFilterRequest;
 import zipgo.review.domain.repository.dto.FindReviewsQueryResponse;
 import zipgo.review.domain.repository.dto.ReviewHelpfulReaction;
-import zipgo.review.domain.type.AdverseReactionType;
-import zipgo.review.domain.type.StoolCondition;
 import zipgo.review.dto.response.GetReviewMetadataResponse;
 import zipgo.review.dto.response.GetReviewMetadataResponse.Metadata;
 import zipgo.review.dto.response.GetReviewsResponse;
@@ -114,8 +107,10 @@ public class ReviewQueryService {
     public GetReviewsSummaryResponse getReviewsSummary(Long petFoodId) {
         RatingSummaryElement ratingSummary = getSummarizeRating(petFoodId);
         List<SummaryElement> tastePreference = reviewQueryRepository.getReviewTastesAverageDistribution(petFoodId);
-        List<SummaryElement> stoolCondition = reviewQueryRepository.getReviewStoolConditionAverageDistribution(petFoodId);
-        List<SummaryElement> adverseReaction = reviewQueryRepository.getReviewAdverseReactionAverageDistribution(petFoodId);
+        List<SummaryElement> stoolCondition = reviewQueryRepository.getReviewStoolConditionAverageDistribution(
+                petFoodId);
+        List<SummaryElement> adverseReaction = reviewQueryRepository.getReviewAdverseReactionAverageDistribution(
+                petFoodId);
         return GetReviewsSummaryResponse.of(ratingSummary, tastePreference, stoolCondition, adverseReaction);
     }
 
