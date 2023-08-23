@@ -80,6 +80,7 @@ export const usePetProfileValidation = () => {
     const petAge = Number(e.target.value);
 
     if (isValidAgeRange(petAge)) {
+      setIsValidAgeSelect(true);
       setIsValidWeightInput(true);
       return true;
     }

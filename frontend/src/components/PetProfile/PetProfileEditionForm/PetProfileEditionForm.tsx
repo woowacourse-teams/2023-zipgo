@@ -1,15 +1,11 @@
-import { ChangeEvent, useEffect, useState } from 'react';
+import { ChangeEvent, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { styled } from 'styled-components';
 
-import BackBtnIcon from '@/assets/svg/back_btn.svg';
 import EditIconLight from '@/assets/svg/edit_icon_light.svg';
 import TrashCanIcon from '@/assets/svg/trash_can_icon.svg';
 import Input from '@/components/@common/Input/Input';
 import Label from '@/components/@common/Label/Label';
-import Template from '@/components/@common/Template';
-import PetAgeSelect from '@/components/PetProfile/PetAgeSelect';
-import PetInfoInForm from '@/components/PetProfile/PetInfoInForm';
 import { PET_SIZES } from '@/constants/petProfile';
 import { usePetProfile } from '@/context/petProfile/PetProfileContext';
 import { useValidParams } from '@/hooks/@common/useValidParams';
@@ -19,13 +15,17 @@ import {
   usePetItemQuery,
   useRemovePetMutation,
 } from '@/hooks/query/petProfile';
-import { PATH, routerPath } from '@/router/routes';
+import { PATH } from '@/router/routes';
 import { PetSize } from '@/types/petProfile/client';
 
-const PetProfileEditionContent = () => {
+import PetAgeSelect from '../PetAgeSelect';
+import PetInfoInForm from '../PetInfoInForm';
+
+const PetProfileEditionForm = () => {
   const navigate = useNavigate();
   const { petId } = useValidParams(['petId']);
   const { petItem, resetPetItemQuery } = usePetItemQuery({ petId: Number(petId) });
+  const { editPetMutation } = useEditPetMutation();
   const { removePetMutation } = useRemovePetMutation();
   const { updatePetProfile, resetPetProfile } = usePetProfile();
   const {
@@ -43,8 +43,6 @@ const PetProfileEditionContent = () => {
   const [petWeight, setPetWeight] = useState<string>(String(petItem?.weight));
   const [petSize, setPetSize] = useState(petItem?.petSize);
   const [petImageUrl, setPetImageUrl] = useState(petItem?.imageUrl);
-
-  const { editPetMutation } = useEditPetMutation();
 
   const onClickRemoveButton = (petId: number) => {
     confirm('정말 삭제하시겠어요?') &&
@@ -113,15 +111,8 @@ const PetProfileEditionContent = () => {
     alert('올바른 정보를 입력해주세요!');
   };
 
-  const goBack = (): void => navigate(routerPath.back);
-
   return (
-    <Template.WithoutHeader footer={false}>
-      <StaticHeader>
-        <BackButtonWrapper type="button" onClick={goBack} aria-label="뒤로가기">
-          <BackBtnImage src={BackBtnIcon} alt="뒤로가기 아이콘" />
-        </BackButtonWrapper>
-      </StaticHeader>
+    <div>
       {petItem && (
         <>
           <FormContainer>
@@ -144,16 +135,17 @@ const PetProfileEditionContent = () => {
                 design="underline"
                 fontSize="1.3rem"
               />
-              {!isValidNameInput && (
-                <ErrorCaption>
-                  아이의 이름은 1~10글자 사이의 한글, 영어, 숫자만 입력 가능합니다.
-                </ErrorCaption>
-              )}
+
+              <ErrorCaption>
+                {isValidNameInput
+                  ? ''
+                  : '아이의 이름은 1~10글자 사이의 한글, 영어, 숫자만 입력 가능합니다.'}
+              </ErrorCaption>
             </div>
             <div>
               <InputLabel htmlFor="pet-age">나이 선택</InputLabel>
               <PetAgeSelect id="pet-age" onChange={onChangeAge} initialAge={Number(petAge)} />
-              {!isValidAgeSelect && <ErrorCaption>나이를 선택해주세요!</ErrorCaption>}
+              <ErrorCaption>{isValidAgeSelect ? '' : '나이를 선택해주세요!'} </ErrorCaption>
             </div>
             <div>
               <InputLabel htmlFor="pet-weight">몸무게 입력</InputLabel>
@@ -174,11 +166,11 @@ const PetProfileEditionContent = () => {
                 />
                 <Kg>kg</Kg>
               </WeightInputContainer>
-              {!isValidWeightInput && (
-                <ErrorCaption>
-                  몸무게는 0kg초과, 100kg이하 소수점 첫째짜리까지 입력이 가능합니다.
-                </ErrorCaption>
-              )}
+              <ErrorCaption>
+                {isValidWeightInput
+                  ? ''
+                  : '몸무게는 0kg초과, 100kg이하 소수점 첫째짜리까지 입력이 가능합니다.'}
+              </ErrorCaption>
             </div>
             {isMixedBreed(petItem.breed) && (
               <div>
@@ -197,7 +189,6 @@ const PetProfileEditionContent = () => {
               </div>
             )}
           </FormContainer>
-          <ContentLayout />
 
           <ButtonContainer>
             <BasicButton type="button" $isEditButton onClick={onSubmit}>
@@ -217,21 +208,11 @@ const PetProfileEditionContent = () => {
           </ButtonContainer>
         </>
       )}
-    </Template.WithoutHeader>
+    </div>
   );
 };
 
-export default PetProfileEditionContent;
-
-const StaticHeader = styled.header`
-  display: flex;
-  align-items: center;
-  justify-content: center;
-
-  width: 100%;
-  height: 4rem;
-  padding: 2.8rem;
-`;
+export default PetProfileEditionForm;
 
 const FormContainer = styled.form`
   display: flex;
@@ -243,35 +224,6 @@ const FormContainer = styled.form`
 
 const PetInfoWrapper = styled.div`
   margin-bottom: 2rem;
-`;
-
-const BackButtonWrapper = styled.button`
-  cursor: pointer;
-
-  position: absolute;
-  top: 2rem;
-  left: 0.8rem;
-
-  display: flex;
-  align-items: center;
-  justify-content: center;
-
-  width: 4rem;
-  height: 4rem;
-
-  background-color: transparent;
-  border: none;
-`;
-
-const BackBtnImage = styled.img`
-  width: 3.2rem;
-  height: 3.2rem;
-
-  object-fit: cover;
-`;
-
-const ContentLayout = styled.div`
-  margin: 0 2rem;
 `;
 
 const InputLabel = styled.label`
@@ -287,6 +239,7 @@ const InputLabel = styled.label`
 `;
 
 const ErrorCaption = styled.p`
+  min-height: 1.7rem;
   margin-top: 1rem;
 
   font-size: 1.3rem;
