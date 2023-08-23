@@ -4,7 +4,7 @@ import { styled } from 'styled-components';
 
 import PetAgeSelect from '@/components/PetProfile/PetAgeSelect';
 import { PET_PROFILE_ADDITION_STEP } from '@/constants/petProfile';
-import { usePetProfileAddition } from '@/hooks/petProfile';
+import { usePetProfileAddition } from '@/hooks/petProfile/usePetProfileAddition';
 import { PetAdditionOutletContextProps } from '@/types/petProfile/client';
 
 const PetProfileAgeAddition = () => {

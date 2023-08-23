@@ -4,7 +4,7 @@ import { styled } from 'styled-components';
 
 import Label from '@/components/@common/Label/Label';
 import { PET_PROFILE_ADDITION_STEP, PET_SIZES } from '@/constants/petProfile';
-import { usePetProfileAddition } from '@/hooks/petProfile';
+import { usePetProfileAddition } from '@/hooks/petProfile/usePetProfileAddition';
 import { PetAdditionOutletContextProps } from '@/types/petProfile/client';
 
 const PetProfilePetSizeAddition = () => {

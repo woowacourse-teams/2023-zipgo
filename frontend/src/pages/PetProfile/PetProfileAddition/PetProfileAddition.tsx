@@ -4,7 +4,7 @@ import { styled } from 'styled-components';
 import BackBtnIcon from '@/assets/svg/back_btn.svg';
 import Button from '@/components/@common/Button/Button';
 import Template from '@/components/@common/Template';
-import { usePetProfileStep } from '@/hooks/petProfile';
+import { usePetProfileStep } from '@/hooks/petProfile/usePetProfileStep';
 
 const PetProfileAddition = () => {
   const {

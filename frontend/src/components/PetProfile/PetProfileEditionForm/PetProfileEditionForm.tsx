@@ -9,7 +9,7 @@ import Label from '@/components/@common/Label/Label';
 import { PET_SIZES } from '@/constants/petProfile';
 import { usePetProfile } from '@/context/petProfile/PetProfileContext';
 import { useValidParams } from '@/hooks/@common/useValidParams';
-import { usePetProfileValidation } from '@/hooks/petProfile';
+import { usePetProfileValidation } from '@/hooks/petProfile/usePetProfileValidation';
 import {
   useEditPetMutation,
   usePetItemQuery,
