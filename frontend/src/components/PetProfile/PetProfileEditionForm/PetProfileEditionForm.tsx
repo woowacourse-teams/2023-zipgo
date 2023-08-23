@@ -1,5 +1,3 @@
-import { ChangeEvent, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
 import { styled } from 'styled-components';
 
 import EditIconLight from '@/assets/svg/edit_icon_light.svg';
@@ -7,124 +5,46 @@ import TrashCanIcon from '@/assets/svg/trash_can_icon.svg';
 import Input from '@/components/@common/Input/Input';
 import Label from '@/components/@common/Label/Label';
 import { PET_SIZES } from '@/constants/petProfile';
-import { usePetProfile } from '@/context/petProfile/PetProfileContext';
-import { useValidParams } from '@/hooks/@common/useValidParams';
+import { usePetProfileEdition } from '@/hooks/petProfile/usePetProfileEdition';
 import { usePetProfileValidation } from '@/hooks/petProfile/usePetProfileValidation';
-import {
-  useEditPetMutation,
-  usePetItemQuery,
-  useRemovePetMutation,
-} from '@/hooks/query/petProfile';
-import { PATH } from '@/router/routes';
-import { PetSize } from '@/types/petProfile/client';
 
 import PetAgeSelect from '../PetAgeSelect';
 import PetInfoInForm from '../PetInfoInForm';
 
 const PetProfileEditionForm = () => {
-  const navigate = useNavigate();
-  const { petId } = useValidParams(['petId']);
-  const { petItem, resetPetItemQuery } = usePetItemQuery({ petId: Number(petId) });
-  const { editPetMutation } = useEditPetMutation();
-  const { removePetMutation } = useRemovePetMutation();
-  const { updatePetProfile, resetPetProfile } = usePetProfile();
+  const { isMixedBreed } = usePetProfileValidation();
   const {
+    pet,
+    isValidForm,
     isValidNameInput,
     isValidAgeSelect,
     isValidWeightInput,
-    isMixedBreed,
-    validateName,
-    validateAge,
-    validateWeight,
-  } = usePetProfileValidation();
-
-  const [petName, setPetName] = useState(petItem?.name);
-  const [petAge, setPetAge] = useState<string>(String(petItem?.age));
-  const [petWeight, setPetWeight] = useState<string>(String(petItem?.weight));
-  const [petSize, setPetSize] = useState(petItem?.petSize);
-  const [petImageUrl, setPetImageUrl] = useState(petItem?.imageUrl);
-
-  const onClickRemoveButton = (petId: number) => {
-    confirm('정말 삭제하시겠어요?') &&
-      removePetMutation.removePet({ petId }).then(() => {
-        const userInfo = JSON.parse(localStorage.getItem('userInfo')!);
-
-        localStorage.setItem('userInfo', JSON.stringify({ ...userInfo, hasPet: false }));
-
-        resetPetProfile();
-
-        alert('반려동물 정보를 삭제했습니다.');
-      });
-
-    navigate(PATH.HOME);
-  };
-
-  const onChangeName = (e: ChangeEvent<HTMLInputElement>) => {
-    validateName(e);
-    setPetName(e.target.value);
-  };
-
-  const onChangeAge = (e: ChangeEvent<HTMLSelectElement>) => {
-    if (validateAge(e)) setPetAge(e.target.value);
-  };
-
-  const onChangeWeight = (e: ChangeEvent<HTMLInputElement>) => {
-    validateWeight(e);
-    setPetWeight(e.target.value);
-  };
-
-  const onChangePetSize = (petSize: PetSize) => {
-    setPetSize(petSize);
-  };
-
-  const onChangeImage = (imageUrl: string) => {
-    setPetImageUrl(imageUrl);
-  };
-
-  const onSubmit = () => {
-    if (petItem && isValidNameInput && isValidAgeSelect && isValidWeightInput) {
-      const newPetProfile = {
-        ...petItem,
-        name: petName || petItem.name,
-        age: Number(petAge) || petItem.age,
-        weight: Number(petWeight) || petItem.weight,
-        petSize: petSize || petItem.petSize,
-        imageUrl: petImageUrl || petItem.imageUrl,
-      };
-
-      editPetMutation
-        .editPet(newPetProfile)
-        .then(() => {
-          updatePetProfile(newPetProfile);
-          resetPetItemQuery();
-          alert('반려동물 정보 수정이 완료되었습니다.');
-          navigate(PATH.HOME);
-        })
-        .catch(() => {
-          alert('반려동물 정보 수정에 실패했습니다.');
-          navigate(PATH.HOME);
-        });
-
-      return;
-    }
-
-    alert('올바른 정보를 입력해주세요!');
-  };
+    onChangeName,
+    onChangeAge,
+    onChangeWeight,
+    onChangePetSize,
+    onChangeImage,
+    onSubmitNewPetProfile,
+    onClickRemoveButton,
+  } = usePetProfileEdition();
 
   return (
     <div>
-      {petItem && (
+      {pet && (
         <>
           <FormContainer>
             <PetInfoWrapper>
-              <PetInfoInForm petItem={petItem} onChangeImage={onChangeImage} />
+              <PetInfoInForm
+                petItem={{ ...pet, weight: Number(pet.weight) }}
+                onChangeImage={onChangeImage}
+              />
             </PetInfoWrapper>
 
             <div>
               <InputLabel htmlFor="pet-name">이름 입력</InputLabel>
               <Input
                 id="pet-name"
-                value={petName}
+                value={pet.name}
                 type="text"
                 required
                 minLength={1}
@@ -135,7 +55,6 @@ const PetProfileEditionForm = () => {
                 design="underline"
                 fontSize="1.3rem"
               />
-
               <ErrorCaption>
                 {isValidNameInput
                   ? ''
@@ -144,7 +63,7 @@ const PetProfileEditionForm = () => {
             </div>
             <div>
               <InputLabel htmlFor="pet-age">나이 선택</InputLabel>
-              <PetAgeSelect id="pet-age" onChange={onChangeAge} initialAge={Number(petAge)} />
+              <PetAgeSelect id="pet-age" onChange={onChangeAge} initialAge={pet.age} />
               <ErrorCaption>{isValidAgeSelect ? '' : '나이를 선택해주세요!'} </ErrorCaption>
             </div>
             <div>
@@ -153,7 +72,7 @@ const PetProfileEditionForm = () => {
                 <Input
                   id="pet-weight"
                   type="text"
-                  value={petWeight}
+                  value={pet.weight}
                   required
                   minLength={1}
                   placeholder="예) 7.5"
@@ -172,7 +91,7 @@ const PetProfileEditionForm = () => {
                   : '몸무게는 0kg초과, 100kg이하 소수점 첫째짜리까지 입력이 가능합니다.'}
               </ErrorCaption>
             </div>
-            {isMixedBreed(petItem.breed) && (
+            {isMixedBreed(pet.breed) && (
               <div>
                 <InputLabel htmlFor="pet-size">크기 선택</InputLabel>
                 <PetSizeContainer role="radiogroup" id="pet-size">
@@ -182,7 +101,7 @@ const PetProfileEditionForm = () => {
                       role="radio"
                       text={size}
                       onClick={() => onChangePetSize(size)}
-                      clicked={petSize === size}
+                      clicked={pet.petSize === size}
                     />
                   ))}
                 </PetSizeContainer>
@@ -191,7 +110,12 @@ const PetProfileEditionForm = () => {
           </FormContainer>
 
           <ButtonContainer>
-            <BasicButton type="button" $isEditButton onClick={onSubmit}>
+            <BasicButton
+              type="button"
+              $isEditButton
+              onClick={onSubmitNewPetProfile}
+              disabled={!isValidForm}
+            >
               <EditIconImage src={EditIconLight} alt="" />
               수정
             </BasicButton>
@@ -199,7 +123,7 @@ const PetProfileEditionForm = () => {
               type="button"
               $isEditButton={false}
               onClick={() => {
-                onClickRemoveButton(petItem.id);
+                onClickRemoveButton(pet.id);
               }}
             >
               <img src={TrashCanIcon} alt="" />
