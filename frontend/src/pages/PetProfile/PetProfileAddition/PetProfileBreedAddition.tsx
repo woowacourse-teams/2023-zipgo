@@ -1,34 +1,22 @@
-import { ChangeEvent, useEffect } from 'react';
+import { useEffect } from 'react';
 import { useOutletContext } from 'react-router-dom';
 import { styled } from 'styled-components';
 
 import PetBreedSelect from '@/components/PetProfile/PetBreedSelect';
 import { PET_PROFILE_ADDITION_STEP } from '@/constants/petProfile';
-import { usePetAdditionContext } from '@/context/petProfile/PetAdditionContext';
-import { usePetProfileValidation } from '@/hooks/petProfile';
-import { PetProfileOutletContextProps } from '@/types/petProfile/client';
+import { usePetProfileAddition } from '@/hooks/petProfile';
+import { PetAdditionOutletContextProps } from '@/types/petProfile/client';
 import { getTopicParticle } from '@/utils/getTopicParticle';
 
 const PetProfileBreedAddition = () => {
-  const { petProfile, updatePetProfile } = usePetAdditionContext();
-  const { updateIsMixedBreed, updateCurrentStep, updateIsValidStep } =
-    useOutletContext<PetProfileOutletContextProps>();
-  const { isMixedBreed } = usePetProfileValidation();
+  const { petProfile, onChangeBreed } = usePetProfileAddition();
+  const { updateCurrentStep, updateIsValidStep } =
+    useOutletContext<PetAdditionOutletContextProps>();
 
   useEffect(() => {
-    updateCurrentStep(PET_PROFILE_ADDITION_STEP.BREED);
     updateIsValidStep(false);
+    updateCurrentStep(PET_PROFILE_ADDITION_STEP.BREED);
   }, []);
-
-  const onChangeBreed = (e: ChangeEvent<HTMLSelectElement>) => {
-    const selectedBreed = e.target.value;
-
-    if (isMixedBreed(selectedBreed)) updateIsMixedBreed(true);
-    if (!isMixedBreed(selectedBreed)) updateIsMixedBreed(false);
-
-    updateIsValidStep(true);
-    updatePetProfile({ breed: selectedBreed });
-  };
 
   return (
     <Container>

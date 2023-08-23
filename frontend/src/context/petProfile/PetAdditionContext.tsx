@@ -2,7 +2,7 @@ import { createContext, ReactNode, useContext, useMemo, useState } from 'react';
 
 import { PostPetProfileReq } from '@/types/petProfile/remote';
 
-interface PetProfileValue extends PostPetProfileReq {}
+export interface PetProfileValue extends PostPetProfileReq {}
 
 interface PetAdditionContext {
   petProfile: PetProfileValue;

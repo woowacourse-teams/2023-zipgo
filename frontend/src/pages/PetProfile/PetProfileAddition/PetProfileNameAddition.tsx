@@ -1,37 +1,21 @@
-import { ChangeEvent, useEffect, useState } from 'react';
+import { useEffect } from 'react';
 import { useOutletContext } from 'react-router-dom';
 import { styled } from 'styled-components';
 
 import Input from '@/components/@common/Input/Input';
 import { PET_PROFILE_ADDITION_STEP } from '@/constants/petProfile';
-import { usePetAdditionContext } from '@/context/petProfile/PetAdditionContext';
-import { usePetProfileValidation } from '@/hooks/petProfile';
-import { PetProfileOutletContextProps } from '@/types/petProfile/client';
+import { usePetProfileAddition } from '@/hooks/petProfile';
+import { PetAdditionOutletContextProps } from '@/types/petProfile/client';
 
 const PetProfileNameAddition = () => {
-  const [isValidInput, setIsValidInput] = useState(true);
-  const { updateCurrentStep, updateIsValidStep } = useOutletContext<PetProfileOutletContextProps>();
-  const { updatePetProfile } = usePetAdditionContext();
-  const { isValidName } = usePetProfileValidation();
+  const { isValidInput, onChangeName } = usePetProfileAddition();
+  const { updateCurrentStep, updateIsValidStep } =
+    useOutletContext<PetAdditionOutletContextProps>();
 
   useEffect(() => {
+    updateIsValidStep(false);
     updateCurrentStep(PET_PROFILE_ADDITION_STEP.NAME);
   }, []);
-
-  const onChangeName = (e: ChangeEvent<HTMLInputElement>) => {
-    const petName = e.target.value;
-
-    if (isValidName(petName)) {
-      setIsValidInput(true);
-      updateIsValidStep(true);
-      updatePetProfile({ name: petName });
-    }
-
-    if (!isValidName(petName)) {
-      updateIsValidStep(false);
-      setIsValidInput(false);
-    }
-  };
 
   return (
     <Container>
@@ -49,11 +33,9 @@ const PetProfileNameAddition = () => {
         design="underline"
         fontSize="1.3rem"
       />
-      {!isValidInput && (
-        <ErrorCaption>
-          아이의 이름은 1~10글자 사이의 한글, 영어, 숫자만 입력 가능합니다.
-        </ErrorCaption>
-      )}
+      <ErrorCaption>
+        {isValidInput ? '' : '아이의 이름은 1~10글자 사이의 한글, 영어, 숫자만 입력 가능합니다.'}
+      </ErrorCaption>
     </Container>
   );
 };

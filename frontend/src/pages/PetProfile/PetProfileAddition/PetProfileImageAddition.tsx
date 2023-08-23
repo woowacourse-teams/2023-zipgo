@@ -1,53 +1,20 @@
 import { useEffect } from 'react';
-import { useNavigate, useOutletContext } from 'react-router-dom';
+import { useOutletContext } from 'react-router-dom';
 import { styled } from 'styled-components';
 
 import PetProfileImageUploader from '@/components/PetProfile/PetProfileImageUploader';
 import { PET_PROFILE_ADDITION_STEP } from '@/constants/petProfile';
-import { usePetAdditionContext } from '@/context/petProfile/PetAdditionContext';
-import { usePetProfile } from '@/context/petProfile/PetProfileContext';
-import { useAddPetProfileMutation, useBreedListQuery } from '@/hooks/query/petProfile';
-import { routerPath } from '@/router/routes';
-import { PetProfile, PetProfileOutletContextProps } from '@/types/petProfile/client';
+import { usePetProfileAddition } from '@/hooks/petProfile';
+import { PetAdditionOutletContextProps } from '@/types/petProfile/client';
 import { getTopicParticle } from '@/utils/getTopicParticle';
 
-const PetProfileImageAdditionContent = () => {
-  const navigate = useNavigate();
-  const { petProfile } = usePetAdditionContext();
-  const { updateCurrentStep } = useOutletContext<PetProfileOutletContextProps>();
-  const { addPetProfileMutation } = useAddPetProfileMutation();
-  const { breedList } = useBreedListQuery();
-  const { updatePetProfile } = usePetProfile(); // 에디가 만든 context
+const PetProfileImageAddition = () => {
+  const { petProfile, onSubmitPetProfile } = usePetProfileAddition();
+  const { updateCurrentStep } = useOutletContext<PetAdditionOutletContextProps>();
 
   useEffect(() => {
     updateCurrentStep(PET_PROFILE_ADDITION_STEP.IMAGE_FILE);
   }, [updateCurrentStep]);
-
-  const onSubmitPetProfile = () => {
-    addPetProfileMutation
-      .addPetProfile(petProfile)
-      .then(async res => {
-        const userInfo = JSON.parse(localStorage.getItem('userInfo')!);
-
-        const userPetBreed = breedList?.find(breed => breed.name === petProfile.breed);
-        const petProfileWithId = {
-          ...petProfile,
-          id: 1,
-          petSize: userPetBreed?.name === '믹스견' ? petProfile.petSize : undefined,
-        } as PetProfile;
-
-        updatePetProfile(petProfileWithId); // 헤더 유저 프로필 정보 업데이트
-
-        localStorage.setItem('userInfo', JSON.stringify({ ...userInfo, hasPet: true }));
-
-        alert('반려동물 정보 등록이 완료되었습니다.');
-      })
-      .catch(error => {
-        alert('반려동물 정보 등록에 실패했습니다.');
-      });
-
-    navigate(routerPath.home());
-  };
 
   return (
     <Container>
@@ -63,7 +30,7 @@ const PetProfileImageAdditionContent = () => {
   );
 };
 
-export default PetProfileImageAdditionContent;
+export default PetProfileImageAddition;
 
 const Container = styled.div`
   margin-top: 4rem;

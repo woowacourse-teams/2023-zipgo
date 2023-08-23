@@ -3,20 +3,21 @@ import { ThemeProvider } from 'styled-components';
 
 import App from '@/App';
 import GlobalStyle from '@/components/@common/GlobalStyle';
+import { PetAdditionProvider } from '@/context/petProfile/PetAdditionContext';
 import PetProfileProvider from '@/context/petProfile/PetProfileContext';
 import ErrorPage from '@/pages/Error/ErrorPage';
 import FoodDetail from '@/pages/FoodDetail/FoodDetail';
 import Landing from '@/pages/Landing/Landing';
 import Login from '@/pages/Login/Login';
-import PetProfileAddition from '@/pages/PetProfile/PetProfileAddition';
-import PetProfileAgeAddition from '@/pages/PetProfile/PetProfileAgeAddition';
-import PetProfileBreedAddition from '@/pages/PetProfile/PetProfileBreedAddition';
+import PetProfileAddition from '@/pages/PetProfile/PetProfileAddition/PetProfileAddition';
+import PetProfileAgeAddition from '@/pages/PetProfile/PetProfileAddition/PetProfileAgeAddition';
+import PetProfileBreedAddition from '@/pages/PetProfile/PetProfileAddition/PetProfileBreedAddition';
+import PetProfileGenderAddition from '@/pages/PetProfile/PetProfileAddition/PetProfileGenderAddition';
+import PetProfileImageAddition from '@/pages/PetProfile/PetProfileAddition/PetProfileImageAddition';
+import PetProfileNameAddition from '@/pages/PetProfile/PetProfileAddition/PetProfileNameAddition';
+import PetProfilePetSizeAddition from '@/pages/PetProfile/PetProfileAddition/PetProfilePetSizeAddition';
+import PetProfileWeightAddition from '@/pages/PetProfile/PetProfileAddition/PetProfileWeightAddition';
 import PetProfileEdition from '@/pages/PetProfile/PetProfileEdition/PetProfileEdition';
-import PetProfileGenderAddition from '@/pages/PetProfile/PetProfileGenderAddition';
-import PetProfileImageAddition from '@/pages/PetProfile/PetProfileImageAddition';
-import PetProfileNameAddition from '@/pages/PetProfile/PetProfileNameAddition';
-import PetProfilePetSizeAddition from '@/pages/PetProfile/PetProfilePetSizeAddition';
-import PetProfileWeightAddition from '@/pages/PetProfile/PetProfileWeightAddition';
 import ReviewAddition from '@/pages/ReviewAddition/ReviewAddition';
 import ReviewStarRating from '@/pages/ReviewStarRating/ReviewStarRating';
 import theme from '@/styles/theme';
@@ -55,7 +56,11 @@ export const router = createBrowserRouter([
       },
       {
         path: PATH.PET_PROFILE_ADDITION,
-        element: <PetProfileAddition />,
+        element: (
+          <PetAdditionProvider>
+            <PetProfileAddition />
+          </PetAdditionProvider>
+        ),
         children: [
           {
             index: true,
