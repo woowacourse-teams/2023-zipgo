@@ -4,13 +4,13 @@ import { styled } from 'styled-components';
 
 import PetAgeSelect from '@/components/PetProfile/PetAgeSelect';
 import { PET_PROFILE_ADDITION_STEP } from '@/constants/petProfile';
-import { usePetProfileContext } from '@/context/petProfile';
+import { usePetAdditionContext } from '@/context/petProfile/PetAdditionContext';
 import { usePetProfileValidation } from '@/hooks/petProfile';
 import { PetProfileOutletContextProps } from '@/types/petProfile/client';
 
 const PetProfileAgeAddition = () => {
   const { updateCurrentStep, updateIsValidStep } = useOutletContext<PetProfileOutletContextProps>();
-  const { petProfile, updatePetProfile } = usePetProfileContext();
+  const { petProfile, updatePetProfile } = usePetAdditionContext();
   const { isValidAgeRange } = usePetProfileValidation();
 
   useEffect(() => {

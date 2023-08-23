@@ -4,13 +4,13 @@ import { styled } from 'styled-components';
 
 import PetBreedSelect from '@/components/PetProfile/PetBreedSelect';
 import { PET_PROFILE_ADDITION_STEP } from '@/constants/petProfile';
-import { usePetProfileContext } from '@/context/petProfile';
+import { usePetAdditionContext } from '@/context/petProfile/PetAdditionContext';
 import { usePetProfileValidation } from '@/hooks/petProfile';
 import { PetProfileOutletContextProps } from '@/types/petProfile/client';
 import { getTopicParticle } from '@/utils/getTopicParticle';
 
 const PetProfileBreedAddition = () => {
-  const { petProfile, updatePetProfile } = usePetProfileContext();
+  const { petProfile, updatePetProfile } = usePetAdditionContext();
   const { updateIsMixedBreed, updateCurrentStep, updateIsValidStep } =
     useOutletContext<PetProfileOutletContextProps>();
   const { isMixedBreed } = usePetProfileValidation();

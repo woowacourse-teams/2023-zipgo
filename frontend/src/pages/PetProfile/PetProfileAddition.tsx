@@ -4,7 +4,7 @@ import { styled } from 'styled-components';
 import BackBtnIcon from '@/assets/svg/back_btn.svg';
 import Button from '@/components/@common/Button/Button';
 import Template from '@/components/@common/Template';
-import { PetProfileProvider } from '@/context/petProfile';
+import { PetAdditionProvider } from '@/context/petProfile/PetAdditionContext';
 import { usePetProfileStep } from '@/hooks/petProfile';
 
 const PetProfileAddition = () => {
@@ -21,7 +21,7 @@ const PetProfileAddition = () => {
   } = usePetProfileStep();
 
   return (
-    <PetProfileProvider>
+    <PetAdditionProvider>
       <Template
         staticHeader={() =>
           getPetProfileAdditionHeader({
@@ -46,7 +46,7 @@ const PetProfileAddition = () => {
           <Button type="button" text="다음" fixed onClick={goNext} disabled={!isValidStep} />
         )}
       </Template>
-    </PetProfileProvider>
+    </PetAdditionProvider>
   );
 };
 

@@ -1,14 +1,12 @@
 import { createContext, ReactNode, useContext, useMemo, useState } from 'react';
 
-import { PetProfile, PetSize } from '@/types/petProfile/client';
+import { PostPetProfileReq } from '@/types/petProfile/remote';
 
-interface PetProfileContext {
+interface PetProfileValue extends PostPetProfileReq {}
+
+interface PetAdditionContext {
   petProfile: PetProfileValue;
   updatePetProfile: (newProfile: Partial<PetProfileValue>) => void;
-}
-
-interface PetProfileValue extends Omit<PetProfile, 'id' | 'petSize'> {
-  petSize?: PetSize;
 }
 
 const initialPetProfile: PetProfileValue = {
@@ -20,21 +18,21 @@ const initialPetProfile: PetProfileValue = {
   imageUrl: '',
 };
 
-const PetProfileContext = createContext<PetProfileContext>({
+const PetAdditionContext = createContext<PetAdditionContext>({
   petProfile: initialPetProfile,
   updatePetProfile: () => {},
 });
 
-export const usePetProfileContext = () => useContext(PetProfileContext);
+export const usePetAdditionContext = () => useContext(PetAdditionContext);
 
-export const PetProfileProvider = ({ children }: { children: ReactNode }) => {
+export const PetAdditionProvider = ({ children }: { children: ReactNode }) => {
   const [petProfile, setPetProfile] = useState<PetProfileValue>(initialPetProfile);
 
   const updatePetProfile = (newProfile: Partial<PetProfileValue>) => {
     setPetProfile(prev => ({ ...prev, ...newProfile }));
   };
 
-  const petProfileContextValue = useMemo(
+  const PetAdditionContextValue = useMemo(
     () => ({
       petProfile,
       updatePetProfile,
@@ -43,8 +41,8 @@ export const PetProfileProvider = ({ children }: { children: ReactNode }) => {
   );
 
   return (
-    <PetProfileContext.Provider value={petProfileContextValue}>
+    <PetAdditionContext.Provider value={PetAdditionContextValue}>
       {children}
-    </PetProfileContext.Provider>
+    </PetAdditionContext.Provider>
   );
 };

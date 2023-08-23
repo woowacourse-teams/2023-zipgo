@@ -4,14 +4,14 @@ import { styled } from 'styled-components';
 
 import Input from '@/components/@common/Input/Input';
 import { PET_PROFILE_ADDITION_STEP } from '@/constants/petProfile';
-import { usePetProfileContext } from '@/context/petProfile';
+import { usePetAdditionContext } from '@/context/petProfile/PetAdditionContext';
 import { usePetProfileValidation } from '@/hooks/petProfile';
 import { PetProfileOutletContextProps } from '@/types/petProfile/client';
 
 const PetProfileNameAddition = () => {
   const [isValidInput, setIsValidInput] = useState(true);
   const { updateCurrentStep, updateIsValidStep } = useOutletContext<PetProfileOutletContextProps>();
-  const { updatePetProfile } = usePetProfileContext();
+  const { updatePetProfile } = usePetAdditionContext();
   const { isValidName } = usePetProfileValidation();
 
   useEffect(() => {

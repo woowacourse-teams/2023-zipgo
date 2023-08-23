@@ -4,12 +4,12 @@ import { styled } from 'styled-components';
 
 import Label from '@/components/@common/Label/Label';
 import { PET_PROFILE_ADDITION_STEP, PET_SIZES } from '@/constants/petProfile';
-import { usePetProfileContext } from '@/context/petProfile';
+import { usePetAdditionContext } from '@/context/petProfile/PetAdditionContext';
 import { PetProfileOutletContextProps, PetSize } from '@/types/petProfile/client';
 
 const PetProfilePetSizeAddition = () => {
   const { updateCurrentStep } = useOutletContext<PetProfileOutletContextProps>();
-  const { petProfile, updatePetProfile } = usePetProfileContext();
+  const { petProfile, updatePetProfile } = usePetAdditionContext();
 
   useEffect(() => {
     updateCurrentStep(PET_PROFILE_ADDITION_STEP.PET_SIZE);

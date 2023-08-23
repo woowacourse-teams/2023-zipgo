@@ -4,14 +4,14 @@ import { styled } from 'styled-components';
 
 import Input from '@/components/@common/Input/Input';
 import { PET_PROFILE_ADDITION_STEP } from '@/constants/petProfile';
-import { usePetProfileContext } from '@/context/petProfile';
+import { usePetAdditionContext } from '@/context/petProfile/PetAdditionContext';
 import { usePetProfileValidation } from '@/hooks/petProfile';
 import { PetProfileOutletContextProps } from '@/types/petProfile/client';
 
 const PetProfileWeightAddition = () => {
   const [isValidInput, setIsValidInput] = useState(true);
   const { updateCurrentStep, updateIsValidStep } = useOutletContext<PetProfileOutletContextProps>();
-  const { petProfile, updatePetProfile } = usePetProfileContext();
+  const { petProfile, updatePetProfile } = usePetAdditionContext();
   const { isValidWeight } = usePetProfileValidation();
 
   useEffect(() => {

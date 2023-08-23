@@ -4,7 +4,7 @@ import { styled } from 'styled-components';
 
 import PetProfileImageUploader from '@/components/PetProfile/PetProfileImageUploader';
 import { PET_PROFILE_ADDITION_STEP } from '@/constants/petProfile';
-import { usePetProfileContext } from '@/context/petProfile';
+import { usePetAdditionContext } from '@/context/petProfile/PetAdditionContext';
 import { usePetProfile } from '@/context/petProfile/PetProfileContext';
 import { useAddPetProfileMutation, useBreedListQuery } from '@/hooks/query/petProfile';
 import { routerPath } from '@/router/routes';
@@ -13,7 +13,7 @@ import { getTopicParticle } from '@/utils/getTopicParticle';
 
 const PetProfileImageAdditionContent = () => {
   const navigate = useNavigate();
-  const { petProfile } = usePetProfileContext();
+  const { petProfile } = usePetAdditionContext();
   const { updateCurrentStep } = useOutletContext<PetProfileOutletContextProps>();
   const { addPetProfileMutation } = useAddPetProfileMutation();
   const { breedList } = useBreedListQuery();

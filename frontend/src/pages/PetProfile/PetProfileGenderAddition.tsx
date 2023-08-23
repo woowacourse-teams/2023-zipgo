@@ -4,13 +4,13 @@ import { styled } from 'styled-components';
 
 import GenderRadioInput from '@/components/PetProfile/GenderRadioInput';
 import { GENDERS, PET_PROFILE_ADDITION_STEP } from '@/constants/petProfile';
-import { usePetProfileContext } from '@/context/petProfile';
+import { usePetAdditionContext } from '@/context/petProfile/PetAdditionContext';
 import { usePetProfileValidation } from '@/hooks/petProfile';
 import { PetProfileOutletContextProps } from '@/types/petProfile/client';
 
 const PetProfileGenderAddition = () => {
   const { updateCurrentStep } = useOutletContext<PetProfileOutletContextProps>();
-  const { petProfile, updatePetProfile } = usePetProfileContext();
+  const { petProfile, updatePetProfile } = usePetAdditionContext();
   const { isValidGender } = usePetProfileValidation();
 
   useEffect(() => {
