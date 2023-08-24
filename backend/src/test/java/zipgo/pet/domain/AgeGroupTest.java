@@ -17,7 +17,7 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 @SuppressWarnings("NonAsciiCharacters")
 @DisplayNameGeneration(DisplayNameGenerator.ReplaceUnderscores.class)
-class RAgeGroupTest {
+class AgeGroupTest {
 
     @Test
     void 한_살_미만은_PUPPY다() {
