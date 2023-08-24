@@ -93,16 +93,20 @@ public class ReviewControllerTest extends AcceptanceTest {
     @Autowired
     private PetRepository petRepository;
 
+    private Member 멤버;
+    private PetSize 사이즈;
+    private Breeds 종류;
+    private Pet 반려동물;
+
     @BeforeEach
     void setUp() {
         Brand 브랜드 = brandRepository.save(BrandFixture.오리젠_식품_브랜드_생성());
-        식품 = 모든_영양기준_만족_식품(브랜드);
-        petFoodRepository.save(식품);
+        식품 = petFoodRepository.save(모든_영양기준_만족_식품(브랜드));
+        멤버 = memberRepository.save(무민());
+        사이즈 = petSizeRepository.save(소형견());
+        종류 = breedsRepository.save(견종(사이즈));
+        반려동물 = petRepository.save(반려동물_생성(멤버, 종류));
 
-        Member 멤버 = memberRepository.save(무민());
-        PetSize 사이즈 = petSizeRepository.save(소형견());
-        Breeds 종류 = breedsRepository.save(견종(사이즈));
-        Pet 반려동물 = petRepository.save(반려동물_생성(멤버, 종류));
         리뷰 = reviewRepository.save(ReviewFixture.극찬_리뷰_생성(반려동물, 식품, List.of("없어요")));
     }
 
