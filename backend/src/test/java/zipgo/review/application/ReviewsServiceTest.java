@@ -16,7 +16,6 @@ import zipgo.pet.domain.Breeds;
 import zipgo.pet.domain.Pet;
 import zipgo.pet.domain.PetSize;
 import zipgo.pet.domain.fixture.BreedsFixture;
-import zipgo.pet.domain.fixture.PetFixture;
 import zipgo.pet.domain.repository.BreedsRepository;
 import zipgo.pet.domain.repository.PetRepository;
 import zipgo.pet.domain.repository.PetSizeRepository;
@@ -192,7 +191,7 @@ class ReviewsServiceTest extends ServiceTest {
     private Review 혹평리뷰(PetFood 식품, Member 멤버) {
         PetSize 사이즈 = petSizeRepository.save(소형견());
         Breeds 종류 = breedsRepository.save(견종(사이즈));
-        Pet 반려동물 = petRepository.save(PetFixture.반려동물(멤버, 종류));
+        Pet 반려동물 = petRepository.save(반려동물(멤버, 종류));
         return reviewRepository.save(혹평_리뷰_생성(반려동물, 식품,
                 List.of(눈물_이상반응().getAdverseReactionType().getDescription(),
                         먹고_토_이상반응().getAdverseReactionType().getDescription())));
