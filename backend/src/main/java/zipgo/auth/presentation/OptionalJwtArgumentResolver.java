@@ -9,9 +9,11 @@ import org.springframework.web.bind.support.WebDataBinderFactory;
 import org.springframework.web.context.request.NativeWebRequest;
 import org.springframework.web.method.support.HandlerMethodArgumentResolver;
 import org.springframework.web.method.support.ModelAndViewContainer;
+import zipgo.auth.exception.TokenInvalidException;
 import zipgo.auth.presentation.dto.AuthCredentials;
 import zipgo.auth.support.BearerTokenExtractor;
 import zipgo.auth.support.JwtProvider;
+import zipgo.common.logging.LoggingUtils;
 
 import static org.springframework.http.HttpHeaders.AUTHORIZATION;
 
@@ -38,10 +40,14 @@ public class OptionalJwtArgumentResolver implements HandlerMethodArgumentResolve
         if (request.getHeader(AUTHORIZATION) == null) {
             return null;
         }
-        String token = BearerTokenExtractor.extract(Objects.requireNonNull(request));
-        String id = jwtProvider.getPayload(token);
-
-        return new AuthCredentials(Long.valueOf(id));
+        try {
+            String token = BearerTokenExtractor.extract(Objects.requireNonNull(request));
+            String id = jwtProvider.getPayload(token);
+            return new AuthCredentials(Long.valueOf(id));
+        } catch (TokenInvalidException e) {
+            LoggingUtils.warn(e);
+            return null;
+        }
     }
 
 }

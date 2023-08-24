@@ -4,6 +4,8 @@ import java.util.List;
 import lombok.Builder;
 import zipgo.pet.domain.AgeGroup;
 import zipgo.review.application.SortBy;
+import zipgo.review.exception.NoPetFoodIdException;
+import zipgo.review.exception.NonPositiveSizeException;
 
 import static java.util.Collections.emptyList;
 
@@ -22,10 +24,10 @@ public record FindReviewsFilterRequest(
     @Builder
     public FindReviewsFilterRequest {
         if (petFoodId == null) {
-            throw new IllegalArgumentException("petFoodId는 null 이 될 수 없습니다.");
+            throw new NoPetFoodIdException();
         }
         if (size <= 0) {
-            throw new IllegalArgumentException("size 는 양수 이어야 합니다.");
+            throw new NonPositiveSizeException();
         }
         if (sortBy == null) {
             sortBy = SortBy.RECENT;

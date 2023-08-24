@@ -6,6 +6,7 @@ import java.time.Year;
 import java.util.Arrays;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
+import zipgo.pet.exception.AgeGroupNotFoundException;
 import zipgo.pet.exception.PetAgeNotFoundException;
 
 @Getter
@@ -34,7 +35,7 @@ public enum AgeGroup {
                 return ageGroup;
             }
         }
-        throw new IllegalArgumentException("AgeGroup에 해당하는 id가 없습니다.");
+        throw new AgeGroupNotFoundException();
     }
 
     public Year calculateMinBirthYear() {

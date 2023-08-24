@@ -9,6 +9,7 @@ import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
 import org.junit.jupiter.params.provider.ValueSource;
+import zipgo.pet.exception.AgeGroupNotFoundException;
 import zipgo.pet.exception.PetAgeNotFoundException;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -66,8 +67,7 @@ class AgeGroupTest {
     void 해당하는_아이디가_없으면_예외가_발생한다(Long id) {
         // expect
         assertThatThrownBy(() -> AgeGroup.from(id))
-                .isInstanceOf(IllegalArgumentException.class)
-                .hasMessage("AgeGroup에 해당하는 id가 없습니다.");
+                .isInstanceOf(AgeGroupNotFoundException.class);
     }
 
     @ParameterizedTest
