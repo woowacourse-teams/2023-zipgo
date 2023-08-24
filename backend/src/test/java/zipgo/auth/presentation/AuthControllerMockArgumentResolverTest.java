@@ -77,7 +77,7 @@ class AuthControllerMockArgumentResolverTest {
         when(memberQueryService.findById(1L))
                 .thenReturn(식별자_있는_멤버());
         when(petQueryService.readMemberPets(1L))
-                .thenReturn(List.of(PetFixture.반려동물_생성(식별자_있는_멤버(), 견종(대형견()))));
+                .thenReturn(List.of(PetFixture.반려동물(식별자_있는_멤버(), 견종(대형견()))));
 
         // when
         var 요청 = mockMvc.perform(get("/auth")

@@ -15,6 +15,7 @@ import zipgo.member.exception.MemberNotFoundException;
 import zipgo.pet.domain.Breeds;
 import zipgo.pet.domain.Pet;
 import zipgo.pet.domain.PetSize;
+import zipgo.pet.domain.fixture.PetFixture;
 import zipgo.pet.domain.repository.BreedsRepository;
 import zipgo.pet.domain.repository.PetRepository;
 import zipgo.pet.domain.repository.PetSizeRepository;
@@ -33,7 +34,7 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.junit.jupiter.api.Assertions.assertAll;
 import static zipgo.brand.domain.fixture.BrandFixture.아카나_식품_브랜드_생성;
 import static zipgo.pet.domain.fixture.BreedsFixture.견종;
-import static zipgo.pet.domain.fixture.PetFixture.반려동물_생성;
+import static zipgo.pet.domain.fixture.PetFixture.반려동물;
 import static zipgo.pet.domain.fixture.PetSizeFixture.소형견;
 import static zipgo.petfood.domain.fixture.PetFoodFixture.모든_영양기준_만족_식품;
 import static zipgo.review.domain.type.StoolCondition.SOFT_MOIST;
@@ -182,7 +183,7 @@ class ReviewsServiceTest extends ServiceTest {
     private Review 혹평리뷰(PetFood 식품, Member 멤버) {
         PetSize 사이즈 = petSizeRepository.save(소형견());
         Breeds 종류 = breedsRepository.save(견종(사이즈));
-        Pet 반려동물 = petRepository.save(반려동물_생성(멤버, 종류));
+        Pet 반려동물 = petRepository.save(PetFixture.반려동물(멤버, 종류));
         return reviewRepository.save(혹평_리뷰_생성(반려동물, 식품,
                 List.of(눈물_이상반응().getAdverseReactionType().getDescription(),
                         먹고_토_이상반응().getAdverseReactionType().getDescription())));

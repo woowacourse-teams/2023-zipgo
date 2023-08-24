@@ -17,6 +17,7 @@ import zipgo.member.domain.repository.MemberRepository;
 import zipgo.pet.domain.Breeds;
 import zipgo.pet.domain.Pet;
 import zipgo.pet.domain.PetSize;
+import zipgo.pet.domain.fixture.PetFixture;
 import zipgo.pet.domain.repository.BreedsRepository;
 import zipgo.pet.domain.repository.PetRepository;
 import zipgo.pet.domain.repository.PetSizeRepository;
@@ -29,7 +30,7 @@ import zipgo.review.fixture.MemberFixture;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static zipgo.pet.domain.fixture.BreedsFixture.견종;
-import static zipgo.pet.domain.fixture.PetFixture.반려동물_생성;
+import static zipgo.pet.domain.fixture.PetFixture.반려동물;
 import static zipgo.pet.domain.fixture.PetSizeFixture.소형견;
 import static zipgo.review.fixture.MemberFixture.무민;
 import static zipgo.review.fixture.ReviewFixture.극찬_리뷰_생성;
@@ -99,7 +100,7 @@ public class ReviewRepositoryTest extends RepositoryTest {
         Member 멤버 = memberRepository.save(무민());
         PetSize 사이즈 = petSizeRepository.save(소형견());
         Breeds 종류 = breedsRepository.save(견종(사이즈));
-        Pet 반려동물 = petRepository.save(반려동물_생성(멤버, 종류));
+        Pet 반려동물 = petRepository.save(PetFixture.반려동물(멤버, 종류));
         return reviewRepository.save(극찬_리뷰_생성(반려동물, 식품, List.of("없어요")));
     }
 

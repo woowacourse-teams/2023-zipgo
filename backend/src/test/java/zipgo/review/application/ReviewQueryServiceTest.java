@@ -12,7 +12,6 @@ import zipgo.member.domain.repository.MemberRepository;
 import zipgo.pet.domain.Breeds;
 import zipgo.pet.domain.Pet;
 import zipgo.pet.domain.PetSize;
-import zipgo.pet.domain.fixture.PetFixture;
 import zipgo.pet.domain.repository.BreedsRepository;
 import zipgo.pet.domain.repository.PetRepository;
 import zipgo.pet.domain.repository.PetSizeRepository;
@@ -103,7 +102,7 @@ class ReviewQueryServiceTest extends QueryServiceTest {
         Member 멤버 = memberRepository.save(무민());
         PetSize 사이즈 = petSizeRepository.save(소형견());
         Breeds 종류 = breedsRepository.save(견종(사이즈));
-        Pet 반려동물 = petRepository.save(반려동물_생성(멤버, 종류));
+        Pet 반려동물 = petRepository.save(반려동물(멤버, 종류));
         Review review = reviewRepository.save(극찬_리뷰_생성(반려동물, 식품, List.of("없어요")));
         식품.addReview(review);
         return review;
@@ -113,7 +112,7 @@ class ReviewQueryServiceTest extends QueryServiceTest {
         PetSize 사이즈 = petSizeRepository.save(소형견());
         Member 멤버2 = memberRepository.save(멤버_이름("무민2"));
         Breeds 종류 = breedsRepository.save(견종(사이즈));
-        Pet 반려동물2 = petRepository.save(반려동물_생성(멤버2, 종류));
+        Pet 반려동물2 = petRepository.save(반려동물(멤버2, 종류));
         Review review = reviewRepository.save(
                 혹평_리뷰_생성(반려동물2, 식품, List.of(눈물_이상반응().getAdverseReactionType().getDescription(),
                         먹고_토_이상반응().getAdverseReactionType().getDescription())));
@@ -133,7 +132,7 @@ class ReviewQueryServiceTest extends QueryServiceTest {
         Member 멤버 = memberRepository.save(무민());
         PetSize 사이즈 = petSizeRepository.save(소형견());
         Breeds 종류 = breedsRepository.save(견종(사이즈));
-        Pet 반려동물 = petRepository.save(반려동물_생성(멤버, 종류));
+        Pet 반려동물 = petRepository.save(반려동물(멤버, 종류));
         Review 극찬_리뷰 = reviewRepository.save(극찬_리뷰_생성(반려동물, 식품, List.of("없어요")));
 
         //when

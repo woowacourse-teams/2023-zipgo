@@ -71,7 +71,7 @@ class AuthControllerTest {
         when(memberQueryService.findById(1L))
                 .thenReturn(식별자_있는_멤버());
         when(petQueryService.readMemberPets(1L))
-                .thenReturn(List.of(PetFixture.반려동물_생성()));
+                .thenReturn(List.of(PetFixture.반려동물()));
 
         // when
         var 요청 = mockMvc.perform(post("/auth/login")
