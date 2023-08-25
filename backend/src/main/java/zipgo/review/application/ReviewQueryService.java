@@ -10,7 +10,6 @@ import org.springframework.transaction.annotation.Transactional;
 import zipgo.pet.domain.AgeGroup;
 import zipgo.pet.domain.repository.BreedsRepository;
 import zipgo.pet.domain.repository.PetSizeRepository;
-import zipgo.petfood.domain.repository.PetFoodQueryRepository;
 import zipgo.review.domain.Review;
 import zipgo.review.domain.repository.ReviewQueryRepository;
 import zipgo.review.domain.repository.ReviewRepository;
@@ -31,11 +30,8 @@ import static java.util.stream.Collectors.toMap;
 @Transactional(readOnly = true)
 public class ReviewQueryService {
 
-    private static final int PERCENTAGE = 100;
-
     private final ReviewRepository reviewRepository;
     private final ReviewQueryRepository reviewQueryRepository;
-    private final PetFoodQueryRepository petFoodQueryRepository;
     private final BreedsRepository breedsRepository;
     private final PetSizeRepository petSizeRepository;
 
