@@ -189,7 +189,6 @@ public class ReviewQueryRepositoryImpl implements ReviewQueryRepository {
                 .from(review)
                 .where(equalsPetFoodId(petFoodId))
                 .fetchOne();
-
     }
 
     @Override
