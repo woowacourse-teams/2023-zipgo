@@ -245,7 +245,7 @@ class PetControllerTest extends AcceptanceTest {
 
         var 요청_준비 = given(spec)
                 .header("Authorization", "Bearer " + 토큰)
-                .contentType(JSON).filter(API_반려동물_삭제_예외응답_문서_생성());
+                .contentType(JSON).filter(사용자_반려동물_조회_API_성공());
 
         // when
         var 응답 = 요청_준비.when()

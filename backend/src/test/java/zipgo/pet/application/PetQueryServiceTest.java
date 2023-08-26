@@ -10,13 +10,14 @@ import zipgo.member.domain.repository.MemberRepository;
 import zipgo.pet.domain.Breeds;
 import zipgo.pet.domain.Pet;
 import zipgo.pet.domain.PetSize;
+import zipgo.pet.domain.fixture.PetFixture;
 import zipgo.pet.domain.repository.BreedsRepository;
 import zipgo.pet.domain.repository.PetRepository;
 import zipgo.pet.domain.repository.PetSizeRepository;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertAll;
-import static zipgo.pet.domain.fixture.PetFixture.반려동물_생성;
+import static zipgo.pet.domain.fixture.PetFixture.반려동물;
 import static zipgo.review.fixture.MemberFixture.멤버_이름;
 
 class PetQueryServiceTest extends QueryServiceTest {
@@ -43,7 +44,7 @@ class PetQueryServiceTest extends QueryServiceTest {
         Breeds 풍산개 = 견종_등록("풍산개", 소형견);
         Member 갈비 = 멤버_이름("갈비");
         memberRepository.save(갈비);
-        Pet 상근이 = 반려동물_생성("상근이", 갈비, 풍산개);
+        Pet 상근이 = PetFixture.반려동물_생성("상근이", 갈비, 풍산개);
         petRepository.save(상근이);
 
         // when
@@ -66,7 +67,7 @@ class PetQueryServiceTest extends QueryServiceTest {
         Breeds 풍산개 = 견종_등록("풍산개", 소형견);
         Member 갈비 = 멤버_이름("갈비");
         memberRepository.save(갈비);
-        Pet 상근이 = 반려동물_생성("상근이", 갈비, 풍산개);
+        Pet 상근이 = PetFixture.반려동물_생성("상근이", 갈비, 풍산개);
         petRepository.save(상근이);
 
         // when

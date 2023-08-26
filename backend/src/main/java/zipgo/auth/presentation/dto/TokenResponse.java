@@ -1,17 +1,18 @@
 package zipgo.auth.presentation.dto;
 
+import java.util.List;
 import zipgo.member.domain.Member;
+import zipgo.pet.domain.Pet;
 
 public record TokenResponse(
         String accessToken,
         AuthResponse authResponse
 ) {
 
-
-    public static TokenResponse of(String token, Member member) {
+    public static TokenResponse of(String token, Member member, List<Pet> pets) {
         return new TokenResponse(
                 token,
-                AuthResponse.from(member)
+                AuthResponse.of(member, pets)
         );
     }
 

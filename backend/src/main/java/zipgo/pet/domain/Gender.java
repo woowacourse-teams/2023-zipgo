@@ -1,9 +1,11 @@
 package zipgo.pet.domain;
 
 import java.util.Arrays;
+import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import zipgo.pet.exception.PetGenderNotFoundException;
 
+@Getter
 @RequiredArgsConstructor
 public enum Gender {
 
