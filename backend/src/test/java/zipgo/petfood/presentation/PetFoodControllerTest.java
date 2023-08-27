@@ -95,7 +95,6 @@ public class PetFoodControllerTest extends AcceptanceTest {
         }
 
         @Test
-        @Transactional
         void 필터를_지정해서_요청한다() {
             // given
             List<String> 브랜드 = List.of("아카나");
@@ -108,6 +107,7 @@ public class PetFoodControllerTest extends AcceptanceTest {
                     .queryParam("nutritionStandards", 영양기준)
                     .queryParam("functionalities", 기능성)
                     .queryParam("mainIngredients", 주단백질원)
+                    .queryParam("lastPetFoodId", 식품.getId())
                     .queryParam("size", 20)
                     .filter(성공_API_문서_생성("식품 필터링 조회 - 성공"));
 
@@ -255,7 +255,7 @@ public class PetFoodControllerTest extends AcceptanceTest {
                             fieldWithPath("filters.nutritionStandards[].nation").type(STRING).description("영양기준 국가"),
                             fieldWithPath("filters.mainIngredients[]").type(ARRAY).description("주원료 배열"),
                             fieldWithPath("filters.mainIngredients[].id").type(NUMBER).description("주원료 아이디"),
-                            fieldWithPath("filters.mainIngredients[].ingredients").type(STRING).description("주원료 이름"),
+                            fieldWithPath("filters.mainIngredients[].primaryIngredient").type(STRING).description("주원료 이름"),
                             fieldWithPath("filters.functionalities[]").type(ARRAY).description("기능성 배열"),
                             fieldWithPath("filters.functionalities[].id").type(NUMBER).description("기능성 아이디"),
                             fieldWithPath("filters.functionalities[].functionality").type(STRING).description("기능성 이름")

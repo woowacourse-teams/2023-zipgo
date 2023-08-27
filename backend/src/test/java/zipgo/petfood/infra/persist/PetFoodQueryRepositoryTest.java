@@ -80,6 +80,9 @@ class PetFoodQueryRepositoryTest {
     @Test
     void 모든_조건에_맞는_식품을_필터링한다() {
         // given
+        List<PetFood> allFoods = petFoodRepository.findAll();
+        Long lastPetFoodId = allFoods.get(allFoods.size() - 1).getId();
+
         List<String> brandsName = List.of("오리젠");
         List<String> standards = List.of("미국");
         List<String> primaryIngredientList = List.of("짱짱");
@@ -91,7 +94,7 @@ class PetFoodQueryRepositoryTest {
                 standards,
                 primaryIngredientList,
                 functionalityList,
-                null,
+                lastPetFoodId,
                 20
         );
 

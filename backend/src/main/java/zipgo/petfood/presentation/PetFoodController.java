@@ -41,8 +41,8 @@ public class PetFoodController {
         FilterRequest filterRequest = FilterRequest.of(
                 convertStringsToCollection(brands),
                 convertStringsToCollection(nutritionStandards),
-                convertStringsToCollection(mainIngredients),
-                convertStringsToCollection(functionalities)
+                convertStringsToCollection(functionalities),
+                convertStringsToCollection(mainIngredients)
         );
         List<PetFood> petFoods = petFoodQueryService.getPetFoodsByFilters(filterRequest, lastPetFoodId, size);
         Long count = petFoodQueryService.getPetFoodsCountByFilters(filterRequest);

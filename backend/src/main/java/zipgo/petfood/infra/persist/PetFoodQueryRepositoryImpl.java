@@ -1,6 +1,7 @@
 package zipgo.petfood.infra.persist;
 
 import com.querydsl.core.types.dsl.BooleanExpression;
+import com.querydsl.jpa.JPAExpressions;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
@@ -32,7 +33,7 @@ public class PetFoodQueryRepositoryImpl implements PetFoodQueryRepository {
             Long lastPetFoodId,
             int size
     ) {
-        List<PetFood> petFoods = queryFactory
+        List<PetFood> fetch = queryFactory
                 .selectDistinct(petFood)
                 .from(petFood)
                 .innerJoin(petFood.brand, brand)
@@ -43,14 +44,14 @@ public class PetFoodQueryRepositoryImpl implements PetFoodQueryRepository {
                         isLessThan(lastPetFoodId),
                         isContainBrand(brandsName),
                         isMeetStandardCondition(standards),
-                        isContainPetFoodEffect(functionalityList),
-                        isContainPetFoodEffect(primaryIngredientList)
+                        isContainFunctionality(functionalityList),
+                        isContainPrimaryIngredients(primaryIngredientList)
                 )
                 .orderBy(petFood.id.desc())
                 .limit(size)
                 .fetch();
-        System.out.println("petFoods.size = " + petFoods.size());
-        return petFoods;
+        System.out.println("fetch.size() = " + fetch.size());
+        return fetch;
     }
 
     @Override
@@ -63,12 +64,13 @@ public class PetFoodQueryRepositoryImpl implements PetFoodQueryRepository {
         return queryFactory
                 .select(petFood.id.countDistinct())
                 .from(petFood)
-                .join(petFood.brand, brand)
+                .innerJoin(petFood.brand, brand)
+                .innerJoin(petFood.petFoodEffects, petFoodEffect)
                 .where(
                         isContainBrand(brandsName),
                         isMeetStandardCondition(standards),
-                        isContainPetFoodEffect(primaryIngredientList),
-                        isContainPetFoodEffect(functionalityList)
+                        isContainFunctionality(functionalityList),
+                        isContainPrimaryIngredients(primaryIngredientList)
                 )
                 .fetchOne();
     }
@@ -102,11 +104,22 @@ public class PetFoodQueryRepositoryImpl implements PetFoodQueryRepository {
         return null;
     }
 
-    private BooleanExpression isContainPetFoodEffect(List<String> petFoodEffects) {
-        if (petFoodEffects.isEmpty()) {
+    private BooleanExpression isContainFunctionality(List<String> functionalities) {
+        if (functionalities.isEmpty()) {
             return null;
         }
-        return petFoodEffect.description.in(petFoodEffects);
+        return petFoodEffect.description.in(functionalities);
+    }
+
+    private static BooleanExpression isContainPrimaryIngredients(List<String> primaryIngredientList) {
+        if (primaryIngredientList.isEmpty()) {
+            return null;
+        }
+        return petFoodEffect.petFood.id.in(
+                JPAExpressions.select(petFoodEffect.petFood.id)
+                        .from(petFoodEffect)
+                        .where(petFoodEffect.description.in(primaryIngredientList))
+        );
     }
 
     public PetFood findPetFoodWithReviewsByPetFoodId(Long petFoodId) {

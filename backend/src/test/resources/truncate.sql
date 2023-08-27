@@ -6,6 +6,7 @@ truncate table pet;
 truncate table pet_size;
 truncate table breeds;
 truncate table member;
+truncate table pet_food_effect;
 truncate table pet_food;
 truncate table brand;
 SET
