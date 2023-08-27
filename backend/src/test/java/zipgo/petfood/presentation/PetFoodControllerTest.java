@@ -10,7 +10,6 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.restdocs.payload.JsonFieldType;
 import org.springframework.restdocs.restassured.RestDocumentationFilter;
-import org.springframework.transaction.annotation.Transactional;
 import zipgo.brand.domain.Brand;
 import zipgo.brand.domain.repository.BrandRepository;
 import zipgo.common.acceptance.AcceptanceTest;
@@ -255,7 +254,8 @@ public class PetFoodControllerTest extends AcceptanceTest {
                             fieldWithPath("filters.nutritionStandards[].nation").type(STRING).description("영양기준 국가"),
                             fieldWithPath("filters.mainIngredients[]").type(ARRAY).description("주원료 배열"),
                             fieldWithPath("filters.mainIngredients[].id").type(NUMBER).description("주원료 아이디"),
-                            fieldWithPath("filters.mainIngredients[].primaryIngredient").type(STRING).description("주원료 이름"),
+                            fieldWithPath("filters.mainIngredients[].primaryIngredient").type(STRING)
+                                    .description("주원료 이름"),
                             fieldWithPath("filters.functionalities[]").type(ARRAY).description("기능성 배열"),
                             fieldWithPath("filters.functionalities[].id").type(NUMBER).description("기능성 아이디"),
                             fieldWithPath("filters.functionalities[].functionality").type(STRING).description("기능성 이름")
