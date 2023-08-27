@@ -1,7 +1,6 @@
 package zipgo.petfood.infra.persist;
 
 import java.util.List;
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayNameGeneration;
 import org.junit.jupiter.api.DisplayNameGenerator;
@@ -17,6 +16,7 @@ import zipgo.petfood.domain.repository.PetFoodRepository;
 
 import static java.util.Collections.EMPTY_LIST;
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.assertAll;
 import static zipgo.brand.domain.fixture.BrandFixture.아카나_식품_브랜드_생성;
 import static zipgo.brand.domain.fixture.BrandFixture.오리젠_식품_브랜드_생성;
 import static zipgo.brand.domain.fixture.BrandFixture.퓨리나_식품_브랜드_생성;
@@ -78,6 +78,34 @@ class PetFoodQueryRepositoryTest {
     }
 
     @Test
+    void 모든_조건에_맞는_식품을_필터링한다() {
+        // given
+        List<String> brandsName = List.of("오리젠");
+        List<String> standards = List.of("미국");
+        List<String> primaryIngredientList = List.of("짱짱");
+        List<String> functionalityList = List.of("돼지고기");
+
+        // when
+        List<PetFood> petFoods = petFoodQueryRepository.findPagingPetFoods(
+                brandsName,
+                standards,
+                primaryIngredientList,
+                functionalityList,
+                null,
+                20
+        );
+
+        // then
+        assertAll(
+                () -> assertThat(petFoods).hasSize(1),
+                () -> assertThat(petFoods).extracting(PetFood::getName)
+                        .contains("미국 영양기준 만족 식품"),
+                () -> assertThat(petFoods).extracting(petFood -> petFood.getBrand().getName())
+                        .contains("오리젠")
+        );
+    }
+
+    @Test
     void 조건에_맞는_식품을_필터링한다() {
         // given
         List<PetFood> allFoods = petFoodRepository.findAll();
@@ -98,10 +126,8 @@ class PetFoodQueryRepositoryTest {
                 20
         );
 
-        System.out.println("petFoods.size() = " + petFoods.size());
-
         // then
-        Assertions.assertAll(
+        assertAll(
                 () -> assertThat(petFoods).hasSize(1),
                 () -> assertThat(petFoods).extracting(PetFood::getName)
                         .contains("미국 영양기준 만족 식품"),

@@ -35,8 +35,8 @@ public class PetFoodQueryService {
         return petFoodQueryRepository.findPagingPetFoods(
                 filterDto.brands(),
                 filterDto.nutritionStandards(),
-                filterDto.mainIngredients(),
                 filterDto.functionalities(),
+                filterDto.mainIngredients(),
                 lastPetFoodId,
                 size
         );
@@ -51,8 +51,8 @@ public class PetFoodQueryService {
         return petFoodQueryRepository.getCount(
                 filterDto.brands(),
                 filterDto.nutritionStandards(),
-                filterDto.mainIngredients(),
-                filterDto.functionalities()
+                filterDto.functionalities(),
+                filterDto.mainIngredients()
         );
     }
 

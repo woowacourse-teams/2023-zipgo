@@ -27,15 +27,17 @@ public class PetFoodQueryRepositoryImpl implements PetFoodQueryRepository {
     public List<PetFood> findPagingPetFoods(
             List<String> brandsName,
             List<String> standards,
-            List<String> primaryIngredientList,
             List<String> functionalityList,
+            List<String> primaryIngredientList,
             Long lastPetFoodId,
             int size
     ) {
-        return queryFactory
+        List<PetFood> petFoods = queryFactory
                 .selectDistinct(petFood)
                 .from(petFood)
-                .join(petFood.brand, brand)
+                .innerJoin(petFood.brand, brand)
+                .fetchJoin()
+                .innerJoin(petFood.petFoodEffects, petFoodEffect)
                 .fetchJoin()
                 .where(
                         isLessThan(lastPetFoodId),
@@ -47,6 +49,8 @@ public class PetFoodQueryRepositoryImpl implements PetFoodQueryRepository {
                 .orderBy(petFood.id.desc())
                 .limit(size)
                 .fetch();
+        System.out.println("petFoods.size = " + petFoods.size());
+        return petFoods;
     }
 
     @Override
@@ -73,7 +77,6 @@ public class PetFoodQueryRepositoryImpl implements PetFoodQueryRepository {
         if (lastPetFoodId == null) {
             return null;
         }
-        System.out.println("isLessThan EXE");
         return petFood.id.loe(lastPetFoodId);
     }
 
@@ -81,8 +84,6 @@ public class PetFoodQueryRepositoryImpl implements PetFoodQueryRepository {
         if (brandsName.isEmpty()) {
             return null;
         }
-        System.out.println("isContainBrand EXE");
-
         return petFood.brand.name.in(brandsName);
     }
 
@@ -92,11 +93,9 @@ public class PetFoodQueryRepositoryImpl implements PetFoodQueryRepository {
         }
         for (String standard : standards) {
             if (standard.equals("미국")) {
-                System.out.println("isMeetStandardCondition 미국 EXE");
                 return petFood.hasStandard.unitedStates.isTrue();
             }
             if (standard.equals("유럽")) {
-                System.out.println("isMeetStandardCondition 유럽 EXE");
                 return petFood.hasStandard.europe.isTrue();
             }
         }
@@ -107,9 +106,7 @@ public class PetFoodQueryRepositoryImpl implements PetFoodQueryRepository {
         if (petFoodEffects.isEmpty()) {
             return null;
         }
-        System.out.println("isContainPetFoodEffect EXE");
-        return petFood.petFoodEffects.any()
-                .description.in(petFoodEffects);
+        return petFoodEffect.description.in(petFoodEffects);
     }
 
     public PetFood findPetFoodWithReviewsByPetFoodId(Long petFoodId) {

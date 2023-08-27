@@ -45,7 +45,7 @@ public class PetFoodEffect {
     }
 
     public boolean isEqualTo(PetFoodOption petFoodOption) {
-        return petFoodOption.equals(petFoodOption);
+        return this.petFoodOption.equals(petFoodOption);
     }
 
 }

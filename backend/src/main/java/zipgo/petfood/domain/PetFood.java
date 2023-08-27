@@ -22,7 +22,6 @@ import zipgo.common.entity.BaseTimeEntity;
 import zipgo.petfood.domain.type.PetFoodOption;
 import zipgo.review.domain.Review;
 
-import static jakarta.persistence.CascadeType.PERSIST;
 import static jakarta.persistence.CascadeType.REMOVE;
 import static jakarta.persistence.FetchType.LAZY;
 
@@ -58,7 +57,7 @@ public class PetFood extends BaseTimeEntity {
     private Reviews reviews;
 
     @Builder.Default
-    @OneToMany(mappedBy = "petFood", orphanRemoval = true, cascade = {PERSIST, REMOVE})
+    @OneToMany(mappedBy = "petFood", orphanRemoval = true, cascade = REMOVE)
     private List<PetFoodEffect> petFoodEffects = new ArrayList<>();
 
     public double calculateRatingAverage() {

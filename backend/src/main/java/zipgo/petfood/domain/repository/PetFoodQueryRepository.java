@@ -8,8 +8,8 @@ public interface PetFoodQueryRepository {
     List<PetFood> findPagingPetFoods(
             List<String> brandsName,
             List<String> standards,
-            List<String> primaryIngredientList,
             List<String> functionalityList,
+            List<String> primaryIngredientList,
             Long lastPetFoodId,
             int size
     );
@@ -17,8 +17,8 @@ public interface PetFoodQueryRepository {
     Long getCount(
             List<String> brandsName,
             List<String> standards,
-            List<String> primaryIngredientList,
-            List<String> functionalityList
+            List<String> functionalityList,
+            List<String> primaryIngredientList
     );
 
     PetFood findPetFoodWithReviewsByPetFoodId(Long petFoodId);
