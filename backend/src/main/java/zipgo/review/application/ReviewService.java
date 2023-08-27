@@ -8,7 +8,6 @@ import zipgo.member.domain.repository.MemberRepository;
 import zipgo.petfood.domain.PetFood;
 import zipgo.petfood.domain.repository.PetFoodRepository;
 import zipgo.review.domain.Review;
-import zipgo.review.domain.repository.HelpfulReactionRepository;
 import zipgo.review.domain.repository.ReviewRepository;
 import zipgo.review.dto.request.CreateReviewRequest;
 import zipgo.review.dto.request.UpdateReviewRequest;
@@ -21,8 +20,6 @@ public class ReviewService {
     private final ReviewRepository reviewRepository;
     private final MemberRepository memberRepository;
     private final PetFoodRepository petFoodRepository;
-
-    private final HelpfulReactionRepository helpfulReactionRepository;
 
     public Long createReview(Long memberId, CreateReviewRequest request) {
         Member member = memberRepository.getById(memberId);
@@ -68,12 +65,10 @@ public class ReviewService {
         reviewRepository.save(review);
     }
 
-
     public void removeHelpfulReaction(Long memberId, Long reviewId) {
-// TODO: 확인
-//        review.removeReactionBy(member);
-
-        helpfulReactionRepository.deleteByReviewIdAndMadeById(reviewId, memberId);
+        Review review = reviewRepository.getById(reviewId);
+        Member member = memberRepository.getById(memberId);
+        review.removeReactionBy(member);
     }
 
 }
