@@ -1,6 +1,7 @@
 package zipgo.review.domain;
 
 import jakarta.persistence.Column;
+import jakarta.persistence.Embedded;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
@@ -24,6 +25,7 @@ import zipgo.member.domain.Member;
 import zipgo.pet.domain.Pet;
 import zipgo.petfood.domain.PetFood;
 import zipgo.review.domain.type.AdverseReactionType;
+import zipgo.review.domain.type.ReviewPetInfo;
 import zipgo.review.domain.type.StoolCondition;
 import zipgo.review.domain.type.TastePreference;
 import zipgo.review.exception.ReviewSelfReactedException;
@@ -52,9 +54,6 @@ public class Review extends BaseTimeEntity {
     @JoinColumn(name = "pet_id")
     private Pet pet;
 
-    @Column(nullable = false)
-    private double weight;
-
     @ManyToOne(fetch = LAZY)
     @JoinColumn(name = "pet_food_id")
     private PetFood petFood;
@@ -65,13 +64,8 @@ public class Review extends BaseTimeEntity {
     @Column(nullable = false)
     private String comment;
 
-    @Enumerated(STRING)
-    @Column(nullable = false)
-    private TastePreference tastePreference;
-
-    @Enumerated(STRING)
-    @Column(nullable = false)
-    private StoolCondition stoolCondition;
+    @Embedded
+    private ReviewPetInfo reviewPetInfo;
 
     @Default
     @OneToMany(mappedBy = "review", orphanRemoval = true, cascade = {PERSIST, REMOVE})
@@ -98,14 +92,6 @@ public class Review extends BaseTimeEntity {
 
     public void updateComment(String comment) {
         this.comment = comment;
-    }
-
-    public void updateTastePreference(String tastePreference) {
-        this.tastePreference = TastePreference.from(tastePreference);
-    }
-
-    public void updateStoolCondition(String stoolCondition) {
-        this.stoolCondition = StoolCondition.from(stoolCondition);
     }
 
     public void validateOwner(Long memberId) {
@@ -155,6 +141,14 @@ public class Review extends BaseTimeEntity {
     public boolean isReactedBy(Long memberId) {
         return helpfulReactions.stream()
                 .anyMatch(reaction -> reaction.getMadeBy().getId().equals(memberId));
+    }
+
+    public void updateStoolCondition(String stoolCondition) {
+        reviewPetInfo.changeStoolCondition(stoolCondition);
+    }
+
+    public void updateTastePreference(String tastePreference) {
+        reviewPetInfo.changeTastePreference(tastePreference);
     }
 
 }

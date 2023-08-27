@@ -23,7 +23,6 @@ import zipgo.pet.domain.AgeGroup;
 import zipgo.pet.domain.Breeds;
 import zipgo.pet.domain.Pet;
 import zipgo.pet.domain.PetSize;
-import zipgo.pet.domain.fixture.PetFixture;
 import zipgo.pet.domain.repository.BreedsRepository;
 import zipgo.pet.domain.repository.PetRepository;
 import zipgo.pet.domain.repository.PetSizeRepository;
@@ -41,7 +40,7 @@ import static java.util.Collections.emptyList;
 import static java.util.Collections.reverseOrder;
 import static org.assertj.core.api.Assertions.assertThat;
 import static zipgo.pet.domain.AgeGroup.PUPPY;
-import static zipgo.pet.domain.fixture.BreedsFixture.견종;;
+import static zipgo.pet.domain.fixture.BreedsFixture.견종;
 import static zipgo.pet.domain.fixture.PetFixture.반려동물;
 import static zipgo.pet.domain.fixture.PetSizeFixture.소형견;
 import static zipgo.petfood.domain.fixture.PetFoodFixture.모든_영양기준_만족_식품;
@@ -52,6 +51,7 @@ import static zipgo.review.domain.type.AdverseReactionType.TEARS;
 import static zipgo.review.domain.type.StoolCondition.SOFT_MOIST;
 import static zipgo.review.domain.type.TastePreference.EATS_VERY_WELL;
 import static zipgo.review.fixture.ReviewFixture.극찬_리뷰_생성;
+import static zipgo.review.fixture.ReviewPetInfoFixture.리뷰_반려동물_정보_생성;
 
 
 @Import(QueryDslTestConfig.class)
@@ -102,7 +102,7 @@ class ReviewQueryRepositoryImplTest {
             Member 멤버 = memberRepository.save(MemberFixture.식별자_없는_멤버("email" + i));
             PetSize 사이즈 = petSizeRepository.save(소형견());
             Breeds 종류 = breedsRepository.save(견종(사이즈));
-            Pet 반려동물 = petRepository.save(PetFixture.반려동물(멤버, 종류));
+            Pet 반려동물 = petRepository.save(반려동물(멤버, 종류));
             Review 리뷰 = 극찬_리뷰_생성(반려동물, 식품, List.of("없어요"));
             리뷰들.add(리뷰);
         }
@@ -144,7 +144,7 @@ class ReviewQueryRepositoryImplTest {
                 Member 멤버 = memberRepository.save(MemberFixture.식별자_없는_멤버("email" + i));
                 PetSize 사이즈 = petSizeRepository.save(소형견());
                 Breeds 종류 = breedsRepository.save(견종(사이즈));
-                Pet 반려동물 = petRepository.save(PetFixture.반려동물(멤버, 종류));
+                Pet 반려동물 = petRepository.save(반려동물(멤버, 종류));
                 Review 리뷰 = 극찬_리뷰_생성(반려동물, 식품, List.of("없어요"));
                 리뷰들.add(리뷰);
             }
@@ -253,7 +253,7 @@ class ReviewQueryRepositoryImplTest {
                 Member 멤버 = memberRepository.save(MemberFixture.식별자_없는_멤버("email" + i));
                 PetSize 사이즈 = petSizeRepository.save(소형견());
                 Breeds 종류 = breedsRepository.save(견종(사이즈));
-                Pet 반려동물 = petRepository.save(PetFixture.반려동물(멤버, 종류));
+                Pet 반려동물 = petRepository.save(반려동물(멤버, 종류));
                 Review 리뷰 = 극찬_리뷰_생성(반려동물, 식품,
                         List.of("없어요"));
                 리뷰들.add(리뷰);
@@ -287,10 +287,15 @@ class ReviewQueryRepositoryImplTest {
                 Member 멤버 = memberRepository.save(MemberFixture.식별자_없는_멤버("email" + i));
                 PetSize 사이즈 = petSizeRepository.save(소형견());
                 Breeds 종류 = breedsRepository.save(견종(사이즈));
-                Pet 반려동물 = petRepository.save(PetFixture.반려동물(멤버, 종류));
-                Review 리뷰 = Review.builder().pet(반려동물).petFood(식품).comment("없어요")
-                        .rating(i + 1).adverseReactions(emptyList()).tastePreference(EATS_VERY_WELL)
-                        .stoolCondition(SOFT_MOIST).build();
+                Pet 반려동물 = petRepository.save(반려동물(멤버, 종류));
+                Review 리뷰 = Review.builder()
+                        .pet(반려동물)
+                        .petFood(식품)
+                        .comment("없어요")
+                        .rating(i + 1)
+                        .adverseReactions(emptyList())
+                        .reviewPetInfo(리뷰_반려동물_정보_생성(EATS_VERY_WELL, SOFT_MOIST))
+                        .build();
                 리뷰들.add(리뷰);
             }
             reviewRepository.saveAll(리뷰들);
@@ -343,10 +348,15 @@ class ReviewQueryRepositoryImplTest {
                 Member 멤버 = memberRepository.save(MemberFixture.식별자_없는_멤버("email" + i));
                 PetSize 사이즈 = petSizeRepository.save(소형견());
                 Breeds 종류 = breedsRepository.save(견종(사이즈));
-                Pet 반려동물 = petRepository.save(PetFixture.반려동물(멤버, 종류));
-                Review 리뷰 = Review.builder().pet(반려동물).petFood(식품).comment("없어요")
-                        .rating(i + 1).adverseReactions(emptyList()).tastePreference(EATS_VERY_WELL)
-                        .stoolCondition(SOFT_MOIST).build();
+                Pet 반려동물 = petRepository.save(반려동물(멤버, 종류));
+                Review 리뷰 = Review.builder()
+                        .pet(반려동물)
+                        .petFood(식품)
+                        .comment("없어요")
+                        .rating(i + 1)
+                        .adverseReactions(emptyList())
+                        .reviewPetInfo(리뷰_반려동물_정보_생성(EATS_VERY_WELL, SOFT_MOIST))
+                        .build();
                 for (int j = 5 - i; j > 0; j--) {
                     Member 다른_멤버 = memberRepository.save(MemberFixture.식별자_없는_멤버("email" + i * j));
                     리뷰.getHelpfulReactions().add(HelpfulReaction.builder().review(리뷰).madeBy(다른_멤버).build());
@@ -409,7 +419,7 @@ class ReviewQueryRepositoryImplTest {
                 Member 멤버 = memberRepository.save(MemberFixture.식별자_없는_멤버("email" + i));
                 PetSize 사이즈 = petSizeRepository.save(소형견());
                 Breeds 종류 = breedsRepository.save(견종(사이즈));
-                Pet 반려동물 = petRepository.save(PetFixture.반려동물(멤버, 종류));
+                Pet 반려동물 = petRepository.save(반려동물(멤버, 종류));
                 Review 리뷰 = 극찬_리뷰_생성(반려동물, 식품, List.of("없어요"));
                 리뷰들.add(리뷰);
             }
@@ -420,10 +430,15 @@ class ReviewQueryRepositoryImplTest {
             List<Review> 리뷰들 = new ArrayList<>();
             for (int i = 0; i < 5; i++) {
                 Member 멤버 = memberRepository.save(MemberFixture.식별자_없는_멤버("email" + i));
-                Pet 반려동물 = petRepository.save(PetFixture.반려동물(멤버, 종류));
-                Review 리뷰 = Review.builder().pet(반려동물).petFood(식품).comment("없어요")
-                        .rating(i + 1).adverseReactions(emptyList()).tastePreference(EATS_VERY_WELL)
-                        .stoolCondition(SOFT_MOIST).build();
+                Pet 반려동물 = petRepository.save(반려동물(멤버, 종류));
+                Review 리뷰 = Review.builder()
+                        .pet(반려동물)
+                        .petFood(식품)
+                        .comment("없어요")
+                        .rating(i + 1)
+                        .adverseReactions(emptyList())
+                        .reviewPetInfo(리뷰_반려동물_정보_생성(EATS_VERY_WELL, SOFT_MOIST))
+                        .build();
                 리뷰들.add(리뷰);
             }
             reviewRepository.saveAll(리뷰들);
@@ -495,7 +510,7 @@ class ReviewQueryRepositoryImplTest {
             for (int i = 0; i < 4; i++) {
                 Member 멤버 = memberRepository.save(MemberFixture.식별자_없는_멤버("email" + i));
                 Breeds 종류 = breedsRepository.save(견종(사이즈));
-                Pet 반려동물 = petRepository.save(PetFixture.반려동물(멤버, 종류));
+                Pet 반려동물 = petRepository.save(반려동물(멤버, 종류));
                 Review 리뷰 = 극찬_리뷰_생성(반려동물, 식품, List.of("없어요"));
                 리뷰들.add(리뷰);
             }
@@ -545,7 +560,7 @@ class ReviewQueryRepositoryImplTest {
                 Member 멤버 = memberRepository.save(MemberFixture.식별자_없는_멤버("email" + i));
                 PetSize 사이즈 = petSizeRepository.save(소형견());
                 Breeds 종류 = breedsRepository.save(견종(사이즈));
-                Pet 반려동물 = petRepository.save(PetFixture.반려동물(멤버, 종류));
+                Pet 반려동물 = petRepository.save(반려동물(멤버, 종류));
                 AdverseReactionType 랜덤_이상반응 = 이상반응.get(i % 4);
                 Review 리뷰 = 극찬_리뷰_생성(반려동물, 식품, List.of(랜덤_이상반응.getDescription()));
                 리뷰들.add(리뷰);
@@ -582,10 +597,15 @@ class ReviewQueryRepositoryImplTest {
                 Member 멤버 = memberRepository.save(MemberFixture.식별자_없는_멤버("email" + i));
                 PetSize 사이즈 = petSizeRepository.save(소형견());
                 Breeds 종류 = breedsRepository.save(견종(사이즈));
-                Pet 반려동물 = petRepository.save(PetFixture.반려동물(멤버, 종류));
-                Review 리뷰 = Review.builder().pet(반려동물).petFood(식품).comment("없어요")
-                        .rating(i + 1).adverseReactions(emptyList()).tastePreference(EATS_VERY_WELL)
-                        .stoolCondition(SOFT_MOIST).build();
+                Pet 반려동물 = petRepository.save(반려동물(멤버, 종류));
+                Review 리뷰 = Review.builder()
+                        .pet(반려동물)
+                        .petFood(식품)
+                        .comment("없어요")
+                        .rating(i + 1)
+                        .adverseReactions(emptyList())
+                        .reviewPetInfo(리뷰_반려동물_정보_생성(EATS_VERY_WELL, SOFT_MOIST))
+                        .build();
                 reviewRepository.save(리뷰);
                 if (new Random().nextInt() % 2 == 0) {
                     리뷰.getHelpfulReactions().add(HelpfulReaction.builder().review(리뷰).madeBy(도움이돼요_누르는_사람).build());

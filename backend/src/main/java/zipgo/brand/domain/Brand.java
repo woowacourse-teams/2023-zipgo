@@ -5,6 +5,7 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
 import jakarta.persistence.OneToMany;
+import java.util.ArrayList;
 import java.util.List;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -49,7 +50,8 @@ public class Brand extends BaseTimeEntity {
     @Column(nullable = false)
     private boolean hasResidentVet;
 
+    @Builder.Default
     @OneToMany(mappedBy = "brand")
-    private List<PetFood> petFoods;
+    private List<PetFood> petFoods = new ArrayList<>();
 
 }

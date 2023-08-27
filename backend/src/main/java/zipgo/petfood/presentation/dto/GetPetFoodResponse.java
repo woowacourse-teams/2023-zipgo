@@ -5,6 +5,9 @@ import java.util.List;
 import zipgo.brand.domain.Brand;
 import zipgo.petfood.domain.HasStandard;
 import zipgo.petfood.domain.PetFood;
+import zipgo.petfood.domain.type.PetFoodOption;
+
+import static zipgo.petfood.domain.type.PetFoodOption.*;
 
 public record GetPetFoodResponse(
         Long id,
@@ -27,13 +30,9 @@ public record GetPetFoodResponse(
                 petFood.getPurchaseLink(),
                 ratingAverage,
                 reviewCount,
-                petFood.getPetFoodPrimaryIngredients().stream()
-                        .map(petFoodPrimaryIngredient -> petFoodPrimaryIngredient.getPrimaryIngredient().getName())
-                        .toList(),
+                petFood.getPetFoodEffectsBy(PRIMARY_INGREDIENT),
                 NutrientStandardResponse.from(petFood.getHasStandard()),
-                petFood.getPetFoodFunctionalities().stream()
-                        .map(petFoodFunctionality -> petFoodFunctionality.getFunctionality().getName())
-                        .toList(),
+                petFood.getPetFoodEffectsBy(FUNCTIONALITY),
                 PetFoodBrandResponse.from(petFood.getBrand())
         );
     }

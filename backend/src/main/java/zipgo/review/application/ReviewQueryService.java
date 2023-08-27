@@ -152,7 +152,7 @@ public class ReviewQueryService {
     private List<SummaryElement> summarizeTastePreference(List<Review> reviews, int reviewSize) {
         List<SummaryElement> tastePreference = new ArrayList<>();
         Map<TastePreference, List<Review>> groupByTastePreference = reviews.stream()
-                .collect(Collectors.groupingBy(Review::getTastePreference));
+                .collect(Collectors.groupingBy(review -> review.getReviewPetInfo().getTastePreference()));
 
         TastePreference[] values = TastePreference.values();
         for (TastePreference value : values) {
@@ -174,7 +174,7 @@ public class ReviewQueryService {
     private List<SummaryElement> summarizeStoolCondition(List<Review> reviews, int reviewSize) {
         List<SummaryElement> stoolCondition = new ArrayList<>();
         Map<StoolCondition, List<Review>> groupByStoolCondition = reviews.stream()
-                .collect(Collectors.groupingBy(Review::getStoolCondition));
+                .collect(Collectors.groupingBy(review -> review.getReviewPetInfo().getStoolCondition()));
 
         StoolCondition[] values = StoolCondition.values();
         for (StoolCondition value : values) {

@@ -20,8 +20,10 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import zipgo.brand.domain.Brand;
 import zipgo.common.entity.BaseTimeEntity;
+import zipgo.petfood.domain.type.PetFoodOption;
 import zipgo.review.domain.Review;
 
+import static jakarta.persistence.CascadeType.PERSIST;
 import static jakarta.persistence.CascadeType.REMOVE;
 import static jakarta.persistence.FetchType.LAZY;
 
@@ -47,22 +49,18 @@ public class PetFood extends BaseTimeEntity {
     @Column(length = 2048)
     private String imageUrl;
 
+    @ManyToOne(fetch = LAZY, optional = false)
+    private Brand brand;
+
     @Embedded
     private HasStandard hasStandard;
 
     @Embedded
     private Reviews reviews;
 
-    @ManyToOne(fetch = LAZY, optional = false)
-    private Brand brand;
-
     @Builder.Default
-    @OneToMany(mappedBy = "petFood", cascade = {CascadeType.PERSIST, REMOVE})
-    private List<PetFoodPrimaryIngredient> petFoodPrimaryIngredients = new ArrayList<>();
-
-    @Builder.Default
-    @OneToMany(mappedBy = "petFood", cascade = {CascadeType.PERSIST, REMOVE})
-    private List<PetFoodFunctionality> petFoodFunctionalities = new ArrayList<>();
+    @OneToMany(mappedBy = "petFood", orphanRemoval = true, cascade = {PERSIST, REMOVE})
+    private List<PetFoodEffect> petFoodEffects = new ArrayList<>();
 
     public double calculateRatingAverage() {
         return reviews.calculateRatingAverage();
@@ -72,16 +70,19 @@ public class PetFood extends BaseTimeEntity {
         return reviews.countReviews();
     }
 
-    public void addPetFoodFunctionality(PetFoodFunctionality petFoodFunctionality) {
-        this.petFoodFunctionalities.add(petFoodFunctionality);
-    }
-
-    public void addPetFoodPrimaryIngredient(PetFoodPrimaryIngredient petFoodPrimaryIngredient) {
-        this.petFoodPrimaryIngredients.add(petFoodPrimaryIngredient);
-    }
-
     public void addReview(Review review) {
         this.reviews.addReview(review);
+    }
+
+    public List<String> getPetFoodEffectsBy(PetFoodOption petFoodOption) {
+        return petFoodEffects.stream()
+                .filter(petFoodEffect -> petFoodEffect.isEqualTo(petFoodOption))
+                .map(petFoodEffect -> petFoodEffect.getDescription())
+                .toList();
+    }
+
+    public void addPetFoodEffect(PetFoodEffect petFoodEffect) {
+        this.petFoodEffects.add(petFoodEffect);
     }
 
 }

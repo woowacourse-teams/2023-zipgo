@@ -6,16 +6,16 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import zipgo.brand.domain.Brand;
 import zipgo.brand.domain.repository.BrandRepository;
-import zipgo.petfood.domain.Functionality;
 import zipgo.petfood.domain.PetFood;
-import zipgo.petfood.domain.PrimaryIngredient;
-import zipgo.petfood.domain.repository.FunctionalityRepository;
+import zipgo.petfood.domain.PetFoodEffect;
 import zipgo.petfood.domain.repository.PetFoodRepository;
-import zipgo.petfood.domain.repository.PrimaryIngredientRepository;
 import zipgo.petfood.infra.persist.PetFoodQueryRepositoryImpl;
 import zipgo.petfood.presentation.dto.FilterRequest;
 import zipgo.petfood.presentation.dto.FilterResponse;
 import zipgo.petfood.presentation.dto.GetPetFoodResponse;
+
+import static zipgo.petfood.domain.type.PetFoodOption.FUNCTIONALITY;
+import static zipgo.petfood.domain.type.PetFoodOption.PRIMARY_INGREDIENT;
 
 
 @Service
@@ -26,8 +26,6 @@ public class PetFoodQueryService {
     private final PetFoodRepository petFoodRepository;
     private final PetFoodQueryRepositoryImpl petFoodQueryRepository;
     private final BrandRepository brandRepository;
-    private final FunctionalityRepository functionalityRepository;
-    private final PrimaryIngredientRepository primaryIngredientRepository;
 
     public List<PetFood> getPetFoodsByFilters(
             FilterRequest filterDto,
@@ -60,9 +58,9 @@ public class PetFoodQueryService {
 
     public FilterResponse getMetadataForFilter() {
         List<Brand> brands = brandRepository.findAll();
-        List<PrimaryIngredient> primaryIngredients = primaryIngredientRepository.findDistinctPrimaryIngredients();
-        List<Functionality> functionalities = functionalityRepository.findDistinctFunctionalities();
-        return FilterResponse.of(brands, primaryIngredients, functionalities);
+        List<PetFoodEffect> functionalities = petFoodQueryRepository.findPetFoodEffectsBy(FUNCTIONALITY);
+        List<PetFoodEffect> primaryIngredients = petFoodQueryRepository.findPetFoodEffectsBy(PRIMARY_INGREDIENT);
+        return FilterResponse.of(brands, functionalities, primaryIngredients);
     }
 
 }

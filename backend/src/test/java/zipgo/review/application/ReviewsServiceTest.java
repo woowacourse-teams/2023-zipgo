@@ -106,8 +106,8 @@ class ReviewsServiceTest extends ServiceTest {
                 () -> assertThat(reviews).hasSize(1),
                 () -> assertThat(review.getRating()).isEqualTo(5),
                 () -> assertThat(review.getComment()).isEqualTo("우리 아이랑 너무 잘 맞아요!"),
-                () -> assertThat(review.getTastePreference()).isEqualTo(EATS_VERY_WELL),
-                () -> assertThat(review.getStoolCondition()).isEqualTo(SOFT_MOIST),
+                () -> assertThat(review.getReviewPetInfo().getTastePreference()).isEqualTo(EATS_VERY_WELL),
+                () -> assertThat(review.getReviewPetInfo().getStoolCondition()).isEqualTo(SOFT_MOIST),
                 () -> assertThat(review.getAdverseReactions()).isEmpty()
         );
     }
@@ -186,8 +186,8 @@ class ReviewsServiceTest extends ServiceTest {
         assertAll(
                 () -> assertThat(저장된_리뷰.getRating()).isEqualTo(4),
                 () -> assertThat(저장된_리뷰.getComment()).isEqualTo("change comment"),
-                () -> assertThat(저장된_리뷰.getTastePreference()).isEqualTo(EATS_MODERATELY),
-                () -> assertThat(저장된_리뷰.getStoolCondition()).isEqualTo(UNCERTAIN),
+                () -> assertThat(저장된_리뷰.getReviewPetInfo().getTastePreference()).isEqualTo(EATS_MODERATELY),
+                () -> assertThat(저장된_리뷰.getReviewPetInfo().getStoolCondition()).isEqualTo(UNCERTAIN),
                 () -> assertThat(저장된_리뷰.getAdverseReactions()).hasSize(1)
         );
     }
