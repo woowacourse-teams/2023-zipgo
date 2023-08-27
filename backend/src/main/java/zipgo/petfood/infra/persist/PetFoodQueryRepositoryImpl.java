@@ -33,7 +33,7 @@ public class PetFoodQueryRepositoryImpl implements PetFoodQueryRepository {
             Long lastPetFoodId,
             int size
     ) {
-        List<PetFood> fetch = queryFactory
+        return queryFactory
                 .selectDistinct(petFood)
                 .from(petFood)
                 .innerJoin(petFood.brand, brand)
@@ -50,8 +50,6 @@ public class PetFoodQueryRepositoryImpl implements PetFoodQueryRepository {
                 .orderBy(petFood.id.desc())
                 .limit(size)
                 .fetch();
-        System.out.println("fetch.size() = " + fetch.size());
-        return fetch;
     }
 
     @Override
