@@ -5,9 +5,9 @@ import java.util.List;
 import zipgo.brand.domain.Brand;
 import zipgo.petfood.domain.HasStandard;
 import zipgo.petfood.domain.PetFood;
-import zipgo.petfood.domain.type.PetFoodOption;
 
-import static zipgo.petfood.domain.type.PetFoodOption.*;
+import static zipgo.petfood.domain.type.PetFoodOption.FUNCTIONALITY;
+import static zipgo.petfood.domain.type.PetFoodOption.PRIMARY_INGREDIENT;
 
 public record GetPetFoodResponse(
         Long id,

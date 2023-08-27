@@ -8,7 +8,6 @@ import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 import zipgo.petfood.domain.PetFood;
 import zipgo.petfood.domain.PetFoodEffect;
-import zipgo.petfood.domain.QPetFoodEffect;
 import zipgo.petfood.domain.repository.PetFoodQueryRepository;
 import zipgo.petfood.domain.type.PetFoodOption;
 

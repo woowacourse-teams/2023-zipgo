@@ -13,7 +13,7 @@ import zipgo.review.exception.ReviewSelfReactedException;
 import static java.util.Collections.emptyList;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThatThrownBy;
-import static zipgo.review.fixture.ReviewFixture.*;
+import static zipgo.review.fixture.ReviewFixture.극찬_리뷰_생성;
 
 class ReviewTest {
 

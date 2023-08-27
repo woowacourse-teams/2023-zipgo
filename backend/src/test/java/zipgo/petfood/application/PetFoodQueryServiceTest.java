@@ -25,7 +25,6 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertAll;
 import static zipgo.brand.domain.fixture.BrandFixture.아카나_식품_브랜드_생성;
 import static zipgo.brand.domain.fixture.BrandFixture.오리젠_식품_브랜드_생성;
-import static zipgo.brand.domain.fixture.BrandFixture.인스팅트_식품_브랜드_생성;
 import static zipgo.brand.domain.fixture.BrandFixture.퓨리나_식품_브랜드_생성;
 import static zipgo.petfood.domain.fixture.PetFoodEffectFixture.기능성_다이어트;
 import static zipgo.petfood.domain.fixture.PetFoodEffectFixture.기능성_짱짱;

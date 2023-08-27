@@ -3,7 +3,6 @@ package zipgo.review.domain;
 import jakarta.persistence.Column;
 import jakarta.persistence.Embedded;
 import jakarta.persistence.Entity;
-import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -26,14 +25,11 @@ import zipgo.pet.domain.Pet;
 import zipgo.petfood.domain.PetFood;
 import zipgo.review.domain.type.AdverseReactionType;
 import zipgo.review.domain.type.ReviewPetInfo;
-import zipgo.review.domain.type.StoolCondition;
-import zipgo.review.domain.type.TastePreference;
 import zipgo.review.exception.ReviewSelfReactedException;
 
 import static jakarta.persistence.CascadeType.ALL;
 import static jakarta.persistence.CascadeType.PERSIST;
 import static jakarta.persistence.CascadeType.REMOVE;
-import static jakarta.persistence.EnumType.STRING;
 import static jakarta.persistence.FetchType.LAZY;
 import static lombok.AccessLevel.PROTECTED;
 
