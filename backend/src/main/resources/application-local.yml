@@ -1,57 +1,44 @@
 ---
 # port
 server:
-  port: 8081
-
+  port: 8080
 ---
 # database
 spring:
-  config:
-    import: classpath:/env.properties
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
-    url: ${JDBC_URL}
-    username: ${DB_USERNAME}
-    password: ${DB_PASSWORD}
-
----
-# jpa
-spring:
+    url: jdbc:mysql://localhost:13306/zipgo-mysql
+    username: root
+    password: root
+  # jpa
   jpa:
     database: mysql
     database-platform: org.hibernate.dialect.MySQL57Dialect
     generate-ddl: true
     hibernate:
-      ddl-auto: none
+      ddl-auto: update
     properties:
       hibernate:
         format_sql: true
         show_sql: true
-
+        default_batch_fetch_size: 30
+    #    open-in-view: false
+    defer-datasource-initialization: true
   sql:
     init:
       mode: never
-
----
-# OAUTH
+jwt:
+  secret-key: 027eb3f4aa36e178497290da0fa573ee
+  expire-length: 60480000000000000
 oauth:
   kakao:
-    client-id: ${CLIENT_ID}
-    redirect-uri: ${REDIRECT_URI}
-    client-secret: ${CLIENT_SECRET}
-
+    client-id: 027eb3f4aa36e178497290da0fa573ee
+    redirect-uri: http://localhost:3000/login
 ---
-# jwt
-jwt:
-  secret-key: ${ZIPGO_SECRET_KEY}
-  expire-length: ${EXPIRE_LENGTH}
-
----
-# aws
 cloud:
   aws:
     s3:
-      bucket: ${BUCKET_NAME}
-      zipgo-directory-name: ${ZIPGO_DIRECTORY_NAME}
-      pet-image-directory: ${PET_IMAGE_DIRECTORY}
-      image-url: ${DEV_SERVER_IMAGE_URL}
+      bucket: 2023-team-project
+      zipgo-directory-name: 2023-zipgo
+      pet-image-directory: prod/pet-image/
+      image-url: https://image.zipgo.pet/

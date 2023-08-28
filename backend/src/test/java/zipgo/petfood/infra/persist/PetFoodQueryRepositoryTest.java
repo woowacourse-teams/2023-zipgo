@@ -61,7 +61,10 @@ class PetFoodQueryRepositoryTest {
         PetFoodEffect 기능성_다이어트 = 기능성_다이어트();
 
         식품_효과_연관관계_매핑(모든_영양기준_만족_식품, 기능성_튼튼);
+
+        식품_효과_연관관계_매핑(미국_영양기준_만족_식품, 기능성_튼튼);
         식품_효과_연관관계_매핑(미국_영양기준_만족_식품, 기능성_짱짱);
+
         식품_효과_연관관계_매핑(유럽_영양기준_만족_식품, 기능성_다이어트);
 
         PetFoodEffect 원재료_소고기 = 원재료_소고기();
@@ -78,6 +81,37 @@ class PetFoodQueryRepositoryTest {
     }
 
     @Test
+    void 식품_효과가_여러개일때_모든_조건에_맞는_식품을_필터링한다() {
+        // given
+        List<PetFood> allFoods = petFoodRepository.findAll();
+        Long lastPetFoodId = allFoods.get(allFoods.size() - 1).getId();
+
+        List<String> brandsName = List.of("오리젠");
+        List<String> standards = List.of("미국");
+        List<String> primaryIngredientList = List.of("튼튼", "짱짱");
+        List<String> functionalityList = List.of("돼지고기");
+
+        // when
+        List<PetFood> petFoods = petFoodQueryRepository.findPagingPetFoods(
+                brandsName,
+                standards,
+                primaryIngredientList,
+                functionalityList,
+                lastPetFoodId,
+                20
+        );
+
+        // then
+        assertAll(
+                () -> assertThat(petFoods).hasSize(1),
+                () -> assertThat(petFoods).extracting(PetFood::getName)
+                        .contains("미국 영양기준 만족 식품"),
+                () -> assertThat(petFoods).extracting(petFood -> petFood.getBrand().getName())
+                        .contains("오리젠")
+        );
+    }
+
+    @Test
     void 모든_조건에_맞는_식품을_필터링한다() {
         // given
         List<PetFood> allFoods = petFoodRepository.findAll();
@@ -85,7 +119,7 @@ class PetFoodQueryRepositoryTest {
 
         List<String> brandsName = List.of("오리젠");
         List<String> standards = List.of("미국");
-        List<String> primaryIngredientList = List.of("짱짱");
+        List<String> primaryIngredientList = List.of("짱짱", "튼튼");
         List<String> functionalityList = List.of("돼지고기");
 
         // when
