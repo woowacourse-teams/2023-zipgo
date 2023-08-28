@@ -1,7 +1,9 @@
 package zipgo.petfood.infra.persist;
 
 import java.util.List;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.DisplayNameGeneration;
 import org.junit.jupiter.api.DisplayNameGenerator;
 import org.junit.jupiter.api.Test;
@@ -13,9 +15,12 @@ import zipgo.brand.domain.repository.BrandRepository;
 import zipgo.petfood.domain.PetFood;
 import zipgo.petfood.domain.PetFoodEffect;
 import zipgo.petfood.domain.repository.PetFoodRepository;
+import zipgo.petfood.domain.type.PetFoodOption;
 
 import static java.util.Collections.EMPTY_LIST;
+import static org.assertj.core.api.Assertions.*;
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.*;
 import static org.junit.jupiter.api.Assertions.assertAll;
 import static zipgo.brand.domain.fixture.BrandFixture.아카나_식품_브랜드_생성;
 import static zipgo.brand.domain.fixture.BrandFixture.오리젠_식품_브랜드_생성;
@@ -30,6 +35,7 @@ import static zipgo.petfood.domain.fixture.PetFoodEffectFixture.원재료_소고
 import static zipgo.petfood.domain.fixture.PetFoodFixture.모든_영양기준_만족_식품;
 import static zipgo.petfood.domain.fixture.PetFoodFixture.미국_영양기준_만족_식품;
 import static zipgo.petfood.domain.fixture.PetFoodFixture.유럽_영양기준_만족_식품;
+import static zipgo.petfood.domain.type.PetFoodOption.*;
 
 @Transactional
 @SuppressWarnings("NonAsciiCharacters")
@@ -195,6 +201,43 @@ class PetFoodQueryRepositoryTest {
 
         // then
         assertThat(petFoods).hasSize(3);
+    }
+
+    @Test
+    void 사료_아이디와_일치하는_사료를_조회한다() {
+        // given
+        List<PetFood> allFoods = petFoodRepository.findAll();
+        Long lastPetFoodId = allFoods.get(allFoods.size() - 1).getId();
+        
+        // when
+        PetFood petFood = petFoodQueryRepository.findPetFoodWithReviewsByPetFoodId(lastPetFoodId);
+
+        // then
+        assertThat(petFood.getId()).isEqualTo(lastPetFoodId);
+    }
+
+    @Test
+    void 식품_기능성을_조회한다() {
+        // when
+        List<PetFoodEffect> petFoodEffectsBy = petFoodQueryRepository.findPetFoodEffectsBy(FUNCTIONALITY);
+
+        // then
+        for (PetFoodEffect petFoodEffect : petFoodEffectsBy) {
+            assertThat(petFoodEffect.getPetFoodOption())
+                    .isEqualTo(FUNCTIONALITY);
+        }
+    }
+
+    @Test
+    void 식품_주원료을_조회한다() {
+        // when
+        List<PetFoodEffect> petFoodEffectsBy = petFoodQueryRepository.findPetFoodEffectsBy(PRIMARY_INGREDIENT);
+
+        // then
+        for (PetFoodEffect petFoodEffect : petFoodEffectsBy) {
+            assertThat(petFoodEffect.getPetFoodOption())
+                    .isEqualTo(PRIMARY_INGREDIENT);
+        }
     }
 
 }
