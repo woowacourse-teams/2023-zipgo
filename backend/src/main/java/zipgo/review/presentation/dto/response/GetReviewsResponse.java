@@ -1,4 +1,4 @@
-package zipgo.review.dto.response;
+package zipgo.review.presentation.dto.response;
 
 import java.util.List;
 import java.util.Map;
