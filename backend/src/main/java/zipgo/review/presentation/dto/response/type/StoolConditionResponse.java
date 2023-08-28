@@ -7,7 +7,7 @@ public record StoolConditionResponse(
         int percentage
 ) {
 
-    public static StoolConditionResponse from(StoolCondition stoolCondition, int percentage) {
+    public static StoolConditionResponse of(StoolCondition stoolCondition, int percentage) {
         return new StoolConditionResponse(stoolCondition.getDescription(), percentage);
     }
 

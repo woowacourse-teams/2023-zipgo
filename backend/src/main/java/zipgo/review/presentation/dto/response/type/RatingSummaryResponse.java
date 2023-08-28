@@ -7,4 +7,8 @@ public record RatingSummaryResponse(
         List<RatingInfoResponse> rating
 ) {
 
+    public static RatingSummaryResponse of(double averageRating, List<RatingInfoResponse> ratingInfos) {
+        return new RatingSummaryResponse(averageRating, ratingInfos);
+    }
+
 }

@@ -5,4 +5,8 @@ public record RatingInfoResponse(
         int percentage
 ) {
 
+    public static RatingInfoResponse of(Integer name, int percentage) {
+        return new RatingInfoResponse(String.valueOf(name), percentage);
+    }
+
 }

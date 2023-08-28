@@ -14,6 +14,8 @@ public enum AdverseReactionType {
     LICKING_PAWS("발을 핥아요"),
     NONE("없어요");
 
+    private static final Integer PERCENTAGE = 100;
+
     private String description;
 
     AdverseReactionType(String description) {
@@ -25,6 +27,10 @@ public enum AdverseReactionType {
                 .filter(value -> value.getDescription().equals(tastePreference))
                 .findAny()
                 .orElseThrow(AdverseReactionException.NotFound::new);
+    }
+
+    public static int getDistributionPercentage(int total, long count) {
+        return (int) (count * PERCENTAGE / total);
     }
 
 }

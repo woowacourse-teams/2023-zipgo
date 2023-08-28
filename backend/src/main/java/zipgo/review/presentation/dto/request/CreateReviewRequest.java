@@ -42,7 +42,7 @@ public record CreateReviewRequest(
         return Review.builder()
                 .pet(pet)
                 .petFood(petFood)
-                .rating(rating())
+                .rating(rating)
                 .comment(comment)
                 .reviewPetInfo(reviewPetInfo)
                 .build();

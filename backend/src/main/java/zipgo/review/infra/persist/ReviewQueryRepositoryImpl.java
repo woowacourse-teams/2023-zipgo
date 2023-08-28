@@ -139,7 +139,6 @@ public class ReviewQueryRepositoryImpl implements ReviewQueryRepository {
 
     @Override
     public List<ReviewHelpfulReaction> findReviewWithHelpfulReactions(List<Long> reviewIds, Long memberId) {
-
         List<Long> reviewIdsReactedByMember = findReviewIdsReactedBy(reviewIds, memberId);
         List<Tuple> reviewIdToReactionCount = queryFactory
                 .select(review.id, review.helpfulReactions.size())
@@ -148,6 +147,13 @@ public class ReviewQueryRepositoryImpl implements ReviewQueryRepository {
                 .fetch();
 
         return collect(reviewIdsReactedByMember, reviewIdToReactionCount);
+    }
+
+    @Override
+    public List<Review> findReviewsBy(Long petFoodId) {
+            return queryFactory.selectFrom(review)
+                    .where(equalsPetFoodId(petFoodId))
+                    .fetch();
     }
 
     private List<Long> findReviewIdsReactedBy(List<Long> reviewIds, Long memberId) {

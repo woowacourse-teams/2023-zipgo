@@ -8,7 +8,7 @@ import zipgo.review.domain.type.TastePreference;
 
 public record FindReviewsQueryResponse(
         Long id,
-        int rating,
+        Integer rating,
         LocalDateTime date,
         String comment,
         TastePreference tastePreference,

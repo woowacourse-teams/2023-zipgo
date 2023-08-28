@@ -7,7 +7,7 @@ public record AdverseReactionResponse(
         int percentage
 ) {
 
-    public static AdverseReactionResponse from(AdverseReactionType adverseReactionType, int percentage) {
+    public static AdverseReactionResponse of(AdverseReactionType adverseReactionType, int percentage) {
         return new AdverseReactionResponse(adverseReactionType.getDescription(), percentage);
     }
 
