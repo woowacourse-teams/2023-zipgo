@@ -101,7 +101,8 @@ class AuthControllerMockArgumentResolverTest {
                 ),
                 responseFields(
                         fieldWithPath("name").description("사용자 이름").type(JsonFieldType.STRING),
-                        fieldWithPath("profileImageUrl").description("사용자 프로필 사진").description("사용자 프로필 사진").type(JsonFieldType.STRING),
+                        fieldWithPath("profileImageUrl").description("사용자 프로필 사진").description("사용자 프로필 사진")
+                                .type(JsonFieldType.STRING),
                         fieldWithPath("email").description("사용자 이메일").type(JsonFieldType.STRING),
                         fieldWithPath("hasPet").description("반려동물 등록 여부").type(JsonFieldType.BOOLEAN),
                         fieldWithPath("pets[].id").description("사용자 반려동물 식별자"),

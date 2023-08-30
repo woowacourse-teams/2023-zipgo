@@ -35,6 +35,7 @@ import static zipgo.brand.domain.fixture.BrandFixture.아카나_식품_브랜드
 import static zipgo.pet.domain.fixture.BreedsFixture.견종;
 import static zipgo.pet.domain.fixture.PetFixture.반려동물;
 import static zipgo.pet.domain.fixture.PetSizeFixture.소형견;
+import static zipgo.petfood.domain.fixture.PetFoodEffectFixture.기능성_다이어트;
 import static zipgo.petfood.domain.fixture.PetFoodFixture.모든_영양기준_만족_식품;
 import static zipgo.review.domain.type.AdverseReactionType.NONE;
 import static zipgo.review.domain.type.StoolCondition.SOFT_MOIST;
@@ -78,7 +79,7 @@ class ReviewQueryServiceTest extends QueryServiceTest {
         @Test
         void 사이즈로_리뷰_목록_조회() {
             //given
-            PetFood 식품 = petFoodRepository.save(모든_영양기준_만족_식품(브랜드_조회하기()));
+            PetFood 식품 = petFoodRepository.save(모든_영양기준_만족_식품(브랜드_조회하기(), List.of(기능성_다이어트())));
             Review 리뷰1 = 리뷰1_생성(식품);
             Review 리뷰2 = 리뷰2_생성(식품);
             GetReviewResponse 리뷰1_dto = GetReviewResponse.from(리뷰1, null);
@@ -131,7 +132,7 @@ class ReviewQueryServiceTest extends QueryServiceTest {
     @Test
     void getReview() {
         //given
-        PetFood 식품 = 모든_영양기준_만족_식품(브랜드_조회하기());
+        PetFood 식품 = 모든_영양기준_만족_식품(브랜드_조회하기(), List.of(기능성_다이어트()));
         petFoodRepository.save(식품);
         Member 멤버 = memberRepository.save(무민());
         PetSize 사이즈 = petSizeRepository.save(소형견());
@@ -183,7 +184,7 @@ class ReviewQueryServiceTest extends QueryServiceTest {
         @Test
         void 리뷰_요약을_조회할_수_있다() {
             //given
-            PetFood 식품 = petFoodRepository.save(모든_영양기준_만족_식품(브랜드_조회하기()));
+            PetFood 식품 = petFoodRepository.save(모든_영양기준_만족_식품(브랜드_조회하기(), List.of(기능성_다이어트())));
             리뷰1_생성(식품);
             리뷰2_생성(식품);
 

@@ -1,16 +1,11 @@
 package zipgo.petfood.domain.fixture;
 
-import zipgo.petfood.domain.PetFood;
 import zipgo.petfood.domain.PetFoodEffect;
 
 import static zipgo.petfood.domain.type.PetFoodOption.FUNCTIONALITY;
 import static zipgo.petfood.domain.type.PetFoodOption.PRIMARY_INGREDIENT;
 
 public class PetFoodEffectFixture {
-
-    public static void 식품_효과_연관관계_매핑(PetFood petFood, PetFoodEffect petFoodEffect) {
-        petFoodEffect.changeRelation(petFood);
-    }
 
     public static PetFoodEffect 기능성_튼튼() {
         return PetFoodEffect.builder()

@@ -11,9 +11,7 @@ import zipgo.brand.domain.Brand;
 import zipgo.brand.domain.repository.BrandRepository;
 import zipgo.common.service.ServiceTest;
 import zipgo.petfood.domain.PetFood;
-import zipgo.petfood.domain.PetFoodEffect;
 import zipgo.petfood.domain.repository.PetFoodRepository;
-import zipgo.petfood.domain.type.PetFoodOption;
 import zipgo.petfood.presentation.dto.FilterRequest;
 import zipgo.petfood.presentation.dto.FilterResponse;
 import zipgo.petfood.presentation.dto.FilterResponse.BrandResponse;
@@ -29,13 +27,13 @@ import static zipgo.brand.domain.fixture.BrandFixture.퓨리나_식품_브랜드
 import static zipgo.petfood.domain.fixture.PetFoodEffectFixture.기능성_다이어트;
 import static zipgo.petfood.domain.fixture.PetFoodEffectFixture.기능성_짱짱;
 import static zipgo.petfood.domain.fixture.PetFoodEffectFixture.기능성_튼튼;
-import static zipgo.petfood.domain.fixture.PetFoodEffectFixture.식품_효과_연관관계_매핑;
 import static zipgo.petfood.domain.fixture.PetFoodEffectFixture.원재료_닭고기;
 import static zipgo.petfood.domain.fixture.PetFoodEffectFixture.원재료_돼지고기;
 import static zipgo.petfood.domain.fixture.PetFoodEffectFixture.원재료_소고기;
 import static zipgo.petfood.domain.fixture.PetFoodFixture.모든_영양기준_만족_식품;
 import static zipgo.petfood.domain.fixture.PetFoodFixture.미국_영양기준_만족_식품;
 import static zipgo.petfood.domain.fixture.PetFoodFixture.유럽_영양기준_만족_식품;
+import static zipgo.petfood.domain.type.PetFoodOption.FUNCTIONALITY;
 import static zipgo.petfood.presentation.dto.FilterResponse.NutrientStandardResponse;
 import static zipgo.petfood.presentation.dto.FilterResponse.PrimaryIngredientResponse;
 
@@ -58,25 +56,9 @@ class PetFoodQueryServiceTest extends ServiceTest {
         Brand 오리젠 = brandRepository.save(오리젠_식품_브랜드_생성());
         Brand 퓨리나 = brandRepository.save(퓨리나_식품_브랜드_생성());
 
-        PetFood 모든_영양기준_만족_식품 = 모든_영양기준_만족_식품(아카나);
-        PetFood 미국_영양기준_만족_식품 = 미국_영양기준_만족_식품(오리젠);
-        PetFood 유럽_영양기준_만족_식품 = 유럽_영양기준_만족_식품(퓨리나);
-
-        PetFoodEffect 기능성_튼튼 = 기능성_튼튼();
-        PetFoodEffect 기능성_짱짱 = 기능성_짱짱();
-        PetFoodEffect 기능성_다이어트 = 기능성_다이어트();
-
-        식품_효과_연관관계_매핑(모든_영양기준_만족_식품, 기능성_튼튼);
-        식품_효과_연관관계_매핑(미국_영양기준_만족_식품, 기능성_짱짱);
-        식품_효과_연관관계_매핑(유럽_영양기준_만족_식품, 기능성_다이어트);
-
-        PetFoodEffect 원재료_소고기 = 원재료_소고기();
-        PetFoodEffect 원재료_돼지고기 = 원재료_돼지고기();
-        PetFoodEffect 원재료_닭고기 = 원재료_닭고기();
-
-        식품_효과_연관관계_매핑(모든_영양기준_만족_식품, 원재료_소고기);
-        식품_효과_연관관계_매핑(미국_영양기준_만족_식품, 원재료_돼지고기);
-        식품_효과_연관관계_매핑(유럽_영양기준_만족_식품, 원재료_닭고기);
+        PetFood 모든_영양기준_만족_식품 = 모든_영양기준_만족_식품(아카나, List.of(기능성_튼튼(), 원재료_소고기()));
+        PetFood 미국_영양기준_만족_식품 = 미국_영양기준_만족_식품(오리젠, List.of(기능성_짱짱(), 원재료_돼지고기()));
+        PetFood 유럽_영양기준_만족_식품 = 유럽_영양기준_만족_식품(퓨리나, List.of(기능성_다이어트(), 원재료_닭고기()));
 
         petFoodRepository.save(모든_영양기준_만족_식품);
         petFoodRepository.save(미국_영양기준_만족_식품);
@@ -206,12 +188,11 @@ class PetFoodQueryServiceTest extends ServiceTest {
             assertAll(
                     () -> assertThat(petFoods).hasSize(1),
                     () -> assertThat(petFoods).extracting(
-                                    petFood -> petFood.getPetFoodEffects().get(0).getDescription())
-                            .isEqualTo(List.of("튼튼"))
+                                    petFood -> petFood.getPetFoodEffectsBy(FUNCTIONALITY))
+                            .contains(List.of("튼튼"))
             );
         }
 
-        // 아카나, 미국, 튼튼, 소고기
         @Test
         void 모든_필터를_만족하는_식품만_반환한다() {
             //given
@@ -311,7 +292,7 @@ class PetFoodQueryServiceTest extends ServiceTest {
         void 식품_상세조회할수_있다() {
             //given
             Brand 브랜드 = brandRepository.findAll().get(0);
-            PetFood 테스트용_식품 = 모든_영양기준_만족_식품(브랜드);
+            PetFood 테스트용_식품 = 모든_영양기준_만족_식품(브랜드, List.of(기능성_튼튼()));
             Long 아이디 = petFoodRepository.save(테스트용_식품).getId();
 
             //when
@@ -371,7 +352,7 @@ class PetFoodQueryServiceTest extends ServiceTest {
         for (PetFood petFood : petFoods) {
             long count = petFood.getPetFoodEffects().stream()
                     .map(petFoodEffect -> {
-                        if (petFoodEffect.getPetFoodOption().equals(PetFoodOption.FUNCTIONALITY)) {
+                        if (petFoodEffect.getPetFoodOption().equals(FUNCTIONALITY)) {
                             return petFoodEffect.getDescription().equals(functionality);
                         }
                         return petFoodEffect.getDescription().equals(primaryIngredient);

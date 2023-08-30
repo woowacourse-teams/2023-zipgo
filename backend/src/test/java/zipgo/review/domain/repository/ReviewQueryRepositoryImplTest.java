@@ -43,6 +43,7 @@ import static zipgo.pet.domain.AgeGroup.PUPPY;
 import static zipgo.pet.domain.fixture.BreedsFixture.견종;
 import static zipgo.pet.domain.fixture.PetFixture.반려동물;
 import static zipgo.pet.domain.fixture.PetSizeFixture.소형견;
+import static zipgo.petfood.domain.fixture.PetFoodEffectFixture.기능성_다이어트;
 import static zipgo.petfood.domain.fixture.PetFoodFixture.모든_영양기준_만족_식품;
 import static zipgo.review.domain.type.AdverseReactionType.FRIZZY_FUR;
 import static zipgo.review.domain.type.AdverseReactionType.NONE;
@@ -92,7 +93,7 @@ class ReviewQueryRepositoryImplTest {
                 .hasResearchCenter(true)
                 .hasResidentVet(false)
                 .build());
-        PetFood 식품 = petFoodRepository.save(모든_영양기준_만족_식품(브랜드));
+        PetFood 식품 = petFoodRepository.save(모든_영양기준_만족_식품(브랜드, List.of(기능성_다이어트())));
         return 식품;
     }
 

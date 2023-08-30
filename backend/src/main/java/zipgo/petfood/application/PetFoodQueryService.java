@@ -1,6 +1,7 @@
 package zipgo.petfood.application;
 
 import java.util.List;
+import java.util.stream.Stream;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -28,15 +29,14 @@ public class PetFoodQueryService {
     private final BrandRepository brandRepository;
 
     public List<PetFood> getPetFoodsByFilters(
-            FilterRequest filterDto,
+            FilterRequest request,
             Long lastPetFoodId,
             int size
     ) {
         return petFoodQueryRepository.findPagingPetFoods(
-                filterDto.brands(),
-                filterDto.nutritionStandards(),
-                filterDto.functionalities(),
-                filterDto.mainIngredients(),
+                request.brands(),
+                request.nutritionStandards(),
+                getConcatList(request.functionalities(), request.mainIngredients()),
                 lastPetFoodId,
                 size
         );
@@ -47,12 +47,11 @@ public class PetFoodQueryService {
         return GetPetFoodResponse.of(petfood, petfood.calculateRatingAverage(), petfood.countReviews());
     }
 
-    public Long getPetFoodsCountByFilters(FilterRequest filterDto) {
+    public Long getPetFoodsCountByFilters(FilterRequest request) {
         return petFoodQueryRepository.getCount(
-                filterDto.brands(),
-                filterDto.nutritionStandards(),
-                filterDto.functionalities(),
-                filterDto.mainIngredients()
+                request.brands(),
+                request.nutritionStandards(),
+                getConcatList(request.functionalities(), request.mainIngredients())
         );
     }
 
@@ -61,6 +60,13 @@ public class PetFoodQueryService {
         List<PetFoodEffect> functionalities = petFoodQueryRepository.findPetFoodEffectsBy(FUNCTIONALITY);
         List<PetFoodEffect> primaryIngredients = petFoodQueryRepository.findPetFoodEffectsBy(PRIMARY_INGREDIENT);
         return FilterResponse.of(brands, functionalities, primaryIngredients);
+    }
+
+    private static List<String> getConcatList(List<String> firstList, List<String> secondList) {
+        return Stream.concat(
+                        firstList.stream(),
+                        secondList.stream())
+                .toList();
     }
 
 }

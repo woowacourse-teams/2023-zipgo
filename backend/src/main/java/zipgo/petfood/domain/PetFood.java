@@ -1,15 +1,16 @@
 package zipgo.petfood.domain;
 
 import jakarta.persistence.Column;
+import jakarta.persistence.ElementCollection;
 import jakarta.persistence.Embedded;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.ManyToOne;
-import jakarta.persistence.OneToMany;
-import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -22,8 +23,6 @@ import zipgo.common.entity.BaseTimeEntity;
 import zipgo.petfood.domain.type.PetFoodOption;
 import zipgo.review.domain.Review;
 
-import static jakarta.persistence.CascadeType.PERSIST;
-import static jakarta.persistence.CascadeType.REMOVE;
 import static jakarta.persistence.FetchType.LAZY;
 
 @Entity
@@ -57,9 +56,8 @@ public class PetFood extends BaseTimeEntity {
     @Embedded
     private Reviews reviews;
 
-    @Builder.Default
-    @OneToMany(mappedBy = "petFood", orphanRemoval = true, cascade = {PERSIST, REMOVE})
-    private List<PetFoodEffect> petFoodEffects = new ArrayList<>();
+    @ElementCollection
+    private Set<PetFoodEffect> petFoodEffects = new HashSet<>();
 
     public double calculateRatingAverage() {
         return reviews.calculateRatingAverage();
@@ -78,10 +76,6 @@ public class PetFood extends BaseTimeEntity {
                 .filter(petFoodEffect -> petFoodEffect.isEqualTo(petFoodOption))
                 .map(petFoodEffect -> petFoodEffect.getDescription())
                 .toList();
-    }
-
-    public void addPetFoodEffect(PetFoodEffect petFoodEffect) {
-        this.petFoodEffects.add(petFoodEffect);
     }
 
 }

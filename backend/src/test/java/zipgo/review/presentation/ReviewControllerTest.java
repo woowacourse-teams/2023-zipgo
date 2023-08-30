@@ -58,6 +58,7 @@ import static org.springframework.restdocs.request.RequestDocumentation.queryPar
 import static zipgo.pet.domain.fixture.BreedsFixture.견종;
 import static zipgo.pet.domain.fixture.PetFixture.반려동물;
 import static zipgo.pet.domain.fixture.PetSizeFixture.소형견;
+import static zipgo.petfood.domain.fixture.PetFoodEffectFixture.기능성_다이어트;
 import static zipgo.petfood.domain.fixture.PetFoodFixture.모든_영양기준_만족_식품;
 import static zipgo.review.fixture.MemberFixture.무민;
 import static zipgo.review.fixture.ReviewFixture.극찬_리뷰_생성;
@@ -101,7 +102,7 @@ public class ReviewControllerTest extends AcceptanceTest {
     @BeforeEach
     void setUp() {
         Brand 브랜드 = brandRepository.save(BrandFixture.오리젠_식품_브랜드_생성());
-        식품 = petFoodRepository.save(모든_영양기준_만족_식품(브랜드));
+        식품 = petFoodRepository.save(모든_영양기준_만족_식품(브랜드, List.of(기능성_다이어트())));
         멤버 = memberRepository.save(무민());
         사이즈 = petSizeRepository.save(소형견());
         종류 = breedsRepository.save(견종(사이즈));

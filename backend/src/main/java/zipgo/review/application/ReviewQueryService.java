@@ -124,7 +124,8 @@ public class ReviewQueryService {
         List<StoolConditionResponse> stoolConditionsSummary = getStoolsSummary(reviews);
         List<AdverseReactionResponse> adverseReactionsSummary = getAdverseReactionsSummary(reviews);
 
-        return GetReviewsSummaryResponse.of(ratingsSummary, tastesSummary, stoolConditionsSummary, adverseReactionsSummary);
+        return GetReviewsSummaryResponse.of(ratingsSummary, tastesSummary, stoolConditionsSummary,
+                adverseReactionsSummary);
     }
 
     private RatingSummaryResponse getRatingsSummary(List<Review> reviews) {

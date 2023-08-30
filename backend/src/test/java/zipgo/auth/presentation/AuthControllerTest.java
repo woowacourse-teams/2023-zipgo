@@ -127,7 +127,8 @@ class AuthControllerTest {
                         fieldWithPath("accessToken").description("accessToken").type(JsonFieldType.STRING),
                         fieldWithPath("authResponse.name").description("사용자 이름").type(JsonFieldType.STRING),
                         fieldWithPath("authResponse.email").description("사용자 이메일").type(JsonFieldType.STRING),
-                        fieldWithPath("authResponse.profileImageUrl").description("사용자 프로필 사진").type(JsonFieldType.STRING),
+                        fieldWithPath("authResponse.profileImageUrl").description("사용자 프로필 사진")
+                                .type(JsonFieldType.STRING),
                         fieldWithPath("authResponse.hasPet").description("반려동물 등록 여부").type(JsonFieldType.BOOLEAN),
                         fieldWithPath("authResponse.pets[].id").description("반려동물 식별자"),
                         fieldWithPath("authResponse.pets[].name").description("반려동물 이름").type(JsonFieldType.STRING),
@@ -136,7 +137,8 @@ class AuthControllerTest {
                         fieldWithPath("authResponse.pets[].petSize").description("반려동물 크기").type(JsonFieldType.STRING),
                         fieldWithPath("authResponse.pets[].gender").description("반려동물 성별").type(JsonFieldType.STRING),
                         fieldWithPath("authResponse.pets[].weight").description("반려동물 몸무게").type(JsonFieldType.NUMBER),
-                        fieldWithPath("authResponse.pets[].imageUrl").description("반려동물 사진 주소").type(JsonFieldType.STRING)
+                        fieldWithPath("authResponse.pets[].imageUrl").description("반려동물 사진 주소")
+                                .type(JsonFieldType.STRING)
                 ));
     }
 
@@ -150,7 +152,8 @@ class AuthControllerTest {
                         fieldWithPath("accessToken").description("accessToken").type(JsonFieldType.STRING),
                         fieldWithPath("authResponse.name").description("사용자 이름").type(JsonFieldType.STRING),
                         fieldWithPath("authResponse.email").description("사용자 이메일").type(JsonFieldType.STRING),
-                        fieldWithPath("authResponse.profileImageUrl").description("사용자 프로필 사진").type(JsonFieldType.STRING),
+                        fieldWithPath("authResponse.profileImageUrl").description("사용자 프로필 사진")
+                                .type(JsonFieldType.STRING),
                         fieldWithPath("authResponse.hasPet").description("반려동물 등록 여부").type(JsonFieldType.BOOLEAN),
                         fieldWithPath("authResponse.pets").description("반려동물 프로필").type(JsonFieldType.ARRAY)
                 ));

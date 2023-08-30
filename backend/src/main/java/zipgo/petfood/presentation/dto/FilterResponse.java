@@ -42,7 +42,7 @@ public record FilterResponse(
     public record FunctionalityResponse(Long id, String functionality) {
 
         public static FunctionalityResponse from(PetFoodEffect petFoodEffect) {
-            return new FunctionalityResponse(petFoodEffect.getId(), petFoodEffect.getDescription());
+            return new FunctionalityResponse(1L, petFoodEffect.getDescription());
         }
 
     }
@@ -50,7 +50,7 @@ public record FilterResponse(
     public record PrimaryIngredientResponse(Long id, String primaryIngredient) {
 
         public static PrimaryIngredientResponse from(PetFoodEffect petFoodEffect) {
-            return new PrimaryIngredientResponse(petFoodEffect.getId(), petFoodEffect.getDescription());
+            return new PrimaryIngredientResponse(1L, petFoodEffect.getDescription());
         }
 
     }

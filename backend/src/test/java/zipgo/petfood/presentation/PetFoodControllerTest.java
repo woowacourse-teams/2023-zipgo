@@ -37,7 +37,6 @@ import static org.springframework.restdocs.request.RequestDocumentation.queryPar
 import static zipgo.brand.domain.fixture.BrandFixture.아카나_식품_브랜드_생성;
 import static zipgo.petfood.domain.fixture.PetFoodEffectFixture.기능성_다이어트;
 import static zipgo.petfood.domain.fixture.PetFoodEffectFixture.기능성_튼튼;
-import static zipgo.petfood.domain.fixture.PetFoodEffectFixture.식품_효과_연관관계_매핑;
 import static zipgo.petfood.domain.fixture.PetFoodEffectFixture.원재료_닭고기;
 import static zipgo.petfood.domain.fixture.PetFoodFixture.모든_영양기준_만족_식품;
 
@@ -54,16 +53,8 @@ public class PetFoodControllerTest extends AcceptanceTest {
     @BeforeEach
     void setUp() {
         Brand 아카나 = brandRepository.save(아카나_식품_브랜드_생성());
-        PetFood 모든_영양기준_만족_식품 = 모든_영양기준_만족_식품(아카나);
-
-        PetFoodEffect 기능성_다이어트 = 기능성_다이어트();
-        PetFoodEffect 기능성_튼튼 = 기능성_튼튼();
-        PetFoodEffect 원재료_닭고기 = 원재료_닭고기();
-
-        식품_효과_연관관계_매핑(모든_영양기준_만족_식품, 기능성_다이어트);
-        식품_효과_연관관계_매핑(모든_영양기준_만족_식품, 기능성_튼튼);
-        식품_효과_연관관계_매핑(모든_영양기준_만족_식품, 원재료_닭고기);
-
+        List<PetFoodEffect> 식품_효과 = List.of(기능성_다이어트(), 기능성_튼튼(), 원재료_닭고기());
+        PetFood 모든_영양기준_만족_식품 = 모든_영양기준_만족_식품(아카나, 식품_효과);
         식품 = petFoodRepository.save(모든_영양기준_만족_식품);
     }
 

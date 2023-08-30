@@ -31,6 +31,7 @@ import zipgo.review.fixture.MemberFixture;
 import static org.assertj.core.api.Assertions.assertThat;
 import static zipgo.pet.domain.fixture.BreedsFixture.견종;
 import static zipgo.pet.domain.fixture.PetSizeFixture.소형견;
+import static zipgo.petfood.domain.fixture.PetFoodEffectFixture.기능성_다이어트;
 import static zipgo.review.fixture.MemberFixture.무민;
 import static zipgo.review.fixture.ReviewFixture.극찬_리뷰_생성;
 
@@ -95,7 +96,7 @@ public class ReviewRepositoryTest extends RepositoryTest {
 
     private Review 도움이_돼요를_누르고싶은_리뷰() {
         Brand 브랜드 = brandRepository.save(BrandFixture.오리젠_식품_브랜드_생성());
-        PetFood 식품 = petFoodRepository.save(PetFoodFixture.모든_영양기준_만족_식품(브랜드));
+        PetFood 식품 = petFoodRepository.save(PetFoodFixture.모든_영양기준_만족_식품(브랜드, List.of(기능성_다이어트())));
         Member 멤버 = memberRepository.save(무민());
         PetSize 사이즈 = petSizeRepository.save(소형견());
         Breeds 종류 = breedsRepository.save(견종(사이즈));
@@ -129,7 +130,7 @@ public class ReviewRepositoryTest extends RepositoryTest {
 
     private Review 이_연도에_태어난_반려동물이_쓴_리뷰(int 생년) {
         Brand 브랜드 = brandRepository.save(BrandFixture.오리젠_식품_브랜드_생성());
-        PetFood 식품 = petFoodRepository.save(PetFoodFixture.모든_영양기준_만족_식품(브랜드));
+        PetFood 식품 = petFoodRepository.save(PetFoodFixture.모든_영양기준_만족_식품(브랜드, List.of(기능성_다이어트())));
         Member 멤버 = memberRepository.save(무민());
         PetSize 사이즈 = petSizeRepository.save(소형견());
         Breeds 종류 = breedsRepository.save(견종(사이즈));

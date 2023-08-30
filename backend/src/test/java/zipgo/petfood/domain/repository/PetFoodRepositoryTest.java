@@ -6,7 +6,6 @@ import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
 import org.springframework.beans.factory.annotation.Autowired;
 import zipgo.brand.domain.Brand;
-import zipgo.brand.domain.fixture.BrandFixture;
 import zipgo.brand.domain.repository.BrandRepository;
 import zipgo.common.repository.RepositoryTest;
 import zipgo.petfood.domain.PetFood;
@@ -14,6 +13,9 @@ import zipgo.petfood.exception.PetFoodNotFoundException;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
+import static zipgo.brand.domain.fixture.BrandFixture.오리젠_식품_브랜드_생성;
+import static zipgo.petfood.domain.fixture.PetFoodEffectFixture.기능성_다이어트;
+import static zipgo.petfood.domain.fixture.PetFoodEffectFixture.기능성_튼튼;
 import static zipgo.petfood.domain.fixture.PetFoodFixture.모든_영양기준_만족_식품;
 import static zipgo.petfood.domain.fixture.PetFoodFixture.유럽_영양기준_만족_식품;
 
@@ -26,15 +28,15 @@ class PetFoodRepositoryTest extends RepositoryTest {
     private BrandRepository brandRepository;
 
     private Brand 브랜드_조회하기() {
-        return brandRepository.save(BrandFixture.오리젠_식품_브랜드_생성());
+        return brandRepository.save(오리젠_식품_브랜드_생성());
     }
 
     @Test
     void 모든_식품을_조회할_수_있다() {
         // given
         Brand 브랜드 = 브랜드_조회하기();
-        PetFood 반려동물_식품_1 = petFoodRepository.save(모든_영양기준_만족_식품(브랜드));
-        PetFood 반려동물_식품_2 = petFoodRepository.save(유럽_영양기준_만족_식품(브랜드));
+        PetFood 반려동물_식품_1 = petFoodRepository.save(모든_영양기준_만족_식품(브랜드, List.of(기능성_튼튼())));
+        PetFood 반려동물_식품_2 = petFoodRepository.save(유럽_영양기준_만족_식품(브랜드, List.of(기능성_다이어트())));
 
         // when
         List<PetFood> petFoods = petFoodRepository.findAll();
@@ -46,7 +48,7 @@ class PetFoodRepositoryTest extends RepositoryTest {
     @Test
     void 아이디로_식품을_조회할_수_있다() {
         //given
-        PetFood 테스트_식품 = 모든_영양기준_만족_식품(브랜드_조회하기());
+        PetFood 테스트_식품 = 모든_영양기준_만족_식품(브랜드_조회하기(), List.of(기능성_다이어트()));
         Long 아이디 = petFoodRepository.save(테스트_식품).getId();
 
         //when
