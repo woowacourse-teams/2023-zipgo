@@ -76,12 +76,6 @@ public class Review extends BaseTimeEntity {
     @OneToMany(mappedBy = "review", orphanRemoval = true, cascade = ALL)
     private List<HelpfulReaction> helpfulReactions = new ArrayList<>();
 
-    public long getAdverseReactionTypeCount(AdverseReactionType adverseReactionType) {
-        return adverseReactions.stream()
-                .filter(adverseReaction -> adverseReaction.isEqualToAdverseReactionType(adverseReactionType))
-                .count();
-    }
-
     public void addAdverseReactions(List<String> adverseReactionNames) {
         List<AdverseReaction> adverseReactions = adverseReactionNames.stream()
                 .map(name -> new AdverseReaction(AdverseReactionType.from(name)))
