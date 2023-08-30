@@ -10,7 +10,10 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Builder.Default;
@@ -31,6 +34,8 @@ import static jakarta.persistence.CascadeType.ALL;
 import static jakarta.persistence.CascadeType.PERSIST;
 import static jakarta.persistence.CascadeType.REMOVE;
 import static jakarta.persistence.FetchType.LAZY;
+import static java.util.stream.Collectors.counting;
+import static java.util.stream.Collectors.groupingBy;
 import static lombok.AccessLevel.PROTECTED;
 
 @Entity
@@ -71,6 +76,12 @@ public class Review extends BaseTimeEntity {
     @OneToMany(mappedBy = "review", orphanRemoval = true, cascade = ALL)
     private List<HelpfulReaction> helpfulReactions = new ArrayList<>();
 
+    public long getAdverseReactionTypeCount(AdverseReactionType adverseReactionType) {
+        return adverseReactions.stream()
+                .filter(adverseReaction -> adverseReaction.isEqualToAdverseReactionType(adverseReactionType))
+                .count();
+    }
+
     public void addAdverseReactions(List<String> adverseReactionNames) {
         List<AdverseReaction> adverseReactions = adverseReactionNames.stream()
                 .map(name -> new AdverseReaction(AdverseReactionType.from(name)))
@@ -106,7 +117,6 @@ public class Review extends BaseTimeEntity {
     public void removeAdverseReactions() {
         this.adverseReactions.clear();
     }
-
 
     public int getPetAge() {
         int createdYear = getCreatedAt().getYear();

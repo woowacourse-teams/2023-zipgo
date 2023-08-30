@@ -149,13 +149,6 @@ public class ReviewQueryRepositoryImpl implements ReviewQueryRepository {
         return collect(reviewIdsReactedByMember, reviewIdToReactionCount);
     }
 
-    @Override
-    public List<Review> findReviewsBy(Long petFoodId) {
-        return queryFactory.selectFrom(review)
-                .where(equalsPetFoodId(petFoodId))
-                .fetch();
-    }
-
     private List<Long> findReviewIdsReactedBy(List<Long> reviewIds, Long memberId) {
         if (memberId == null) {
             return emptyList();

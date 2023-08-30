@@ -56,6 +56,7 @@ public class PetFood extends BaseTimeEntity {
     @Embedded
     private Reviews reviews;
 
+    @Builder.Default
     @ElementCollection
     private Set<PetFoodEffect> petFoodEffects = new HashSet<>();
 

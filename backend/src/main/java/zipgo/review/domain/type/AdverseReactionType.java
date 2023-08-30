@@ -29,7 +29,7 @@ public enum AdverseReactionType {
                 .orElseThrow(AdverseReactionException.NotFound::new);
     }
 
-    public static int getDistributionPercentage(int total, long count) {
+    public static int getDistributionPercentage(long total, long count) {
         return (int) (count * PERCENTAGE / total);
     }
 

@@ -48,4 +48,8 @@ public class AdverseReaction extends BaseTimeEntity {
         this.adverseReactionType = adverseReactionType;
     }
 
+    public boolean isEqualToAdverseReactionType(AdverseReactionType adverseReactionType) {
+        return this.adverseReactionType.name().equals(adverseReactionType.name());
+    }
+
 }

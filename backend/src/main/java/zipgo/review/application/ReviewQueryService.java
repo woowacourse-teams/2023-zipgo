@@ -1,12 +1,9 @@
 package zipgo.review.application;
 
-import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.function.Function;
-import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -14,7 +11,9 @@ import org.springframework.transaction.annotation.Transactional;
 import zipgo.pet.domain.AgeGroup;
 import zipgo.pet.domain.repository.BreedsRepository;
 import zipgo.pet.domain.repository.PetSizeRepository;
-import zipgo.review.domain.AdverseReaction;
+import zipgo.petfood.domain.PetFood;
+import zipgo.petfood.domain.Reviews;
+import zipgo.petfood.domain.repository.PetFoodRepository;
 import zipgo.review.domain.Review;
 import zipgo.review.domain.repository.ReviewQueryRepository;
 import zipgo.review.domain.repository.ReviewRepository;
@@ -34,8 +33,6 @@ import zipgo.review.presentation.dto.response.type.RatingSummaryResponse;
 import zipgo.review.presentation.dto.response.type.StoolConditionResponse;
 import zipgo.review.presentation.dto.response.type.TastePreferenceResponse;
 
-import static java.util.stream.Collectors.counting;
-import static java.util.stream.Collectors.groupingBy;
 import static java.util.stream.Collectors.toMap;
 
 @Service
@@ -43,13 +40,12 @@ import static java.util.stream.Collectors.toMap;
 @Transactional(readOnly = true)
 public class ReviewQueryService {
 
-    private static final int PERCENTAGE = 100;
-    private static final double DEFAULT_PERCENTAGE = 0.0;
 
     private final ReviewRepository reviewRepository;
     private final ReviewQueryRepository reviewQueryRepository;
     private final BreedsRepository breedsRepository;
     private final PetSizeRepository petSizeRepository;
+    private final PetFoodRepository petFoodRepository;
 
     public GetReviewsResponse getReviews(FindReviewsFilterRequest request) {
         List<FindReviewsQueryResponse> reviews = reviewQueryRepository.findReviewsBy(request);
@@ -117,96 +113,53 @@ public class ReviewQueryService {
     }
 
     public GetReviewsSummaryResponse getReviewsSummary(Long petFoodId) {
-        List<Review> reviews = reviewQueryRepository.findReviewsBy(petFoodId);
+        PetFood petFood = petFoodRepository.getById(petFoodId);
+        Reviews reviews = petFood.getReviews();
 
         RatingSummaryResponse ratingsSummary = getRatingsSummary(reviews);
         List<TastePreferenceResponse> tastesSummary = getTastesSummary(reviews);
         List<StoolConditionResponse> stoolConditionsSummary = getStoolsSummary(reviews);
-        List<AdverseReactionResponse> adverseReactionsSummary = getAdverseReactionsSummary(reviews);
+        List<AdverseReactionResponse> adverseReactionsSummary = getAdverseReactions(reviews);
 
-        return GetReviewsSummaryResponse.of(ratingsSummary, tastesSummary, stoolConditionsSummary,
-                adverseReactionsSummary);
+        return GetReviewsSummaryResponse.of(ratingsSummary, tastesSummary, stoolConditionsSummary, adverseReactionsSummary);
     }
 
-    private RatingSummaryResponse getRatingsSummary(List<Review> reviews) {
-        double averageRating = reviews.stream()
-                .mapToInt(Review::getRating)
-                .average()
-                .orElse(DEFAULT_PERCENTAGE);
-
-        Map<Integer, Long> ratingAndCount = reviews.stream()
-                .collect(Collectors.groupingBy(
-                        Review::getRating,
-                        Collectors.counting()
-                ));
-
-        List<RatingInfoResponse> ratingInfoResponses = IntStream.rangeClosed(1, 5) // Assuming ratings are from 1 to 5
+    private RatingSummaryResponse getRatingsSummary(Reviews reviews) {
+        double averageRating = reviews.calculateRatingAverage();
+        List<RatingInfoResponse> ratingInfoResponses = IntStream.rangeClosed(1, 5)
                 .mapToObj(rating -> {
-                    long count = ratingAndCount.getOrDefault(rating, 0L);
-                    int percentage = calculatePercentage(reviews.size(), count);
+                    int percentage = reviews.getRatingPercentage(rating);
                     return RatingInfoResponse.of(rating, percentage);
                 })
                 .toList();
         return RatingSummaryResponse.of(averageRating, ratingInfoResponses);
     }
 
-    private int calculatePercentage(int totalReviews, long count) {
-        if (totalReviews == 0) {
-            return 0;
-        }
-        return (int) ((count * PERCENTAGE) / totalReviews);
-    }
-
-    private List<TastePreferenceResponse> getTastesSummary(List<Review> reviews) {
-        Map<String, Long> tasteAndCount = reviews.stream()
-                .collect(groupingBy(
-                        review -> review.getReviewPetInfo().getTastePreference().name(),
-                        counting()
-                ));
+    private List<TastePreferenceResponse> getTastesSummary(Reviews reviews) {
         return Arrays.stream(TastePreference.values())
                 .map(tastePreference -> {
-                    long count = tasteAndCount.getOrDefault(tastePreference.name(), 0L);
-                    int percentage = TastePreference.getDistributionPercentage(reviews.size(), count);
+                    int percentage = reviews.getTastesPercentage(tastePreference.name());
                     return TastePreferenceResponse.of(tastePreference, percentage);
                 })
                 .toList();
     }
 
-    private List<StoolConditionResponse> getStoolsSummary(List<Review> reviews) {
-        Map<String, Long> stoolAndCount = reviews.stream()
-                .collect(groupingBy(
-                        review -> review.getReviewPetInfo().getStoolCondition().name(),
-                        counting()
-                ));
+    private List<StoolConditionResponse> getStoolsSummary(Reviews reviews) {
         return Arrays.stream(StoolCondition.values())
                 .map(stoolCondition -> {
-                    long count = stoolAndCount.getOrDefault(stoolCondition.name(), 0L);
-                    int percentage = StoolCondition.getDistributionPercentage(reviews.size(), count);
+                    int percentage = reviews.getStoolsConditionPercentage(stoolCondition.name());
                     return StoolConditionResponse.of(stoolCondition, percentage);
                 })
                 .toList();
     }
 
-    private List<AdverseReactionResponse> getAdverseReactionsSummary(List<Review> reviews) {
-        Map<AdverseReactionType, Long> reactionTypeAndCount = new HashMap<>();
-
-        for (Review review : reviews) {
-            for (AdverseReaction reaction : review.getAdverseReactions()) {
-                AdverseReactionType reactionType = reaction.getAdverseReactionType();
-                reactionTypeAndCount.put(reactionType, reactionTypeAndCount.getOrDefault(reactionType, 0L) + 1);
-            }
-        }
-
-        List<AdverseReactionResponse> reactionResponses = new ArrayList<>();
-        int totalReactions = reviews.stream().mapToInt(review -> review.getAdverseReactions().size()).sum();
-
-        for (AdverseReactionType reactionType : AdverseReactionType.values()) {
-            long count = reactionTypeAndCount.getOrDefault(reactionType, 0L);
-            int percentage = AdverseReactionType.getDistributionPercentage(totalReactions, count);
-            reactionResponses.add(AdverseReactionResponse.of(reactionType, percentage));
-        }
-
-        return reactionResponses;
+    private List<AdverseReactionResponse> getAdverseReactions(Reviews reviews) {
+        return Arrays.stream(AdverseReactionType.values())
+                .map(adverseReactionType -> {
+                    int percentage = reviews.getAdverseReactionPercentage(adverseReactionType.name());
+                    return AdverseReactionResponse.of(adverseReactionType, percentage);
+                })
+                .toList();
     }
 
 }
