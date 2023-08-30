@@ -42,9 +42,9 @@ public class ReviewQueryService {
 
 
     private final ReviewRepository reviewRepository;
-    private final ReviewQueryRepository reviewQueryRepository;
     private final BreedsRepository breedsRepository;
     private final PetSizeRepository petSizeRepository;
+    private final ReviewQueryRepository reviewQueryRepository;
     private final PetFoodRepository petFoodRepository;
 
     public GetReviewsResponse getReviews(FindReviewsFilterRequest request) {
