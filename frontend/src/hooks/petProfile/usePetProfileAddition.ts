@@ -1,17 +1,17 @@
 import { ChangeEvent, useState } from 'react';
-import { useNavigate, useOutletContext } from 'react-router-dom';
+import { useOutletContext } from 'react-router-dom';
 
 import { MIXED_BREED, PET_SIZES } from '@/constants/petProfile';
 import { usePetAdditionContext } from '@/context/petProfile/PetAdditionContext';
 import { usePetProfile } from '@/context/petProfile/PetProfileContext';
 import { useAddPetProfileMutation, useBreedListQuery } from '@/hooks/query/petProfile';
-import { routerPath } from '@/router/routes';
 import { PetAdditionOutletContextProps, PetProfile, PetSize } from '@/types/petProfile/client';
 
+import useEasyNavigate from '../@common/useEasyNavigate';
 import { usePetProfileValidation } from './usePetProfileValidation';
 
 export const usePetProfileAddition = () => {
-  const navigate = useNavigate();
+  const { goHome } = useEasyNavigate();
   const { breedList } = useBreedListQuery();
   const { addPetProfileMutation } = useAddPetProfileMutation();
   const { isValidAgeRange, isValidGender, isValidName, isValidWeight } = usePetProfileValidation();
@@ -112,7 +112,7 @@ export const usePetProfileAddition = () => {
         alert('반려동물 정보 등록에 실패했습니다.');
       });
 
-    navigate(routerPath.home());
+    goHome();
   };
 
   return {
