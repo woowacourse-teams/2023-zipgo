@@ -5,6 +5,7 @@ import jakarta.persistence.Embeddable;
 import jakarta.persistence.Enumerated;
 import java.util.Objects;
 import lombok.Builder;
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import zipgo.petfood.domain.type.PetFoodOption;
@@ -14,6 +15,7 @@ import static lombok.AccessLevel.PROTECTED;
 
 @Getter
 @Embeddable
+@EqualsAndHashCode
 @NoArgsConstructor(access = PROTECTED)
 public class PetFoodEffect {
 
@@ -31,23 +33,6 @@ public class PetFoodEffect {
 
     public boolean isEqualTo(PetFoodOption petFoodOption) {
         return this.petFoodOption.equals(petFoodOption);
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) {
-            return true;
-        }
-        if (o == null || getClass() != o.getClass()) {
-            return false;
-        }
-        PetFoodEffect that = (PetFoodEffect) o;
-        return petFoodOption == that.petFoodOption && Objects.equals(description, that.description);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(petFoodOption, description);
     }
 
 }
