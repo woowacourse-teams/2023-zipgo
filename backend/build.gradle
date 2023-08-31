@@ -112,7 +112,8 @@ jacocoTestReport {
                             '**/*Interceptor*',
                             '**/*ArgumentResolver*',
                             '**/*ExceptionHandler*',
-                            '**/LoggingUtils'
+                            '**/LoggingUtils',
+                            '**/*Url*'
                     ])
                 })
         )
@@ -150,7 +151,8 @@ jacocoTestCoverageVerification {
                     '*.*Interceptor',
                     '*.*ArgumentResolver',
                     '*.*ExceptionHandler',
-                    '*.LoggingUtils'
+                    '*.LoggingUtils',
+                    '*.*Url'
             ] + Qdomains
         }
     }

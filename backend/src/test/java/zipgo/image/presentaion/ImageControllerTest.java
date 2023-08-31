@@ -18,6 +18,7 @@ import org.springframework.test.web.servlet.MockMvc;
 import zipgo.auth.presentation.AuthInterceptor;
 import zipgo.auth.presentation.JwtMandatoryArgumentResolver;
 import zipgo.auth.support.JwtProvider;
+import zipgo.image.ImageDirectoryUrl;
 import zipgo.image.application.ImageService;
 
 import static com.epages.restdocs.apispec.RestAssuredRestDocumentationWrapper.resourceDetails;
@@ -58,7 +59,7 @@ class ImageControllerTest {
         // given
         var 사진_파일 = new MockMultipartFile("image", "사진.png", "image/png", "사진".getBytes());
 
-        when(imageService.save(사진_파일))
+        when(imageService.save(사진_파일, ImageDirectoryUrl.PET_DIRECTORY))
                 .thenReturn("사진_주소");
 
         // when

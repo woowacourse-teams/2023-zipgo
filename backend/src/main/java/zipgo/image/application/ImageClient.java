@@ -4,6 +4,6 @@ import org.springframework.web.multipart.MultipartFile;
 
 public interface ImageClient {
 
-    String upload(String name, MultipartFile file);
+    String upload(String name, MultipartFile file, String directory);
 
 }

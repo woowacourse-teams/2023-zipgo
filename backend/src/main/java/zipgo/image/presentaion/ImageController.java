@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
+import zipgo.image.ImageDirectoryUrl;
 import zipgo.image.application.ImageService;
 import zipgo.image.presentaion.dto.ImageResponse;
 
@@ -22,7 +23,7 @@ public class ImageController {
     public ResponseEntity<ImageResponse> upload(
             @RequestPart(required = false, value = "image") MultipartFile imageFile
     ) {
-        String url = imageService.save(imageFile);
+        String url = imageService.save(imageFile, ImageDirectoryUrl.PET_DIRECTORY);
         return ResponseEntity.created(URI.create(url)).body(ImageResponse.from(url));
     }
 
