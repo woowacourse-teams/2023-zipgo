@@ -4,10 +4,15 @@ import zipgo.brand.domain.Brand;
 import zipgo.petfood.domain.HasStandard;
 import zipgo.petfood.domain.PetFood;
 import zipgo.petfood.domain.Reviews;
+import zipgo.petfood.presentation.dto.PetFoodCreateRequest;
 
 import static zipgo.petfood.domain.PetFood.builder;
 
 public class PetFoodFixture {
+
+    public static PetFoodCreateRequest 식품_생성_요청(Long brandId) {
+        return new PetFoodCreateRequest("식품", "link", brandId, true, false);
+    }
 
     public static PetFood 모든_영양기준_만족_식품(Brand brand) {
         return builder()
