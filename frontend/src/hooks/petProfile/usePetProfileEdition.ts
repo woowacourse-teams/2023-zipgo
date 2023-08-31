@@ -38,8 +38,7 @@ export const usePetProfileEdition = () => {
       return { ...prev, name: petName };
     });
 
-    if (isValidName(petName)) setIsValidNameInput(true);
-    if (!isValidName(petName)) setIsValidNameInput(false);
+    setIsValidNameInput(isValidName(petName));
   };
 
   const onChangeAge = (e: ChangeEvent<HTMLSelectElement>) => {
