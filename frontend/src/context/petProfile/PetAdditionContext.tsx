@@ -1,4 +1,4 @@
-import { createContext, ReactNode, useContext, useMemo, useState } from 'react';
+import { createContext, PropsWithChildren, useContext, useMemo, useState } from 'react';
 
 import { PostPetProfileReq } from '@/types/petProfile/remote';
 
@@ -25,7 +25,7 @@ const PetAdditionContext = createContext<PetAdditionContext>({
 
 export const usePetAdditionContext = () => useContext(PetAdditionContext);
 
-export const PetAdditionProvider = ({ children }: { children: ReactNode }) => {
+export const PetAdditionProvider = ({ children }: PropsWithChildren) => {
   const [petProfile, setPetProfile] = useState<PetProfileValue>(initialPetProfile);
 
   const updatePetProfile = (newProfile: Partial<PetProfileValue>) => {
