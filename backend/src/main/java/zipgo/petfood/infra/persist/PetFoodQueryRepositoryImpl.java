@@ -47,7 +47,6 @@ public class PetFoodQueryRepositoryImpl implements PetFoodQueryRepository {
                 .fetch();
     }
 
-
     @Override
     public Long getCount(
             List<String> brandsName,
