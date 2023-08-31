@@ -4,7 +4,7 @@ import EditIconLight from '@/assets/svg/edit_icon_light.svg';
 import TrashCanIcon from '@/assets/svg/trash_can_icon.svg';
 import Input from '@/components/@common/Input/Input';
 import Label from '@/components/@common/Label/Label';
-import { PET_SIZES } from '@/constants/petProfile';
+import { PET_ERROR_MESSAGE, PET_SIZES } from '@/constants/petProfile';
 import { usePetProfileEdition } from '@/hooks/petProfile/usePetProfileEdition';
 import { usePetProfileValidation } from '@/hooks/petProfile/usePetProfileValidation';
 
@@ -55,11 +55,7 @@ const PetProfileEditionForm = () => {
                 design="underline"
                 fontSize="1.3rem"
               />
-              <ErrorCaption>
-                {isValidNameInput
-                  ? ''
-                  : '아이의 이름은 1~10글자 사이의 한글, 영어, 숫자만 입력 가능합니다.'}
-              </ErrorCaption>
+              <ErrorCaption>{isValidNameInput ? '' : PET_ERROR_MESSAGE.INVALID_NAME}</ErrorCaption>
             </div>
             <div>
               <InputLabel htmlFor="pet-age">나이 선택</InputLabel>
@@ -86,9 +82,7 @@ const PetProfileEditionForm = () => {
                 <Kg>kg</Kg>
               </WeightInputContainer>
               <ErrorCaption>
-                {isValidWeightInput
-                  ? ''
-                  : '몸무게는 0kg초과, 100kg이하 소수점 첫째짜리까지 입력이 가능합니다.'}
+                {isValidWeightInput ? '' : PET_ERROR_MESSAGE.INVALID_WEIGHT}
               </ErrorCaption>
             </div>
             {isMixedBreed(pet.breed) && (
