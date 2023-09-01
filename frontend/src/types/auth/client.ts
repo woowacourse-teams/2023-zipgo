@@ -1,7 +1,11 @@
+interface Tokens {
+  accessToken: string;
+}
+
 interface User {
   profileImgUrl: string;
   name: string;
   hasPet: boolean;
 }
 
-export type { User };
+export type { Tokens, User };

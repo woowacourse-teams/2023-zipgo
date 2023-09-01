@@ -1,4 +1,4 @@
-import { User } from '@/types/auth/client';
+import { Tokens, User } from '@/types/auth/client';
 import { PetProfile } from '@/types/petProfile/client';
 
 import { invariantOf } from './invariantOf';
@@ -31,10 +31,6 @@ type GetItemOptions<T, R extends boolean> = {
 };
 
 type GetItemResult<T, R extends boolean> = R extends true ? T : T | null;
-
-type Tokens = {
-  accessToken: string;
-};
 
 type STORAGE_KEY = keyof typeof STORAGE_KEY;
 
