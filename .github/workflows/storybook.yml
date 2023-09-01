@@ -1,7 +1,7 @@
 name: 'Frontend Storybook Tests'
 on:
   push:
-    branches: [ main, develop ]
+    branches: [ main, develop, feature/#373-1 ]
     paths: 
       - 'frontend/**'
   pull_request:
@@ -28,3 +28,4 @@ jobs:
           npx concurrently -k -s first -n "SB,TEST" -c "magenta,blue" \
             "npx http-server storybook-static --port 6006 --silent" \
             "npx wait-on tcp:6006 && yarn test-storybook"
+, ㅔ
