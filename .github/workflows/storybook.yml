@@ -2,10 +2,10 @@ name: Frontend Storybook Test
 
 on:
   push:
-    branches: [main, develop, feature/#373-1]
+    branches: [main, develop]
     paths: frontend/**
   pull_request:
-    branches: [main, develop, feature/#373-1]
+    branches: [main, develop]
     paths: frontend/**
 
 jobs:
