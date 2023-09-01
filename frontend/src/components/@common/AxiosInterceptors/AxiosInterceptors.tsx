@@ -3,6 +3,7 @@ import { PropsWithChildren, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 import { client } from '@/apis';
+import { zipgoLocalStorage } from '@/utils/localStorage';
 
 const AxiosInterceptors = (props: PropsWithChildren) => {
   const { children } = props;
@@ -11,11 +12,11 @@ const AxiosInterceptors = (props: PropsWithChildren) => {
 
   useEffect(() => {
     const requestInterceptor = client.interceptors.request.use(config => {
-      const accessToken = localStorage.getItem('auth');
+      const tokens = zipgoLocalStorage.getTokens();
 
-      if (accessToken) {
+      if (tokens) {
         // eslint-disable-next-line no-param-reassign
-        config.headers.Authorization = `Bearer ${accessToken}`;
+        config.headers.Authorization = `Bearer ${tokens.accessToken}`;
       }
 
       return config;
@@ -28,9 +29,9 @@ const AxiosInterceptors = (props: PropsWithChildren) => {
 
         if (error.response && error.response.status === 401) {
           alert('세션이 만료되었습니다.');
-          localStorage.removeItem('auth');
-          localStorage.removeItem('userInfo');
-          localStorage.removeItem('petProfile');
+
+          zipgoLocalStorage.clearAuth();
+
           navigate('/login');
         }
 

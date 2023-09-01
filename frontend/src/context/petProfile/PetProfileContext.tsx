@@ -1,16 +1,10 @@
-import { createContext, PropsWithChildren, useEffect, useMemo, useState } from 'react';
+import { createContext, PropsWithChildren, useContext, useEffect, useMemo, useState } from 'react';
 
-import useContextInScope from '@/hooks/@common/useContextInScope';
 import { PetProfile } from '@/types/petProfile/client';
-
-const getPetProfileLocalStorage = () => {
-  const stringifyPetProfile = localStorage.getItem('petProfile');
-
-  return stringifyPetProfile ? (JSON.parse(stringifyPetProfile) as PetProfile) : null;
-};
+import { zipgoLocalStorage } from '@/utils/localStorage';
 
 const PetProfileContext = createContext<PetProfileContext>({
-  petProfile: getPetProfileLocalStorage(),
+  petProfile: zipgoLocalStorage.getPetProfile(),
   updatePetProfile() {},
   resetPetProfile() {},
   inScope: false,
@@ -18,7 +12,7 @@ const PetProfileContext = createContext<PetProfileContext>({
 
 PetProfileContext.displayName = 'PetProfile';
 
-export const usePetProfile = () => useContextInScope(PetProfileContext);
+export const usePetProfile = () => useContext(PetProfileContext);
 
 interface PetProfileContext {
   petProfile: PetProfile | null;
@@ -36,16 +30,16 @@ const PetProfileProvider = (props: PropsWithChildren<PetProfileProviderProps>) =
 
   const updatePetProfileLocalStorage = (petProfile: PetProfile) => {
     setPetProfile(petProfile);
-    localStorage.setItem('petProfile', JSON.stringify(petProfile));
+    zipgoLocalStorage.setPetProfile(petProfile);
   };
 
   const resetPetProfileLocalStorage = () => {
     setPetProfile(null);
-    localStorage.removeItem('petProfile');
+    zipgoLocalStorage.removePetProfile();
   };
 
   useEffect(() => {
-    setPetProfile(getPetProfileLocalStorage());
+    setPetProfile(zipgoLocalStorage.getPetProfile());
   }, []);
 
   const memoizedValue = useMemo(

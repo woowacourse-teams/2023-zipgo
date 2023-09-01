@@ -1,4 +1,7 @@
 /** @description kakao REST API error response - kauth.kakao.com */
+
+import { User } from './client';
+
 /** @see https://developers.kakao.com/docs/latest/ko/reference/rest-api-reference#response-format */
 export interface KakaoAuthError {
   error: string;
@@ -18,11 +21,7 @@ export interface LoginZipgoAuthReq {
 
 export interface LoginZipgoAuthRes {
   accessToken: string;
-  authResponse: {
-    name: string;
-    profileImgUrl: string;
-    hasPet: boolean;
-  };
+  authResponse: User;
 }
 
 export interface LoginKakaoAuthReq {

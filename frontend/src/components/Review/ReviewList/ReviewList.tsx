@@ -7,6 +7,7 @@ import { useValidParams } from '@/hooks/@common/useValidParams';
 import useValidQueryString from '@/hooks/common/useValidQueryString';
 import { useReviewListQuery } from '@/hooks/query/review';
 import { routerPath } from '@/router/routes';
+import { zipgoLocalStorage } from '@/utils/localStorage';
 
 import ReviewItem from '../ReviewItem/ReviewItem';
 import ReviewControls from './ReviewControls/ReviewControls';
@@ -25,10 +26,7 @@ const ReviewList = () => {
     sortById: queryString.sortBy,
   });
 
-  const { hasPet } = JSON.parse(
-    localStorage.getItem('userInfo') ??
-      JSON.stringify({ name: '', profileImageUrl: null, hasPet: false }),
-  );
+  const userInfo = zipgoLocalStorage.getUserInfo();
 
   const goReviewWrite = () => navigate(routerPath.reviewStarRating({ petFoodId }));
 
@@ -55,7 +53,7 @@ const ReviewList = () => {
           해당 식품의 첫 번째 리뷰어가 되어보세요!
         </NoReviewText>
       )}
-      {hasPet && (
+      {userInfo?.hasPet && (
         <ReviewAddButton type="button" aria-label="리뷰 작성" onClick={goReviewWrite}>
           <WriteIconImage src={WriteIcon} alt="" />
         </ReviewAddButton>
