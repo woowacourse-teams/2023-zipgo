@@ -1,4 +1,4 @@
-name: 'Frontend Storybook Tests'
+name: Frontend Storybook Tests
 on:
   push:
     branches: [ main, develop, feature/#373-1 ]
