@@ -66,6 +66,7 @@
     "msw": "^1.2.3",
     "msw-storybook-addon": "^1.8.0",
     "pinst": ">=2",
+    "playwright": "^1.37.1",
     "postcss": "^8.4.26",
     "postcss-styled-syntax": "^0.4.0",
     "prettier": "2.8.8",
@@ -88,7 +89,6 @@
   "dependencies": {
     "@tanstack/react-query": "^4.29.19",
     "axios": "^1.4.0",
-    "playwright": "^1.37.1",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-router": "^6.14.2",
