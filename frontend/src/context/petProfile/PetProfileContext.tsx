@@ -1,6 +1,5 @@
 import { createContext, PropsWithChildren, useEffect, useMemo, useState } from 'react';
 
-import useContextInScope from '@/hooks/@common/useContextInScope';
 import { PetProfile } from '@/types/petProfile/client';
 
 const getPetProfileLocalStorage = () => {
@@ -18,7 +17,7 @@ const PetProfileContext = createContext<PetProfileContext>({
 
 PetProfileContext.displayName = 'PetProfile';
 
-export const usePetProfile = () => useContextInScope(PetProfileContext);
+export const usePetProfile = () => useContext(PetProfileContext);
 
 interface PetProfileContext {
   petProfile: PetProfile | null;
