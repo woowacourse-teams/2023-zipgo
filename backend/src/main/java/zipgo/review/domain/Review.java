@@ -1,8 +1,8 @@
 package zipgo.review.domain;
 
 import jakarta.persistence.Column;
-import jakarta.persistence.Embedded;
 import jakarta.persistence.Entity;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -10,10 +10,7 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Builder.Default;
@@ -27,14 +24,15 @@ import zipgo.member.domain.Member;
 import zipgo.pet.domain.Pet;
 import zipgo.petfood.domain.PetFood;
 import zipgo.review.domain.type.AdverseReactionType;
-import zipgo.review.domain.type.ReviewPetInfo;
+import zipgo.review.domain.type.StoolCondition;
+import zipgo.review.domain.type.TastePreference;
 import zipgo.review.exception.ReviewSelfReactedException;
 
 import static jakarta.persistence.CascadeType.ALL;
 import static jakarta.persistence.CascadeType.PERSIST;
 import static jakarta.persistence.CascadeType.REMOVE;
+import static jakarta.persistence.EnumType.STRING;
 import static jakarta.persistence.FetchType.LAZY;
-import static java.util.stream.Collectors.counting;
 import static java.util.stream.Collectors.groupingBy;
 import static lombok.AccessLevel.PROTECTED;
 
@@ -65,8 +63,14 @@ public class Review extends BaseTimeEntity {
     @Column(nullable = false)
     private String comment;
 
-    @Embedded
-    private ReviewPetInfo reviewPetInfo;
+    @Column(nullable = false)
+    private Double weight;
+
+    @Enumerated(value = STRING)
+    private StoolCondition stoolCondition;
+
+    @Enumerated(value = STRING)
+    private TastePreference tastePreference;
 
     @Default
     @OneToMany(mappedBy = "review", orphanRemoval = true, cascade = {PERSIST, REMOVE})
@@ -144,11 +148,11 @@ public class Review extends BaseTimeEntity {
     }
 
     public void updateStoolCondition(String stoolCondition) {
-        reviewPetInfo.changeStoolCondition(stoolCondition);
+        this.stoolCondition = StoolCondition.from(stoolCondition);
     }
 
     public void updateTastePreference(String tastePreference) {
-        reviewPetInfo.changeTastePreference(tastePreference);
+        this.tastePreference = TastePreference.from(tastePreference);
     }
 
 }

@@ -66,7 +66,7 @@ public record GetReviewResponse(
                 .profileUrl(review.getPet().getImageUrl())
                 .breed(breedResponse)
                 .writtenAge(review.getPetAge())
-                .writtenWeight(review.getReviewPetInfo().getWeight())
+                .writtenWeight(review.getWeight())
                 .build();
         HelpfulReactionResponse helpfulReactionResponse = HelpfulReactionResponse.builder()
                 .count((long) review.getHelpfulReactions().size())
@@ -78,8 +78,8 @@ public record GetReviewResponse(
                 review.getRating(),
                 review.getCreatedAt().format(ofPattern("yyyy-MM-dd")),
                 review.getComment(),
-                review.getReviewPetInfo().getTastePreference().getDescription(),
-                review.getReviewPetInfo().getStoolCondition().getDescription(),
+                review.getTastePreference().getDescription(),
+                review.getStoolCondition().getDescription(),
                 getAdverseReactions(review),
                 petProfileResponse,
                 helpfulReactionResponse

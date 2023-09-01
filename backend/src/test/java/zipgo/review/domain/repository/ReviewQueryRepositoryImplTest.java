@@ -52,8 +52,6 @@ import static zipgo.review.domain.type.AdverseReactionType.TEARS;
 import static zipgo.review.domain.type.StoolCondition.SOFT_MOIST;
 import static zipgo.review.domain.type.TastePreference.EATS_VERY_WELL;
 import static zipgo.review.fixture.ReviewFixture.극찬_리뷰_생성;
-import static zipgo.review.fixture.ReviewPetInfoFixture.리뷰_반려동물_정보_생성;
-
 
 @Import(QueryDslTestConfig.class)
 @DataJpaTest(properties = {"spring.sql.init.mode=never"})
@@ -295,7 +293,9 @@ class ReviewQueryRepositoryImplTest {
                         .comment("없어요")
                         .rating(i + 1)
                         .adverseReactions(emptyList())
-                        .reviewPetInfo(리뷰_반려동물_정보_생성(EATS_VERY_WELL, SOFT_MOIST))
+                        .weight(22.0)
+                        .tastePreference(EATS_VERY_WELL)
+                        .stoolCondition(SOFT_MOIST)
                         .build();
                 리뷰들.add(리뷰);
             }
@@ -356,7 +356,9 @@ class ReviewQueryRepositoryImplTest {
                         .comment("없어요")
                         .rating(i + 1)
                         .adverseReactions(emptyList())
-                        .reviewPetInfo(리뷰_반려동물_정보_생성(EATS_VERY_WELL, SOFT_MOIST))
+                        .weight(22.0)
+                        .tastePreference(EATS_VERY_WELL)
+                        .stoolCondition(SOFT_MOIST)
                         .build();
                 for (int j = 5 - i; j > 0; j--) {
                     Member 다른_멤버 = memberRepository.save(MemberFixture.식별자_없는_멤버("email" + i * j));
@@ -438,7 +440,9 @@ class ReviewQueryRepositoryImplTest {
                         .comment("없어요")
                         .rating(i + 1)
                         .adverseReactions(emptyList())
-                        .reviewPetInfo(리뷰_반려동물_정보_생성(EATS_VERY_WELL, SOFT_MOIST))
+                        .weight(22.0)
+                        .tastePreference(EATS_VERY_WELL)
+                        .stoolCondition(SOFT_MOIST)
                         .build();
                 리뷰들.add(리뷰);
             }
@@ -605,7 +609,9 @@ class ReviewQueryRepositoryImplTest {
                         .comment("없어요")
                         .rating(i + 1)
                         .adverseReactions(emptyList())
-                        .reviewPetInfo(리뷰_반려동물_정보_생성(EATS_VERY_WELL, SOFT_MOIST))
+                        .weight(22.0)
+                        .tastePreference(EATS_VERY_WELL)
+                        .stoolCondition(SOFT_MOIST)
                         .build();
                 reviewRepository.save(리뷰);
                 if (new Random().nextInt() % 2 == 0) {

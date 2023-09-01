@@ -9,7 +9,6 @@ import java.util.List;
 import zipgo.pet.domain.Pet;
 import zipgo.petfood.domain.PetFood;
 import zipgo.review.domain.Review;
-import zipgo.review.domain.type.ReviewPetInfo;
 import zipgo.review.domain.type.StoolCondition;
 import zipgo.review.domain.type.TastePreference;
 
@@ -33,18 +32,14 @@ public record CreateReviewRequest(
 ) {
 
     public Review toEntity(Pet pet, PetFood petFood) {
-        ReviewPetInfo reviewPetInfo = ReviewPetInfo.builder()
-                .weight(pet.getWeight())
-                .stoolCondition(StoolCondition.from(stoolCondition))
-                .tastePreference(TastePreference.from(tastePreference))
-                .build();
-
         return Review.builder()
                 .pet(pet)
                 .petFood(petFood)
                 .rating(rating)
                 .comment(comment)
-                .reviewPetInfo(reviewPetInfo)
+                .weight(pet.getWeight())
+                .stoolCondition(StoolCondition.from(stoolCondition))
+                .tastePreference(TastePreference.from(tastePreference))
                 .build();
     }
 

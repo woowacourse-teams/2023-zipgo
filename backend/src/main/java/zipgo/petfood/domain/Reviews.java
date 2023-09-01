@@ -77,7 +77,7 @@ public class Reviews {
     private Map<String, Long> getTastesAndCount() {
         return reviews.stream()
                 .collect(groupingBy(
-                        review -> review.getReviewPetInfo().getTastePreference().name(),
+                        review -> review.getTastePreference().name(),
                         counting()
                 ));
     }
@@ -91,7 +91,7 @@ public class Reviews {
     private Map<String, Long> getStoolsAndCount() {
         return reviews.stream()
                 .collect(groupingBy(
-                        review -> review.getReviewPetInfo().getStoolCondition().name(),
+                        review -> review.getStoolCondition().name(),
                         counting()
                 ));
     }

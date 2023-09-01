@@ -9,12 +9,7 @@ import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
 import org.junit.jupiter.params.provider.ValueSource;
-import zipgo.review.domain.AdverseReaction;
 import zipgo.review.domain.Review;
-import zipgo.review.domain.type.AdverseReactionType;
-import zipgo.review.domain.type.ReviewPetInfo;
-import zipgo.review.domain.type.StoolCondition;
-import zipgo.review.domain.type.TastePreference;
 
 import static java.util.Collections.emptyList;
 import static org.assertj.core.api.Assertions.assertThat;

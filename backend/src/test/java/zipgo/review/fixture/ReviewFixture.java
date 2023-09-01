@@ -5,7 +5,6 @@ import java.util.List;
 import zipgo.pet.domain.Pet;
 import zipgo.petfood.domain.PetFood;
 import zipgo.review.domain.Review;
-import zipgo.review.domain.type.ReviewPetInfo;
 import zipgo.review.presentation.dto.request.CreateReviewRequest;
 import zipgo.review.presentation.dto.request.UpdateReviewRequest;
 
@@ -38,36 +37,28 @@ public class ReviewFixture {
     }
 
     public static Review 극찬_리뷰_생성(Pet 반려동물, PetFood 식품, List<String> 이상반응들) {
-        ReviewPetInfo reviewPetInfo = ReviewPetInfo.builder()
-                .weight(반려동물.getWeight())
-                .tastePreference(EATS_VERY_WELL)
-                .stoolCondition(SOFT_MOIST)
-                .build();
-
         Review 리뷰 = Review.builder()
                 .pet(반려동물)
                 .petFood(식품)
                 .rating(5)
                 .comment("우리 아이랑 너무 잘 맞아요!")
-                .reviewPetInfo(reviewPetInfo)
+                .weight(반려동물.getWeight())
+                .tastePreference(EATS_VERY_WELL)
+                .stoolCondition(SOFT_MOIST)
                 .build();
         리뷰.addAdverseReactions(이상반응들);
         return 리뷰;
     }
 
     public static Review 혹평_리뷰_생성(Pet 반려동물, PetFood 식품, List<String> 이상반응들) {
-        ReviewPetInfo reviewPetInfo = ReviewPetInfo.builder()
-                .weight(반려동물.getWeight())
-                .tastePreference(NOT_AT_ALL)
-                .stoolCondition(DIARRHEA)
-                .build();
-
         Review 리뷰 = Review.builder()
                 .pet(반려동물)
                 .petFood(식품)
                 .rating(1)
                 .comment("우리 아이가 한 입 먹고 더 안 먹어요 ㅡ.ㅡ 책임지세요.")
-                .reviewPetInfo(reviewPetInfo)
+                .weight(반려동물.getWeight())
+                .tastePreference(NOT_AT_ALL)
+                .stoolCondition(DIARRHEA)
                 .build();
         리뷰.addAdverseReactions(이상반응들);
         return 리뷰;

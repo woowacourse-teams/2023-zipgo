@@ -148,8 +148,8 @@ class ReviewQueryServiceTest extends QueryServiceTest {
                 () -> assertThat(review.getPet().getName()).isEqualTo("무민이"),
                 () -> assertThat(review.getRating()).isEqualTo(5),
                 () -> assertThat(review.getComment()).isEqualTo("우리 아이랑 너무 잘 맞아요!"),
-                () -> assertThat(review.getReviewPetInfo().getTastePreference()).isEqualTo(EATS_VERY_WELL),
-                () -> assertThat(review.getReviewPetInfo().getStoolCondition()).isEqualTo(SOFT_MOIST),
+                () -> assertThat(review.getTastePreference()).isEqualTo(EATS_VERY_WELL),
+                () -> assertThat(review.getStoolCondition()).isEqualTo(SOFT_MOIST),
                 () -> assertThat(review.getAdverseReactions().get(0).getAdverseReactionType()).isEqualTo(NONE));
     }
 
