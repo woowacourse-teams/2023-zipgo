@@ -1,5 +1,4 @@
 import { useQueryClient } from '@tanstack/react-query';
-import { useEffect, useState } from 'react';
 
 import { User } from '@/types/auth/client';
 import { PetProfile } from '@/types/petProfile/client';
@@ -31,23 +30,4 @@ export const useAuth = () => {
   };
 
   return { isLoggedIn, loginZipgo, logout };
-};
-
-export const useUser = () => {
-  const accessToken = localStorage.getItem('auth');
-  const userData = localStorage.getItem('userInfo');
-  const petProfileData = localStorage.getItem('petProfile');
-
-  const [userInfo, setUserInfo] = useState<User | null>(null);
-  const [petProfile, setPetProfile] = useState<PetProfile | null>(null);
-
-  useEffect(() => {
-    const parsedUserInfo = userData ? (JSON.parse(userData) as User) : null;
-    const parsedPetProfile = petProfileData ? (JSON.parse(petProfileData) as PetProfile) : null;
-
-    setUserInfo(parsedUserInfo);
-    setPetProfile(parsedPetProfile);
-  }, [userData, accessToken]);
-
-  return { userInfo, petProfile, setUserInfo, accessToken };
 };
