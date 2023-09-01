@@ -33,7 +33,6 @@ import static jakarta.persistence.CascadeType.PERSIST;
 import static jakarta.persistence.CascadeType.REMOVE;
 import static jakarta.persistence.EnumType.STRING;
 import static jakarta.persistence.FetchType.LAZY;
-import static java.util.stream.Collectors.groupingBy;
 import static lombok.AccessLevel.PROTECTED;
 
 @Entity

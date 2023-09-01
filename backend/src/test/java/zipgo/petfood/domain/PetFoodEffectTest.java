@@ -1,7 +1,6 @@
 package zipgo.petfood.domain;
 
 import org.junit.jupiter.api.Test;
-import zipgo.petfood.domain.type.PetFoodOption;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertAll;

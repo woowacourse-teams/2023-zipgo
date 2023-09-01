@@ -3,7 +3,8 @@ package zipgo.review.domain;
 import org.junit.jupiter.api.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static zipgo.review.domain.type.AdverseReactionType.*;
+import static zipgo.review.domain.type.AdverseReactionType.FRIZZY_FUR;
+import static zipgo.review.domain.type.AdverseReactionType.VOMITING;
 
 class AdverseReactionTest {
 
