@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 
 import { authenticateUser, loginZipgoAuth, logoutKaKaoAuth } from '@/apis/auth';
 import { routerPath } from '@/router/routes';
+import { zipgoLocalStorage } from '@/utils/localStorage';
 
 const QUERY_KEY = { authenticateUser: 'authenticateUser' };
 
@@ -26,8 +27,8 @@ export const useAuthMutation = () => {
   const { mutate: loginZipgo, ...loginRestMutation } = useMutation({
     mutationFn: loginZipgoAuth,
     onSuccess({ accessToken, authResponse }) {
-      localStorage.setItem('auth', accessToken);
-      localStorage.setItem('userInfo', JSON.stringify(authResponse));
+      zipgoLocalStorage.setTokens({ accessToken });
+      zipgoLocalStorage.setUserInfo(authResponse);
 
       queryClient.invalidateQueries([QUERY_KEY.authenticateUser]);
 

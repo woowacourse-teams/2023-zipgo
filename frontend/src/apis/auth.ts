@@ -4,6 +4,7 @@ import {
   LoginZipgoAuthReq,
   LoginZipgoAuthRes,
 } from '@/types/auth/remote';
+import { zipgoLocalStorage } from '@/utils/localStorage';
 
 import { client, clientBasic, createConfigWithAuth } from '.';
 
@@ -29,6 +30,7 @@ export const logoutKaKaoAuth = async () => {
     null,
     {
       headers: {
+        /** @todo kakao logout 여부 논의 */
         Authorization: `Bearer ${localStorage.getItem('kakao')}`,
       },
     },
