@@ -2,12 +2,10 @@ name: Frontend Storybook Tests
 on:
   push:
     branches: [ main, develop, feature/#373-1 ]
-    paths: 
-      - 'frontend/**'
+    paths: frontend/**
   pull_request:
     branches: [ main, develop ]
-    paths:
-      - 'frontend/**'
+    paths: frontend/**
 jobs:
   test:
     timeout-minutes: 60
