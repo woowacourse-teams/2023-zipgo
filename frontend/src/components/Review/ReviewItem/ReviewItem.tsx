@@ -8,17 +8,18 @@ import UnReactedIcon from '@/assets/svg/un_reacted_icon.svg';
 import StarRatingDisplay from '@/components/@common/StarRating/StarRatingDisplay/StartRatingDisplay';
 import { COMMENT_VISIABLE_LINE_LIMIT, REACTIONS } from '@/constants/review';
 import { useValidParams } from '@/hooks/@common/useValidParams';
-import { useAuth, useUser } from '@/hooks/auth';
+import { useAuth } from '@/hooks/auth';
 import { useRemoveReviewMutation, useToggleHelpfulReactionMutation } from '@/hooks/query/review';
 import { routerPath } from '@/router/routes';
 import { Review } from '@/types/review/client';
+import { zipgoLocalStorage } from '@/utils/localStorage';
 
 interface ReviewItemProps extends Review {}
 
 const ReviewItem = (reviewItemProps: ReviewItemProps) => {
   /** @todo 본인 리뷰 확인 - 추후 id로 변경 */
   const { isLoggedIn } = useAuth();
-  const { petProfile } = useUser();
+  const petProfile = zipgoLocalStorage.getPetProfile();
 
   const {
     id: reviewId,

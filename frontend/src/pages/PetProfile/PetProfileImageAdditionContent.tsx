@@ -10,6 +10,7 @@ import { useAddPetProfileMutation, useBreedListQuery } from '@/hooks/query/petPr
 import { routerPath } from '@/router/routes';
 import { PetProfile, PetProfileOutletContextProps } from '@/types/petProfile/client';
 import { getTopicParticle } from '@/utils/getTopicParticle';
+import { zipgoLocalStorage } from '@/utils/localStorage';
 
 const PetProfileImageAdditionContent = () => {
   const navigate = useNavigate();
@@ -27,7 +28,7 @@ const PetProfileImageAdditionContent = () => {
     addPetProfileMutation
       .addPetProfile(petProfile)
       .then(async res => {
-        const userInfo = JSON.parse(localStorage.getItem('userInfo')!);
+        const userInfo = zipgoLocalStorage.getUserInfo({ required: true });
 
         const userPetBreed = breedList?.find(breed => breed.name === petProfile.breed);
         const petProfileWithId = {
@@ -37,8 +38,7 @@ const PetProfileImageAdditionContent = () => {
         } as PetProfile;
 
         updatePetProfile(petProfileWithId); // 헤더 유저 프로필 정보 업데이트
-
-        localStorage.setItem('userInfo', JSON.stringify({ ...userInfo, hasPet: true }));
+        zipgoLocalStorage.setUserInfo({ ...userInfo, hasPet: true });
 
         alert('반려동물 정보 등록이 완료되었습니다.');
       })

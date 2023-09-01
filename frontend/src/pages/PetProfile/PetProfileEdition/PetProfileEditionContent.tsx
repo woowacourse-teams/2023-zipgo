@@ -1,4 +1,4 @@
-import { ChangeEvent, useEffect, useState } from 'react';
+import { ChangeEvent, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { styled } from 'styled-components';
 
@@ -21,6 +21,7 @@ import {
 } from '@/hooks/query/petProfile';
 import { PATH, routerPath } from '@/router/routes';
 import { PetSize } from '@/types/petProfile/client';
+import { zipgoLocalStorage } from '@/utils/localStorage';
 
 const PetProfileEditionContent = () => {
   const navigate = useNavigate();
@@ -49,9 +50,9 @@ const PetProfileEditionContent = () => {
   const onClickRemoveButton = (petId: number) => {
     confirm('정말 삭제하시겠어요?') &&
       removePetMutation.removePet({ petId }).then(() => {
-        const userInfo = JSON.parse(localStorage.getItem('userInfo')!);
+        const userInfo = zipgoLocalStorage.getUserInfo({ required: true });
 
-        localStorage.setItem('userInfo', JSON.stringify({ ...userInfo, hasPet: false }));
+        zipgoLocalStorage.setUserInfo({ ...userInfo, hasPet: false });
 
         resetPetProfile();
 
