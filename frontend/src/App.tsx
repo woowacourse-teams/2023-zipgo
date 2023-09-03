@@ -55,10 +55,28 @@ const GlobalEvent = (props: PropsWithChildren) => {
       setScreenSize();
     };
 
+    const onUnhandledRejection = () => {
+      toast.warning('일시적인 에러가 발생했습니다. 잠시 후 다시 시도해 주세요!');
+    };
+
+    const onOffline = () => {
+      toast.warning('네트워크 상태를 확인해 주세요!');
+    };
+
+    const onOnline = () => {
+      toast.success('네트워크가 연결되었습니다!');
+    };
+
     window.addEventListener('resize', onResize);
+    window.addEventListener('online', onOnline);
+    window.addEventListener('offline', onOffline);
+    window.addEventListener('unhandledrejection', onUnhandledRejection);
 
     return () => {
       window.removeEventListener('resize', onResize);
+      window.removeEventListener('online', onOnline);
+      window.removeEventListener('offline', onOffline);
+      window.removeEventListener('unhandledrejection', onUnhandledRejection);
     };
   }, []);
 
