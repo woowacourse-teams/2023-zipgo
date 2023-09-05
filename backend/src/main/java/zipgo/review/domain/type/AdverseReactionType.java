@@ -14,17 +14,23 @@ public enum AdverseReactionType {
     LICKING_PAWS("발을 핥아요"),
     NONE("없어요");
 
+    private static final Integer PERCENTAGE = 100;
+
     private String description;
 
     AdverseReactionType(String description) {
         this.description = description;
     }
 
-    public static AdverseReactionType from(String tastePreference) {
+    public static AdverseReactionType from(String adverseReactionType) {
         return Arrays.stream(values())
-                .filter(value -> value.getDescription().equals(tastePreference))
+                .filter(value -> value.getDescription().equals(adverseReactionType))
                 .findAny()
                 .orElseThrow(AdverseReactionException.NotFound::new);
+    }
+
+    public static int getDistributionPercentage(long total, long count) {
+        return (int) (count * PERCENTAGE / total);
     }
 
 }

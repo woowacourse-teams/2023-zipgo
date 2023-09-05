@@ -20,13 +20,13 @@ import zipgo.auth.presentation.dto.AuthCredentials;
 import zipgo.review.application.ReviewQueryService;
 import zipgo.review.application.ReviewService;
 import zipgo.review.domain.Review;
-import zipgo.review.dto.request.CreateReviewRequest;
-import zipgo.review.dto.request.GetReviewsRequest;
-import zipgo.review.dto.request.UpdateReviewRequest;
-import zipgo.review.dto.response.GetReviewMetadataResponse;
-import zipgo.review.dto.response.GetReviewResponse;
-import zipgo.review.dto.response.GetReviewsResponse;
-import zipgo.review.dto.response.GetReviewsSummaryResponse;
+import zipgo.review.presentation.dto.request.CreateReviewRequest;
+import zipgo.review.presentation.dto.request.GetReviewsRequest;
+import zipgo.review.presentation.dto.request.UpdateReviewRequest;
+import zipgo.review.presentation.dto.response.GetReviewMetadataResponse;
+import zipgo.review.presentation.dto.response.GetReviewResponse;
+import zipgo.review.presentation.dto.response.GetReviewsResponse;
+import zipgo.review.presentation.dto.response.GetReviewsSummaryResponse;
 
 @RestController
 @RequiredArgsConstructor

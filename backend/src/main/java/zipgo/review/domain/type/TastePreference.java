@@ -13,6 +13,7 @@ public enum TastePreference {
     NOT_AT_ALL("전혀 안 먹어요");
 
     private String description;
+    private static final Integer PERCENTAGE = 100;
 
     TastePreference(String description) {
         this.description = description;
@@ -23,6 +24,10 @@ public enum TastePreference {
                 .filter(value -> value.getDescription().equals(tastePreference))
                 .findAny()
                 .orElseThrow(TastePreferenceException.NotFound::new);
+    }
+
+    public static int getDistributionPercentage(int total, long count) {
+        return (int) (count * PERCENTAGE / total);
     }
 
 }

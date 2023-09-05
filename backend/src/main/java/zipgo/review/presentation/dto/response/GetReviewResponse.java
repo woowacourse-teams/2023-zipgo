@@ -1,4 +1,4 @@
-package zipgo.review.dto.response;
+package zipgo.review.presentation.dto.response;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import java.util.List;

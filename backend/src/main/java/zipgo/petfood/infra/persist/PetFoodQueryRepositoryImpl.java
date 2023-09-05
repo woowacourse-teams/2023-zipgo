@@ -118,15 +118,4 @@ public class PetFoodQueryRepositoryImpl implements PetFoodQueryRepository {
                 .functionality.name.in(functionalityList);
     }
 
-    public PetFood findPetFoodWithReviewsByPetFoodId(Long petFoodId) {
-        JPAQuery<PetFood> where = queryFactory
-                .selectFrom(petFood)
-                .leftJoin(petFood.reviews.reviews, review)
-                .fetchJoin()
-                .leftJoin(review.adverseReactions, adverseReaction)
-                .where(petFood.id.eq(petFoodId));
-
-        return where.fetchOne();
-    }
-
 }
