@@ -17,6 +17,12 @@
                 <div class="col-md-3">
                     <button type="button" class="btn btn-primary btn-block" data-toggle="modal" data-target="#petFoodModal">반려동물 식품 생성</button>
                 </div>
+                <div class="col-md-3">
+                    <button type="button" class="btn btn-primary btn-block" data-toggle="modal" data-target="#functionalityModal">기능성 생성</button>
+                </div>
+                <div class="col-md-3">
+                    <button type="button" class="btn btn-primary btn-block" data-toggle="modal" data-target="#primaryIngredientModal">주원료 생성</button>
+                </div>
             </div>
         </div>
 
@@ -110,6 +116,56 @@
                 </div>
             </div>
         </div>
+
+        <div class="modal fade" id="functionalityModal">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h4 class="modal-title">기능성 생성</h4>
+                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    </div>
+                    <div class="modal-body">
+                        <form id="dataForm3">
+                            <div class="form-group">
+                                <label for="brandName">이름</label>
+                                <input type="text" class="form-control" id="functionalityName" name="brandName">
+                            </div>
+                            <div class="text-center">
+                                <button type="button" class="btn btn-primary" id="sendFunctionality">생성</button>
+                            </div>
+                        </form>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">닫기</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="modal fade" id="primaryIngredientModal">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h4 class="modal-title">주원료 생성</h4>
+                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    </div>
+                    <div class="modal-body">
+                        <form id="dataForm4">
+                            <div class="form-group">
+                                <label for="brandName">이름</label>
+                                <input type="text" class="form-control" id="primaryIngredientName" name="brandName">
+                            </div>
+                            <div class="text-center">
+                                <button type="button" class="btn btn-primary" id="sendPrimaryIngredient">생성</button>
+                            </div>
+                        </form>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">닫기</button>
+                    </div>
+                </div>
+            </div>
+        </div>
     </body>
 </th:block>
 </html>
@@ -194,6 +250,80 @@
             success: function(response) {
                 alert("반려동물 식품 생성 완료");
                 $("#petFoodModal").modal("hide");
+            }
+        });
+    });
+
+    $("#sendFunctionality").click(function() {
+        var imageFile = $("#petFoodImage")[0].files[0];
+
+        var formData = new FormData();
+        formData.append("image", imageFile);
+
+        var otherData = {
+            name: $("#petFoodName").val(),
+            purchaseLink: $("#purchaseLink").val(),
+            brandId: $("#brand").val(),
+            europeStandard: $("#europeStandard").prop("checked"),
+            usStandard: $("#usStandard").prop("checked")
+        };
+
+        formData.append("petFoodCreateRequest", new Blob([JSON.stringify(otherData)], {type: "application/json"}));
+
+        $.ajax({
+            url: "/pet-foods",
+            type: "POST",
+            data: formData,
+            processData: false,
+            contentType: false,
+            success: function(response) {
+                alert("반려동물 식품 생성 완료");
+                $("#petFoodModal").modal("hide");
+            }
+        });
+    });
+
+    $("#functionalityModal").on("shown.bs.modal", function() {
+        $("#functionalityName").val("");
+    });
+
+    $("#sendFunctionality").click(function() {
+        var functionalityName = $("#functionalityName").val();
+
+        var functionalityData = {
+            name: functionalityName
+        };
+
+        $.ajax({
+            url: "/functionalities",
+            type: "POST",
+            data: JSON.stringify(functionalityData),
+            contentType: "application/json",
+            success: function(response) {
+                alert("기능성 생성 완료");
+                $("#functionalityModal").modal("hide");
+            }
+        });
+    });
+
+    $("#primaryIngredientModal").on("shown.bs.modal", function() {
+        $("#primaryIngredientName").val("");
+    });
+
+    $("#sendPrimaryIngredient").click(function() {
+        var primaryIngredientName = $("#primaryIngredientName").val();
+
+        var primaryIngredientData = {
+            name: primaryIngredientName
+        };
+
+        $.ajax({
+            url: "/primary-ingredients",
+            type: "POST",
+            data: JSON.stringify(primaryIngredientData),
+            contentType: "application/json",
+            success: function(response) {
+                $("#primaryIngredientModal").modal("hide");
             }
         });
     });
