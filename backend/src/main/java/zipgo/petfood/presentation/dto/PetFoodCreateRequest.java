@@ -1,5 +1,6 @@
 package zipgo.petfood.presentation.dto;
 
+import java.util.List;
 import zipgo.brand.domain.Brand;
 import zipgo.petfood.domain.HasStandard;
 import zipgo.petfood.domain.PetFood;
@@ -8,6 +9,8 @@ public record PetFoodCreateRequest(
         String name,
         String purchaseLink,
         Long brandId,
+        List<Long> functionalityIds,
+        List<Long> primaryIngredientIds,
         boolean europeStandard,
         boolean usStandard
 ) {

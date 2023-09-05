@@ -3,6 +3,7 @@ package zipgo.petfood.presentation;
 import com.epages.restdocs.apispec.MockMvcRestDocumentationWrapper;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import java.nio.charset.StandardCharsets;
+import java.util.List;
 import org.junit.jupiter.api.DisplayNameGeneration;
 import org.junit.jupiter.api.DisplayNameGenerator;
 import org.junit.jupiter.api.Test;
@@ -68,7 +69,7 @@ public class PetFoodControllerMockTest {
     void 식품을_생성하면_201이_반환된다() throws Exception {
         // given
         var 사진_파일 = new MockMultipartFile("image", "사진.png", "image/png", "사진".getBytes());
-        PetFoodCreateRequest petFoodCreateRequest = PetFoodFixture.식품_생성_요청(100L);
+        PetFoodCreateRequest petFoodCreateRequest = PetFoodFixture.식품_생성_요청(100L, List.of(1L, 2L), List.of(1L, 2L));
         String requestToJson = objectMapper.writeValueAsString(petFoodCreateRequest);
         MockMultipartFile 식품_생성_요청 = new MockMultipartFile("petFoodCreateRequest",
                 "petFoodCreateRequest",
