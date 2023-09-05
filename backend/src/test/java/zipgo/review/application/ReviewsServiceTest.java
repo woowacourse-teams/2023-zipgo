@@ -25,10 +25,10 @@ import zipgo.petfood.domain.repository.PetFoodRepository;
 import zipgo.review.domain.HelpfulReaction;
 import zipgo.review.domain.Review;
 import zipgo.review.domain.repository.ReviewRepository;
-import zipgo.review.presentation.dto.request.CreateReviewRequest;
 import zipgo.review.exception.ReviewException;
 import zipgo.review.exception.StoolConditionException;
 import zipgo.review.exception.TastePreferenceException;
+import zipgo.review.presentation.dto.request.CreateReviewRequest;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;

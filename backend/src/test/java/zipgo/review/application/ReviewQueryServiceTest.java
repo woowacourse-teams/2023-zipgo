@@ -33,7 +33,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertAll;
 import static zipgo.brand.domain.fixture.BrandFixture.아카나_식품_브랜드_생성;
 import static zipgo.pet.domain.fixture.BreedsFixture.견종;
-import static zipgo.pet.domain.fixture.PetFixture.*;
+import static zipgo.pet.domain.fixture.PetFixture.반려동물;
 import static zipgo.pet.domain.fixture.PetSizeFixture.소형견;
 import static zipgo.petfood.domain.fixture.PetFoodFixture.모든_영양기준_만족_식품;
 import static zipgo.review.domain.type.AdverseReactionType.NONE;

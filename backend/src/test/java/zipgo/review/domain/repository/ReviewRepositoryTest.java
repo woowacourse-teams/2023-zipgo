@@ -30,7 +30,6 @@ import zipgo.review.fixture.MemberFixture;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static zipgo.pet.domain.fixture.BreedsFixture.견종;
-import static zipgo.pet.domain.fixture.PetFixture.반려동물;
 import static zipgo.pet.domain.fixture.PetSizeFixture.소형견;
 import static zipgo.review.fixture.MemberFixture.무민;
 import static zipgo.review.fixture.ReviewFixture.극찬_리뷰_생성;
