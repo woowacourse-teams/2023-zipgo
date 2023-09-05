@@ -1,8 +1,11 @@
 package zipgo.petfood.domain.fixture;
 
 import zipgo.petfood.domain.Functionality;
+import zipgo.petfood.presentation.dto.FunctionalityCreateRequest;
 
 public class FunctionalityFixture {
+
+    public static FunctionalityCreateRequest 다이어트_기능성_요청 = new FunctionalityCreateRequest("다이어트");
 
     public static Functionality 기능성_다이어트() {
         Functionality 다이어트 = Functionality.builder()
