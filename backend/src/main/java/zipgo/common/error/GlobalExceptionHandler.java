@@ -4,6 +4,8 @@ import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.ObjectError;
+import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.context.request.ServletWebRequest;
@@ -11,6 +13,7 @@ import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 import zipgo.common.logging.LoggingUtils;
 
+import static java.util.stream.Collectors.joining;
 import static org.springframework.http.HttpStatus.INTERNAL_SERVER_ERROR;
 
 @RestControllerAdvice
@@ -29,6 +32,23 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
         LoggingUtils.error(exception);
         return ResponseEntity.status(INTERNAL_SERVER_ERROR)
                 .body(new ErrorResponse(500, "서버에서 알 수 없는 오류가 발생했습니다."));
+    }
+
+    @Override
+    protected ResponseEntity<Object> handleMethodArgumentNotValid(MethodArgumentNotValidException ex,
+                                                                  HttpHeaders headers,
+                                                                  HttpStatusCode status,
+                                                                  WebRequest request) {
+        if (isAlreadyCommitted(request)) {
+            return null;
+        }
+
+        String errorMessage = ex.getBindingResult().getAllErrors().stream()
+                .map(ObjectError::getDefaultMessage)
+                .collect(joining("; "));
+        LoggingUtils.error(ex);
+        return ResponseEntity.status(status)
+                .body(new ErrorResponse(status.value(), errorMessage));
     }
 
     @Override

@@ -37,6 +37,7 @@ import static com.epages.restdocs.apispec.RestAssuredRestDocumentationWrapper.re
 import static com.epages.restdocs.apispec.Schema.schema;
 import static io.restassured.RestAssured.given;
 import static io.restassured.http.ContentType.JSON;
+import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.is;
 import static org.hamcrest.Matchers.lessThan;
 import static org.springframework.http.HttpHeaders.AUTHORIZATION;
@@ -92,17 +93,19 @@ public class ReviewControllerTest extends AcceptanceTest {
 
     @Autowired
     private PetRepository petRepository;
+    private Member 멤버;
+    private PetSize 사이즈;
+    private Breeds 종류;
+    private Pet 반려동물;
 
     @BeforeEach
     void setUp() {
         Brand 브랜드 = brandRepository.save(BrandFixture.오리젠_식품_브랜드_생성());
-        식품 = 모든_영양기준_만족_식품(브랜드);
-        petFoodRepository.save(식품);
-
-        Member 멤버 = memberRepository.save(무민());
-        PetSize 사이즈 = petSizeRepository.save(소형견());
-        Breeds 종류 = breedsRepository.save(견종(사이즈));
-        Pet 반려동물 = petRepository.save(반려동물(멤버, 종류));
+        식품 = petFoodRepository.save(모든_영양기준_만족_식품(브랜드));
+        멤버 = memberRepository.save(무민());
+        사이즈 = petSizeRepository.save(소형견());
+        종류 = breedsRepository.save(견종(사이즈));
+        반려동물 = petRepository.save(반려동물(멤버, 종류));
         리뷰 = reviewRepository.save(ReviewFixture.극찬_리뷰_생성(반려동물, 식품, List.of("없어요")));
     }
 
@@ -321,8 +324,9 @@ public class ReviewControllerTest extends AcceptanceTest {
         void 리뷰를_성공적으로_생성하면_201_반환() {
             // given
             var token = jwtProvider.create("1");
+            var 리뷰_생성_요청 = 리뷰_생성_요청(식품.getId());
             var 요청_준비 = given(spec).header("Authorization", "Bearer " + token)
-                    .body(리뷰_생성_요청(식품.getId()))
+                    .body(리뷰_생성_요청)
                     .contentType(JSON).filter(리뷰_생성_API_문서_생성());
 
             // when
@@ -330,6 +334,18 @@ public class ReviewControllerTest extends AcceptanceTest {
 
             // then
             응답.then().assertThat().statusCode(CREATED.value());
+
+            var 리뷰 = given().spec(spec).when().get(응답.getHeader("Location"));
+            리뷰.then()
+                    .log().all()
+                    .assertThat().body("petProfile.writtenWeight", equalTo(5.0F))
+                    .assertThat().body("petProfile.writtenAge", equalTo(반려동물.calculateCurrentAge()))
+                    .assertThat().body("rating", is(리뷰_생성_요청.rating()))
+                    .assertThat().body("comment", is(리뷰_생성_요청.comment()))
+                    .assertThat().body("tastePreference", is(리뷰_생성_요청.tastePreference()))
+                    .assertThat().body("stoolCondition", is(리뷰_생성_요청.stoolCondition()))
+                    .assertThat().body("adverseReactions", is(리뷰_생성_요청.adverseReactions()))
+                    .assertThat().body("comment", is(리뷰_생성_요청.comment()));
         }
 
         private RestDocumentationFilter 리뷰_생성_API_문서_생성() {

@@ -5,7 +5,7 @@ type PetProfile = {
   name: string;
   age: number;
   breed: Breed['name'];
-  petSize: PetSize | undefined;
+  petSize?: PetSize;
   gender: Gender;
   weight: number;
   imageUrl: string;

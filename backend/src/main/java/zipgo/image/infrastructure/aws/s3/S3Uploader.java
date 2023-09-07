@@ -20,18 +20,14 @@ public class S3Uploader {
                 .key(key)
                 .contentType("image/png")
                 .build();
-        try {
-            s3Client.putObject(objectRequest, RequestBody.fromBytes(getBytes(file)));
-        } catch (UnsupportedOperationException e) {
-            throw new IllegalArgumentException("엑세스 접근 중 예외가 발생했습니다.");
-        }
+        s3Client.putObject(objectRequest, RequestBody.fromBytes(getBytes(file)));
     }
 
     private byte[] getBytes(MultipartFile file) {
         try {
             return file.getBytes();
         } catch (IOException e) {
-            throw new IllegalArgumentException("바이트 파싱 중 에러가 발생했습니다.");
+            throw new RuntimeException(e);
         }
     }
 

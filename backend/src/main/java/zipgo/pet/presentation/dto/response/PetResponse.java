@@ -22,7 +22,7 @@ public record PetResponse(
                 age,
                 pet.getBreeds().getName(),
                 pet.getBreeds().getPetSize().getName(),
-                pet.getGender().name(),
+                pet.getGender().getValue(),
                 pet.getWeight(),
                 pet.getImageUrl()
         );

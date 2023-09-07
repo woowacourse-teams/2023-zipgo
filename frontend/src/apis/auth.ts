@@ -4,8 +4,9 @@ import {
   LoginZipgoAuthReq,
   LoginZipgoAuthRes,
 } from '@/types/auth/remote';
+import { zipgoLocalStorage } from '@/utils/localStorage';
 
-import { client, clientBasic } from '.';
+import { client, clientBasic, createConfigWithAuth } from '.';
 
 export const loginZipgoAuth = async ({ code }: LoginZipgoAuthReq) => {
   const { data } = await client.post<LoginZipgoAuthRes>('/auth/login', null, {
@@ -29,6 +30,7 @@ export const logoutKaKaoAuth = async () => {
     null,
     {
       headers: {
+        /** @todo kakao logout 여부 논의 */
         Authorization: `Bearer ${localStorage.getItem('kakao')}`,
       },
     },
@@ -38,11 +40,12 @@ export const logoutKaKaoAuth = async () => {
 };
 
 export const authenticateUser = async () => {
-  const { data } = await clientBasic.get<AuthenticateUserRes>('/auth', {
-    headers: {
-      Authorization: `Bearer ${localStorage.getItem('auth')}`,
-    },
-  });
+  const tokens = zipgoLocalStorage.getTokens();
+
+  const { data } = await clientBasic.get<AuthenticateUserRes>(
+    '/auth',
+    createConfigWithAuth(tokens),
+  );
 
   return data;
 };

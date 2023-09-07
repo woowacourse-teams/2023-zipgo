@@ -9,7 +9,8 @@
     "start:sb": "storybook dev -p 6006",
     "build:prod": "cross-env NODE_ENV=production webpack --progress --config config/webpack.prod.js",
     "build:sb": "sb build",
-    "postinstall": "cd .. && husky install frontend/.husky && chmod +x frontend/.husky/*"
+    "postinstall": "cd .. && husky install frontend/.husky && chmod +x frontend/.husky/*",
+    "test-storybook": "test-storybook"
   },
   "devDependencies": {
     "@babel/core": "^7.22.9",
@@ -26,6 +27,7 @@
     "@storybook/preset-create-react-app": "^7.0.24",
     "@storybook/react": "^7.0.24",
     "@storybook/react-webpack5": "^7.0.24",
+    "@storybook/test-runner": "^0.13.0",
     "@storybook/testing-library": "^0.2.0",
     "@testing-library/dom": "^9.3.1",
     "@testing-library/jest-dom": "^5.16.5",
@@ -59,10 +61,12 @@
     "fork-ts-checker-webpack-plugin": "^8.0.0",
     "html-webpack-plugin": "^5.5.3",
     "husky": ">=7",
+    "jest-playwright-preset": "^3.0.1",
     "lint-staged": ">=10",
     "msw": "^1.2.3",
     "msw-storybook-addon": "^1.8.0",
     "pinst": ">=2",
+    "playwright": "^1.37.1",
     "postcss": "^8.4.26",
     "postcss-styled-syntax": "^0.4.0",
     "prettier": "2.8.8",

@@ -1,9 +1,10 @@
 package zipgo.review.application;
 
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.PersistenceContext;
 import java.util.ArrayList;
 import java.util.List;
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import zipgo.brand.domain.Brand;
@@ -15,6 +16,7 @@ import zipgo.member.exception.MemberNotFoundException;
 import zipgo.pet.domain.Breeds;
 import zipgo.pet.domain.Pet;
 import zipgo.pet.domain.PetSize;
+import zipgo.pet.domain.fixture.BreedsFixture;
 import zipgo.pet.domain.repository.BreedsRepository;
 import zipgo.pet.domain.repository.PetRepository;
 import zipgo.pet.domain.repository.PetSizeRepository;
@@ -74,6 +76,9 @@ class ReviewsServiceTest extends ServiceTest {
     @Autowired
     private ReviewService reviewService;
 
+    @PersistenceContext
+    private EntityManager entityManager;
+
     private Brand 브랜드;
     private PetFood 식품;
 
@@ -88,6 +93,8 @@ class ReviewsServiceTest extends ServiceTest {
         //given
         Member 멤버 = memberRepository.save(무민());
         PetFood 저장된_식품 = petFoodRepository.save(식품);
+        PetSize 크기 = petSizeRepository.save(소형견());
+        petRepository.save(반려동물(멤버, breedsRepository.save(BreedsFixture.견종(크기))));
 
         //when
         reviewService.createReview(멤버.getId(), 리뷰_생성_요청(저장된_식품.getId()));
@@ -109,6 +116,10 @@ class ReviewsServiceTest extends ServiceTest {
     void 잘못된_기호성으로_리뷰를_생성할_시_예외_처리() {
         //given
         Member 멤버 = memberRepository.save(무민());
+        PetSize 크기 = petSizeRepository.save(소형견());
+        Pet 반려동물 = 반려동물(멤버, breedsRepository.save(견종(크기)));
+        petRepository.save(반려동물);
+
         PetFood 저장된_식품 = petFoodRepository.save(식품);
         CreateReviewRequest request = new CreateReviewRequest(
                 저장된_식품.getId(),
@@ -129,6 +140,8 @@ class ReviewsServiceTest extends ServiceTest {
         //given
         PetFood 식품 = 모든_영양기준_만족_식품(브랜드);
         Member 멤버 = memberRepository.save(무민());
+        PetSize 크기 = petSizeRepository.save(소형견());
+        petRepository.save(반려동물(멤버, breedsRepository.save(BreedsFixture.견종(크기))));
         PetFood 저장된_식품 = petFoodRepository.save(식품);
         CreateReviewRequest request = new CreateReviewRequest(
                 저장된_식품.getId(),
@@ -224,7 +237,6 @@ class ReviewsServiceTest extends ServiceTest {
         Member 작성자 = memberRepository.save(무민());
         petFoodRepository.save(식품);
         Review 리뷰 = 혹평리뷰(식품, 작성자);
-
         Member 다른회원 = memberRepository.save(멤버_이름("무지"));
 
         //when
@@ -238,7 +250,6 @@ class ReviewsServiceTest extends ServiceTest {
     }
 
     @Test
-    @Disabled
     void 도움이_돼요를_취소할_수_있다() {
         //given
         PetFood 식품 = 모든_영양기준_만족_식품(브랜드);
@@ -254,6 +265,7 @@ class ReviewsServiceTest extends ServiceTest {
         reviewService.removeHelpfulReaction(다른회원.getId(), 리뷰.getId());
 
         //then
+        entityManager.flush();
         Review 저장된_리뷰 = reviewRepository.getById(리뷰.getId());
         assertThat(저장된_리뷰.getHelpfulReactions())
                 .extracting(HelpfulReaction::getMadeBy)

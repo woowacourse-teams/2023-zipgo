@@ -1,18 +1,30 @@
 package zipgo.auth.presentation.dto;
 
+import java.util.List;
 import zipgo.member.domain.Member;
+import zipgo.pet.domain.Pet;
+import zipgo.pet.presentation.dto.response.PetResponse;
+import zipgo.pet.presentation.dto.response.PetResponses;
+import zipgo.review.dto.response.GetReviewResponse;
 
 public record AuthResponse(
         String name,
-        String profileImgUrl,
-        boolean hasPet
+        String email,
+        String profileImageUrl,
+        boolean hasPet,
+        List<PetResponse> pets
 ) {
 
-    public static AuthResponse from(Member member) {
+
+    public static AuthResponse of(Member member, List<Pet> pets) {
         return new AuthResponse(
                 member.getName(),
+                member.getEmail(),
                 member.getProfileImgUrl(),
-                member.hasPet()
+                member.hasPet(),
+                pets.stream()
+                        .map(PetResponse::from)
+                        .toList()
         );
     }
 
