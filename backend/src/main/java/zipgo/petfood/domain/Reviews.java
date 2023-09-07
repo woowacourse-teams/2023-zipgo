@@ -62,48 +62,48 @@ public class Reviews {
                 ));
     }
 
-    public int getTastesPercentage(String tastePreference) {
-        Map<String, Long> tastesAndCount = getTastesAndCount();
+    public int getTastesPercentage(TastePreference tastePreference) {
+        Map<TastePreference, Long> tastesAndCount = getTastesAndCount();
         int total = reviews.size();
         long count = tastesAndCount.getOrDefault(tastePreference, 0L);
         return getDistributionPercentage(total, count);
     }
 
-    private Map<String, Long> getTastesAndCount() {
+    private Map<TastePreference, Long> getTastesAndCount() {
         return reviews.stream()
                 .collect(groupingBy(
-                        review -> review.getTastePreference().name(),
+                        review -> review.getTastePreference(),
                         counting()
                 ));
     }
 
-    public int getStoolsConditionPercentage(String stoolCondition) {
-        Map<String, Long> stoolConditions = getStoolsAndCount();
+    public int getStoolsConditionPercentage(StoolCondition stoolCondition) {
+        Map<StoolCondition, Long> stoolConditions = getStoolsAndCount();
         int total = reviews.size();
         long count = stoolConditions.getOrDefault(stoolCondition, 0L);
         return getDistributionPercentage(total, count);
     }
 
-    private Map<String, Long> getStoolsAndCount() {
+    private Map<StoolCondition, Long> getStoolsAndCount() {
         return reviews.stream()
                 .collect(groupingBy(
-                        review -> review.getStoolCondition().name(),
+                        review -> review.getStoolCondition(),
                         counting()
                 ));
     }
 
-    public int getAdverseReactionPercentage(String adverseReactionType) {
-        Map<String, Long> adverseReactionsAndCount = getAdverseReactionsAndCount();
+    public int getAdverseReactionPercentage(AdverseReactionType adverseReactionType) {
+        Map<AdverseReactionType, Long> adverseReactionsAndCount = getAdverseReactionsAndCount();
         int total = getAdverseReactionCount();
         Long count = adverseReactionsAndCount.getOrDefault(adverseReactionType, 0L);
         return getDistributionPercentage(total, count);
     }
 
-    private Map<String, Long> getAdverseReactionsAndCount() {
+    private Map<AdverseReactionType, Long> getAdverseReactionsAndCount() {
         return reviews.stream()
                 .flatMap(review -> review.getAdverseReactions().stream())
                 .collect(groupingBy(
-                        adverseReaction -> adverseReaction.getAdverseReactionType().name(),
+                        adverseReaction -> adverseReaction.getAdverseReactionType(),
                         Collectors.counting()
                 ));
     }

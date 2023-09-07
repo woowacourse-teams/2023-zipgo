@@ -140,7 +140,7 @@ public class ReviewQueryService {
     private List<TastePreferenceResponse> getTastesSummary(Reviews reviews) {
         return Arrays.stream(TastePreference.values())
                 .map(tastePreference -> {
-                    int percentage = reviews.getTastesPercentage(tastePreference.name());
+                    int percentage = reviews.getTastesPercentage(tastePreference);
                     return TastePreferenceResponse.of(tastePreference, percentage);
                 })
                 .toList();
@@ -149,7 +149,7 @@ public class ReviewQueryService {
     private List<StoolConditionResponse> getStoolsSummary(Reviews reviews) {
         return Arrays.stream(StoolCondition.values())
                 .map(stoolCondition -> {
-                    int percentage = reviews.getStoolsConditionPercentage(stoolCondition.name());
+                    int percentage = reviews.getStoolsConditionPercentage(stoolCondition);
                     return StoolConditionResponse.of(stoolCondition, percentage);
                 })
                 .toList();
@@ -158,7 +158,7 @@ public class ReviewQueryService {
     private List<AdverseReactionResponse> getAdverseReactions(Reviews reviews) {
         return Arrays.stream(AdverseReactionType.values())
                 .map(adverseReactionType -> {
-                    int percentage = reviews.getAdverseReactionPercentage(adverseReactionType.name());
+                    int percentage = reviews.getAdverseReactionPercentage(adverseReactionType);
                     return AdverseReactionResponse.of(adverseReactionType, percentage);
                 })
                 .toList();
