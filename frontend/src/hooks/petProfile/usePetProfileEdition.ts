@@ -1,11 +1,8 @@
 import { ChangeEvent, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
 
-import { usePetProfile } from '@/context/petProfile/PetProfileContext';
-import { PATH } from '@/router/routes';
 import { PetProfile, PetSize } from '@/types/petProfile/client';
-import { zipgoLocalStorage } from '@/utils/localStorage';
 
+import useEasyNavigate from '../@common/useEasyNavigate';
 import { useValidParams } from '../@common/useValidParams';
 import { useEditPetMutation, usePetItemQuery, useRemovePetMutation } from '../query/petProfile';
 import { usePetProfileValidation } from './usePetProfileValidation';
@@ -15,12 +12,11 @@ interface PetInput extends Omit<PetProfile, 'weight'> {
 }
 
 export const usePetProfileEdition = () => {
-  const navigate = useNavigate();
-  const { updatePetProfile, resetPetProfile } = usePetProfile();
+  const { goHome } = useEasyNavigate();
   const { isValidName, isValidAgeRange, isValidWeight } = usePetProfileValidation();
 
   const { petId } = useValidParams(['petId']);
-  const { petItem, resetPetItemQuery } = usePetItemQuery({ petId: Number(petId) });
+  const { petItem } = usePetItemQuery({ petId: Number(petId) });
   const { editPetMutation } = useEditPetMutation();
   const { removePetMutation } = useRemovePetMutation();
 
@@ -95,40 +91,16 @@ export const usePetProfileEdition = () => {
         weight: Number(pet.weight),
       };
 
-      editPetMutation
-        .editPet(newPetProfile)
-        .then(() => {
-          updatePetProfile(newPetProfile);
-          resetPetItemQuery();
+      editPetMutation.editPet(newPetProfile);
 
-          alert('반려동물 정보 수정이 완료되었습니다.');
-          navigate(PATH.HOME);
-        })
-        .catch(() => {
-          alert('반려동물 정보 수정에 실패했습니다.');
-          navigate(PATH.HOME);
-        });
-
-      return;
+      goHome();
     }
-
-    alert('올바른 정보를 입력해주세요!');
   };
 
   const onClickRemoveButton = (petId: number) => {
-    confirm('정말 삭제하시겠어요?') &&
-      removePetMutation.removePet({ petId }).then(() => {
-        const userInfo = zipgoLocalStorage.getUserInfo({ required: true });
+    confirm('정말 삭제하시겠어요?') && removePetMutation.removePet({ petId });
 
-        zipgoLocalStorage.setUserInfo({ ...userInfo, hasPet: false });
-
-        resetPetProfile();
-        resetPetItemQuery();
-
-        alert('반려동물 정보를 삭제했습니다.');
-      });
-
-    navigate(PATH.HOME);
+    goHome();
   };
 
   return {

@@ -5,7 +5,14 @@ import { MIXED_BREED, PET_SIZES } from '@/constants/petProfile';
 import { usePetProfile } from '@/context/petProfile/PetProfileContext';
 import { Parameter } from '@/types/common/utility';
 import { PetProfile } from '@/types/petProfile/client';
-import { PostPetProfileReq, PostPetProfileRes } from '@/types/petProfile/remote';
+import {
+  DeletePetReq,
+  DeletePetRes,
+  PostPetProfileReq,
+  PostPetProfileRes,
+  PutPetReq,
+  PutPetRes,
+} from '@/types/petProfile/remote';
 import { zipgoLocalStorage } from '@/utils/localStorage';
 
 const QUERY_KEY = { breedList: 'breedList', petItem: 'petItem', petList: 'petList' };
@@ -82,16 +89,56 @@ export const useAddPetProfileMutation = () => {
 };
 
 export const useEditPetMutation = () => {
-  const { mutateAsync: editPet, ...editPetRestMutation } = useMutation({
+  const { resetPetItemQuery } = usePetItemQuery({ petId: 0 });
+  const { updatePetProfile: updatePetProfileInHeader } = usePetProfile();
+
+  const { mutate: editPet, ...editPetRestMutation } = useMutation<
+    PutPetRes,
+    unknown,
+    PutPetReq,
+    unknown
+  >({
     mutationFn: putPet,
+    onSuccess: (putPetRes, newPetProfile, context) => {
+      updatePetProfileInHeader(newPetProfile);
+      resetPetItemQuery();
+
+      zipgoLocalStorage.setPetProfile(newPetProfile);
+
+      alert('반려동물 정보 수정이 완료되었습니다.');
+    },
+    onError: () => {
+      alert('반려동물 정보 수정에 실패했습니다.');
+    },
   });
 
   return { editPetMutation: { editPet, ...editPetRestMutation } };
 };
 
 export const useRemovePetMutation = () => {
-  const { mutateAsync: removePet, ...removePetRestMutation } = useMutation({
+  const { resetPetItemQuery } = usePetItemQuery({ petId: 0 });
+  const { resetPetProfile: resetPetProfileInHeader } = usePetProfile();
+
+  const { mutate: removePet, ...removePetRestMutation } = useMutation<
+    DeletePetRes,
+    unknown,
+    DeletePetReq,
+    unknown
+  >({
     mutationFn: deletePet,
+    onSuccess: (deletePetRes, deletePetReq, context) => {
+      const userInfo = zipgoLocalStorage.getUserInfo({ required: true });
+
+      zipgoLocalStorage.setUserInfo({ ...userInfo, hasPet: false });
+
+      resetPetProfileInHeader();
+      resetPetItemQuery();
+
+      alert('반려동물 정보를 삭제했습니다.');
+    },
+    onError: () => {
+      alert('반려동물 정보 삭제에 실패했습니다.');
+    },
   });
 
   return { removePetMutation: { removePet, ...removePetRestMutation } };
