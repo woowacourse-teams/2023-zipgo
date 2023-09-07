@@ -1,7 +1,11 @@
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 
 import { deletePet, getBreeds, getPet, getPets, postPetProfile, putPet } from '@/apis/petProfile';
+import { MIXED_BREED, PET_SIZES } from '@/constants/petProfile';
+import { usePetProfile } from '@/context/petProfile/PetProfileContext';
 import { Parameter } from '@/types/common/utility';
+import { PetProfile } from '@/types/petProfile/client';
+import { PostPetProfileReq, PostPetProfileRes } from '@/types/petProfile/remote';
 
 const QUERY_KEY = { breedList: 'breedList', petItem: 'petItem', petList: 'petList' };
 
@@ -45,8 +49,32 @@ export const usePetListQuery = () => {
 };
 
 export const useAddPetProfileMutation = () => {
-  const { mutateAsync: addPetProfile, ...addPetProfileRestMutation } = useMutation({
+  const { updatePetProfile: updatePetProfileInHeader } = usePetProfile();
+  const { mutate: addPetProfile, ...addPetProfileRestMutation } = useMutation<
+    PostPetProfileRes,
+    unknown,
+    PostPetProfileReq,
+    unknown
+  >({
     mutationFn: postPetProfile,
+    onSuccess: (postPetProfileRes, petProfile, context) => {
+      const userInfo = JSON.parse(localStorage.getItem('userInfo')!);
+
+      const petProfileWithId = {
+        ...petProfile,
+        id: 1,
+        petSize: petProfile.breed === MIXED_BREED ? petProfile.petSize : PET_SIZES[0],
+      } as PetProfile;
+
+      updatePetProfileInHeader(petProfileWithId);
+
+      localStorage.setItem('userInfo', JSON.stringify({ ...userInfo, hasPet: true }));
+
+      alert('반려동물 정보 등록이 완료되었습니다.');
+    },
+    onError: () => {
+      alert('반려동물 정보 등록에 실패했습니다.');
+    },
   });
 
   return { addPetProfileMutation: { addPetProfile, ...addPetProfileRestMutation } };

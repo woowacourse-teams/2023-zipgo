@@ -1,22 +1,18 @@
 import { ChangeEvent, useState } from 'react';
 import { useOutletContext } from 'react-router-dom';
 
-import { MIXED_BREED, PET_SIZES } from '@/constants/petProfile';
 import { usePetAdditionContext } from '@/context/petProfile/PetAdditionContext';
-import { usePetProfile } from '@/context/petProfile/PetProfileContext';
-import { useAddPetProfileMutation, useBreedListQuery } from '@/hooks/query/petProfile';
-import { PetAdditionOutletContextProps, PetProfile, PetSize } from '@/types/petProfile/client';
+import { useAddPetProfileMutation } from '@/hooks/query/petProfile';
+import { PetAdditionOutletContextProps, PetSize } from '@/types/petProfile/client';
 
 import useEasyNavigate from '../@common/useEasyNavigate';
 import { usePetProfileValidation } from './usePetProfileValidation';
 
 export const usePetProfileAddition = () => {
   const { goHome } = useEasyNavigate();
-  const { breedList } = useBreedListQuery();
   const { addPetProfileMutation } = useAddPetProfileMutation();
   const { isValidAgeRange, isValidGender, isValidName, isValidWeight } = usePetProfileValidation();
 
-  const { updatePetProfile: updatePetProfileInHeader } = usePetProfile(); // 에디가 만든 context
   const { petProfile, updatePetProfile } = usePetAdditionContext();
   const { updateIsValidStep } = useOutletContext<PetAdditionOutletContextProps>();
 
@@ -90,27 +86,7 @@ export const usePetProfileAddition = () => {
   };
 
   const onSubmitPetProfile = () => {
-    addPetProfileMutation
-      .addPetProfile(petProfile)
-      .then(async res => {
-        const userInfo = JSON.parse(localStorage.getItem('userInfo')!);
-
-        const userPetBreed = breedList?.find(breed => breed.name === petProfile.breed);
-        const petProfileWithId = {
-          ...petProfile,
-          id: 1,
-          petSize: userPetBreed?.name === MIXED_BREED ? petProfile.petSize : PET_SIZES[0],
-        } as PetProfile;
-
-        updatePetProfileInHeader(petProfileWithId);
-
-        localStorage.setItem('userInfo', JSON.stringify({ ...userInfo, hasPet: true }));
-
-        alert('반려동물 정보 등록이 완료되었습니다.');
-      })
-      .catch(error => {
-        alert('반려동물 정보 등록에 실패했습니다.');
-      });
+    addPetProfileMutation.addPetProfile(petProfile);
 
     goHome();
   };
