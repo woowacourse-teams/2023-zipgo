@@ -569,7 +569,7 @@ public class ReviewControllerTest extends AcceptanceTest {
                     queryParameters(parameterWithName("petFoodId").description("식품 id")),
                     responseFields(
                             fieldWithPath("rating.average").description("리뷰 총 평점").type(JsonFieldType.NUMBER),
-                            fieldWithPath("rating.rating[].name").description("rating 이름").type(JsonFieldType.STRING),
+                            fieldWithPath("rating.rating[].rating").description("rating 이름").type(JsonFieldType.STRING),
                             fieldWithPath("rating.rating[].percentage").description("rating 해당 백분율")
                                     .type(JsonFieldType.NUMBER),
                             fieldWithPath("tastePreference[].name").description("tastePreference 이름")
