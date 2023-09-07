@@ -12,8 +12,9 @@ public enum TastePreference {
     NOT_SO_WELL("잘 안 먹어요"),
     NOT_AT_ALL("전혀 안 먹어요");
 
+    private static final int PERCENTAGE = 100;
+
     private String description;
-    private static final Integer PERCENTAGE = 100;
 
     TastePreference(String description) {
         this.description = description;

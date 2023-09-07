@@ -12,7 +12,7 @@ public enum StoolCondition {
     HARD("딱딱해요"),
     UNCERTAIN("잘 모르겠어요");
 
-    private static final Integer PERCENTAGE = 100;
+    private static final int PERCENTAGE = 100;
 
     private String description;
 
