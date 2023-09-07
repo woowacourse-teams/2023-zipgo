@@ -12,8 +12,6 @@ public enum StoolCondition {
     HARD("딱딱해요"),
     UNCERTAIN("잘 모르겠어요");
 
-    private static final int PERCENTAGE = 100;
-
     private String description;
 
     StoolCondition(String description) {
@@ -25,10 +23,6 @@ public enum StoolCondition {
                 .filter(value -> value.description.equals(stoolCondition))
                 .findAny()
                 .orElseThrow(StoolConditionException.NotFound::new);
-    }
-
-    public static int getDistributionPercentage(int total, long count) {
-        return (int) (count * PERCENTAGE / total);
     }
 
 }

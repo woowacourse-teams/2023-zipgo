@@ -49,8 +49,9 @@ public class Reviews {
 
     public int getRatingPercentage(int rating) {
         Map<Integer, Long> ratingAndCount = getRatingAndCount();
+        int total = reviews.size();
         long count = ratingAndCount.getOrDefault(rating, 0L);
-        return calculateRatingPercentage(reviews.size(), count);
+        return getDistributionPercentage(total, count);
     }
 
     private Map<Integer, Long> getRatingAndCount() {
@@ -61,17 +62,11 @@ public class Reviews {
                 ));
     }
 
-    private int calculateRatingPercentage(int totalReviews, long count) {
-        if (totalReviews == 0) {
-            return 0;
-        }
-        return (int) ((count * PERCENTAGE) / totalReviews);
-    }
-
     public int getTastesPercentage(String tastePreference) {
         Map<String, Long> tastesAndCount = getTastesAndCount();
+        int total = reviews.size();
         long count = tastesAndCount.getOrDefault(tastePreference, 0L);
-        return TastePreference.getDistributionPercentage(reviews.size(), count);
+        return getDistributionPercentage(total, count);
     }
 
     private Map<String, Long> getTastesAndCount() {
@@ -84,8 +79,9 @@ public class Reviews {
 
     public int getStoolsConditionPercentage(String stoolCondition) {
         Map<String, Long> stoolConditions = getStoolsAndCount();
+        int total = reviews.size();
         long count = stoolConditions.getOrDefault(stoolCondition, 0L);
-        return StoolCondition.getDistributionPercentage(reviews.size(), count);
+        return getDistributionPercentage(total, count);
     }
 
     private Map<String, Long> getStoolsAndCount() {
@@ -100,7 +96,7 @@ public class Reviews {
         Map<String, Long> adverseReactionsAndCount = getAdverseReactionsAndCount();
         int total = getAdverseReactionCount();
         Long count = adverseReactionsAndCount.getOrDefault(adverseReactionType, 0L);
-        return AdverseReactionType.getDistributionPercentage(total, count);
+        return getDistributionPercentage(total, count);
     }
 
     private Map<String, Long> getAdverseReactionsAndCount() {
@@ -116,6 +112,13 @@ public class Reviews {
         return reviews.stream()
                 .mapToInt(review -> review.getAdverseReactions().size())
                 .sum();
+    }
+
+    private int getDistributionPercentage(long total, long count) {
+        if (total == 0) {
+            return 0;
+        }
+        return (int) (count * PERCENTAGE / total);
     }
 
     public int countReviews() {
