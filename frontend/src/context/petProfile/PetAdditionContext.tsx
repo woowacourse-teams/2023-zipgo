@@ -1,8 +1,8 @@
 import { createContext, PropsWithChildren, useContext, useMemo, useState } from 'react';
 
-import { PostPetProfileReq } from '@/types/petProfile/remote';
+import { PostPetReq } from '@/types/petProfile/remote';
 
-export interface PetProfileValue extends PostPetProfileReq {}
+export interface PetProfileValue extends PostPetReq {}
 
 interface PetAdditionContext {
   petProfile: PetProfileValue;

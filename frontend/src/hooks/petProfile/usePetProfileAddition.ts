@@ -2,7 +2,7 @@ import { ChangeEvent, useState } from 'react';
 import { useOutletContext } from 'react-router-dom';
 
 import { usePetAdditionContext } from '@/context/petProfile/PetAdditionContext';
-import { useAddPetProfileMutation } from '@/hooks/query/petProfile';
+import { useAddPetMutation } from '@/hooks/query/petProfile';
 import { PetAdditionOutletContextProps, PetSize } from '@/types/petProfile/client';
 
 import useEasyNavigate from '../@common/useEasyNavigate';
@@ -10,7 +10,7 @@ import { usePetProfileValidation } from './usePetProfileValidation';
 
 export const usePetProfileAddition = () => {
   const { goHome } = useEasyNavigate();
-  const { addPetProfileMutation } = useAddPetProfileMutation();
+  const { addPetMutation } = useAddPetMutation();
   const { isValidAgeRange, isValidGender, isValidName, isValidWeight } = usePetProfileValidation();
 
   const { petProfile, updatePetProfile } = usePetAdditionContext();
@@ -86,7 +86,7 @@ export const usePetProfileAddition = () => {
   };
 
   const onSubmitPetProfile = () => {
-    addPetProfileMutation.addPetProfile(petProfile);
+    addPetMutation.addPet(petProfile);
 
     goHome();
   };

@@ -1,6 +1,6 @@
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 
-import { deletePet, getBreeds, getPet, getPets, postPetProfile, putPet } from '@/apis/petProfile';
+import { deletePet, getBreeds, getPet, getPets, postPet, putPet } from '@/apis/petProfile';
 import { MIXED_BREED, PET_SIZES } from '@/constants/petProfile';
 import { usePetProfile } from '@/context/petProfile/PetProfileContext';
 import { Parameter } from '@/types/common/utility';
@@ -8,8 +8,8 @@ import { PetProfile } from '@/types/petProfile/client';
 import {
   DeletePetReq,
   DeletePetRes,
-  PostPetProfileReq,
-  PostPetProfileRes,
+  PostPetReq,
+  PostPetRes,
   PutPetReq,
   PutPetRes,
 } from '@/types/petProfile/remote';
@@ -56,15 +56,15 @@ export const usePetListQuery = () => {
   };
 };
 
-export const useAddPetProfileMutation = () => {
+export const useAddPetMutation = () => {
   const { updatePetProfile: updatePetProfileInHeader } = usePetProfile();
-  const { mutate: addPetProfile, ...addPetProfileRestMutation } = useMutation<
-    PostPetProfileRes,
+  const { mutate: addPet, ...addPetRestMutation } = useMutation<
+    PostPetRes,
     unknown,
-    PostPetProfileReq,
+    PostPetReq,
     unknown
   >({
-    mutationFn: postPetProfile,
+    mutationFn: postPet,
     onSuccess: (postPetProfileRes, petProfile, context) => {
       const userInfo = zipgoLocalStorage.getUserInfo({ required: true });
 
@@ -85,7 +85,7 @@ export const useAddPetProfileMutation = () => {
     },
   });
 
-  return { addPetProfileMutation: { addPetProfile, ...addPetProfileRestMutation } };
+  return { addPetMutation: { addPet, ...addPetRestMutation } };
 };
 
 export const useEditPetMutation = () => {
