@@ -40,6 +40,9 @@ import static java.util.stream.Collectors.toMap;
 @Transactional(readOnly = true)
 public class ReviewQueryService {
 
+    private static final int MIN_RATING = 1;
+    private static final int MAX_RATING = 5;
+
     private final ReviewRepository reviewRepository;
     private final ReviewQueryRepository reviewQueryRepository;
     private final PetFoodRepository petFoodRepository;
@@ -125,7 +128,7 @@ public class ReviewQueryService {
 
     private RatingSummaryResponse getRatingsSummary(Reviews reviews) {
         double averageRating = reviews.calculateRatingAverage();
-        List<RatingInfoResponse> ratingInfoResponses = IntStream.rangeClosed(1, 5)
+        List<RatingInfoResponse> ratingInfoResponses = IntStream.rangeClosed(MIN_RATING, MAX_RATING)
                 .mapToObj(rating -> {
                     int percentage = reviews.getRatingPercentage(rating);
                     return RatingInfoResponse.of(rating, percentage);
