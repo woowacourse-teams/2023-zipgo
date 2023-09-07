@@ -52,9 +52,6 @@ import static zipgo.review.domain.type.StoolCondition.SOFT_MOIST;
 import static zipgo.review.domain.type.TastePreference.EATS_VERY_WELL;
 import static zipgo.review.fixture.ReviewFixture.극찬_리뷰_생성;
 
-;
-
-
 @Import(QueryDslTestConfig.class)
 @DataJpaTest(properties = {"spring.sql.init.mode=never"})
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
