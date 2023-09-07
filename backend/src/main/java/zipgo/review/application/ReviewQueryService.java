@@ -23,15 +23,15 @@ import zipgo.review.domain.repository.dto.ReviewHelpfulReaction;
 import zipgo.review.domain.type.AdverseReactionType;
 import zipgo.review.domain.type.StoolCondition;
 import zipgo.review.domain.type.TastePreference;
-import zipgo.review.presentation.dto.response.GetReviewMetadataResponse;
-import zipgo.review.presentation.dto.response.GetReviewMetadataResponse.Metadata;
-import zipgo.review.presentation.dto.response.GetReviewsResponse;
-import zipgo.review.presentation.dto.response.GetReviewsSummaryResponse;
-import zipgo.review.presentation.dto.response.type.AdverseReactionResponse;
-import zipgo.review.presentation.dto.response.type.RatingInfoResponse;
-import zipgo.review.presentation.dto.response.type.RatingSummaryResponse;
-import zipgo.review.presentation.dto.response.type.StoolConditionResponse;
-import zipgo.review.presentation.dto.response.type.TastePreferenceResponse;
+import zipgo.review.dto.response.GetReviewMetadataResponse;
+import zipgo.review.dto.response.GetReviewMetadataResponse.Metadata;
+import zipgo.review.dto.response.GetReviewsResponse;
+import zipgo.review.dto.response.GetReviewsSummaryResponse;
+import zipgo.review.dto.response.type.AdverseReactionResponse;
+import zipgo.review.dto.response.type.RatingInfoResponse;
+import zipgo.review.dto.response.type.RatingSummaryResponse;
+import zipgo.review.dto.response.type.StoolConditionResponse;
+import zipgo.review.dto.response.type.TastePreferenceResponse;
 
 import static java.util.stream.Collectors.toMap;
 

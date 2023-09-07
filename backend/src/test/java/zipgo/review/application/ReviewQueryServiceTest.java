@@ -20,14 +20,14 @@ import zipgo.petfood.domain.repository.PetFoodRepository;
 import zipgo.review.domain.Review;
 import zipgo.review.domain.repository.ReviewRepository;
 import zipgo.review.domain.repository.dto.FindReviewsFilterRequest;
-import zipgo.review.presentation.dto.response.GetReviewMetadataResponse;
-import zipgo.review.presentation.dto.response.GetReviewResponse;
-import zipgo.review.presentation.dto.response.GetReviewsResponse;
-import zipgo.review.presentation.dto.response.GetReviewsSummaryResponse;
-import zipgo.review.presentation.dto.response.type.AdverseReactionResponse;
-import zipgo.review.presentation.dto.response.type.RatingInfoResponse;
-import zipgo.review.presentation.dto.response.type.StoolConditionResponse;
-import zipgo.review.presentation.dto.response.type.TastePreferenceResponse;
+import zipgo.review.dto.response.GetReviewMetadataResponse;
+import zipgo.review.dto.response.GetReviewResponse;
+import zipgo.review.dto.response.GetReviewsResponse;
+import zipgo.review.dto.response.GetReviewsSummaryResponse;
+import zipgo.review.dto.response.type.AdverseReactionResponse;
+import zipgo.review.dto.response.type.RatingInfoResponse;
+import zipgo.review.dto.response.type.StoolConditionResponse;
+import zipgo.review.dto.response.type.TastePreferenceResponse;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertAll;
@@ -201,7 +201,7 @@ class ReviewQueryServiceTest extends QueryServiceTest {
         public static void validateReviewsRatingSummary(GetReviewsSummaryResponse reviewsSummary) {
             assertAll(
                     () -> assertThat(reviewsSummary.rating().rating()).hasSize(5),
-                    () -> assertThat(reviewsSummary.rating().rating()).extracting(RatingInfoResponse::name)
+                    () -> assertThat(reviewsSummary.rating().rating()).extracting(RatingInfoResponse::rating)
                             .contains("1", "2", "3", "4", "5"),
                     () -> assertThat(reviewsSummary.rating().rating()).extracting(RatingInfoResponse::percentage)
                             .contains(0, 50)

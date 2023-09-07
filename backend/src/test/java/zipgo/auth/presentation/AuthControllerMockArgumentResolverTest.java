@@ -19,7 +19,7 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.method.support.HandlerMethodArgumentResolver;
 import org.springframework.web.servlet.mvc.method.annotation.ExceptionHandlerExceptionResolver;
-import zipgo.auth.presentation.dto.AuthCredentials;
+import zipgo.auth.dto.AuthCredentials;
 import zipgo.member.application.MemberQueryService;
 import zipgo.pet.application.PetQueryService;
 import zipgo.pet.domain.fixture.PetFixture;

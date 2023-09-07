@@ -14,16 +14,16 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import zipgo.auth.presentation.Auth;
-import zipgo.auth.presentation.dto.AuthCredentials;
+import zipgo.auth.dto.AuthCredentials;
 import zipgo.pet.application.PetQueryService;
 import zipgo.pet.application.PetService;
 import zipgo.pet.domain.Breeds;
 import zipgo.pet.domain.Pet;
-import zipgo.pet.presentation.dto.request.CreatePetRequest;
-import zipgo.pet.presentation.dto.request.UpdatePetRequest;
-import zipgo.pet.presentation.dto.response.BreedsResponses;
-import zipgo.pet.presentation.dto.response.PetResponse;
-import zipgo.pet.presentation.dto.response.PetResponses;
+import zipgo.pet.dto.request.CreatePetRequest;
+import zipgo.pet.dto.request.UpdatePetRequest;
+import zipgo.pet.dto.response.BreedsResponses;
+import zipgo.pet.dto.response.PetResponse;
+import zipgo.pet.dto.response.PetResponses;
 
 @RestController
 @AllArgsConstructor

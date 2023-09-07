@@ -9,8 +9,8 @@ import zipgo.petfood.domain.PetFood;
 import zipgo.petfood.domain.repository.PetFoodRepository;
 import zipgo.review.domain.Review;
 import zipgo.review.domain.repository.ReviewRepository;
-import zipgo.review.presentation.dto.request.CreateReviewRequest;
-import zipgo.review.presentation.dto.request.UpdateReviewRequest;
+import zipgo.review.dto.request.CreateReviewRequest;
+import zipgo.review.dto.request.UpdateReviewRequest;
 
 @Service
 @Transactional

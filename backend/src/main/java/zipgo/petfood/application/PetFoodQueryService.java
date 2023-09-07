@@ -13,9 +13,9 @@ import zipgo.petfood.domain.repository.FunctionalityRepository;
 import zipgo.petfood.domain.repository.PetFoodRepository;
 import zipgo.petfood.domain.repository.PrimaryIngredientRepository;
 import zipgo.petfood.infra.persist.PetFoodQueryRepositoryImpl;
-import zipgo.petfood.presentation.dto.FilterRequest;
-import zipgo.petfood.presentation.dto.FilterResponse;
-import zipgo.petfood.presentation.dto.GetPetFoodResponse;
+import zipgo.petfood.dto.FilterRequest;
+import zipgo.petfood.dto.FilterResponse;
+import zipgo.petfood.dto.GetPetFoodResponse;
 
 
 @Service

@@ -15,8 +15,8 @@ import zipgo.pet.domain.repository.PetRepository;
 import zipgo.pet.domain.repository.PetSizeRepository;
 import zipgo.pet.exception.OwnerNotMatchException;
 import zipgo.pet.exception.PetNotFoundException;
-import zipgo.pet.presentation.dto.request.CreatePetRequest;
-import zipgo.pet.presentation.dto.request.UpdatePetRequest;
+import zipgo.pet.dto.request.CreatePetRequest;
+import zipgo.pet.dto.request.UpdatePetRequest;
 import zipgo.review.fixture.MemberFixture;
 
 import static org.assertj.core.api.Assertions.assertThat;
