@@ -22,6 +22,7 @@ import zipgo.admin.dto.FunctionalityCreateRequest;
 import zipgo.admin.dto.FunctionalitySelectResponse;
 import zipgo.admin.dto.PrimaryIngredientCreateRequest;
 import zipgo.admin.dto.PrimaryIngredientSelectResponse;
+import zipgo.admin.dto.PetFoodCreateRequest;
 
 @Controller
 @RequiredArgsConstructor
@@ -78,6 +79,16 @@ public class AdminController {
     @GetMapping("/primary-ingredients")
     ResponseEntity<List<PrimaryIngredientSelectResponse>> getPrimaryIngredients() {
         return ResponseEntity.ok(adminQueryService.getPrimaryIngredients());
+    }
+
+    @PostMapping("/pet-foods")
+    public ResponseEntity<Void> createPetFood(
+            @RequestPart PetFoodCreateRequest petFoodCreateRequest,
+            @RequestPart MultipartFile image
+    ) {
+        String imageUrl = imageService.save(image, ImageDirectoryUrl.PET_FOOD_DIRECTORY);
+        Long petFoodId = adminService.createPetFood(petFoodCreateRequest, imageUrl);
+        return ResponseEntity.created(URI.create("/pet-foods/" + petFoodId)).build();
     }
 
 }

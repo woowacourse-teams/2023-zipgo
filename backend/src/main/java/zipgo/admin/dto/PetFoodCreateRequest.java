@@ -1,4 +1,4 @@
-package zipgo.petfood.presentation.dto;
+package zipgo.admin.dto;
 
 import java.util.List;
 import zipgo.brand.domain.Brand;

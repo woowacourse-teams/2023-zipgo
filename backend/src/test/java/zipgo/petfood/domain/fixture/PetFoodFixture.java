@@ -5,7 +5,7 @@ import zipgo.brand.domain.Brand;
 import zipgo.petfood.domain.HasStandard;
 import zipgo.petfood.domain.PetFood;
 import zipgo.petfood.domain.Reviews;
-import zipgo.petfood.presentation.dto.PetFoodCreateRequest;
+import zipgo.admin.dto.PetFoodCreateRequest;
 
 import static zipgo.petfood.domain.PetFood.builder;
 
