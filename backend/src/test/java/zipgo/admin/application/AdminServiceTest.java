@@ -44,10 +44,11 @@ class AdminServiceTest extends ServiceTest {
     @Test
     void createBrand() {
         //given
+        String 식품_이미지_경로 = "imageUrl";
         BrandCreateRequest 무민_브랜드_생성_요청 = BrandFixture.무민_브랜드_생성_요청();
 
         //when
-        Long brandId = adminService.createBrand(무민_브랜드_생성_요청, "imageUrl");
+        Long brandId = adminService.createBrand(무민_브랜드_생성_요청, 식품_이미지_경로);
 
         //then
         assertDoesNotThrow(() -> brandRepository.getById(brandId));
@@ -86,8 +87,7 @@ class AdminServiceTest extends ServiceTest {
         Long petFoodId = adminService.createPetFood(식품_생성_요청, "imageUrl");
 
         //then
-        PetFood byId = petFoodRepository.getById(petFoodId);
-        Assertions.assertDoesNotThrow(() -> byId);
+        assertDoesNotThrow(() -> petFoodRepository.getById(petFoodId));
     }
 
 }
