@@ -43,9 +43,6 @@ jobs:
 
   deploy-to-develop-EC2:
     needs: build-dockerfile
-    defaults:
-      run:
-        working-directory: frontend
     runs-on: ubuntu-latest
 
     steps:
@@ -57,8 +54,8 @@ jobs:
       - name: Deploy to EC2 - develop branch
         run: |
           ssh -o StrictHostKeyChecking=no ubuntu@192.168.1.230 "
-            docker stop ${{ secrets.FRONTEND_CONTAINER_NAME }}-develop || true
-            docker rm ${{ secrets.FRONTEND_CONTAINER_NAME }}-develop || true
+            docker stop ${{ secrets.FRONTEND_CONTAINER_NAME }} || true
+            docker rm ${{ secrets.FRONTEND_CONTAINER_NAME }} || true
             docker pull ${{ secrets.FRONTEND_IMAGE_NAME }}:latest
             docker run -d -p 3000:3000 --name ${{ secrets.FRONTEND_CONTAINER_NAME }} ${{ secrets.FRONTEND_IMAGE_NAME }}:latest
           "
