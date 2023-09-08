@@ -1,7 +1,7 @@
 package zipgo.brand.domain.fixture;
 
 import zipgo.brand.domain.Brand;
-import zipgo.brand.dto.BrandCreateRequest;
+import zipgo.admin.dto.BrandCreateRequest;
 
 public class BrandFixture {
 

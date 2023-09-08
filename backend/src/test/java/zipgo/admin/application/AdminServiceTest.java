@@ -1,21 +1,21 @@
-package zipgo.brand.application;
+package zipgo.admin.application;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import zipgo.admin.dto.BrandCreateRequest;
 import zipgo.brand.domain.fixture.BrandFixture;
 import zipgo.brand.domain.repository.BrandRepository;
-import zipgo.brand.dto.BrandCreateRequest;
 import zipgo.common.service.ServiceTest;
 
-import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
+import static org.junit.jupiter.api.Assertions.*;
 
-class BrandServiceTest extends ServiceTest {
+class AdminServiceTest extends ServiceTest {
 
     @Autowired
     private BrandRepository brandRepository;
 
     @Autowired
-    private BrandService brandService;
+    private AdminService adminService;
 
     @Test
     void createBrand() {
@@ -23,7 +23,7 @@ class BrandServiceTest extends ServiceTest {
         BrandCreateRequest 무민_브랜드_생성_요청 = BrandFixture.무민_브랜드_생성_요청();
 
         //when
-        Long brandId = brandService.createBrand(무민_브랜드_생성_요청, "imageUrl");
+        Long brandId = adminService.createBrand(무민_브랜드_생성_요청, "imageUrl");
 
         //then
         assertDoesNotThrow(() -> brandRepository.getById(brandId));

@@ -1,31 +1,51 @@
 package zipgo.admin.presentation;
 
+import java.net.URI;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.multipart.MultipartFile;
+import zipgo.admin.application.AdminQueryService;
+import zipgo.admin.application.AdminService;
+import zipgo.admin.dto.BrandCreateRequest;
 import zipgo.admin.dto.BrandSelectResponse;
-import zipgo.brand.application.BrandQueryService;
+import zipgo.image.ImageDirectoryUrl;
+import zipgo.image.application.ImageService;
 
 @Controller
 @RequiredArgsConstructor
 @RequestMapping("/admin")
 public class AdminController {
 
-    private final BrandQueryService brandQueryService;
+    private final AdminQueryService adminQueryService;
+    private final AdminService adminService;
+    private final ImageService imageService;
 
     @GetMapping
     String home() {
         return "admin/home";
     }
 
+    @PostMapping("/brands")
+    public ResponseEntity<Void> createBrand(
+            @RequestPart BrandCreateRequest brandCreateRequest,
+            @RequestPart MultipartFile image
+    ) {
+        String imageUrl = imageService.save(image, ImageDirectoryUrl.BRAND_DIRECTORY);
+        Long brandId = adminService.createBrand(brandCreateRequest, imageUrl);
+        return ResponseEntity.created(URI.create("/brands/" + brandId)).build();
+    }
+
     @ResponseBody
     @GetMapping("/brands")
     ResponseEntity<List<BrandSelectResponse>> getBrands() {
-        return ResponseEntity.ok(brandQueryService.getBrands());
+        return ResponseEntity.ok(adminQueryService.getBrands());
     }
 
 }

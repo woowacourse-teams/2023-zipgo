@@ -18,16 +18,6 @@ class BrandQueryServiceTest extends QueryServiceTest {
     private BrandQueryService brandQueryService;
 
     @Test
-    void getBrands() {
-        //given
-        brandRepository.save(BrandFixture.아카나_식품_브랜드_생성());
-        brandRepository.save(BrandFixture.인스팅트_식품_브랜드_생성());
-
-        //when, then
-        assertThat(brandQueryService.getBrands()).hasSize(2);
-    }
-
-    @Test
     void findBrand() {
         //given
         Brand brand = brandRepository.save(BrandFixture.아카나_식품_브랜드_생성());

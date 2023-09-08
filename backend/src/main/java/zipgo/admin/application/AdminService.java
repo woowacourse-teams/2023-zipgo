@@ -1,17 +1,16 @@
-package zipgo.brand.application;
-
+package zipgo.admin.application;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import zipgo.admin.dto.BrandCreateRequest;
 import zipgo.brand.domain.Brand;
 import zipgo.brand.domain.repository.BrandRepository;
-import zipgo.brand.dto.BrandCreateRequest;
 
 @Service
 @Transactional
 @RequiredArgsConstructor
-public class BrandService {
+public class AdminService {
 
     private final BrandRepository brandRepository;
 

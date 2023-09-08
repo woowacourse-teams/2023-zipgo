@@ -202,7 +202,7 @@
         formData.append("brandCreateRequest", new Blob([JSON.stringify(otherData)], {type: "application/json"}));
 
         $.ajax({
-            url: "/brands",
+            url: "/admin/brands",
             type: "POST",
             data: formData,
             processData: false,

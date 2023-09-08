@@ -1,4 +1,4 @@
-package zipgo.brand.dto;
+package zipgo.admin.dto;
 
 import zipgo.brand.domain.Brand;
 

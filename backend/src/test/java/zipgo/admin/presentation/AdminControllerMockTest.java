@@ -1,4 +1,4 @@
-package zipgo.brand.presentation;
+package zipgo.admin.presentation;
 
 import com.epages.restdocs.apispec.MockMvcRestDocumentationWrapper;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -16,11 +16,13 @@ import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.restdocs.mockmvc.RestDocumentationResultHandler;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.web.servlet.MockMvc;
+import zipgo.admin.application.AdminQueryService;
+import zipgo.admin.application.AdminService;
 import zipgo.auth.presentation.AuthInterceptor;
 import zipgo.auth.presentation.JwtMandatoryArgumentResolver;
 import zipgo.auth.support.JwtProvider;
 import zipgo.brand.application.BrandService;
-import zipgo.brand.dto.BrandCreateRequest;
+import zipgo.admin.dto.BrandCreateRequest;
 import zipgo.image.application.ImageService;
 
 import static com.epages.restdocs.apispec.RestAssuredRestDocumentationWrapper.resourceDetails;
@@ -35,9 +37,9 @@ import static zipgo.brand.domain.fixture.BrandFixture.무민_브랜드_생성_�
 @AutoConfigureRestDocs
 @ExtendWith(SpringExtension.class)
 @SuppressWarnings("NonAsciiCharacters")
-@WebMvcTest(controllers = BrandController.class)
+@WebMvcTest(controllers = AdminController.class)
 @DisplayNameGeneration(DisplayNameGenerator.ReplaceUnderscores.class)
-class BrandControllerTest  {
+class AdminControllerMockTest {
 
     @Autowired
     private ObjectMapper objectMapper;
@@ -49,7 +51,10 @@ class BrandControllerTest  {
     private ImageService imageService;
 
     @MockBean
-    private BrandService brandService;
+    private AdminService adminService;
+
+    @MockBean
+    private AdminQueryService adminQueryService;
 
     @MockBean
     private JwtProvider jwtProvider;
@@ -75,10 +80,10 @@ class BrandControllerTest  {
                 .thenReturn("사진_주소");
 
         // when
-        var 요청 = mockMvc.perform(multipart("/brands")
-                .file(사진_파일)
-                .file(브랜드_생성_요청)
-                .contentType(MediaType.MULTIPART_FORM_DATA))
+        var 요청 = mockMvc.perform(multipart("/admin/brands")
+                        .file(사진_파일)
+                        .file(브랜드_생성_요청)
+                        .contentType(MediaType.MULTIPART_FORM_DATA))
                 .andDo(성공_API_문서_생성());
 
         // then
