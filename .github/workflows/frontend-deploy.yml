@@ -1,0 +1,73 @@
+name: Frontend Deploy
+
+on:
+  push:
+    branches: [develop]
+    paths: frontend/**
+
+jobs:
+  build-dockerfile:
+    defaults:
+      run:
+        working-directory: frontend
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      
+      - uses: actions/setup-node@v3
+        with:
+          node-version: '16.x'
+          
+      - name: Install dependencies
+        run: yarn
+        
+      - name: Build Docker image
+        run: |
+          docker build -t ${{ secrets.IMAGE_NAME }}:$GITHUB_RUN_NUMBER
+          docker tag ${{ secrets.IMAGE_NAME }}:$GITHUB_RUN_NUMBER ${{ secrets.IMAGE_NAME }}:latest
+        env:
+          DOCKER_CLI_AGGREGATE: 1
+          DOCKER_BUILDKIT: 1
+
+      - name: Log in to DockerHub
+        uses: docker/login-action@v2
+        with:
+          username: ${{ secrets.DOCKER_USERNAME }}
+          password: ${{ secrets.DOCKER_PASSWORD }}
+
+      - name: Push Docker image to DockerHub
+        run: |
+          docker push ${{ secrets.IMAGE_NAME }}:latest
+        env:
+          DOCKER_CLI_AGGREGATE: 1
+
+  deploy-to-develop-EC2:
+    defaults:
+      run:
+        working-directory: frontend
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Setup SSH key
+        uses: webfactory/ssh-agent@v0.4.1
+        with:
+          ssh-private-key: ${{ secrets.DEVELOP_SSH_PRIVATE_KEY }}
+
+      - name: Deploy to EC2 - develop branch
+        if: github.ref == 'refs/heads/develop'
+        run: |
+          ssh -o StrictHostKeyChecking=no ubuntu@192.168.1.230 "
+            docker stop ${{ secrets.CONTAINER_NAME }}-develop || true
+            docker rm ${{ secrets.CONTAINER_NAME }}-develop || true
+            docker pull ${{ secrets.IMAGE_NAME }}:latest
+            docker run -d -p 80:80 --name ${{ secrets.CONTAINER_NAME }}-develop ${{ secrets.IMAGE_NAME }}:latest
+          "
+      - name: Slack Notification
+        uses: 8398a7/action-slack@v3
+        with:
+          status: ${{ job.status }}
+          author_name: 프론트엔드 배포 알림
+          fields: repo,message,commit,author,action,eventName,ref,workflow,job,took
+        env:
+          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
+        if: always()
