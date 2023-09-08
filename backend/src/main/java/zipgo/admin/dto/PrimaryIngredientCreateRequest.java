@@ -1,4 +1,4 @@
-package zipgo.petfood.presentation.dto;
+package zipgo.admin.dto;
 
 import zipgo.petfood.domain.PrimaryIngredient;
 

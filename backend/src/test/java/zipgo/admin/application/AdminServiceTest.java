@@ -7,7 +7,9 @@ import zipgo.brand.domain.fixture.BrandFixture;
 import zipgo.brand.domain.repository.BrandRepository;
 import zipgo.common.service.ServiceTest;
 import zipgo.petfood.domain.fixture.FunctionalityFixture;
+import zipgo.petfood.domain.fixture.PrimaryIngredientFixture;
 import zipgo.petfood.domain.repository.FunctionalityRepository;
+import zipgo.petfood.domain.repository.PrimaryIngredientRepository;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
@@ -16,6 +18,9 @@ class AdminServiceTest extends ServiceTest {
 
     @Autowired
     private BrandRepository brandRepository;
+
+    @Autowired
+    private PrimaryIngredientRepository primaryIngredientRepository;
 
     @Autowired
     private FunctionalityRepository functionalityRepository;
@@ -43,6 +48,15 @@ class AdminServiceTest extends ServiceTest {
 
         //then
         assertThat(functionalityRepository.getById(functionalityId)).isNotNull();
+    }
+
+    @Test
+    void createPrimaryIngredient() {
+        //when
+        Long primaryIngredientId = adminService.createPrimaryIngredient(PrimaryIngredientFixture.닭고기_주원료_요청);
+
+        //then
+        assertThat(primaryIngredientRepository.getById(primaryIngredientId)).isNotNull();
     }
 
 }

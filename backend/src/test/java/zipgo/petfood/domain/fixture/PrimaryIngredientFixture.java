@@ -1,7 +1,7 @@
 package zipgo.petfood.domain.fixture;
 
 import zipgo.petfood.domain.PrimaryIngredient;
-import zipgo.petfood.presentation.dto.PrimaryIngredientCreateRequest;
+import zipgo.admin.dto.PrimaryIngredientCreateRequest;
 
 import static zipgo.petfood.domain.PrimaryIngredient.builder;
 

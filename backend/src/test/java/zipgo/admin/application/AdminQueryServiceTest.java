@@ -3,12 +3,15 @@ package zipgo.admin.application;
 import java.util.List;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import zipgo.admin.dto.FunctionalitySelectResponse;
 import zipgo.brand.domain.fixture.BrandFixture;
 import zipgo.brand.domain.repository.BrandRepository;
 import zipgo.common.service.QueryServiceTest;
 import zipgo.petfood.domain.fixture.FunctionalityFixture;
+import zipgo.petfood.domain.fixture.PrimaryIngredientFixture;
 import zipgo.petfood.domain.repository.FunctionalityRepository;
-import zipgo.admin.dto.FunctionalitySelectResponse;
+import zipgo.petfood.domain.repository.PrimaryIngredientRepository;
+import zipgo.admin.dto.PrimaryIngredientSelectResponse;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertAll;
@@ -17,6 +20,9 @@ class AdminQueryServiceTest extends QueryServiceTest {
 
     @Autowired
     private FunctionalityRepository functionalityRepository;
+
+    @Autowired
+    private PrimaryIngredientRepository primaryIngredientRepository;
 
     @Autowired
     private BrandRepository brandRepository;
@@ -49,6 +55,25 @@ class AdminQueryServiceTest extends QueryServiceTest {
                 () -> assertThat(functionalities.size()).isEqualTo(2),
                 () -> assertThat(튼튼_response.name()).isEqualTo("튼튼"),
                 () -> assertThat(짱짱_response.name()).isEqualTo("짱짱")
+        );
+    }
+
+    @Test
+    void getPrimaryIngredients() {
+        //given
+        primaryIngredientRepository.save(PrimaryIngredientFixture.주원료_닭고기());
+        primaryIngredientRepository.save(PrimaryIngredientFixture.주원료_말미잘());
+
+        //when
+        List<PrimaryIngredientSelectResponse> primaryIngredients = adminQueryService.getPrimaryIngredients();
+        PrimaryIngredientSelectResponse 닭고기_response = primaryIngredients.get(0);
+        PrimaryIngredientSelectResponse 말미잘_response = primaryIngredients.get(1);
+
+        //then
+        assertAll(
+                () -> assertThat(primaryIngredients.size()).isEqualTo(2),
+                () -> assertThat(닭고기_response.name()).isEqualTo("닭고기"),
+                () -> assertThat(말미잘_response.name()).isEqualTo("말미잘")
         );
     }
 

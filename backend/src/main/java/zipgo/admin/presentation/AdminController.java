@@ -20,6 +20,8 @@ import zipgo.image.ImageDirectoryUrl;
 import zipgo.image.application.ImageService;
 import zipgo.admin.dto.FunctionalityCreateRequest;
 import zipgo.admin.dto.FunctionalitySelectResponse;
+import zipgo.admin.dto.PrimaryIngredientCreateRequest;
+import zipgo.admin.dto.PrimaryIngredientSelectResponse;
 
 @Controller
 @RequiredArgsConstructor
@@ -63,6 +65,19 @@ public class AdminController {
     @GetMapping("/functionalities")
     ResponseEntity<List<FunctionalitySelectResponse>> getFunctionalities() {
         return ResponseEntity.ok(adminQueryService.getFunctionalities());
+    }
+
+    @PostMapping("/primary-ingredients")
+    public ResponseEntity<Void> createPrimaryIngredient(
+            @RequestBody PrimaryIngredientCreateRequest primaryIngredientCreateRequest) {
+        Long primaryIngredientId = adminService.createPrimaryIngredient(primaryIngredientCreateRequest);
+        return ResponseEntity.created(URI.create("/primary-ingredients/" + primaryIngredientId)).build();
+    }
+
+    @ResponseBody
+    @GetMapping("/primary-ingredients")
+    ResponseEntity<List<PrimaryIngredientSelectResponse>> getPrimaryIngredients() {
+        return ResponseEntity.ok(adminQueryService.getPrimaryIngredients());
     }
 
 }
