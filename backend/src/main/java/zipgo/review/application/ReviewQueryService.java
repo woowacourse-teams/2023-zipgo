@@ -53,8 +53,7 @@ public class ReviewQueryService {
         List<FindReviewsQueryResponse> reviews = reviewQueryRepository.findReviewsBy(request);
 
         Map<Long, List<String>> reviewIdToAdverseReactions = findAdverseReactionsBy(reviews);
-        Map<Long, ReviewHelpfulReaction> reviewIdToHelpfulReactions = findHelpfulReactionsBy(request.memberId(),
-                reviews);
+        Map<Long, ReviewHelpfulReaction> reviewIdToHelpfulReactions = findHelpfulReactionsBy(request.memberId(), reviews);
 
         return GetReviewsResponse.of(reviews, reviewIdToAdverseReactions, reviewIdToHelpfulReactions);
     }

@@ -94,7 +94,7 @@ class ReviewQueryServiceTest extends QueryServiceTest {
 
             //then
             assertAll(
-                    () -> assertThat(리뷰_리스트.reviews().size()).isEqualTo(2),
+                    () -> assertThat(리뷰_리스트.reviews()).hasSize(2),
                     () -> assertThat(리뷰_리스트.reviews().get(0)).usingRecursiveComparison().isEqualTo(리뷰2_dto),
                     () -> assertThat(리뷰_리스트.reviews().get(1)).usingRecursiveComparison().isEqualTo(리뷰1_dto)
             );
@@ -149,6 +149,7 @@ class ReviewQueryServiceTest extends QueryServiceTest {
                 () -> assertThat(review.getComment()).isEqualTo("우리 아이랑 너무 잘 맞아요!"),
                 () -> assertThat(review.getTastePreference()).isEqualTo(EATS_VERY_WELL),
                 () -> assertThat(review.getStoolCondition()).isEqualTo(SOFT_MOIST),
+                () -> assertThat(review.getPet().getOwner().getId()).isEqualTo(멤버.getId()),
                 () -> assertThat(review.getAdverseReactions().get(0).getAdverseReactionType()).isEqualTo(NONE));
     }
 
