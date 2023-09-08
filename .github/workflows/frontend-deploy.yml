@@ -42,6 +42,7 @@ jobs:
           DOCKER_CLI_AGGREGATE: 1
 
   deploy-to-develop-EC2:
+    needs: build-dockerfile
     defaults:
       run:
         working-directory: frontend
