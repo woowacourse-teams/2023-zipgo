@@ -49,7 +49,7 @@ jobs:
       - name: Deploy to Develop EC2
         uses: appleboy/ssh-action@v0.1.6
         with:
-          host: 192.168.1.230
+          host: 13.125.148.242
           username: ubuntu
           key: ${{ secrets.DEVELOP_SSH_PRIVATE_KEY }}
           port: 22
