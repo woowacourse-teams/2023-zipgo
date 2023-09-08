@@ -1,0 +1,351 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="layout/default">
+
+<th:block layout:fragment="content">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    </head>
+    <body>
+        <div class="container mt-5">
+            <div class="row">
+                <div class="col-md-3">
+                    <button type="button" class="btn btn-primary btn-block" data-toggle="modal" data-target="#brandModal">브랜드 생성</button>
+                </div>
+                <div class="col-md-3">
+                    <button type="button" class="btn btn-primary btn-block" data-toggle="modal" data-target="#petFoodModal">반려동물 식품 생성</button>
+                </div>
+                <div class="col-md-3">
+                    <button type="button" class="btn btn-primary btn-block" data-toggle="modal" data-target="#functionalityModal">기능성 생성</button>
+                </div>
+                <div class="col-md-3">
+                    <button type="button" class="btn btn-primary btn-block" data-toggle="modal" data-target="#primaryIngredientModal">주원료 생성</button>
+                </div>
+            </div>
+        </div>
+
+        <div class="modal fade" id="brandModal">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h4 class="modal-title">브랜드 생성</h4>
+                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    </div>
+                    <div class="modal-body">
+                        <form id="dataForm">
+                            <div class="form-group">
+                                <label for="brandName">이름</label>
+                                <input type="text" class="form-control" id="brandName" name="brandName">
+                            </div>
+                            <div class="form-group">
+                                <label for="brandImage">브랜드 이미지</label>
+                                <input type="file" class="form-control-file" id="brandImage" name="brandImage">
+                            </div>
+                            <div class="form-group">
+                                <label for="nation">나라</label>
+                                <input type="text" class="form-control" id="nation" name="nation">
+                            </div>
+                            <div class="form-group">
+                                <label for="foundedYear">설립 연도</label>
+                                <input type="text" class="form-control" id="foundedYear" name="foundedYear">
+                            </div>
+                            <div class="form-check">
+                                <input type="checkbox" class="form-check-input" id="hasResearchCenter" name="hasResearchCenter">
+                                <label class="form-check-label" for="hasResearchCenter">연구 센터 보유</label>
+                            </div>
+                            <div class="form-check">
+                                <input type="checkbox" class="form-check-input" id="hasResidentVet" name="hasResidentVet">
+                                <label class="form-check-label" for="hasResidentVet">주치 수의사 보유</label>
+                            </div>
+                            <div class="text-center">
+                                <button type="button" class="btn btn-primary" id="sendBrand">생성</button>
+                            </div>
+                        </form>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">닫기</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="modal fade" id="petFoodModal">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h4 class="modal-title">반려동물 식품 생성</h4>
+                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    </div>
+                    <div class="modal-body">
+                        <form id="dataForm2">
+                            <div class="form-group">
+                                <label for="petFoodName">이름</label>
+                                <input type="text" class="form-control" id="petFoodName" name="petFoodName">
+                            </div>
+                            <div class="form-group">
+                                <label for="purchaseLink">구매 링크</label>
+                                <input type="text" class="form-control" id="purchaseLink" name="purchaseLink">
+                            </div>
+                            <div class="form-group">
+                                <label for="petFoodImage">펫푸드 이미지</label>
+                                <input type="file" class="form-control-file" id="petFoodImage" name="petFoodImage">
+                            </div>
+                            <div class="form-group">
+                                <label for="brand">브랜드 선택</label>
+                                <select class="form-control" id="brand" name="brand">
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label for="functionality">기능성 선택</label>
+                                <select class="form-control" id="functionality" name="functionality" multiple>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label for="primaryIngredient">주원료 선택</label>
+                                <select class="form-control" id="primaryIngredient" name="primaryIngredient" multiple>
+                                </select>
+                            </div>
+                            <div class="form-check">
+                                <input type="checkbox" class="form-check-input" id="europeStandard" name="europeStandard">
+                                <label class="form-check-label" for="europeStandard">유럽 기준 만족</label>
+                            </div>
+                            <div class="form-check">
+                                <input type="checkbox" class="form-check-input" id="usStandard" name="usStandard">
+                                <label class="form-check-label" for="usStandard">미국 기준 만족</label>
+                            </div>
+                            <div class="text-center">
+                                <button type="button" class="btn btn-primary" id="sendPetFood">생성</button>
+                            </div>
+                        </form>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">닫기</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="modal fade" id="functionalityModal">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h4 class="modal-title">기능성 생성</h4>
+                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    </div>
+                    <div class="modal-body">
+                        <form id="dataForm3">
+                            <div class="form-group">
+                                <label for="brandName">이름</label>
+                                <input type="text" class="form-control" id="functionalityName" name="brandName">
+                            </div>
+                            <div class="text-center">
+                                <button type="button" class="btn btn-primary" id="sendFunctionality">생성</button>
+                            </div>
+                        </form>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">닫기</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="modal fade" id="primaryIngredientModal">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h4 class="modal-title">주원료 생성</h4>
+                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    </div>
+                    <div class="modal-body">
+                        <form id="dataForm4">
+                            <div class="form-group">
+                                <label for="brandName">이름</label>
+                                <input type="text" class="form-control" id="primaryIngredientName" name="brandName">
+                            </div>
+                            <div class="text-center">
+                                <button type="button" class="btn btn-primary" id="sendPrimaryIngredient">생성</button>
+                            </div>
+                        </form>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">닫기</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </body>
+</th:block>
+</html>
+
+<script type="application/javascript">
+    $("#brandModal").on("shown.bs.modal", function() {
+        $("#brandImage").val("");
+    });
+
+    $("#sendBrand").click(function() {
+        var imageFile = $("#brandImage")[0].files[0];
+
+        var formData = new FormData();
+        formData.append("image", imageFile);
+
+        var otherData = {
+            name: $("#brandName").val(),
+            nation: $("#nation").val(),
+            foundedYear: $("#foundedYear").val(),
+            hasResearchCenter: $("#hasResearchCenter").prop("checked"),
+            hasResidentVet: $("#hasResidentVet").prop("checked")
+        };
+
+        formData.append("brandCreateRequest", new Blob([JSON.stringify(otherData)], {type: "application/json"}));
+
+        $.ajax({
+            url: "/admin/brands",
+            type: "POST",
+            data: formData,
+            processData: false,
+            contentType: false,
+            success: function() {
+                alert("브랜드 생성 완료");
+                $("#brandModal").modal("hide");
+            }
+        });
+    });
+
+    $("#petFoodModal").on("shown.bs.modal", function() {
+        $("#petFoodImage").val("");
+
+        $.ajax({
+            url: "/admin/brands",
+            type: "GET",
+            success: function(response) {
+                var brandSelect = $("#brand");
+                brandSelect.empty();
+
+                response.forEach(function(brand) {
+                    var option = $("<option></option>")
+                        .attr("value", brand.id)
+                        .text(brand.name);
+
+                    brandSelect.append(option);
+                });
+            }
+        });
+
+        $.ajax({
+            url: "/admin/functionalities",
+            type: "GET",
+            success: function(response) {
+                var functionalitySelect = $("#functionality");
+                functionalitySelect.empty();
+
+                response.forEach(function(functionality) {
+                    var option = $("<option></option>")
+                        .attr("value", functionality.id)
+                        .text(functionality.name);
+
+                    functionalitySelect.append(option);
+                });
+            }
+        });
+
+        $.ajax({
+            url: "/admin/primary-ingredients",
+            type: "GET",
+            success: function(response) {
+                var primaryIngredientSelect = $("#primaryIngredient");
+                primaryIngredientSelect.empty();
+
+                response.forEach(function(primaryIngredient) {
+                    var option = $("<option></option>")
+                        .attr("value", primaryIngredient.id)
+                        .text(primaryIngredient.name);
+
+                    primaryIngredientSelect.append(option);
+                });
+            }
+        });
+    });
+
+    $("#sendPetFood").click(function() {
+        var imageFile = $("#petFoodImage")[0].files[0];
+
+        var formData = new FormData();
+        formData.append("image", imageFile);
+
+        var selectedFunctionalities = $("#functionality").val();
+        var selectedPrimaryIngredients = $("#primaryIngredient").val();
+
+        var otherData = {
+            name: $("#petFoodName").val(),
+            purchaseLink: $("#purchaseLink").val(),
+            brandId: $("#brand").val(),
+            europeStandard: $("#europeStandard").prop("checked"),
+            usStandard: $("#usStandard").prop("checked"),
+            functionalityIds: selectedFunctionalities,
+            primaryIngredientIds: selectedPrimaryIngredients
+        };
+
+        formData.append("petFoodCreateRequest", new Blob([JSON.stringify(otherData)], {type: "application/json"}));
+
+        $.ajax({
+            url: "/admin/pet-foods",
+            type: "POST",
+            data: formData,
+            processData: false,
+            contentType: false,
+            success: function(response) {
+                alert("반려동물 식품 생성 완료");
+                $("#petFoodModal").modal("hide");
+            }
+        });
+    });
+
+    $("#functionalityModal").on("shown.bs.modal", function() {
+        $("#functionalityName").val("");
+    });
+
+    $("#sendFunctionality").click(function() {
+        var functionalityName = $("#functionalityName").val();
+
+        var functionalityData = {
+            name: functionalityName
+        };
+
+        $.ajax({
+            url: "/admin/functionalities",
+            type: "POST",
+            data: JSON.stringify(functionalityData),
+            contentType: "application/json",
+            success: function(response) {
+                alert("기능성 생성 완료");
+                $("#functionalityModal").modal("hide");
+            }
+        });
+    });
+
+    $("#primaryIngredientModal").on("shown.bs.modal", function() {
+        $("#primaryIngredientName").val("");
+    });
+
+    $("#sendPrimaryIngredient").click(function() {
+        var primaryIngredientName = $("#primaryIngredientName").val();
+
+        var primaryIngredientData = {
+            name: primaryIngredientName
+        };
+
+        $.ajax({
+            url: "/admin/primary-ingredients",
+            type: "POST",
+            data: JSON.stringify(primaryIngredientData),
+            contentType: "application/json",
+            success: function(response) {
+                alert("주원료 생성 완료");
+                $("#primaryIngredientModal").modal("hide");
+            }
+        });
+    });
+</script>

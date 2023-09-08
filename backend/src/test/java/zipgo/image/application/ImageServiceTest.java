@@ -28,11 +28,11 @@ class ImageServiceTest {
     void 이미지를_업로드_할_수_있다() {
         // given
         var 사진 = new MockMultipartFile("사진", "사진.png", "image/png", "사진".getBytes());
-        when(imageClient.upload(any(), any()))
+        when(imageClient.upload(any(), any(), any()))
                 .thenReturn("생성된파일이름");
 
         // when
-        String 저장된_사진 = imageService.save(사진);
+        String 저장된_사진 = imageService.save(사진, "디렉토리");
 
         // then
         Assertions.assertThat(저장된_사진).isEqualTo("생성된파일이름");

@@ -1,10 +1,13 @@
 package zipgo.petfood.domain.fixture;
 
 import zipgo.petfood.domain.PrimaryIngredient;
+import zipgo.admin.dto.PrimaryIngredientCreateRequest;
 
 import static zipgo.petfood.domain.PrimaryIngredient.builder;
 
 public class PrimaryIngredientFixture {
+
+    public static PrimaryIngredientCreateRequest 닭고기_주원료_요청 = new PrimaryIngredientCreateRequest("닭고기");
 
     public static PrimaryIngredient 주원료_닭고기() {
         PrimaryIngredient 주원료_닭고기 = builder()

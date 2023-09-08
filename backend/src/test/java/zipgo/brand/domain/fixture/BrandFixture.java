@@ -1,8 +1,13 @@
 package zipgo.brand.domain.fixture;
 
 import zipgo.brand.domain.Brand;
+import zipgo.admin.dto.BrandCreateRequest;
 
 public class BrandFixture {
+
+    public static BrandCreateRequest 무민_브랜드_생성_요청() {
+        return new BrandCreateRequest("무민", "한국", 1997, true, false);
+    }
 
     public static Brand 오리젠_식품_브랜드_생성() {
         return Brand.builder()
