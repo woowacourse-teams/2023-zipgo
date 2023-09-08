@@ -281,7 +281,7 @@ public class ReviewControllerTest extends AcceptanceTest {
             return document("리뷰 개별 조회 - 성공", 문서_정보.responseSchema(성공_응답_형식),
                     pathParameters(parameterWithName("reviewId").description("리뷰 id")),
                     responseFields(fieldWithPath("id").description("리뷰 id").type(JsonFieldType.NUMBER),
-                            fieldWithPath("writerId").description("작성자 식별자").type(JsonFieldType.NUMBER),
+                            fieldWithPath("writerId").description("작성자 id").type(JsonFieldType.NUMBER),
                             fieldWithPath("rating").description("리뷰 별점").type(JsonFieldType.NUMBER),
                             fieldWithPath("date").description("리뷰 생성일").type(JsonFieldType.STRING),
                             fieldWithPath("comment").description("리뷰 코멘트").type(JsonFieldType.STRING),
