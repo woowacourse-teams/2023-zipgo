@@ -252,7 +252,7 @@
         });
 
         $.ajax({
-            url: "/primary-ingredients",
+            url: "/admin/primary-ingredients",
             type: "GET",
             success: function(response) {
                 var primaryIngredientSelect = $("#primaryIngredient");
@@ -291,36 +291,7 @@
         formData.append("petFoodCreateRequest", new Blob([JSON.stringify(otherData)], {type: "application/json"}));
 
         $.ajax({
-            url: "/pet-foods",
-            type: "POST",
-            data: formData,
-            processData: false,
-            contentType: false,
-            success: function(response) {
-                alert("반려동물 식품 생성 완료");
-                $("#petFoodModal").modal("hide");
-            }
-        });
-    });
-
-    $("#sendFunctionality").click(function() {
-        var imageFile = $("#petFoodImage")[0].files[0];
-
-        var formData = new FormData();
-        formData.append("image", imageFile);
-
-        var otherData = {
-            name: $("#petFoodName").val(),
-            purchaseLink: $("#purchaseLink").val(),
-            brandId: $("#brand").val(),
-            europeStandard: $("#europeStandard").prop("checked"),
-            usStandard: $("#usStandard").prop("checked")
-        };
-
-        formData.append("petFoodCreateRequest", new Blob([JSON.stringify(otherData)], {type: "application/json"}));
-
-        $.ajax({
-            url: "/pet-foods",
+            url: "/admin/pet-foods",
             type: "POST",
             data: formData,
             processData: false,
@@ -367,7 +338,7 @@
         };
 
         $.ajax({
-            url: "/primary-ingredients",
+            url: "/admin/primary-ingredients",
             type: "POST",
             data: JSON.stringify(primaryIngredientData),
             contentType: "application/json",

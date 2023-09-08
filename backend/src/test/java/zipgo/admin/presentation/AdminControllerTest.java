@@ -3,7 +3,7 @@ package zipgo.admin.presentation;
 import com.epages.restdocs.apispec.ResourceSnippetDetails;
 import com.epages.restdocs.apispec.Schema;
 import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
+import java.util.concurrent.Executor;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,9 +31,6 @@ import static org.springframework.restdocs.payload.PayloadDocumentation.requestF
 import static org.springframework.restdocs.payload.PayloadDocumentation.responseFields;
 
 class AdminControllerTest extends AcceptanceTest {
-
-    @Autowired
-    private ObjectMapper objectMapper;
 
     @Autowired
     private BrandRepository brandRepository;
@@ -84,17 +81,18 @@ class AdminControllerTest extends AcceptanceTest {
         private Schema 성공_응답_형식 = schema("CreateFunctionalityResponse");
 
         @Test
-        void createFunctionality() throws JsonProcessingException {
+        void createFunctionality() {
             // given
             var 다이어트_기능성_요청 = FunctionalityFixture.다이어트_기능성_요청;
-            var content = objectMapper.writeValueAsString(다이어트_기능성_요청);
             var 요청_준비 = given(spec)
-                    .body(content)
+                    .body(다이어트_기능성_요청)
                     .contentType(JSON)
                     .filter(기능성_생성_API_문서_생성());
 
             // when
-            var 응답 = 요청_준비.when().log().all().post("/admin/functionalities");
+            var 응답 = 요청_준비
+                    .when()
+                    .post("/admin/functionalities");
 
             // then
             응답.then().assertThat().statusCode(CREATED.value());
@@ -151,17 +149,18 @@ class AdminControllerTest extends AcceptanceTest {
         private Schema 성공_응답_형식 = schema("CreatePrimaryIngredientResponse");
 
         @Test
-        void createFunctionality() throws JsonProcessingException {
+        void createFunctionality() {
             // given
             var 닭고기_주원료_요청 = PrimaryIngredientFixture.닭고기_주원료_요청;
-            var content = objectMapper.writeValueAsString(닭고기_주원료_요청);
             var 요청_준비 = given(spec)
-                    .body(content)
+                    .body(닭고기_주원료_요청)
                     .contentType(JSON)
                     .filter(주원료_생성_API_문서_생성());
 
             // when
-            var 응답 = 요청_준비.when().log().all().post("/admin/primary-ingredients");
+            var 응답 = 요청_준비
+                    .when()
+                    .post("/admin/primary-ingredients");
 
             // then
             응답.then().assertThat().statusCode(CREATED.value());
@@ -193,7 +192,9 @@ class AdminControllerTest extends AcceptanceTest {
                     .filter(주원료_조회_API_문서_생성());
 
             // when
-            var 응답 = 요청_준비.when().log().all().get("/admin/primary-ingredients");
+            var 응답 = 요청_준비
+                    .when()
+                    .get("/admin/primary-ingredients");
 
             // then
             응답.then().assertThat().statusCode(OK.value())
