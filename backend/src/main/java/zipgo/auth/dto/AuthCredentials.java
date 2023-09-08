@@ -1,4 +1,4 @@
-package zipgo.auth.presentation.dto;
+package zipgo.auth.dto;
 
 public record AuthCredentials(
         Long id

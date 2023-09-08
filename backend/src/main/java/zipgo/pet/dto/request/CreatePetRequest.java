@@ -1,4 +1,4 @@
-package zipgo.pet.presentation.dto.request;
+package zipgo.pet.dto.request;
 
 import jakarta.annotation.Nullable;
 import jakarta.validation.constraints.Max;

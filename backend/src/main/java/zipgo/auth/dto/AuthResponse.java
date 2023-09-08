@@ -1,11 +1,9 @@
-package zipgo.auth.presentation.dto;
+package zipgo.auth.dto;
 
 import java.util.List;
 import zipgo.member.domain.Member;
 import zipgo.pet.domain.Pet;
-import zipgo.pet.presentation.dto.response.PetResponse;
-import zipgo.pet.presentation.dto.response.PetResponses;
-import zipgo.review.dto.response.GetReviewResponse;
+import zipgo.pet.dto.response.PetResponse;
 
 public record AuthResponse(
         String name,

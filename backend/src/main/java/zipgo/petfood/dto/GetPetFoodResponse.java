@@ -1,4 +1,4 @@
-package zipgo.petfood.presentation.dto;
+package zipgo.petfood.dto;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;

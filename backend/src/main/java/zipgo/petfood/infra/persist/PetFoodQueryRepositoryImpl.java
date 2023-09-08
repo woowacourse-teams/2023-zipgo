@@ -1,7 +1,6 @@
 package zipgo.petfood.infra.persist;
 
 import com.querydsl.core.types.dsl.BooleanExpression;
-import com.querydsl.jpa.impl.JPAQuery;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
@@ -14,8 +13,6 @@ import static zipgo.brand.domain.QBrand.brand;
 import static zipgo.petfood.domain.QPetFood.petFood;
 import static zipgo.petfood.domain.QPetFoodFunctionality.petFoodFunctionality;
 import static zipgo.petfood.domain.QPetFoodPrimaryIngredient.petFoodPrimaryIngredient;
-import static zipgo.review.domain.QAdverseReaction.adverseReaction;
-import static zipgo.review.domain.QReview.review;
 
 @Repository
 @RequiredArgsConstructor
@@ -116,17 +113,6 @@ public class PetFoodQueryRepositoryImpl implements PetFoodQueryRepository {
         }
         return petFood.petFoodFunctionalities.any()
                 .functionality.name.in(functionalityList);
-    }
-
-    public PetFood findPetFoodWithReviewsByPetFoodId(Long petFoodId) {
-        JPAQuery<PetFood> where = queryFactory
-                .selectFrom(petFood)
-                .leftJoin(petFood.reviews.reviews, review)
-                .fetchJoin()
-                .leftJoin(review.adverseReactions, adverseReaction)
-                .where(petFood.id.eq(petFoodId));
-
-        return where.fetchOne();
     }
 
 }

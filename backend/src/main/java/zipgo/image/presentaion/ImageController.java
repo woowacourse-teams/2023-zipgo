@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 import zipgo.image.application.ImageService;
-import zipgo.image.presentaion.dto.ImageResponse;
+import zipgo.image.dto.ImageResponse;
 
 @RestController
 @RequiredArgsConstructor

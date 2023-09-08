@@ -16,11 +16,11 @@ import zipgo.petfood.domain.PrimaryIngredient;
 import zipgo.petfood.domain.repository.FunctionalityRepository;
 import zipgo.petfood.domain.repository.PetFoodRepository;
 import zipgo.petfood.domain.repository.PrimaryIngredientRepository;
-import zipgo.petfood.presentation.dto.FilterRequest;
-import zipgo.petfood.presentation.dto.FilterResponse;
-import zipgo.petfood.presentation.dto.FilterResponse.BrandResponse;
-import zipgo.petfood.presentation.dto.FilterResponse.FunctionalityResponse;
-import zipgo.petfood.presentation.dto.GetPetFoodResponse;
+import zipgo.petfood.dto.FilterRequest;
+import zipgo.petfood.dto.FilterResponse;
+import zipgo.petfood.dto.FilterResponse.BrandResponse;
+import zipgo.petfood.dto.FilterResponse.FunctionalityResponse;
+import zipgo.petfood.dto.GetPetFoodResponse;
 
 import static java.util.Collections.EMPTY_LIST;
 import static org.assertj.core.api.Assertions.assertThat;
@@ -40,8 +40,8 @@ import static zipgo.petfood.domain.fixture.PetFoodIngredientFixture.식품_주�
 import static zipgo.petfood.domain.fixture.PrimaryIngredientFixture.주원료_닭고기;
 import static zipgo.petfood.domain.fixture.PrimaryIngredientFixture.주원료_돼지고기;
 import static zipgo.petfood.domain.fixture.PrimaryIngredientFixture.주원료_소고기;
-import static zipgo.petfood.presentation.dto.FilterResponse.NutrientStandardResponse;
-import static zipgo.petfood.presentation.dto.FilterResponse.PrimaryIngredientResponse;
+import static zipgo.petfood.dto.FilterResponse.NutrientStandardResponse;
+import static zipgo.petfood.dto.FilterResponse.PrimaryIngredientResponse;
 
 class PetFoodQueryServiceTest extends ServiceTest {
 

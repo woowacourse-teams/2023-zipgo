@@ -6,7 +6,7 @@ import zipgo.pet.domain.Breeds;
 import zipgo.pet.domain.Gender;
 import zipgo.pet.domain.Pet;
 
-import static zipgo.member.domain.fixture.MemberFixture.*;
+import static zipgo.member.domain.fixture.MemberFixture.식별자_없는_멤버;
 
 public class PetFixture {
 
