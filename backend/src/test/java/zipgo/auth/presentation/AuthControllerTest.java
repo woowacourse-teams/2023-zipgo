@@ -125,6 +125,7 @@ class AuthControllerTest {
                 ),
                 responseFields(
                         fieldWithPath("accessToken").description("accessToken").type(JsonFieldType.STRING),
+                        fieldWithPath("authResponse.id").description("사용자 이름").type(JsonFieldType.NUMBER),
                         fieldWithPath("authResponse.name").description("사용자 이름").type(JsonFieldType.STRING),
                         fieldWithPath("authResponse.email").description("사용자 이메일").type(JsonFieldType.STRING),
                         fieldWithPath("authResponse.profileImageUrl").description("사용자 프로필 사진").type(JsonFieldType.STRING),
@@ -148,6 +149,7 @@ class AuthControllerTest {
                 ),
                 responseFields(
                         fieldWithPath("accessToken").description("accessToken").type(JsonFieldType.STRING),
+                        fieldWithPath("authResponse.id").description("사용자 식별자").type(JsonFieldType.NUMBER),
                         fieldWithPath("authResponse.name").description("사용자 이름").type(JsonFieldType.STRING),
                         fieldWithPath("authResponse.email").description("사용자 이메일").type(JsonFieldType.STRING),
                         fieldWithPath("authResponse.profileImageUrl").description("사용자 프로필 사진").type(JsonFieldType.STRING),

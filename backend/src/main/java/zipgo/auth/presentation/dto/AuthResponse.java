@@ -4,10 +4,9 @@ import java.util.List;
 import zipgo.member.domain.Member;
 import zipgo.pet.domain.Pet;
 import zipgo.pet.presentation.dto.response.PetResponse;
-import zipgo.pet.presentation.dto.response.PetResponses;
-import zipgo.review.dto.response.GetReviewResponse;
 
 public record AuthResponse(
+        Long id,
         String name,
         String email,
         String profileImageUrl,
@@ -18,6 +17,7 @@ public record AuthResponse(
 
     public static AuthResponse of(Member member, List<Pet> pets) {
         return new AuthResponse(
+                member.getId(),
                 member.getName(),
                 member.getEmail(),
                 member.getProfileImgUrl(),

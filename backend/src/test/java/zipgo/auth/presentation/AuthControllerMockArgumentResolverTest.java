@@ -100,6 +100,7 @@ class AuthControllerMockArgumentResolverTest {
                         headerWithName(AUTHORIZATION).description("Bearer + accessToken")
                 ),
                 responseFields(
+                        fieldWithPath("id").description("사용자 식별자").type(JsonFieldType.NUMBER),
                         fieldWithPath("name").description("사용자 이름").type(JsonFieldType.STRING),
                         fieldWithPath("profileImageUrl").description("사용자 프로필 사진").description("사용자 프로필 사진").type(JsonFieldType.STRING),
                         fieldWithPath("email").description("사용자 이메일").type(JsonFieldType.STRING),
