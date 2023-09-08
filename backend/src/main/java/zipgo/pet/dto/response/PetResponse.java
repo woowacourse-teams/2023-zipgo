@@ -1,4 +1,4 @@
-package zipgo.pet.presentation.dto.response;
+package zipgo.pet.dto.response;
 
 import java.time.Year;
 import zipgo.pet.domain.Pet;

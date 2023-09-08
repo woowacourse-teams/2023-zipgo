@@ -13,11 +13,11 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import zipgo.petfood.application.PetFoodQueryService;
 import zipgo.petfood.domain.PetFood;
-import zipgo.petfood.presentation.dto.FilterMetadataResponse;
-import zipgo.petfood.presentation.dto.FilterRequest;
-import zipgo.petfood.presentation.dto.FilterResponse;
-import zipgo.petfood.presentation.dto.GetPetFoodResponse;
-import zipgo.petfood.presentation.dto.GetPetFoodsResponse;
+import zipgo.petfood.dto.FilterMetadataResponse;
+import zipgo.petfood.dto.FilterRequest;
+import zipgo.petfood.dto.FilterResponse;
+import zipgo.petfood.dto.GetPetFoodResponse;
+import zipgo.petfood.dto.GetPetFoodsResponse;
 
 import static java.net.URLDecoder.decode;
 import static java.util.Collections.EMPTY_LIST;

@@ -1,4 +1,4 @@
-package zipgo.image.presentaion.dto;
+package zipgo.image.dto;
 
 public record ImageResponse(
         String imageUrl

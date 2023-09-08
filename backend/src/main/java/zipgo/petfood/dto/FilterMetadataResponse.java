@@ -1,4 +1,4 @@
-package zipgo.petfood.presentation.dto;
+package zipgo.petfood.dto;
 
 import java.util.List;
 

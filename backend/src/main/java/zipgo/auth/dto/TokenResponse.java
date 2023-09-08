@@ -1,4 +1,4 @@
-package zipgo.auth.presentation.dto;
+package zipgo.auth.dto;
 
 import java.util.List;
 import zipgo.member.domain.Member;

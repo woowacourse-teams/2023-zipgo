@@ -9,7 +9,7 @@ import org.springframework.web.bind.support.WebDataBinderFactory;
 import org.springframework.web.context.request.NativeWebRequest;
 import org.springframework.web.method.support.HandlerMethodArgumentResolver;
 import org.springframework.web.method.support.ModelAndViewContainer;
-import zipgo.auth.presentation.dto.AuthCredentials;
+import zipgo.auth.dto.AuthCredentials;
 import zipgo.auth.support.BearerTokenExtractor;
 import zipgo.auth.support.JwtProvider;
 

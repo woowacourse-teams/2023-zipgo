@@ -1,12 +1,10 @@
 package zipgo.review.application;
 
-import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 import java.util.function.Function;
-import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -14,8 +12,8 @@ import zipgo.pet.domain.AgeGroup;
 import zipgo.pet.domain.repository.BreedsRepository;
 import zipgo.pet.domain.repository.PetSizeRepository;
 import zipgo.petfood.domain.PetFood;
-import zipgo.petfood.domain.repository.PetFoodQueryRepository;
-import zipgo.review.domain.AdverseReaction;
+import zipgo.petfood.domain.Reviews;
+import zipgo.petfood.domain.repository.PetFoodRepository;
 import zipgo.review.domain.Review;
 import zipgo.review.domain.repository.ReviewQueryRepository;
 import zipgo.review.domain.repository.ReviewRepository;
@@ -29,8 +27,11 @@ import zipgo.review.dto.response.GetReviewMetadataResponse;
 import zipgo.review.dto.response.GetReviewMetadataResponse.Metadata;
 import zipgo.review.dto.response.GetReviewsResponse;
 import zipgo.review.dto.response.GetReviewsSummaryResponse;
-import zipgo.review.dto.response.RatingSummaryElement;
-import zipgo.review.dto.response.SummaryElement;
+import zipgo.review.dto.response.type.AdverseReactionResponse;
+import zipgo.review.dto.response.type.RatingInfoResponse;
+import zipgo.review.dto.response.type.RatingSummaryResponse;
+import zipgo.review.dto.response.type.StoolConditionResponse;
+import zipgo.review.dto.response.type.TastePreferenceResponse;
 
 import static java.util.stream.Collectors.toMap;
 
@@ -39,11 +40,12 @@ import static java.util.stream.Collectors.toMap;
 @Transactional(readOnly = true)
 public class ReviewQueryService {
 
-    private static final int PERCENTAGE = 100;
+    private static final int MIN_RATING = 1;
+    private static final int MAX_RATING = 5;
 
     private final ReviewRepository reviewRepository;
     private final ReviewQueryRepository reviewQueryRepository;
-    private final PetFoodQueryRepository petFoodQueryRepository;
+    private final PetFoodRepository petFoodRepository;
     private final BreedsRepository breedsRepository;
     private final PetSizeRepository petSizeRepository;
 
@@ -113,112 +115,53 @@ public class ReviewQueryService {
     }
 
     public GetReviewsSummaryResponse getReviewsSummary(Long petFoodId) {
-        PetFood petFood = petFoodQueryRepository.findPetFoodWithReviewsByPetFoodId(petFoodId);
-        List<Review> reviews = petFood.getReviews().getReviews();
+        PetFood petFood = petFoodRepository.getById(petFoodId);
+        Reviews reviews = petFood.getReviews();
 
-        int reviewSize = reviews.size();
+        RatingSummaryResponse ratingsSummary = getRatingsSummary(reviews);
+        List<TastePreferenceResponse> tastesSummary = getTastesSummary(reviews);
+        List<StoolConditionResponse> stoolConditionsSummary = getStoolsSummary(reviews);
+        List<AdverseReactionResponse> adverseReactionsSummary = getAdverseReactions(reviews);
 
-        List<SummaryElement> ratingSummary = summarizeRating(reviews, reviewSize);
-        RatingSummaryElement rating = new RatingSummaryElement(petFood.calculateRatingAverage(), ratingSummary);
-        List<SummaryElement> tastePreference = summarizeTastePreference(reviews, reviewSize);
-        List<SummaryElement> stoolCondition = summarizeStoolCondition(reviews, reviewSize);
-        List<SummaryElement> adverseReaction = summarizeAdverseReaction(reviews);
-
-        return GetReviewsSummaryResponse.of(rating, tastePreference, stoolCondition, adverseReaction);
+        return GetReviewsSummaryResponse.of(ratingsSummary, tastesSummary, stoolConditionsSummary, adverseReactionsSummary);
     }
 
-    private List<SummaryElement> summarizeRating(List<Review> reviews, int reviewSize) {
-        //TODO 5, 4, 3, 2, 1 하드 코딩을 없애기 위해 Rating을 Enum으로 리팩터링 할 예정
-        //TODO 많은 컨플릭트 예상으로 로지꺼 머지 되면 따로 리팩터링 할 예정
-        List<SummaryElement> rating = new ArrayList<>();
-        Map<Integer, List<Review>> groupByRating = reviews.stream()
-                .collect(Collectors.groupingBy(Review::getRating));
-
-        rating.add(new SummaryElement("5", getZeroOrCalculateRankPercent(5, groupByRating, reviewSize)));
-        rating.add(new SummaryElement("4", getZeroOrCalculateRankPercent(4, groupByRating, reviewSize)));
-        rating.add(new SummaryElement("3", getZeroOrCalculateRankPercent(3, groupByRating, reviewSize)));
-        rating.add(new SummaryElement("2", getZeroOrCalculateRankPercent(2, groupByRating, reviewSize)));
-        rating.add(new SummaryElement("1", getZeroOrCalculateRankPercent(1, groupByRating, reviewSize)));
-        return rating;
-    }
-
-    private int getZeroOrCalculateRankPercent(int rank, Map<Integer, List<Review>> groupByRating, int reviewSize) {
-        if (reviewSize == 0) {
-            return 0;
-        }
-        return groupByRating.getOrDefault(rank, new ArrayList<>()).size() * PERCENTAGE / reviewSize;
-    }
-
-    private List<SummaryElement> summarizeTastePreference(List<Review> reviews, int reviewSize) {
-        List<SummaryElement> tastePreference = new ArrayList<>();
-        Map<TastePreference, List<Review>> groupByTastePreference = reviews.stream()
-                .collect(Collectors.groupingBy(Review::getTastePreference));
-
-        TastePreference[] values = TastePreference.values();
-        for (TastePreference value : values) {
-            tastePreference.add(new SummaryElement(value.getDescription(),
-                    getZeroOrTastePreferencePercentage(reviewSize, groupByTastePreference, value)));
-        }
-        return tastePreference;
-    }
-
-    private int getZeroOrTastePreferencePercentage(int reviewSize,
-                                                   Map<TastePreference, List<Review>> groupByTastePreference,
-                                                   TastePreference value) {
-        if (reviewSize == 0) {
-            return 0;
-        }
-        return groupByTastePreference.getOrDefault(value, new ArrayList<>()).size() * PERCENTAGE / reviewSize;
-    }
-
-    private List<SummaryElement> summarizeStoolCondition(List<Review> reviews, int reviewSize) {
-        List<SummaryElement> stoolCondition = new ArrayList<>();
-        Map<StoolCondition, List<Review>> groupByStoolCondition = reviews.stream()
-                .collect(Collectors.groupingBy(Review::getStoolCondition));
-
-        StoolCondition[] values = StoolCondition.values();
-        for (StoolCondition value : values) {
-            stoolCondition.add(new SummaryElement(value.getDescription(),
-                    getZeroOrStoolConditionPercentage(reviewSize, groupByStoolCondition, value)));
-        }
-        return stoolCondition;
-    }
-
-    private int getZeroOrStoolConditionPercentage(int reviewSize,
-                                                  Map<StoolCondition, List<Review>> groupByStoolCondition,
-                                                  StoolCondition value) {
-        if (reviewSize == 0) {
-            return 0;
-        }
-        return groupByStoolCondition.getOrDefault(value, new ArrayList<>()).size() * PERCENTAGE / reviewSize;
-    }
-
-    private List<SummaryElement> summarizeAdverseReaction(List<Review> reviews) {
-        List<SummaryElement> adverseReaction = new ArrayList<>();
-
-        List<AdverseReaction> allAdverseReaction = reviews.stream()
-                .map(Review::getAdverseReactions)
-                .flatMap(Collection::stream)
+    private RatingSummaryResponse getRatingsSummary(Reviews reviews) {
+        double averageRating = reviews.calculateRatingAverage();
+        List<RatingInfoResponse> ratingInfoResponses = IntStream.rangeClosed(MIN_RATING, MAX_RATING)
+                .mapToObj(rating -> {
+                    int percentage = reviews.getRatingPercentage(rating);
+                    return RatingInfoResponse.of(rating, percentage);
+                })
                 .toList();
-        Map<AdverseReactionType, List<AdverseReaction>> groupByAdverseReaction = allAdverseReaction.stream()
-                .collect(Collectors.groupingBy(AdverseReaction::getAdverseReactionType));
-
-        AdverseReactionType[] values = AdverseReactionType.values();
-        for (AdverseReactionType value : values) {
-            adverseReaction.add(new SummaryElement(value.getDescription(),
-                    getZeroOrAdverseReactionPercentage(allAdverseReaction, groupByAdverseReaction, value)));
-        }
-        return adverseReaction;
+        return RatingSummaryResponse.of(averageRating, ratingInfoResponses);
     }
 
-    private int getZeroOrAdverseReactionPercentage(List<AdverseReaction> allAdverseReaction,
-                                                   Map<AdverseReactionType, List<AdverseReaction>> groupByAdverseReaction,
-                                                   AdverseReactionType value) {
-        if (allAdverseReaction.size() == 0) {
-            return 0;
-        }
-        return groupByAdverseReaction.getOrDefault(value, new ArrayList<>()).size() * PERCENTAGE
-                / allAdverseReaction.size();
+    private List<TastePreferenceResponse> getTastesSummary(Reviews reviews) {
+        return Arrays.stream(TastePreference.values())
+                .map(tastePreference -> {
+                    int percentage = reviews.getTastesPercentage(tastePreference);
+                    return TastePreferenceResponse.of(tastePreference, percentage);
+                })
+                .toList();
+    }
+
+    private List<StoolConditionResponse> getStoolsSummary(Reviews reviews) {
+        return Arrays.stream(StoolCondition.values())
+                .map(stoolCondition -> {
+                    int percentage = reviews.getStoolsConditionPercentage(stoolCondition);
+                    return StoolConditionResponse.of(stoolCondition, percentage);
+                })
+                .toList();
+    }
+
+    private List<AdverseReactionResponse> getAdverseReactions(Reviews reviews) {
+        return Arrays.stream(AdverseReactionType.values())
+                .map(adverseReactionType -> {
+                    int percentage = reviews.getAdverseReactionPercentage(adverseReactionType);
+                    return AdverseReactionResponse.of(adverseReactionType, percentage);
+                })
+                .toList();
     }
 
 }

@@ -1,4 +1,4 @@
-package zipgo.petfood.presentation.dto;
+package zipgo.petfood.dto;
 
 public record PetFoodSelectRequest(
         String keyword,

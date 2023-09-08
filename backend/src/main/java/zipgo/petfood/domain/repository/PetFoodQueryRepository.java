@@ -21,6 +21,4 @@ public interface PetFoodQueryRepository {
             List<String> functionalityList
     );
 
-    PetFood findPetFoodWithReviewsByPetFoodId(Long petFoodId);
-
 }

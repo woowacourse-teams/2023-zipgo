@@ -17,7 +17,6 @@ import zipgo.pet.domain.repository.PetSizeRepository;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertAll;
-import static zipgo.pet.domain.fixture.PetFixture.반려동물;
 import static zipgo.review.fixture.MemberFixture.멤버_이름;
 
 class PetQueryServiceTest extends QueryServiceTest {

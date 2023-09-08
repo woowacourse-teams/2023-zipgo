@@ -20,9 +20,9 @@ public enum AdverseReactionType {
         this.description = description;
     }
 
-    public static AdverseReactionType from(String tastePreference) {
+    public static AdverseReactionType from(String adverseReactionType) {
         return Arrays.stream(values())
-                .filter(value -> value.getDescription().equals(tastePreference))
+                .filter(value -> value.getDescription().equals(adverseReactionType))
                 .findAny()
                 .orElseThrow(AdverseReactionException.NotFound::new);
     }

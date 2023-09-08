@@ -41,8 +41,7 @@ import static java.util.Collections.emptyList;
 import static java.util.Collections.reverseOrder;
 import static org.assertj.core.api.Assertions.assertThat;
 import static zipgo.pet.domain.AgeGroup.PUPPY;
-import static zipgo.pet.domain.fixture.BreedsFixture.견종;;
-import static zipgo.pet.domain.fixture.PetFixture.반려동물;
+import static zipgo.pet.domain.fixture.BreedsFixture.견종;
 import static zipgo.pet.domain.fixture.PetSizeFixture.소형견;
 import static zipgo.petfood.domain.fixture.PetFoodFixture.모든_영양기준_만족_식품;
 import static zipgo.review.domain.type.AdverseReactionType.FRIZZY_FUR;
@@ -52,7 +51,6 @@ import static zipgo.review.domain.type.AdverseReactionType.TEARS;
 import static zipgo.review.domain.type.StoolCondition.SOFT_MOIST;
 import static zipgo.review.domain.type.TastePreference.EATS_VERY_WELL;
 import static zipgo.review.fixture.ReviewFixture.극찬_리뷰_생성;
-
 
 @Import(QueryDslTestConfig.class)
 @DataJpaTest(properties = {"spring.sql.init.mode=never"})
