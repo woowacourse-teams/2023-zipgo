@@ -23,7 +23,7 @@ jobs:
 
       - name: Build Docker image
         run: |
-          docker build -t ${{ secrets.FRONTEND_IMAGE_NAME }}:$GITHUB_RUN_NUMBER
+          docker build -t ${{ secrets.FRONTEND_IMAGE_NAME }}:$GITHUB_RUN_NUMBER .
           docker tag ${{ secrets.FRONTEND_IMAGE_NAME }}:$GITHUB_RUN_NUMBER ${{ secrets.FRONTEND_IMAGE_NAME }}:latest
         env:
           DOCKER_CLI_AGGREGATE: 1
