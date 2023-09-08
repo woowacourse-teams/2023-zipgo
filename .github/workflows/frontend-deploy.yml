@@ -13,14 +13,14 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
-      
+
       - uses: actions/setup-node@v3
         with:
           node-version: '16.x'
-          
+
       - name: Install dependencies
         run: yarn
-        
+
       - name: Build Docker image
         run: |
           docker build -t ${{ secrets.FRONTEND_IMAGE_NAME }}:$GITHUB_RUN_NUMBER
@@ -61,6 +61,7 @@ jobs:
             docker pull ${{ secrets.FRONTEND_IMAGE_NAME }}:latest
             docker run -d -p 3000:3000 --name ${{ secrets.FRONTEND_CONTAINER_NAME }} ${{ secrets.FRONTEND_IMAGE_NAME }}:latest
           "
+
       - name: Slack Notification
         uses: 8398a7/action-slack@v3
         with:
