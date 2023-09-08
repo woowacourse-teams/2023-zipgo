@@ -51,7 +51,7 @@ jobs:
         with:
           host: 192.168.1.230
           username: ubuntu
-          key: ${{ secrets.secrets.DEVELOP_SSH_PRIVATE_KEY }}
+          key: ${{ secrets.DEVELOP_SSH_PRIVATE_KEY }}
           port: 22
           script: docker stop ${{ secrets.FRONTEND_CONTAINER_NAME }} || true
             docker rm ${{ secrets.FRONTEND_CONTAINER_NAME }} || true
