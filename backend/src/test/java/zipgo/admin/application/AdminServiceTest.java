@@ -6,8 +6,11 @@ import zipgo.admin.dto.BrandCreateRequest;
 import zipgo.brand.domain.fixture.BrandFixture;
 import zipgo.brand.domain.repository.BrandRepository;
 import zipgo.common.service.ServiceTest;
+import zipgo.petfood.domain.fixture.FunctionalityFixture;
+import zipgo.petfood.domain.repository.FunctionalityRepository;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 
 class AdminServiceTest extends ServiceTest {
 
@@ -15,7 +18,11 @@ class AdminServiceTest extends ServiceTest {
     private BrandRepository brandRepository;
 
     @Autowired
+    private FunctionalityRepository functionalityRepository;
+
+    @Autowired
     private AdminService adminService;
+
 
     @Test
     void createBrand() {
@@ -27,6 +34,15 @@ class AdminServiceTest extends ServiceTest {
 
         //then
         assertDoesNotThrow(() -> brandRepository.getById(brandId));
+    }
+
+    @Test
+    void createFunctionality() {
+        //when
+        Long functionalityId = adminService.createFunctionality(FunctionalityFixture.다이어트_기능성_요청);
+
+        //then
+        assertThat(functionalityRepository.getById(functionalityId)).isNotNull();
     }
 
 }

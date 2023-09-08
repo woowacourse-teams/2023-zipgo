@@ -21,7 +21,6 @@ import zipgo.admin.application.AdminService;
 import zipgo.auth.presentation.AuthInterceptor;
 import zipgo.auth.presentation.JwtMandatoryArgumentResolver;
 import zipgo.auth.support.JwtProvider;
-import zipgo.brand.application.BrandService;
 import zipgo.admin.dto.BrandCreateRequest;
 import zipgo.image.application.ImageService;
 

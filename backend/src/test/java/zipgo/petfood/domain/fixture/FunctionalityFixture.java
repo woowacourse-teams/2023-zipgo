@@ -1,7 +1,7 @@
 package zipgo.petfood.domain.fixture;
 
 import zipgo.petfood.domain.Functionality;
-import zipgo.petfood.presentation.dto.FunctionalityCreateRequest;
+import zipgo.admin.dto.FunctionalityCreateRequest;
 
 public class FunctionalityFixture {
 

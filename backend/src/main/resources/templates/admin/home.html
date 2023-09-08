@@ -235,7 +235,7 @@
         });
 
         $.ajax({
-            url: "/functionalities",
+            url: "/admin/functionalities",
             type: "GET",
             success: function(response) {
                 var functionalitySelect = $("#functionality");
@@ -277,9 +277,6 @@
 
         var selectedFunctionalities = $("#functionality").val();
         var selectedPrimaryIngredients = $("#primaryIngredient").val();
-        console.log(selectedFunctionalities);
-        console.log(selectedPrimaryIngredients);
-        console.log("Asdadsad");
 
         var otherData = {
             name: $("#petFoodName").val(),
@@ -347,7 +344,7 @@
         };
 
         $.ajax({
-            url: "/functionalities",
+            url: "/admin/functionalities",
             type: "POST",
             data: JSON.stringify(functionalityData),
             contentType: "application/json",

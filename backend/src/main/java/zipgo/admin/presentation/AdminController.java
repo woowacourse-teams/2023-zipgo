@@ -7,6 +7,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -17,6 +18,8 @@ import zipgo.admin.dto.BrandCreateRequest;
 import zipgo.admin.dto.BrandSelectResponse;
 import zipgo.image.ImageDirectoryUrl;
 import zipgo.image.application.ImageService;
+import zipgo.admin.dto.FunctionalityCreateRequest;
+import zipgo.admin.dto.FunctionalitySelectResponse;
 
 @Controller
 @RequiredArgsConstructor
@@ -46,6 +49,20 @@ public class AdminController {
     @GetMapping("/brands")
     ResponseEntity<List<BrandSelectResponse>> getBrands() {
         return ResponseEntity.ok(adminQueryService.getBrands());
+    }
+
+    @PostMapping("/functionalities")
+    public ResponseEntity<Void> createFunctionality(
+            @RequestBody FunctionalityCreateRequest functionalityCreateRequest
+    ) {
+        Long functionalityId = adminService.createFunctionality(functionalityCreateRequest);
+        return ResponseEntity.created(URI.create("/functionalities/" + functionalityId)).build();
+    }
+
+    @ResponseBody
+    @GetMapping("/functionalities")
+    ResponseEntity<List<FunctionalitySelectResponse>> getFunctionalities() {
+        return ResponseEntity.ok(adminQueryService.getFunctionalities());
     }
 
 }
