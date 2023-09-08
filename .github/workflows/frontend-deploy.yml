@@ -53,7 +53,8 @@ jobs:
           username: ubuntu
           key: ${{ secrets.DEVELOP_SSH_PRIVATE_KEY }}
           port: 22
-          script: docker stop ${{ secrets.FRONTEND_CONTAINER_NAME }} || true
+          script: |
+            docker stop ${{ secrets.FRONTEND_CONTAINER_NAME }} || true
             docker rm ${{ secrets.FRONTEND_CONTAINER_NAME }} || true
             docker pull ${{ secrets.FRONTEND_IMAGE_NAME }}:latest
             docker run -d -p 3000:3000 --name ${{ secrets.FRONTEND_CONTAINER_NAME }} ${{ secrets.FRONTEND_IMAGE_NAME }}:latest
