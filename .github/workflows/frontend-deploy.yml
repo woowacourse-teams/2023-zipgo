@@ -29,8 +29,7 @@ jobs:
 
       - name: Build Docker image
         run: |
-          docker buildx create --use
-          docker buildx build -t ${{ secrets.FRONTEND_IMAGE_NAME }}:$GITHUB_RUN_NUMBER --platform linux/amd64 .
+          docker build -t ${{ secrets.FRONTEND_IMAGE_NAME }}:$GITHUB_RUN_NUMBER --platform linux/amd64 .
           docker tag ${{ secrets.FRONTEND_IMAGE_NAME }}:$GITHUB_RUN_NUMBER ${{ secrets.FRONTEND_IMAGE_NAME }}:latest
 
       - name: Push Docker image to DockerHub
