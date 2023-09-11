@@ -36,9 +36,8 @@ jobs:
       - name: Build and push
         uses: docker/build-push-action@v4
         with:
-          context: .
+          context: ./frontend
           push: true
-          file: ./Dockerfile
           tags: ${{ secrets.FRONTEND_IMAGE_NAME }}:latest
           platforms: |
             linux/amd64
