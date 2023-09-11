@@ -114,7 +114,7 @@ const ReviewItem = (reviewItemProps: ReviewItemProps) => {
         </Reaction>
         <Reaction key={REACTIONS.ADVERSE_REACTION}>
           <ReactionTitle>{REACTIONS.ADVERSE_REACTION}</ReactionTitle>
-          <ReactionContent>{adverseReactions.join(', ')}</ReactionContent>
+          <ReactionContent>{adverseReactions.join(', ') || '없음'}</ReactionContent>
         </Reaction>
       </Reactions>
       <Comment isExpanded={isCommentExpanded}>{comment}</Comment>
