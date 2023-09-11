@@ -51,4 +51,8 @@ public class AdminQueryService {
         return petFoodRepository.findAll();
     }
 
+    public PetFood getPetFoodById(Long petFoodId) {
+        return petFoodRepository.getById(petFoodId);
+    }
+
 }

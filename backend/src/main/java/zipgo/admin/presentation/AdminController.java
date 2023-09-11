@@ -7,6 +7,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -41,9 +42,16 @@ public class AdminController {
     }
 
     @GetMapping("/view")
-    String view(Model model) {
+    String findAll(Model model) {
         List<PetFood> petFoods = adminQueryService.getPetFoods();
         model.addAttribute("petFoods", petFoods);
+        return "admin/view";
+    }
+
+    @GetMapping("/view/{petFoodId}")
+    String findById(@PathVariable Long petFoodId, Model model) {
+        PetFood petFood = adminQueryService.getPetFoodById(petFoodId);
+        model.addAttribute("petFood", petFood);
         return "admin/view";
     }
 

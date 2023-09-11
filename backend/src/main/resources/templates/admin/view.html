@@ -59,10 +59,11 @@
             <td>
                 <div class="col-md-3">
                     <button type="button" class="btn btn-primary btn-block open-update-modal" data-toggle="modal"
-                            data-target="#updateModal" data-petfoodid="1">수정
+                            data-target="#updateModal" data-petFoodId="1">수정
                     </button>
                 </div>
             </td>
+
             <td><span th:text="삭제"></span></td>
             <td><span th:text=" ${list.id}"></span></td>
             <td><span th:text=" ${list.getName()}"></span></td>
@@ -157,12 +158,13 @@
 <!-- 내부 js -->
 <script>
     $(document).on("click", ".open-update-modal", function () {
-        var petFoodId = $(this).data('petfoodid'); // 데이터 속성에서 식품 ID 가져오기
+        let petFoodId = $(this).data('petFoodId');
+        console.log("petFoodId : " + petFoodId);
 
         $.ajax({
             url: `/admin/view/${petFoodId}`,
             type: "GET",
-            success: function(response) {
+            success: function (response) {
                 $("#brand_name").val(response.brand_name);
                 $("#pet_food_name").val(response.pet_food_name);
                 $("#eu_standard").val(response.eu_standard);
@@ -173,9 +175,10 @@
                 $("#hasResearchCenter").prop('checked', response.hasResearchCenter);
                 $("#hasResidentVet").prop('checked', response.hasResidentVet);
             },
-            error: function() {
+            error: function () {
                 alert('데이터를 불러올 수 없습니다.');
             }
         });
     });
+
 </script>
