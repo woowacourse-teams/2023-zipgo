@@ -1,7 +1,12 @@
 import { FormEvent, useEffect, useReducer } from 'react';
 import { useNavigate } from 'react-router-dom';
 
-import { ADVERSE_REACTIONS, STOOL_CONDITIONS, TASTE_PREFERENCES } from '@/constants/review';
+import {
+  ADVERSE_REACTIONS,
+  COMMENT_LIMIT,
+  STOOL_CONDITIONS,
+  TASTE_PREFERENCES,
+} from '@/constants/review';
 import { routerPath } from '@/router/routes';
 import { AdverseReaction, StoolCondition, TastePreference } from '@/types/review/client';
 import { PostReviewReq } from '@/types/review/remote';
@@ -107,6 +112,8 @@ export const useReviewForm = (useReviewFormProps: UseReviewFormProps) => {
 
   const [review, reviewDispatch] = useReducer(reducer, reviewInitialState);
 
+  const isValidComment = review.comment.length <= COMMENT_LIMIT;
+
   const onSubmitReview = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
@@ -150,5 +157,6 @@ export const useReviewForm = (useReviewFormProps: UseReviewFormProps) => {
     review,
     reviewDispatch,
     onSubmitReview,
+    isValidComment,
   };
 };

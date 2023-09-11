@@ -1,7 +1,12 @@
 import { styled } from 'styled-components';
 
 import Label from '@/components/@common/Label/Label';
-import { ADVERSE_REACTIONS, STOOL_CONDITIONS, TASTE_PREFERENCES } from '@/constants/review';
+import {
+  ADVERSE_REACTIONS,
+  REVIEW_ERROR_MESSAGE,
+  STOOL_CONDITIONS,
+  TASTE_PREFERENCES,
+} from '@/constants/review';
 import { ACTION_TYPES, useReviewForm } from '@/hooks/review/useReviewForm';
 
 interface ReviewFormProps {
@@ -14,7 +19,7 @@ interface ReviewFormProps {
 const ReviewForm = (reviewFormProps: ReviewFormProps) => {
   const { petFoodId, rating, isEditMode = false, reviewId = -1 } = reviewFormProps;
 
-  const { review, reviewDispatch, onSubmitReview } = useReviewForm({
+  const { review, reviewDispatch, onSubmitReview, isValidComment } = useReviewForm({
     petFoodId,
     rating,
     isEditMode,
@@ -89,12 +94,18 @@ const ReviewForm = (reviewFormProps: ReviewFormProps) => {
           id="comment"
           placeholder="제품에 대한 솔직한 리뷰를 남겨주세요. (선택)"
           value={review.comment}
+          $isValid={isValidComment}
           onChange={e => {
             reviewDispatch({ type: ACTION_TYPES.SET_COMMENT, comment: e.target.value });
           }}
         />
+        <ErrorCaption aria-live="assertive">
+          {isValidComment ? '' : REVIEW_ERROR_MESSAGE.INVALID_COMMENT}
+        </ErrorCaption>
       </DetailReviewContainer>
-      <SubmitButton type="submit">작성 완료</SubmitButton>
+      <SubmitButton type="submit" disabled={!isValidComment}>
+        작성 완료
+      </SubmitButton>
     </ReviewFormContainer>
   );
 };
@@ -127,12 +138,11 @@ const LabelContainer = styled.div`
   gap: 0.8rem;
 `;
 
-const DetailReviewText = styled.textarea`
+const DetailReviewText = styled.textarea<{ $isValid: boolean }>`
   resize: none;
 
   width: 100%;
   min-height: 12rem;
-  margin-bottom: 9rem;
   padding: 1.2rem;
 
   font-size: 1.6rem;
@@ -143,9 +153,10 @@ const DetailReviewText = styled.textarea`
   border-radius: 8px;
 
   &:focus {
-    border-color: #d0e6f9;
+    border-color: ${({ $isValid }) => ($isValid ? '#d0e6f9' : '#EFA9AF')};
     outline: none;
-    box-shadow: 0 0 0 3px rgb(141 201 255 / 40%);
+    box-shadow: ${({ $isValid }) =>
+      $isValid ? '0 0 0 3px rgb(141 201 255 / 40%)' : '0 0 0 3px rgb(231 56 70 / 40%)'};
   }
 `;
 
@@ -169,4 +180,22 @@ const SubmitButton = styled.button`
   letter-spacing: 0.2px;
 
   background-color: ${({ theme }) => theme.color.primary};
+
+  &:disabled {
+    cursor: not-allowed;
+
+    background-color: ${({ theme }) => theme.color.grey300};
+  }
+`;
+
+const ErrorCaption = styled.p`
+  min-height: 1.7rem;
+  margin-top: 1rem;
+  margin-bottom: 10rem;
+
+  font-size: 1.3rem;
+  font-weight: 500;
+  line-height: 1.7rem;
+  color: ${({ theme }) => theme.color.warning};
+  letter-spacing: -0.5px;
 `;
