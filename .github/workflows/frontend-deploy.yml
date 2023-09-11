@@ -32,15 +32,10 @@ jobs:
           docker buildx create --use
           docker buildx build -t ${{ secrets.FRONTEND_IMAGE_NAME }}:$GITHUB_RUN_NUMBER --platform linux/amd64,linux/arm64 . --load
           docker tag ${{ secrets.FRONTEND_IMAGE_NAME }}:$GITHUB_RUN_NUMBER ${{ secrets.FRONTEND_IMAGE_NAME }}:latest
-        env:
-          DOCKER_CLI_AGGREGATE: 1
-          DOCKER_BUILDKIT: 1
 
       - name: Push Docker image to DockerHub
         run: |
           docker push ${{ secrets.FRONTEND_IMAGE_NAME }}:latest
-        env:
-          DOCKER_CLI_AGGREGATE: 1
 
   deploy-to-develop-EC2:
     needs: build-dockerfile
