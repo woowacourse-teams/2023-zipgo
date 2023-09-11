@@ -4,178 +4,251 @@
       layout:decorate="layout/default">
 
 <th:block layout:fragment="content">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <style>
+            table {
+                font-family: Arial, sans-serif;
+                border-collapse: collapse;
+                width: 100%;
+            }
 
+            table, th, td {
+                border: 1px solid #dddddd;
+                text-align: left;
+                padding: 8px;
+            }
 
+            tr:nth-child(even) {
+                background-color: #f2f2f2; /* 변경할 배경색 지정 */
+            }
+        </style>
+        <!-- 내부 js -->
+        <script>
+            window.onload = function () {
+                console.log("");
+                console.log("[window onload] : [start]");
+                console.log("");
+            };
+        </script>
+
+    </head>
+
+    <body>
+    <table>
+
+        <thead>
+        <tr>
+            <th>식품ID</th>
+            <th>식품이름</th>
+            <th>브랜드</th>
+            <th>유럽 영양 기준</th>
+            <th>미국 영양 기준</th>
+            <th>이미지 URL</th>
+            <th>생성일자</th>
+            <th>기능성</th>
+            <th>주원료</th>
+        </tr>
+        </thead>
+
+        <tbody>
+        <tr th:each="list: ${petFoods}">
+            <td><span th:text=" ${list.id}"></span></td>
+            <td><span th:text=" ${list.getName()}"></span></td>
+            <td><span th:text=" ${list.getBrand().getName()}"></span></td>
+            <td><span th:text=" ${list.getHasStandard().getEurope()}"></span></td>
+            <td><span th:text=" ${list.getHasStandard().getUnitedStates()}"></span></td>
+            <td><span th:text=" ${list.getImageUrl()}"></span></td>
+            <td><span th:text=" ${list.getCreatedAt()}"></span></td>
+            <td>
+                <ul>
+                    <li th:each="funtionality: ${list.getPetFoodFunctionalities()}">
+                        <span th:text="${funtionality.getFunctionality().getName()}"></span>
+                    </li>
+                </ul>
+            </td>
+            <td>
+                <ul>
+                    <li th:each="primaryIngredient: ${list.getPetFoodPrimaryIngredients()}">
+                        <span th:text="${primaryIngredient.getPrimaryIngredient().getName()}"></span>
+                    </li>
+                </ul>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+    </body>
 
 </th:block>
 </html>
 
 <script type="application/javascript">
-  $("#brandModal").on("shown.bs.modal", function() {
-    $("#brandImage").val("");
-  });
-
-  $("#sendBrand").click(function() {
-    var imageFile = $("#brandImage")[0].files[0];
-
-    var formData = new FormData();
-    formData.append("image", imageFile);
-
-    var otherData = {
-      name: $("#brandName").val(),
-      nation: $("#nation").val(),
-      foundedYear: $("#foundedYear").val(),
-      hasResearchCenter: $("#hasResearchCenter").prop("checked"),
-      hasResidentVet: $("#hasResidentVet").prop("checked")
-    };
-
-    formData.append("brandCreateRequest", new Blob([JSON.stringify(otherData)], {type: "application/json"}));
-
-    $.ajax({
-      url: "/admin/brands",
-      type: "POST",
-      data: formData,
-      processData: false,
-      contentType: false,
-      success: function() {
-        alert("브랜드 생성 완료");
-        $("#brandModal").modal("hide");
-      }
+    $("#brandModal").on("shown.bs.modal", function () {
+        $("#brandImage").val("");
     });
-  });
 
-  $("#petFoodModal").on("shown.bs.modal", function() {
-    $("#petFoodImage").val("");
+    $("#sendBrand").click(function () {
+        var imageFile = $("#brandImage")[0].files[0];
 
-    $.ajax({
-      url: "/admin/brands",
-      type: "GET",
-      success: function(response) {
-        var brandSelect = $("#brand");
-        brandSelect.empty();
+        var formData = new FormData();
+        formData.append("image", imageFile);
 
-        response.forEach(function(brand) {
-          var option = $("<option></option>")
-                  .attr("value", brand.id)
-                  .text(brand.name);
+        var otherData = {
+            name: $("#brandName").val(),
+            nation: $("#nation").val(),
+            foundedYear: $("#foundedYear").val(),
+            hasResearchCenter: $("#hasResearchCenter").prop("checked"),
+            hasResidentVet: $("#hasResidentVet").prop("checked")
+        };
 
-          brandSelect.append(option);
+        formData.append("brandCreateRequest", new Blob([JSON.stringify(otherData)], {type: "application/json"}));
+
+        $.ajax({
+            url: "/admin/brands",
+            type: "POST",
+            data: formData,
+            processData: false,
+            contentType: false,
+            success: function () {
+                alert("브랜드 생성 완료");
+                $("#brandModal").modal("hide");
+            }
         });
-      }
     });
 
-    $.ajax({
-      url: "/admin/functionalities",
-      type: "GET",
-      success: function(response) {
-        var functionalitySelect = $("#functionality");
-        functionalitySelect.empty();
+    $("#petFoodModal").on("shown.bs.modal", function () {
+        $("#petFoodImage").val("");
 
-        response.forEach(function(functionality) {
-          var option = $("<option></option>")
-                  .attr("value", functionality.id)
-                  .text(functionality.name);
+        $.ajax({
+            url: "/admin/brands",
+            type: "GET",
+            success: function (response) {
+                var brandSelect = $("#brand");
+                brandSelect.empty();
 
-          functionalitySelect.append(option);
+                response.forEach(function (brand) {
+                    var option = $("<option></option>")
+                        .attr("value", brand.id)
+                        .text(brand.name);
+
+                    brandSelect.append(option);
+                });
+            }
         });
-      }
-    });
 
-    $.ajax({
-      url: "/admin/primary-ingredients",
-      type: "GET",
-      success: function(response) {
-        var primaryIngredientSelect = $("#primaryIngredient");
-        primaryIngredientSelect.empty();
+        $.ajax({
+            url: "/admin/functionalities",
+            type: "GET",
+            success: function (response) {
+                var functionalitySelect = $("#functionality");
+                functionalitySelect.empty();
 
-        response.forEach(function(primaryIngredient) {
-          var option = $("<option></option>")
-                  .attr("value", primaryIngredient.id)
-                  .text(primaryIngredient.name);
+                response.forEach(function (functionality) {
+                    var option = $("<option></option>")
+                        .attr("value", functionality.id)
+                        .text(functionality.name);
 
-          primaryIngredientSelect.append(option);
+                    functionalitySelect.append(option);
+                });
+            }
         });
-      }
+
+        $.ajax({
+            url: "/admin/primary-ingredients",
+            type: "GET",
+            success: function (response) {
+                var primaryIngredientSelect = $("#primaryIngredient");
+                primaryIngredientSelect.empty();
+
+                response.forEach(function (primaryIngredient) {
+                    var option = $("<option></option>")
+                        .attr("value", primaryIngredient.id)
+                        .text(primaryIngredient.name);
+
+                    primaryIngredientSelect.append(option);
+                });
+            }
+        });
     });
-  });
 
-  $("#sendPetFood").click(function() {
-    var imageFile = $("#petFoodImage")[0].files[0];
+    $("#sendPetFood").click(function () {
+        var imageFile = $("#petFoodImage")[0].files[0];
 
-    var formData = new FormData();
-    formData.append("image", imageFile);
+        var formData = new FormData();
+        formData.append("image", imageFile);
 
-    var selectedFunctionalities = $("#functionality").val();
-    var selectedPrimaryIngredients = $("#primaryIngredient").val();
+        var selectedFunctionalities = $("#functionality").val();
+        var selectedPrimaryIngredients = $("#primaryIngredient").val();
 
-    var otherData = {
-      name: $("#petFoodName").val(),
-      purchaseLink: $("#purchaseLink").val(),
-      brandId: $("#brand").val(),
-      europeStandard: $("#europeStandard").prop("checked"),
-      usStandard: $("#usStandard").prop("checked"),
-      functionalityIds: selectedFunctionalities,
-      primaryIngredientIds: selectedPrimaryIngredients
-    };
+        var otherData = {
+            name: $("#petFoodName").val(),
+            purchaseLink: $("#purchaseLink").val(),
+            brandId: $("#brand").val(),
+            europeStandard: $("#europeStandard").prop("checked"),
+            usStandard: $("#usStandard").prop("checked"),
+            functionalityIds: selectedFunctionalities,
+            primaryIngredientIds: selectedPrimaryIngredients
+        };
 
-    formData.append("petFoodCreateRequest", new Blob([JSON.stringify(otherData)], {type: "application/json"}));
+        formData.append("petFoodCreateRequest", new Blob([JSON.stringify(otherData)], {type: "application/json"}));
 
-    $.ajax({
-      url: "/admin/pet-foods",
-      type: "POST",
-      data: formData,
-      processData: false,
-      contentType: false,
-      success: function(response) {
-        alert("반려동물 식품 생성 완료");
-        $("#petFoodModal").modal("hide");
-      }
+        $.ajax({
+            url: "/admin/pet-foods",
+            type: "POST",
+            data: formData,
+            processData: false,
+            contentType: false,
+            success: function (response) {
+                alert("반려동물 식품 생성 완료");
+                $("#petFoodModal").modal("hide");
+            }
+        });
     });
-  });
 
-  $("#functionalityModal").on("shown.bs.modal", function() {
-    $("#functionalityName").val("");
-  });
-
-  $("#sendFunctionality").click(function() {
-    var functionalityName = $("#functionalityName").val();
-
-    var functionalityData = {
-      name: functionalityName
-    };
-
-    $.ajax({
-      url: "/admin/functionalities",
-      type: "POST",
-      data: JSON.stringify(functionalityData),
-      contentType: "application/json",
-      success: function(response) {
-        alert("기능성 생성 완료");
-        $("#functionalityModal").modal("hide");
-      }
+    $("#functionalityModal").on("shown.bs.modal", function () {
+        $("#functionalityName").val("");
     });
-  });
 
-  $("#primaryIngredientModal").on("shown.bs.modal", function() {
-    $("#primaryIngredientName").val("");
-  });
+    $("#sendFunctionality").click(function () {
+        var functionalityName = $("#functionalityName").val();
 
-  $("#sendPrimaryIngredient").click(function() {
-    var primaryIngredientName = $("#primaryIngredientName").val();
+        var functionalityData = {
+            name: functionalityName
+        };
 
-    var primaryIngredientData = {
-      name: primaryIngredientName
-    };
-
-    $.ajax({
-      url: "/admin/primary-ingredients",
-      type: "POST",
-      data: JSON.stringify(primaryIngredientData),
-      contentType: "application/json",
-      success: function(response) {
-        alert("주원료 생성 완료");
-        $("#primaryIngredientModal").modal("hide");
-      }
+        $.ajax({
+            url: "/admin/functionalities",
+            type: "POST",
+            data: JSON.stringify(functionalityData),
+            contentType: "application/json",
+            success: function (response) {
+                alert("기능성 생성 완료");
+                $("#functionalityModal").modal("hide");
+            }
+        });
     });
-  });
+
+    $("#primaryIngredientModal").on("shown.bs.modal", function () {
+        $("#primaryIngredientName").val("");
+    });
+
+    $("#sendPrimaryIngredient").click(function () {
+        var primaryIngredientName = $("#primaryIngredientName").val();
+
+        var primaryIngredientData = {
+            name: primaryIngredientName
+        };
+
+        $.ajax({
+            url: "/admin/primary-ingredients",
+            type: "POST",
+            data: JSON.stringify(primaryIngredientData),
+            contentType: "application/json",
+            success: function (response) {
+                alert("주원료 생성 완료");
+                $("#primaryIngredientModal").modal("hide");
+            }
+        });
+    });
 </script>

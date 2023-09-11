@@ -9,8 +9,11 @@ import zipgo.admin.dto.BrandSelectResponse;
 import zipgo.admin.dto.FunctionalitySelectResponse;
 import zipgo.brand.domain.repository.BrandRepository;
 import zipgo.petfood.domain.Functionality;
+import zipgo.petfood.domain.PetFood;
 import zipgo.petfood.domain.PrimaryIngredient;
 import zipgo.petfood.domain.repository.FunctionalityRepository;
+import zipgo.petfood.domain.repository.PetFoodQueryRepository;
+import zipgo.petfood.domain.repository.PetFoodRepository;
 import zipgo.petfood.domain.repository.PrimaryIngredientRepository;
 import zipgo.admin.dto.PrimaryIngredientSelectResponse;
 
@@ -20,6 +23,7 @@ import zipgo.admin.dto.PrimaryIngredientSelectResponse;
 public class AdminQueryService {
 
     private final BrandRepository brandRepository;
+    private final PetFoodRepository petFoodRepository;
     private final FunctionalityRepository functionalityRepository;
     private final PrimaryIngredientRepository primaryIngredientRepository;
 
@@ -41,6 +45,10 @@ public class AdminQueryService {
         return primaryIngredients.stream()
                 .map(primaryIngredient -> PrimaryIngredientSelectResponse.of(primaryIngredient.getId(), primaryIngredient.getName()))
                 .collect(Collectors.toList());
+    }
+
+    public List<PetFood> getPetFoods() {
+        return petFoodRepository.findAll();
     }
 
 }

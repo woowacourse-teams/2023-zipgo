@@ -5,6 +5,7 @@ import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -23,6 +24,7 @@ import zipgo.admin.dto.FunctionalitySelectResponse;
 import zipgo.admin.dto.PrimaryIngredientCreateRequest;
 import zipgo.admin.dto.PrimaryIngredientSelectResponse;
 import zipgo.admin.dto.PetFoodCreateRequest;
+import zipgo.petfood.domain.PetFood;
 
 @Controller
 @RequiredArgsConstructor
@@ -39,7 +41,9 @@ public class AdminController {
     }
 
     @GetMapping("/view")
-    String view() {
+    String view(Model model) {
+        List<PetFood> petFoods = adminQueryService.getPetFoods();
+        model.addAttribute("petFoods", petFoods);
         return "admin/view";
     }
 
