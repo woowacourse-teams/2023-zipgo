@@ -42,6 +42,7 @@ public class ReviewQueryRepositoryImpl implements ReviewQueryRepository {
 
         return queryFactory.select(new QFindReviewsQueryResponse(
                                 review.id,
+                                pet.owner.id,
                                 review.rating,
                                 review.createdAt,
                                 review.comment,
@@ -103,8 +104,8 @@ public class ReviewQueryRepositoryImpl implements ReviewQueryRepository {
         return ageGroups.stream()
                 .map(ageGroup -> {
                     BooleanExpression greaterThanEqual = review.pet.birthYear.goe(ageGroup.calculateMinBirthYear());
-                    BooleanExpression LessThanEqual = review.pet.birthYear.loe(ageGroup.calculateMaxBirthYear());
-                    return greaterThanEqual.and(LessThanEqual);
+                    BooleanExpression lessThanEqual = review.pet.birthYear.loe(ageGroup.calculateMaxBirthYear());
+                    return greaterThanEqual.and(lessThanEqual);
                 })
                 .reduce((previous, current) -> Expressions.booleanOperation(Ops.OR, previous, current))
                 .orElse(null);
@@ -113,6 +114,7 @@ public class ReviewQueryRepositoryImpl implements ReviewQueryRepository {
     private BooleanExpression equalsPetFoodId(@NotNull Long petFoodId) {
         return review.petFood.id.eq(petFoodId);
     }
+
 
     private BooleanExpression afterThan(Long lastReviewId) {
         if (lastReviewId == null) {

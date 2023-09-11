@@ -14,6 +14,7 @@ import static java.time.format.DateTimeFormatter.ofPattern;
 @JsonInclude(NON_NULL)
 public record GetReviewResponse(
         Long id,
+        Long writerId,
         int rating,
         String date,
         String comment,
@@ -75,6 +76,7 @@ public record GetReviewResponse(
 
         return new GetReviewResponse(
                 review.getId(),
+                review.getPet().getOwner().getId(),
                 review.getRating(),
                 review.getCreatedAt().format(ofPattern("yyyy-MM-dd")),
                 review.getComment(),
@@ -100,6 +102,7 @@ public record GetReviewResponse(
 
         return GetReviewResponse.builder()
                 .id(review.id())
+                .writerId(review.writerId())
                 .tastePreference(review.tastePreference().getDescription())
                 .adverseReactions(adverseReactions)
                 .comment(review.comment())
