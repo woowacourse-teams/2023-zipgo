@@ -1,38 +1,21 @@
-import { ChangeEvent, useEffect, useState } from 'react';
+import { useEffect } from 'react';
 import { useOutletContext } from 'react-router-dom';
 import { styled } from 'styled-components';
 
 import Input from '@/components/@common/Input/Input';
 import { PET_PROFILE_ADDITION_STEP } from '@/constants/petProfile';
-import { usePetProfileContext } from '@/context/petProfile';
-import { usePetProfileValidation } from '@/hooks/petProfile';
-import { PetProfileOutletContextProps } from '@/types/petProfile/client';
+import { usePetProfileAddition } from '@/hooks/petProfile/usePetProfileAddition';
+import { PetAdditionOutletContextProps } from '@/types/petProfile/client';
 
 const PetProfileWeightAddition = () => {
-  const [isValidInput, setIsValidInput] = useState(true);
-  const { updateCurrentStep, updateIsValidStep } = useOutletContext<PetProfileOutletContextProps>();
-  const { petProfile, updatePetProfile } = usePetProfileContext();
-  const { isValidWeight } = usePetProfileValidation();
+  const { petProfile, isValidInput, onChangeWeight } = usePetProfileAddition();
+  const { updateCurrentStep, updateIsValidStep } =
+    useOutletContext<PetAdditionOutletContextProps>();
 
   useEffect(() => {
-    updateCurrentStep(PET_PROFILE_ADDITION_STEP.WEIGHT);
     updateIsValidStep(false);
+    updateCurrentStep(PET_PROFILE_ADDITION_STEP.WEIGHT);
   }, []);
-
-  const onChangeWeight = (e: ChangeEvent<HTMLInputElement>) => {
-    const petWeight = e.target.value;
-
-    if (isValidWeight(petWeight)) {
-      setIsValidInput(true);
-      updateIsValidStep(true);
-      updatePetProfile({ weight: Number(petWeight) });
-    }
-
-    if (!isValidWeight(petWeight)) {
-      updateIsValidStep(false);
-      setIsValidInput(false);
-    }
-  };
 
   return (
     <Container>
@@ -55,11 +38,9 @@ const PetProfileWeightAddition = () => {
         />
         <Kg>kg</Kg>
       </WeightInputContainer>
-      {!isValidInput && (
-        <ErrorCaption>
-          몸무게는 0kg초과, 100kg이하 소수점 첫째짜리까지 입력이 가능합니다.
-        </ErrorCaption>
-      )}
+      <ErrorCaption>
+        {isValidInput ? '' : '몸무게는 0kg초과, 100kg이하 소수점 첫째짜리까지 입력이 가능합니다.'}
+      </ErrorCaption>
     </Container>
   );
 };

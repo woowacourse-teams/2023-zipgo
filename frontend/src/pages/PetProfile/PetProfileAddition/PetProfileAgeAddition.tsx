@@ -1,33 +1,21 @@
-import { ChangeEvent, useEffect } from 'react';
+import { useEffect } from 'react';
 import { useOutletContext } from 'react-router-dom';
 import { styled } from 'styled-components';
 
 import PetAgeSelect from '@/components/PetProfile/PetAgeSelect';
 import { PET_PROFILE_ADDITION_STEP } from '@/constants/petProfile';
-import { usePetProfileContext } from '@/context/petProfile';
-import { usePetProfileValidation } from '@/hooks/petProfile';
-import { PetProfileOutletContextProps } from '@/types/petProfile/client';
+import { usePetProfileAddition } from '@/hooks/petProfile/usePetProfileAddition';
+import { PetAdditionOutletContextProps } from '@/types/petProfile/client';
 
 const PetProfileAgeAddition = () => {
-  const { updateCurrentStep, updateIsValidStep } = useOutletContext<PetProfileOutletContextProps>();
-  const { petProfile, updatePetProfile } = usePetProfileContext();
-  const { isValidAgeRange } = usePetProfileValidation();
+  const { petProfile, onChangeAge } = usePetProfileAddition();
+  const { updateIsValidStep, updateCurrentStep } =
+    useOutletContext<PetAdditionOutletContextProps>();
 
   useEffect(() => {
-    updateCurrentStep(PET_PROFILE_ADDITION_STEP.AGE);
     updateIsValidStep(false);
+    updateCurrentStep(PET_PROFILE_ADDITION_STEP.AGE);
   }, []);
-
-  const onChangeAge = (e: ChangeEvent<HTMLSelectElement>) => {
-    const selectedAge = Number(e.target.value);
-
-    if (isValidAgeRange(selectedAge)) {
-      updateIsValidStep(true);
-      updatePetProfile({ age: selectedAge });
-    }
-
-    if (!isValidAgeRange(selectedAge)) updateIsValidStep(false);
-  };
 
   return (
     <Container>

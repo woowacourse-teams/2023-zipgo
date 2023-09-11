@@ -2,11 +2,11 @@ import { useEffect } from 'react';
 import { styled } from 'styled-components';
 
 import CameraIcon from '@/assets/svg/camera_icon.svg';
-import { usePetProfileContext } from '@/context/petProfile';
+import { usePetAdditionContext } from '@/context/petProfile/PetAdditionContext';
 import { useImageUpload } from '@/hooks/common/useImageUpload';
 
 const PetProfileImageUploader = () => {
-  const { updatePetProfile } = usePetProfileContext();
+  const { updatePetProfile } = usePetAdditionContext();
   const { previewImage, imageUrl, uploadImage } = useImageUpload();
 
   useEffect(() => {

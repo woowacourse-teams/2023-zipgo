@@ -4,18 +4,18 @@ import { styled } from 'styled-components';
 
 import Label from '@/components/@common/Label/Label';
 import { PET_PROFILE_ADDITION_STEP, PET_SIZES } from '@/constants/petProfile';
-import { usePetProfileContext } from '@/context/petProfile';
-import { PetProfileOutletContextProps, PetSize } from '@/types/petProfile/client';
+import { usePetProfileAddition } from '@/hooks/petProfile/usePetProfileAddition';
+import { PetAdditionOutletContextProps } from '@/types/petProfile/client';
 
 const PetProfilePetSizeAddition = () => {
-  const { updateCurrentStep } = useOutletContext<PetProfileOutletContextProps>();
-  const { petProfile, updatePetProfile } = usePetProfileContext();
+  const { petProfile, onClickPetSize } = usePetProfileAddition();
+  const { updateCurrentStep, updateIsValidStep } =
+    useOutletContext<PetAdditionOutletContextProps>();
 
   useEffect(() => {
+    updateIsValidStep(false);
     updateCurrentStep(PET_PROFILE_ADDITION_STEP.PET_SIZE);
   }, []);
-
-  const onClickPetSize = (size: PetSize) => updatePetProfile({ petSize: size });
 
   return (
     <Container>

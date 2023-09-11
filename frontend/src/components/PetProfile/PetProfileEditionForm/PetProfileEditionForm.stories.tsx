@@ -6,28 +6,29 @@ import React from 'react';
 import { reactRouterParameters } from 'storybook-addon-react-router-v6';
 import { styled } from 'styled-components';
 
-import PetProfileEdition from './PetProfileEdition';
+import PetProfileProvider from '../../../context/petProfile/PetProfileContext';
+import PetProfileEditionForm from './PetProfileEditionForm';
 
 const meta = {
-  title: 'PetProfile/Edition',
-  component: PetProfileEdition,
+  title: 'PetProfile/EditionForm',
+  component: PetProfileEditionForm,
   decorators: [
     Story => (
-      <FlexBox>
+      <PetProfileProvider>
         <Story />
-      </FlexBox>
+      </PetProfileProvider>
     ),
   ],
 
   parameters: {
     reactRouter: reactRouterParameters({
       location: {
-        pathParams: { petId: '1' },
+        pathParams: { petId: '2' },
       },
       routing: { path: '/pets/:petId/edit' },
     }),
   },
-} satisfies Meta<typeof PetProfileEdition>;
+} satisfies Meta<typeof PetProfileEditionForm>;
 
 export default meta;
 type Story = StoryObj<typeof meta>;
@@ -81,12 +82,3 @@ export const InvalidWeight: Story = {
     expect(weightErrorMessage).toBeVisible();
   },
 };
-
-const FlexBox = styled.div`
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-
-  width: 100%;
-  height: auto;
-`;

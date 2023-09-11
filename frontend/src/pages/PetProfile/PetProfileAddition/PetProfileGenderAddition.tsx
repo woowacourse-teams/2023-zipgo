@@ -1,27 +1,19 @@
-import { ChangeEvent, useEffect } from 'react';
+import { useEffect } from 'react';
 import { useOutletContext } from 'react-router-dom';
 import { styled } from 'styled-components';
 
 import GenderRadioInput from '@/components/PetProfile/GenderRadioInput';
 import { GENDERS, PET_PROFILE_ADDITION_STEP } from '@/constants/petProfile';
-import { usePetProfileContext } from '@/context/petProfile';
-import { usePetProfileValidation } from '@/hooks/petProfile';
-import { PetProfileOutletContextProps } from '@/types/petProfile/client';
+import { usePetProfileAddition } from '@/hooks/petProfile/usePetProfileAddition';
+import { PetAdditionOutletContextProps } from '@/types/petProfile/client';
 
 const PetProfileGenderAddition = () => {
-  const { updateCurrentStep } = useOutletContext<PetProfileOutletContextProps>();
-  const { petProfile, updatePetProfile } = usePetProfileContext();
-  const { isValidGender } = usePetProfileValidation();
+  const { petProfile, onChangeGender } = usePetProfileAddition();
+  const { updateCurrentStep } = useOutletContext<PetAdditionOutletContextProps>();
 
   useEffect(() => {
     updateCurrentStep(PET_PROFILE_ADDITION_STEP.GENDER);
   }, []);
-
-  const onChangeGender = (e: ChangeEvent<HTMLInputElement>) => {
-    const gender = e.target.value;
-
-    if (isValidGender(gender)) updatePetProfile({ gender });
-  };
 
   return (
     <Container>

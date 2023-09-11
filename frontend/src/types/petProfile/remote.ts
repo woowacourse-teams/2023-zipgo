@@ -16,11 +16,11 @@ interface GetPetsRes {
   pets: PetProfile[];
 }
 
-interface PostPetProfileReq extends Omit<PetProfile, 'id' | 'petSize'> {
+interface PostPetReq extends Omit<PetProfile, 'id' | 'petSize'> {
   petSize?: PetSize;
 }
 
-interface PostPetProfileRes {}
+interface PostPetRes {}
 
 interface PutPetReq extends PetProfile {}
 
@@ -38,8 +38,8 @@ export type {
   GetPetRes,
   GetPetsReq,
   GetPetsRes,
-  PostPetProfileReq,
-  PostPetProfileRes,
+  PostPetReq,
+  PostPetRes,
   PutPetReq,
   PutPetRes,
 };

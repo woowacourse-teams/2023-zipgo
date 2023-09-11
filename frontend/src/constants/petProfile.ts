@@ -29,3 +29,8 @@ export const STEP_PATH: Record<number, string> = {
   [PET_PROFILE_ADDITION_STEP.WEIGHT]: PATH.PET_PROFILE_WEIGHT_ADDITION,
   [PET_PROFILE_ADDITION_STEP.IMAGE_FILE]: PATH.PET_PROFILE_IMAGE_FILE_ADDITION,
 } as const;
+
+export const PET_ERROR_MESSAGE = {
+  INVALID_NAME: '아이의 이름은 1~10글자 사이의 한글, 영어, 숫자만 입력 가능합니다.',
+  INVALID_WEIGHT: '몸무게는 0kg초과, 100kg이하 소수점 첫째짜리까지 입력이 가능합니다.',
+} as const;

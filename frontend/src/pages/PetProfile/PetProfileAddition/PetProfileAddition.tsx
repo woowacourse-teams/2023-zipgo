@@ -4,16 +4,14 @@ import { styled } from 'styled-components';
 import BackBtnIcon from '@/assets/svg/back_btn.svg';
 import Button from '@/components/@common/Button/Button';
 import Template from '@/components/@common/Template';
-import { PetProfileProvider } from '@/context/petProfile';
-import { usePetProfileStep } from '@/hooks/petProfile';
+import { usePetProfileStep } from '@/hooks/petProfile/usePetProfileStep';
 
 const PetProfileAddition = () => {
   const {
     step,
     totalStep,
-    isLastStep,
     isValidStep,
-    updateIsMixedBreed,
+    isLastStep,
     updateCurrentStep,
     updateIsValidStep,
     goBack,
@@ -21,32 +19,29 @@ const PetProfileAddition = () => {
   } = usePetProfileStep();
 
   return (
-    <PetProfileProvider>
-      <Template
-        staticHeader={() =>
-          getPetProfileAdditionHeader({
-            title: '반려동물 정보 등록',
-            step,
-            totalStep,
-            onClickBackButton: goBack,
-          })
-        }
-        footer={false}
-      >
-        <ContentLayout>
-          <Outlet
-            context={{
-              updateIsMixedBreed,
-              updateCurrentStep,
-              updateIsValidStep,
-            }}
-          />
-        </ContentLayout>
-        {!isLastStep && (
-          <Button type="button" text="다음" fixed onClick={goNext} disabled={!isValidStep} />
-        )}
-      </Template>
-    </PetProfileProvider>
+    <Template
+      staticHeader={() =>
+        getPetProfileAdditionHeader({
+          title: '반려동물 정보 등록',
+          step,
+          totalStep,
+          onClickBackButton: goBack,
+        })
+      }
+      footer={false}
+    >
+      <ContentLayout>
+        <Outlet
+          context={{
+            updateCurrentStep,
+            updateIsValidStep,
+          }}
+        />
+      </ContentLayout>
+      {!isLastStep && (
+        <Button type="button" text="다음" fixed onClick={goNext} disabled={!isValidStep} />
+      )}
+    </Template>
   );
 };
 

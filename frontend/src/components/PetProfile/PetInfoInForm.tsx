@@ -17,7 +17,7 @@ const PetInfoInForm = (petInfoInFormProps: PetInfoInFormProps) => {
   const { previewImage, imageUrl, uploadImage } = useImageUpload();
 
   useEffect(() => {
-    onChangeImage(imageUrl);
+    if (imageUrl) onChangeImage(imageUrl);
   }, [imageUrl]);
 
   return (
