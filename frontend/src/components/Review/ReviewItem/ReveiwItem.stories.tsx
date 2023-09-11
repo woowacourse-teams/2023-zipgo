@@ -31,7 +31,6 @@ type Story = StoryObj<typeof ReviewItem>;
 export const Basic: Story = {
   args: {
     id: 1,
-    reviewerName: '에디',
     rating: 4,
     date: '2023-05-26',
     comment:
@@ -39,13 +38,28 @@ export const Basic: Story = {
     tastePreference: '정말 잘 먹어요',
     stoolCondition: '촉촉 말랑해요',
     adverseReactions: [],
+    petProfile: {
+      id: 1,
+      name: '하이브리드 샘이솟아 리오레이비',
+      profileUrl:
+        'https://velog.velcdn.com/images/chex/post/4d4a31d6-a3d9-4acd-8065-2486360eb8d2/image.JPG',
+      writtenAge: 7,
+      writtenWeight: 100,
+      breed: {
+        name: '믹스견',
+        size: { name: '대형견' },
+      },
+    },
+    helpfulReaction: {
+      count: 5,
+      reacted: true,
+    },
   },
 };
 
 export const LongComment: Story = {
   args: {
-    id: 1,
-    reviewerName: '민무',
+    id: 2,
     rating: 5,
     date: '2023-06-26',
     comment:
@@ -53,13 +67,27 @@ export const LongComment: Story = {
     tastePreference: '정말 잘 먹어요',
     stoolCondition: '촉촉 말랑해요',
     adverseReactions: ['눈물이 나요', '발을 핥아요'],
+    petProfile: {
+      id: 1,
+      name: '개똥이',
+      profileUrl: '',
+      writtenAge: 3,
+      writtenWeight: 10,
+      breed: {
+        name: '스피츠',
+        size: { name: '중형견' },
+      },
+    },
+    helpfulReaction: {
+      count: 5,
+      reacted: true,
+    },
   },
 };
 
 export const ShortComment: Story = {
   args: {
     id: 1,
-    reviewerName: '가비',
     rating: 5,
     date: '2023-07-26',
     comment:
@@ -67,5 +95,21 @@ export const ShortComment: Story = {
     tastePreference: '정말 잘 먹어요',
     stoolCondition: '딱딱해요',
     adverseReactions: [],
+    petProfile: {
+      id: 3,
+      name: '아루',
+      profileUrl:
+        'https://velog.velcdn.com/images/chex/post/1b521233-131a-4b6e-bcf8-ba7eb8395160/image.jpeg',
+      writtenAge: 2,
+      writtenWeight: 3,
+      breed: {
+        name: '몰티즈',
+        size: { name: '소형견' },
+      },
+    },
+    helpfulReaction: {
+      count: 5,
+      reacted: true,
+    },
   },
 };
