@@ -38,6 +38,11 @@ public class AdminController {
         return "admin/home";
     }
 
+    @GetMapping("/view")
+    String view() {
+        return "admin/view";
+    }
+
     @PostMapping("/brands")
     public ResponseEntity<Void> createBrand(
             @RequestPart BrandCreateRequest brandCreateRequest,
