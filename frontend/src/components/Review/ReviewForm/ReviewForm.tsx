@@ -1,16 +1,8 @@
-import { FormEvent, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
 import { styled } from 'styled-components';
 
 import Label from '@/components/@common/Label/Label';
 import { ADVERSE_REACTIONS, STOOL_CONDITIONS, TASTE_PREFERENCES } from '@/constants/review';
-import {
-  useAddReviewMutation,
-  useEditReviewMutation,
-  useReviewItemQuery,
-} from '@/hooks/query/review';
 import { ACTION_TYPES, useReviewForm } from '@/hooks/review/useReviewForm';
-import { routerPath } from '@/router/routes';
 
 interface ReviewFormProps {
   petFoodId: number;
@@ -21,51 +13,13 @@ interface ReviewFormProps {
 
 const ReviewForm = (reviewFormProps: ReviewFormProps) => {
   const { petFoodId, rating, isEditMode = false, reviewId = -1 } = reviewFormProps;
-  const { reviewItem } = useReviewItemQuery({ reviewId });
-  const { addReviewMutation } = useAddReviewMutation();
-  const { editReviewMutation } = useEditReviewMutation();
-  const { review, reviewDispatch } = useReviewForm({ petFoodId, rating });
 
-  const navigate = useNavigate();
-
-  const onSubmitReview = (e: FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-
-    if (isEditMode && reviewItem) {
-      editReviewMutation.editReview({ reviewId, ...review }).then(() => {
-        alert('리뷰 수정이 완료되었습니다.');
-        navigate(routerPath.foodDetail({ petFoodId }));
-      });
-
-      return;
-    }
-
-    addReviewMutation.addReview(review).then(() => {
-      alert('리뷰 작성이 완료되었습니다.');
-      navigate(routerPath.foodDetail({ petFoodId }));
-    });
-  };
-
-  useEffect(() => {
-    if (isEditMode && reviewItem) {
-      reviewDispatch({
-        type: ACTION_TYPES.SET_TASTE_PREFERENCE,
-        tastePreference: reviewItem.tastePreference,
-      });
-
-      reviewDispatch({
-        type: ACTION_TYPES.SET_STOOL_CONDITION,
-        stoolCondition: reviewItem.stoolCondition,
-      });
-
-      reviewDispatch({
-        type: ACTION_TYPES.SET_ADVERSE_REACTIONS_DEFAULT,
-        adverseReactions: reviewItem.adverseReactions,
-      });
-
-      reviewDispatch({ type: ACTION_TYPES.SET_COMMENT, comment: reviewItem.comment });
-    }
-  }, [isEditMode, reviewItem, reviewDispatch]);
+  const { review, reviewDispatch, onSubmitReview } = useReviewForm({
+    petFoodId,
+    rating,
+    isEditMode,
+    reviewId,
+  });
 
   return (
     <ReviewFormContainer onSubmit={onSubmitReview}>

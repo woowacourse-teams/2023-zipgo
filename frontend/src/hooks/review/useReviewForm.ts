@@ -1,8 +1,12 @@
-import { useReducer } from 'react';
+import { FormEvent, useEffect, useReducer } from 'react';
+import { useNavigate } from 'react-router-dom';
 
 import { ADVERSE_REACTIONS, STOOL_CONDITIONS, TASTE_PREFERENCES } from '@/constants/review';
+import { routerPath } from '@/router/routes';
 import { AdverseReaction, StoolCondition, TastePreference } from '@/types/review/client';
 import { PostReviewReq } from '@/types/review/remote';
+
+import { useAddReviewMutation, useEditReviewMutation, useReviewItemQuery } from '../query/review';
 
 export const ACTION_TYPES = {
   SET_PET_FOOD_ID: 'setPetFoodId',
@@ -78,7 +82,20 @@ const reducer = (state: PostReviewReq, action: Action): PostReviewReq => {
   return state;
 };
 
-export const useReviewForm = ({ petFoodId, rating }: { petFoodId: number; rating: number }) => {
+interface UseReviewFormProps {
+  petFoodId: number;
+  rating: number;
+  isEditMode: boolean;
+  reviewId: number;
+}
+
+export const useReviewForm = (useReviewFormProps: UseReviewFormProps) => {
+  const navigate = useNavigate();
+  const { petFoodId, rating, isEditMode, reviewId } = useReviewFormProps;
+  const { reviewItem } = useReviewItemQuery({ reviewId });
+  const { addReviewMutation } = useAddReviewMutation();
+  const { editReviewMutation } = useEditReviewMutation();
+
   const reviewInitialState: PostReviewReq = {
     petFoodId,
     rating,
@@ -87,10 +104,51 @@ export const useReviewForm = ({ petFoodId, rating }: { petFoodId: number; rating
     stoolCondition: STOOL_CONDITIONS[0],
     adverseReactions: [ADVERSE_REACTIONS[0]],
   };
+
   const [review, reviewDispatch] = useReducer(reducer, reviewInitialState);
+
+  const onSubmitReview = (e: FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+
+    if (isEditMode && reviewItem) {
+      editReviewMutation.editReview({ reviewId, ...review }).then(() => {
+        alert('리뷰 수정이 완료되었습니다.');
+        navigate(routerPath.foodDetail({ petFoodId }));
+      });
+
+      return;
+    }
+
+    addReviewMutation.addReview(review).then(() => {
+      alert('리뷰 작성이 완료되었습니다.');
+      navigate(routerPath.foodDetail({ petFoodId }));
+    });
+  };
+
+  useEffect(() => {
+    if (isEditMode && reviewItem) {
+      reviewDispatch({
+        type: ACTION_TYPES.SET_TASTE_PREFERENCE,
+        tastePreference: reviewItem.tastePreference,
+      });
+
+      reviewDispatch({
+        type: ACTION_TYPES.SET_STOOL_CONDITION,
+        stoolCondition: reviewItem.stoolCondition,
+      });
+
+      reviewDispatch({
+        type: ACTION_TYPES.SET_ADVERSE_REACTIONS_DEFAULT,
+        adverseReactions: reviewItem.adverseReactions,
+      });
+
+      reviewDispatch({ type: ACTION_TYPES.SET_COMMENT, comment: reviewItem.comment });
+    }
+  }, [isEditMode, reviewItem, reviewDispatch]);
 
   return {
     review,
     reviewDispatch,
+    onSubmitReview,
   };
 };
