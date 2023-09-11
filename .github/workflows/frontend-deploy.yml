@@ -43,35 +43,15 @@ jobs:
 
   deploy-to-develop-EC2:
     needs: build-dockerfile
-    runs-on: ubuntu-latest
+    runs-on: self-hosted
 
     steps:
       - name: Deploy to Develop EC2
-        uses: appleboy/ssh-action@v0.1.6
-        with:
-          host: 13.125.148.242
-          username: ubuntu
-          key: ${{ secrets.DEVELOP_SSH_PRIVATE_KEY }}
-          port: 22
-          script: |
-            docker stop ${{ secrets.FRONTEND_CONTAINER_NAME }} || true
-            docker rm ${{ secrets.FRONTEND_CONTAINER_NAME }} || true
-            docker pull ${{ secrets.FRONTEND_IMAGE_NAME }}:latest
-            docker run -d -p 3000:3000 --name ${{ secrets.FRONTEND_CONTAINER_NAME }} ${{ secrets.FRONTEND_IMAGE_NAME }}:latest
-
-      # - name: Setup SSH key
-      #   uses: webfactory/ssh-agent@v0.4.1
-      #   with:
-      #     ssh-private-key: ${{ secrets.DEVELOP_SSH_PRIVATE_KEY }}
-
-      # - name: Deploy to EC2 - develop branch
-      #   run: |
-      #     ssh -o StrictHostKeyChecking=no ubuntu@192.168.1.230 "
-      #       docker stop ${{ secrets.FRONTEND_CONTAINER_NAME }} || true
-      #       docker rm ${{ secrets.FRONTEND_CONTAINER_NAME }} || true
-      #       docker pull ${{ secrets.FRONTEND_IMAGE_NAME }}:latest
-      #       docker run -d -p 3000:3000 --name ${{ secrets.FRONTEND_CONTAINER_NAME }} ${{ secrets.FRONTEND_IMAGE_NAME }}:latest
-      #     "
+        run: |
+          docker stop ${{ secrets.FRONTEND_CONTAINER_NAME }} || true
+          docker rm ${{ secrets.FRONTEND_CONTAINER_NAME }} || true
+          docker pull ${{ secrets.FRONTEND_IMAGE_NAME }}:latest
+          docker run -d -p 3000:3000 --name ${{ secrets.FRONTEND_CONTAINER_NAME }} ${{ secrets.FRONTEND_IMAGE_NAME }}:latest
 
       - name: Slack Notification
         uses: 8398a7/action-slack@v3
