@@ -7,7 +7,7 @@ RUN yarn build:prod
 # RUN yarn build:sb
 
 # nginx 
-FROM nginx:latest
+FROM --platform=linux/arm64 nginx:latest
 RUN rm -rf /etc/nginx/conf.d
 COPY conf /etc/nginx
 COPY --from=builder /app/dist /usr/share/nginx/html
