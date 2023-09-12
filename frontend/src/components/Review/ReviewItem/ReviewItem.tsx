@@ -62,7 +62,7 @@ const ReviewItem = (reviewItemProps: ReviewItemProps) => {
   };
 
   const onClickRemoveButton = () => {
-    confirm('정말 삭제하시곘어요?') && removeReviewMutation.removeReview({ reviewId, petFoodId });
+    confirm('정말 삭제하시겠어요?') && removeReviewMutation.removeReview({ reviewId, petFoodId });
   };
 
   const onClickHelpfulButton = () => {
