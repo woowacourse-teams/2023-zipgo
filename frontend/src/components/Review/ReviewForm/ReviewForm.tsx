@@ -33,6 +33,7 @@ const ReviewForm = (reviewFormProps: ReviewFormProps) => {
         <LabelContainer role="radiogroup" id="tastePreference">
           {TASTE_PREFERENCES.map(text => (
             <Label
+              data-testid="tastePreference"
               role="radio"
               key={text}
               text={text}
@@ -53,6 +54,7 @@ const ReviewForm = (reviewFormProps: ReviewFormProps) => {
         <LabelContainer role="radiogroup" id="stoolCondition">
           {STOOL_CONDITIONS.map(text => (
             <Label
+              data-testid="stoolCondition"
               role="radio"
               key={text}
               text={text}
@@ -73,6 +75,7 @@ const ReviewForm = (reviewFormProps: ReviewFormProps) => {
         <LabelContainer id="adverseReactions">
           {ADVERSE_REACTIONS.map(text => (
             <Label
+              data-testid="adverseReaction"
               role="checkbox"
               key={text}
               text={text}
