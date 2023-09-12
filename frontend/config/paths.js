@@ -35,6 +35,7 @@ const resolveModule = (resolveFn, filePath) => {
 module.exports = {
   appHtml: resolveApp('public/index.html'),
   appFavicon: resolveApp('public/favicon.ico'),
+  msw: resolveApp('public/mockServiceWorker.js'),
   appIndex: resolveModule(resolveApp, 'src/index'),
   appOutput: resolveApp('dist'),
   appTsConfig: resolveApp('tsconfig.json'),
