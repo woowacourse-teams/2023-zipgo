@@ -57,11 +57,11 @@ public class PetFood extends BaseTimeEntity {
     private Brand brand;
 
     @Builder.Default
-    @OneToMany(mappedBy = "petFood", cascade = {CascadeType.PERSIST, REMOVE})
+    @OneToMany(mappedBy = "petFood", cascade = {CascadeType.PERSIST, REMOVE}, orphanRemoval = true)
     private List<PetFoodPrimaryIngredient> petFoodPrimaryIngredients = new ArrayList<>();
 
     @Builder.Default
-    @OneToMany(mappedBy = "petFood", cascade = {CascadeType.PERSIST, REMOVE})
+    @OneToMany(mappedBy = "petFood", cascade = {CascadeType.PERSIST, REMOVE}, orphanRemoval = true)
     private List<PetFoodFunctionality> petFoodFunctionalities = new ArrayList<>();
 
     public double calculateRatingAverage() {

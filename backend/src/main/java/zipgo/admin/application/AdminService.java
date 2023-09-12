@@ -81,12 +81,12 @@ public class AdminService {
         Brand brand = brandRepository.getByName(request.brandName());
         petFood.updateBrand(brand);
 
-//        if (request.functionalities() != null) {
-//            changeFunctionality(request, petFood);
-//        }
-//        if (request.primaryIngredients() != null) {
-//            changePrimaryIngredient(request, petFood);
-//        }
+        if (request.functionalities() != null) {
+            changeFunctionality(request, petFood);
+        }
+        if (request.primaryIngredients() != null) {
+            changePrimaryIngredient(request, petFood);
+        }
     }
 
     private void changeFunctionality(PetFoodUpdateRequest request, PetFood petFood) {
@@ -113,6 +113,16 @@ public class AdminService {
                     .build();
             petFoodPrimaryIngredient.changeRelations(petFood, primaryIngredient);
         }
+    }
+
+    public void initFunctionalities(Long petFoodId) {
+        PetFood petFood = petFoodRepository.getById(petFoodId);
+        petFood.initFunctionalities();
+    }
+
+    public void initPrimaryIngredients(Long petFoodId) {
+        PetFood petFood = petFoodRepository.getById(petFoodId);
+        petFood.initPrimaryIngredients();
     }
 
 }
