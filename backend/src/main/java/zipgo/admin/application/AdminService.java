@@ -82,9 +82,11 @@ public class AdminService {
         petFood.updateBrand(brand);
 
         if (request.functionalities() != null) {
+            petFood.initFunctionalities();
             changeFunctionality(request, petFood);
         }
         if (request.primaryIngredients() != null) {
+            petFood.initPrimaryIngredients();
             changePrimaryIngredient(request, petFood);
         }
     }
@@ -113,16 +115,6 @@ public class AdminService {
                     .build();
             petFoodPrimaryIngredient.changeRelations(petFood, primaryIngredient);
         }
-    }
-
-    public void initFunctionalities(Long petFoodId) {
-        PetFood petFood = petFoodRepository.getById(petFoodId);
-        petFood.initFunctionalities();
-    }
-
-    public void initPrimaryIngredients(Long petFoodId) {
-        PetFood petFood = petFoodRepository.getById(petFoodId);
-        petFood.initPrimaryIngredients();
     }
 
     public void deletePetFood(Long petFoodId) {

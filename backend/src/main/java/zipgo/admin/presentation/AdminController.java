@@ -119,8 +119,6 @@ public class AdminController {
             @PathVariable Long petFoodId,
             @RequestBody PetFoodUpdateRequest request
     ) {
-        adminService.initFunctionalities(petFoodId);
-        adminService.initPrimaryIngredients(petFoodId);
         adminService.updatePetFood(petFoodId, request);
         return ResponseEntity.ok().build();
     }
