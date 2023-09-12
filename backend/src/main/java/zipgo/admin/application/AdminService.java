@@ -25,6 +25,8 @@ import zipgo.petfood.domain.repository.PrimaryIngredientRepository;
 @RequiredArgsConstructor
 public class AdminService {
 
+    private static final int EMPTY_STRING_CHECK_INDEX = 0;
+
     private final BrandRepository brandRepository;
     private final FunctionalityRepository functionalityRepository;
     private final PrimaryIngredientRepository primaryIngredientRepository;
@@ -81,20 +83,24 @@ public class AdminService {
         Brand brand = brandRepository.getByName(request.brandName());
         petFood.updateBrand(brand);
 
-        if (request.functionalities() != null) {
-            petFood.initFunctionalities();
-            changeFunctionality(request, petFood);
-        }
-        if (request.primaryIngredients() != null) {
-            petFood.initPrimaryIngredients();
-            changePrimaryIngredient(request, petFood);
-        }
+        updateFunctionalities(request, petFood);
+        updatePrimaryIngredients(request, petFood);
     }
 
-    private void changeFunctionality(PetFoodUpdateRequest request, PetFood petFood) {
+    private void updateFunctionalities(PetFoodUpdateRequest request, PetFood petFood) {
+        petFood.initFunctionalities();
+        List<String> functionalitiesName = request.functionalities();
+
+        if (functionalitiesName == null || functionalitiesName.get(EMPTY_STRING_CHECK_INDEX).equals("")) {
+            return;
+        }
         List<Functionality> functionalities = request.functionalities().stream()
                 .map(functionalityName -> functionalityRepository.getByName(functionalityName))
                 .toList();
+        changeFunctionalityRelations(functionalities, petFood);
+    }
+
+    private void changeFunctionalityRelations(List<Functionality> functionalities, PetFood petFood) {
         for (Functionality functionality : functionalities) {
             PetFoodFunctionality petFoodFunctionality = PetFoodFunctionality.builder()
                     .functionality(functionality)
@@ -104,10 +110,19 @@ public class AdminService {
         }
     }
 
-    private void changePrimaryIngredient(PetFoodUpdateRequest request, PetFood petFood) {
+    private void updatePrimaryIngredients(PetFoodUpdateRequest request, PetFood petFood) {
+        petFood.initPrimaryIngredients();
+        List<String> primaryIngredientsName = request.primaryIngredients();
+        if (primaryIngredientsName == null || primaryIngredientsName.get(EMPTY_STRING_CHECK_INDEX).equals("")) {
+            return;
+        }
         List<PrimaryIngredient> primaryIngredients = request.primaryIngredients().stream()
                 .map(functionalityName -> primaryIngredientRepository.getByName(functionalityName))
                 .toList();
+        changePrimaryIngredientRelations(primaryIngredients, petFood);
+    }
+
+    private void changePrimaryIngredientRelations(List<PrimaryIngredient> primaryIngredients, PetFood petFood) {
         for (PrimaryIngredient primaryIngredient : primaryIngredients) {
             PetFoodPrimaryIngredient petFoodPrimaryIngredient = PetFoodPrimaryIngredient.builder()
                     .primaryIngredient(primaryIngredient)

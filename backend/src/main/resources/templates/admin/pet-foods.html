@@ -179,11 +179,11 @@
                 let functionalityList = response.functionalities;
                 $("#functionality").val(functionalityList.join(', '));
 
-                let primaryIngredientList = response.primary_ingredients;
+                let primaryIngredientList = response.primaryIngredients;
                 $("#primary_ingredient").val(primaryIngredientList.join(', '));
             },
-            error: function (response) {
-                alert('데이터를 불러올 수 없습니다. \n' + response.toString())
+            error: function () {
+                alert('데이터를 불러올 수 없습니다.')
             }
         });
     });
@@ -200,7 +200,7 @@
             us_standard: $("#us_standard").is(":checked"),
             image_url: $("#image_url").val(),
             functionalities: $("#functionality").val().split(', '),
-            primaryIngredients: $("#primary_ingredient").val().split(', ')
+            primary_ingredients: $("#primary_ingredient").val().split(', ')
         };
 
         $.ajax({
@@ -213,8 +213,8 @@
                 $('#updateModal').modal('hide');
                 location.reload();
             },
-            error: function (response) {
-                alert('데이터를 업데이트할 수 없습니다. \n' + response.toString());
+            error: function () {
+                alert('데이터 수정을 실패했습니다.');
             }
         });
     });
@@ -233,8 +233,8 @@
                 alert("삭제를 성공했습니다.");
                 location.reload();
             },
-            error: function (response) {
-                alert('데이터를 삭제할 수 없습니다. \n' + response.toString());
+            error: function () {
+                alert('데이터 삭제를 실패했습니다.');
             }
         });
     });
