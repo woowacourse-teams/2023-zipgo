@@ -43,6 +43,41 @@ public class AdminController {
     private final AdminService adminService;
     private final ImageService imageService;
 
+    @PostMapping("/brands")
+    public ResponseEntity<Void> createBrand(
+            @RequestPart BrandCreateRequest brandCreateRequest,
+            @RequestPart MultipartFile image
+    ) {
+        String imageUrl = imageService.save(image, ImageDirectoryUrl.BRAND_DIRECTORY);
+        Long brandId = adminService.createBrand(brandCreateRequest, imageUrl);
+        return ResponseEntity.created(URI.create("/brands/" + brandId)).build();
+    }
+
+    @PostMapping("/functionalities")
+    public ResponseEntity<Void> createFunctionality(
+            @RequestBody FunctionalityCreateRequest functionalityCreateRequest
+    ) {
+        Long functionalityId = adminService.createFunctionality(functionalityCreateRequest);
+        return ResponseEntity.created(URI.create("/functionalities/" + functionalityId)).build();
+    }
+
+    @PostMapping("/primary-ingredients")
+    public ResponseEntity<Void> createPrimaryIngredient(
+            @RequestBody PrimaryIngredientCreateRequest primaryIngredientCreateRequest) {
+        Long primaryIngredientId = adminService.createPrimaryIngredient(primaryIngredientCreateRequest);
+        return ResponseEntity.created(URI.create("/primary-ingredients/" + primaryIngredientId)).build();
+    }
+
+    @PostMapping("/pet-foods")
+    public ResponseEntity<Void> createPetFood(
+            @RequestPart PetFoodCreateRequest petFoodCreateRequest,
+            @RequestPart MultipartFile image
+    ) {
+        String imageUrl = imageService.save(image, ImageDirectoryUrl.PET_FOOD_DIRECTORY);
+        Long petFoodId = adminService.createPetFood(petFoodCreateRequest, imageUrl);
+        return ResponseEntity.created(URI.create("/pet-foods/" + petFoodId)).build();
+    }
+
     @GetMapping
     String home() {
         return "admin/home";
@@ -61,6 +96,24 @@ public class AdminController {
         return ResponseEntity.ok(petFood);
     }
 
+    @ResponseBody
+    @GetMapping("/brands")
+    ResponseEntity<List<BrandSelectResponse>> getBrands() {
+        return ResponseEntity.ok(adminQueryService.getBrands());
+    }
+
+    @ResponseBody
+    @GetMapping("/functionalities")
+    ResponseEntity<List<FunctionalitySelectResponse>> getFunctionalities() {
+        return ResponseEntity.ok(adminQueryService.getFunctionalities());
+    }
+
+    @ResponseBody
+    @GetMapping("/primary-ingredients")
+    ResponseEntity<List<PrimaryIngredientSelectResponse>> getPrimaryIngredients() {
+        return ResponseEntity.ok(adminQueryService.getPrimaryIngredients());
+    }
+
     @PatchMapping("/pet-foods/update/{petFoodId}")
     ResponseEntity<Void> updatePetFood(
             @PathVariable Long petFoodId,
@@ -70,59 +123,6 @@ public class AdminController {
         adminService.initPrimaryIngredients(petFoodId);
         adminService.updatePetFood(petFoodId, request);
         return ResponseEntity.ok().build();
-    }
-
-    @PostMapping("/brands")
-    public ResponseEntity<Void> createBrand(
-            @RequestPart BrandCreateRequest brandCreateRequest,
-            @RequestPart MultipartFile image
-    ) {
-        String imageUrl = imageService.save(image, ImageDirectoryUrl.BRAND_DIRECTORY);
-        Long brandId = adminService.createBrand(brandCreateRequest, imageUrl);
-        return ResponseEntity.created(URI.create("/brands/" + brandId)).build();
-    }
-
-    @ResponseBody
-    @GetMapping("/brands")
-    ResponseEntity<List<BrandSelectResponse>> getBrands() {
-        return ResponseEntity.ok(adminQueryService.getBrands());
-    }
-
-    @PostMapping("/functionalities")
-    public ResponseEntity<Void> createFunctionality(
-            @RequestBody FunctionalityCreateRequest functionalityCreateRequest
-    ) {
-        Long functionalityId = adminService.createFunctionality(functionalityCreateRequest);
-        return ResponseEntity.created(URI.create("/functionalities/" + functionalityId)).build();
-    }
-
-    @ResponseBody
-    @GetMapping("/functionalities")
-    ResponseEntity<List<FunctionalitySelectResponse>> getFunctionalities() {
-        return ResponseEntity.ok(adminQueryService.getFunctionalities());
-    }
-
-    @PostMapping("/primary-ingredients")
-    public ResponseEntity<Void> createPrimaryIngredient(
-            @RequestBody PrimaryIngredientCreateRequest primaryIngredientCreateRequest) {
-        Long primaryIngredientId = adminService.createPrimaryIngredient(primaryIngredientCreateRequest);
-        return ResponseEntity.created(URI.create("/primary-ingredients/" + primaryIngredientId)).build();
-    }
-
-    @ResponseBody
-    @GetMapping("/primary-ingredients")
-    ResponseEntity<List<PrimaryIngredientSelectResponse>> getPrimaryIngredients() {
-        return ResponseEntity.ok(adminQueryService.getPrimaryIngredients());
-    }
-
-    @PostMapping("/pet-foods")
-    public ResponseEntity<Void> createPetFood(
-            @RequestPart PetFoodCreateRequest petFoodCreateRequest,
-            @RequestPart MultipartFile image
-    ) {
-        String imageUrl = imageService.save(image, ImageDirectoryUrl.PET_FOOD_DIRECTORY);
-        Long petFoodId = adminService.createPetFood(petFoodCreateRequest, imageUrl);
-        return ResponseEntity.created(URI.create("/pet-foods/" + petFoodId)).build();
     }
 
     @DeleteMapping("/pet-foods/delete/{petFoodId}")
