@@ -24,6 +24,30 @@ export const Basic: Story = {
   },
 };
 
+export const ValidForm: Story = {
+  args: {
+    petFoodId: 1,
+    rating: 5,
+  },
+
+  play: async ({ canvasElement }) => {
+    const canvas = within(canvasElement);
+
+    await waitFor(() => {
+      const textBox = screen.getByRole('textbox');
+      expect(textBox).toBeInTheDocument();
+    });
+
+    const commentTextarea = canvas.getByRole('textbox');
+    const validText = '저희집 에디가 너무 잘먹어요^^';
+    await userEvent.type(commentTextarea, validText, { delay: 100 });
+
+    const completeButton = canvas.getByText('작성 완료');
+
+    expect(completeButton).toBeEnabled();
+  },
+};
+
 export const InvalidForm: Story = {
   args: {
     petFoodId: 1,
