@@ -58,7 +58,7 @@
         <tr th:each="list: ${petFoods}">
             <td>
                 <div class="col-md-3">
-                    <button type="button" class="btn btn-primary btn-block open-update-modal" data-toggle="modal"
+                    <button type="button" class="btn btn-primary open-update-modal" data-toggle="modal"
                             data-target="#updateModal" th:attr="data-pet-food-id=${list.id}">수정
                     </button>
                 </div>
