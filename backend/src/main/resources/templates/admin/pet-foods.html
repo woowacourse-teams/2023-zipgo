@@ -59,7 +59,7 @@
             <td>
                 <div class="col-md-3">
                     <button type="button" class="btn btn-primary btn-block open-update-modal" data-toggle="modal"
-                            data-target="#updateModal" data-pet-food-id="1">수정
+                            data-target="#updateModal" th:attr="data-pet-food-id=${list.id}">수정
                     </button>
                 </div>
             </td>
@@ -99,6 +99,12 @@
                 </div>
                 <div class="modal-body">
                     <form id="dataForm">
+
+                        <div class="form-group">
+                            <label for="pet_food_id">식품ID</label>
+                            <input type="text" class="form-control" id="pet_food_id" name="pet_food_id">
+                        </div>
+
                         <div class="form-group">
                             <label for="pet_food_name">식품이름</label>
                             <input type="text" class="form-control" id="pet_food_name" name="pet_food_name">
@@ -136,17 +142,17 @@
                             <label class="form-check-label" for="has_research_center">연구 센터 보유</label>
                         </div>
                         <div class="form-check">
-                            <input type="checkbox" class="form-check-input" id="has_resident_vet" name="has_resident_vet">
+                            <input type="checkbox" class="form-check-input" id="has_resident_vet"
+                                   name="has_resident_vet">
                             <label class="form-check-label" for="has_resident_vet">주치 수의사 보유</label>
                         </div>
 
                         <div class="text-center">
-                            <button type="button" class="btn btn-primary" id="sendBrand">수정</button>
+                            <button type="button" class="btn btn-primary" id="sendUpdate">수정</button>
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">닫기</button>
                         </div>
+
                     </form>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">닫기</button>
                 </div>
             </div>
         </div>
@@ -159,6 +165,7 @@
 
 <!-- 내부 js -->
 <script>
+    // 단건 조회 API
     $(document).on("click", ".open-update-modal", function () {
         let petFoodId = $(this).data('pet-food-id');
 
@@ -166,6 +173,7 @@
             url: `/admin/pet-foods/${petFoodId}`,
             type: "GET",
             success: function (response) {
+                $("#pet_food_id").val(response.id);
                 $("#brand_name").val(response.brandName);
                 $("#pet_food_name").val(response.foodName);
                 $("#image_url").val(response.imageUrl);
@@ -187,5 +195,39 @@
             }
         });
     });
+
+    // 수정 API
+    $(document).on("click", "#sendUpdate", function () {
+        // 폼 데이터를 수집합니다.
+        let pet_food_id = $("#pet_food_id").val();
+
+        let formData = {
+            pet_food_name: $("#pet_food_name").val(),
+            brand_name: $("#brand_name").val(),
+            eu_standard: $("#eu_standard").is(":checked"),
+            us_standard: $("#us_standard").is(":checked"),
+            image_url: $("#image_url").val(),
+            functionality: $("#functionality").val(),
+            primary_ingredient: $("#primary_ingredient").val(),
+            has_research_center: $("#has_research_center").is(":checked"),
+            has_resident_vet: $("#has_resident_vet").is(":checked")
+        };
+
+        // AJAX 요청을 보냅니다.
+        $.ajax({
+            url: `/admin/pet-foods/update/${pet_food_id}`,
+            type: "PATCH",
+            contentType: "application/json",
+            data: JSON.stringify(formData),
+            success: function () {
+                alert("수정이 성공했습니다.");
+                $('#updateModal').modal('hide');
+            },
+            error: function () {
+                alert('데이터를 업데이트할 수 없습니다.');
+            }
+        });
+    });
+
 </script>
 

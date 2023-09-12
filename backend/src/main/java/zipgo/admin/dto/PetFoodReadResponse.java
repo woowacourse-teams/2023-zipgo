@@ -4,6 +4,7 @@ import java.util.List;
 import zipgo.petfood.domain.PetFood;
 
 public record PetFoodReadResponse(
+        Long id,
         String brandName,
         String foodName,
         String imageUrl,
@@ -17,6 +18,7 @@ public record PetFoodReadResponse(
 
     public static PetFoodReadResponse from(PetFood petFood) {
         return new PetFoodReadResponse(
+                petFood.getId(),
                 petFood.getBrand().getName(),
                 petFood.getName(),
                 petFood.getImageUrl(),

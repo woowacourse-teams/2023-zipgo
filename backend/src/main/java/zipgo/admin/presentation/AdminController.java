@@ -8,6 +8,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -20,6 +21,7 @@ import zipgo.admin.application.AdminService;
 import zipgo.admin.dto.BrandCreateRequest;
 import zipgo.admin.dto.BrandSelectResponse;
 import zipgo.admin.dto.PetFoodReadResponse;
+import zipgo.admin.dto.PetFoodUpdateRequest;
 import zipgo.image.ImageDirectoryUrl;
 import zipgo.image.application.ImageService;
 import zipgo.admin.dto.FunctionalityCreateRequest;
@@ -56,6 +58,16 @@ public class AdminController {
     ResponseEntity<PetFoodReadResponse> findById(@PathVariable Long petFoodId) {
         PetFoodReadResponse petFood = adminQueryService.getPetFoodById(petFoodId);
         return ResponseEntity.ok(petFood);
+    }
+
+    @PatchMapping("/pet-foods/update/{petFoodId}")
+    ResponseEntity<Void> updatePetFood(
+            @PathVariable Long petFoodId,
+            @RequestBody PetFoodUpdateRequest request
+    ) {
+        System.out.println("petFoodId = " + petFoodId);
+        System.out.println("request = " + request);
+        return ResponseEntity.ok().build();
     }
 
     @PostMapping("/brands")
