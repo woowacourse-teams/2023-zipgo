@@ -135,18 +135,6 @@
                             <label for="primary_ingredient">주원료</label>
                             <input type="text" class="form-control" id="primary_ingredient" name="primary_ingredient">
                         </div>
-
-                        <div class="form-check">
-                            <input type="checkbox" class="form-check-input" id="has_research_center"
-                                   name="has_research_center">
-                            <label class="form-check-label" for="has_research_center">연구 센터 보유</label>
-                        </div>
-                        <div class="form-check">
-                            <input type="checkbox" class="form-check-input" id="has_resident_vet"
-                                   name="has_resident_vet">
-                            <label class="form-check-label" for="has_resident_vet">주치 수의사 보유</label>
-                        </div>
-
                         <div class="text-center">
                             <button type="button" class="btn btn-primary" id="sendUpdate">수정</button>
                             <button type="button" class="btn btn-secondary" data-dismiss="modal">닫기</button>
@@ -181,9 +169,6 @@
                 $("#eu_standard").prop('checked', response.euStandard);
                 $("#us_standard").prop('checked', response.usStandard);
 
-                $("#has_research_center").prop('checked', response.hasResearchCenter);
-                $("#has_resident_vet").prop('checked', response.hasResidentVet);
-
                 let functionalityList = response.functionalities;
                 $("#functionality").val(functionalityList.join(', '));
 
@@ -208,9 +193,7 @@
             us_standard: $("#us_standard").is(":checked"),
             image_url: $("#image_url").val(),
             functionalities: $("#functionality").val().split(','),
-            primaryIngredients: $("#primary_ingredient").val().split(','),
-            has_research_center: $("#has_research_center").is(":checked"),
-            has_resident_vet: $("#has_resident_vet").is(":checked")
+            primaryIngredients: $("#primary_ingredient").val().split(',')
         };
 
         $.ajax({

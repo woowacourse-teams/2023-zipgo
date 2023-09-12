@@ -11,9 +11,7 @@ public record PetFoodReadResponse(
         boolean euStandard,
         boolean usStandard,
         List<String> functionalities,
-        List<String> primaryIngredients,
-        boolean hasResearchCenter,
-        boolean hasResidentVet
+        List<String> primaryIngredients
 ) {
 
     public static PetFoodReadResponse from(PetFood petFood) {
@@ -29,9 +27,7 @@ public record PetFoodReadResponse(
                         .toList(),
                 petFood.getPetFoodPrimaryIngredients().stream()
                         .map(petFoodPrimaryIngredient -> petFoodPrimaryIngredient.getPrimaryIngredient().getName())
-                        .toList(),
-                petFood.getBrand().isHasResearchCenter(),
-                petFood.getBrand().isHasResidentVet()
+                        .toList()
         );
     }
 

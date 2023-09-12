@@ -10,9 +10,7 @@ public record PetFoodUpdateRequest (
         @JsonProperty("us_standard") boolean usStandard,
         @JsonProperty("image_url") String imageUrl,
         @JsonProperty("functionalities") List<String> functionalities,
-        @JsonProperty("primary_ingredients") List<String> primaryIngredients,
-        @JsonProperty("has_research_center") boolean hasResearchCenter,
-        @JsonProperty("has_resident_vet") boolean hasResidentVet
+        @JsonProperty("primary_ingredients") List<String> primaryIngredients
 ) {
 
     @Override
@@ -25,8 +23,6 @@ public record PetFoodUpdateRequest (
                 ", imageUrl='" + imageUrl + '\'' +
                 ", functionalities=" + functionalities +
                 ", primaryIngredients=" + primaryIngredients +
-                ", hasResearchCenter=" + hasResearchCenter +
-                ", hasResidentVet=" + hasResidentVet +
                 '}';
     }
 

@@ -63,10 +63,9 @@ public class AdminController {
     @PatchMapping("/pet-foods/update/{petFoodId}")
     ResponseEntity<Void> updatePetFood(
             @PathVariable Long petFoodId,
-            @RequestBody PetFoodUpdateRequest petFoodUpdateRequest
+            @RequestBody PetFoodUpdateRequest request
     ) {
-        System.out.println("petFoodId = " + petFoodId);
-        System.out.println("petFoodUpdateRequest = " + petFoodUpdateRequest);
+        adminService.updatePetFood(petFoodId, request);
         return ResponseEntity.ok().build();
     }
 

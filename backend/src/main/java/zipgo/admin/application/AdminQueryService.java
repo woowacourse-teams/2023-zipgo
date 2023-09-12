@@ -8,17 +8,16 @@ import org.springframework.transaction.annotation.Transactional;
 import zipgo.admin.dto.BrandSelectResponse;
 import zipgo.admin.dto.FunctionalitySelectResponse;
 import zipgo.admin.dto.PetFoodReadResponse;
+import zipgo.admin.dto.PetFoodUpdateRequest;
+import zipgo.admin.dto.PrimaryIngredientSelectResponse;
+import zipgo.brand.domain.Brand;
 import zipgo.brand.domain.repository.BrandRepository;
 import zipgo.petfood.domain.Functionality;
 import zipgo.petfood.domain.PetFood;
 import zipgo.petfood.domain.PrimaryIngredient;
 import zipgo.petfood.domain.repository.FunctionalityRepository;
-import zipgo.petfood.domain.repository.PetFoodQueryRepository;
 import zipgo.petfood.domain.repository.PetFoodRepository;
 import zipgo.petfood.domain.repository.PrimaryIngredientRepository;
-import zipgo.admin.dto.PrimaryIngredientSelectResponse;
-import zipgo.petfood.dto.GetPetFoodResponse;
-import zipgo.petfood.dto.PetFoodResponse;
 
 @Service
 @RequiredArgsConstructor
@@ -46,7 +45,8 @@ public class AdminQueryService {
     public List<PrimaryIngredientSelectResponse> getPrimaryIngredients() {
         List<PrimaryIngredient> primaryIngredients = primaryIngredientRepository.findDistinctPrimaryIngredients();
         return primaryIngredients.stream()
-                .map(primaryIngredient -> PrimaryIngredientSelectResponse.of(primaryIngredient.getId(), primaryIngredient.getName()))
+                .map(primaryIngredient -> PrimaryIngredientSelectResponse.of(primaryIngredient.getId(),
+                        primaryIngredient.getName()))
                 .collect(Collectors.toList());
     }
 
