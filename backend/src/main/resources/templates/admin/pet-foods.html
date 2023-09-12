@@ -182,8 +182,8 @@
                 let primaryIngredientList = response.primary_ingredients;
                 $("#primary_ingredient").val(primaryIngredientList.join(', '));
             },
-            error: function () {
-                alert('데이터를 불러올 수 없습니다.');
+            error: function (response) {
+                alert('데이터를 불러올 수 없습니다. \n' + response.toString())
             }
         });
     });
@@ -213,8 +213,8 @@
                 $('#updateModal').modal('hide');
                 location.reload();
             },
-            error: function () {
-                alert('데이터를 업데이트할 수 없습니다.');
+            error: function (response) {
+                alert('데이터를 업데이트할 수 없습니다. \n' + response.toString());
             }
         });
     });
@@ -233,8 +233,8 @@
                 alert("삭제를 성공했습니다.");
                 location.reload();
             },
-            error: function () {
-                alert('데이터를 삭제할 수 없습니다.');
+            error: function (response) {
+                alert('데이터를 삭제할 수 없습니다. \n' + response.toString());
             }
         });
     });
