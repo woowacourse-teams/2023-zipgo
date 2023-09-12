@@ -4,7 +4,6 @@ import { screen, waitFor, within } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import React from 'react';
 import { reactRouterParameters } from 'storybook-addon-react-router-v6';
-import { styled } from 'styled-components';
 
 import PetProfileProvider from '../../../context/petProfile/PetProfileContext';
 import PetProfileEditionForm from './PetProfileEditionForm';
