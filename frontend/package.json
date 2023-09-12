@@ -8,6 +8,7 @@
     "start:prod": "serve -s dist",
     "start:sb": "storybook dev -p 6006",
     "build:prod": "cross-env NODE_ENV=production webpack --progress --config config/webpack.prod.js",
+    "build:dev": "cross-env NODE_ENV=development webpack --progress --config config/webpack.dev.js",
     "build:sb": "sb build",
     "postinstall": "cd .. && husky install frontend/.husky && chmod +x frontend/.husky/*",
     "test-storybook": "test-storybook"
