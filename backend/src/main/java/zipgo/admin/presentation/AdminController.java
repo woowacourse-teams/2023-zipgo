@@ -31,7 +31,7 @@ import zipgo.admin.dto.PetFoodCreateRequest;
 import zipgo.petfood.domain.PetFood;
 import zipgo.petfood.dto.PetFoodResponse;
 
-@Profile("dev")다
+@Profile("dev")
 @Controller
 @RequiredArgsConstructor
 @RequestMapping("/admin")
