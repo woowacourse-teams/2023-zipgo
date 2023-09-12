@@ -18,8 +18,8 @@ module.exports = merge(common, {
     new CopyPlugin({
       patterns: [
         {
-          from: paths.msw, // 복사할 원본 디렉토리
-          to: './', // 복사할 대상 디렉토리 (output.path 기준)
+          from: paths.msw,
+          to: './',
         },
       ]
     })
