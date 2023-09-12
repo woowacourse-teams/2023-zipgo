@@ -2,7 +2,7 @@ name: Frontend Deploy
 
 on:
   push:
-    branches: [develop]
+    branches: [develop, feature/#387]
     paths: frontend/**
 
 jobs:
@@ -37,24 +37,16 @@ jobs:
         uses: docker/build-push-action@v4
         with:
           context: ./frontend
+          file: ./frontend/Dockerfile.dev
           push: true
           tags: ${{ secrets.FRONTEND_IMAGE_NAME }}:latest
           platforms: |
             linux/amd64
             linux/arm64
 
-      # - name: Build Docker image
-      #   run: |
-      #     docker build -t ${{ secrets.FRONTEND_IMAGE_NAME }}:$GITHUB_RUN_NUMBER --platform linux/arm64 .
-      #     docker tag ${{ secrets.FRONTEND_IMAGE_NAME }}:$GITHUB_RUN_NUMBER ${{ secrets.FRONTEND_IMAGE_NAME }}:latest
-
-      # - name: Push Docker image to DockerHub
-      #   run: |
-      #     docker push ${{ secrets.FRONTEND_IMAGE_NAME }}:latest
-
   deploy-to-develop-EC2:
     needs: build-dockerfile
-    runs-on: self-hosted
+    runs-on: front-dev-server
 
     steps:
       - name: Deploy to Develop EC2
