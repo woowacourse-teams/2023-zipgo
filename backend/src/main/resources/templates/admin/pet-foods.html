@@ -64,7 +64,14 @@
                 </div>
             </td>
 
-            <td><span th:text="삭제"></span></td>
+            <td>
+                <div class="col-md-3">
+                    <button type="button" class="btn btn-primary send-delete-btn" th:attr="data-pet-food-id=${list.id}">
+                        삭제
+                    </button>
+                </div>
+            </td>
+
             <td><span th:text=" ${list.id}"></span></td>
             <td><span th:text=" ${list.getName()}"></span></td>
             <td><span th:text=" ${list.getBrand().getName()}"></span></td>
@@ -204,9 +211,30 @@
             success: function () {
                 alert("수정이 성공했습니다.");
                 $('#updateModal').modal('hide');
+                location.reload();
             },
             error: function () {
                 alert('데이터를 업데이트할 수 없습니다.');
+            }
+        });
+    });
+
+    // 삭제 API
+    // 삭제 버튼 클릭 이벤트 핸들러
+    $(document).on("click", ".send-delete-btn", function () {
+        // 해당 삭제 버튼의 데이터 속성에서 ID를 가져옵니다.
+        let petFoodId = $(this).data('pet-food-id');
+
+        // 가져온 petFoodId를 사용하여 삭제 API를 호출합니다.
+        $.ajax({
+            url: `/admin/pet-foods/delete/${petFoodId}`,
+            type: "DELETE",
+            success: function () {
+                alert("삭제를 성공했습니다.");
+                location.reload();
+            },
+            error: function () {
+                alert('데이터를 삭제할 수 없습니다.');
             }
         });
     });
