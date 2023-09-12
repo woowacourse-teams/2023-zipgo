@@ -62,7 +62,7 @@ const ReviewItem = (reviewItemProps: ReviewItemProps) => {
   };
 
   const onClickRemoveButton = () => {
-    confirm('정말 삭제하시곘어요?') && removeReviewMutation.removeReview({ reviewId, petFoodId });
+    confirm('정말 삭제하시겠어요?') && removeReviewMutation.removeReview({ reviewId, petFoodId });
   };
 
   const onClickHelpfulButton = () => {
@@ -114,7 +114,7 @@ const ReviewItem = (reviewItemProps: ReviewItemProps) => {
         </Reaction>
         <Reaction key={REACTIONS.ADVERSE_REACTION}>
           <ReactionTitle>{REACTIONS.ADVERSE_REACTION}</ReactionTitle>
-          <ReactionContent>{adverseReactions.join(', ')}</ReactionContent>
+          <ReactionContent>{adverseReactions.join(', ') || REACTIONS.NONE}</ReactionContent>
         </Reaction>
       </Reactions>
       <Comment isExpanded={isCommentExpanded}>{comment}</Comment>

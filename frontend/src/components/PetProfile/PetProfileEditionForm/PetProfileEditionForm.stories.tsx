@@ -4,7 +4,6 @@ import { screen, waitFor, within } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import React from 'react';
 import { reactRouterParameters } from 'storybook-addon-react-router-v6';
-import { styled } from 'styled-components';
 
 import PetProfileProvider from '../../../context/petProfile/PetProfileContext';
 import PetProfileEditionForm from './PetProfileEditionForm';
@@ -80,5 +79,55 @@ export const InvalidWeight: Story = {
     );
 
     expect(weightErrorMessage).toBeVisible();
+  },
+};
+
+export const ValidForm: Story = {
+  args: [],
+
+  play: async ({ canvasElement }) => {
+    const canvas = within(canvasElement);
+
+    await waitFor(() => {
+      const element = screen.getByLabelText('이름 입력');
+      expect(element).toBeInTheDocument();
+    });
+
+    const petNameInput = canvas.getByLabelText('이름 입력');
+    await userEvent.type(petNameInput, '{backspace}{backspace}', { delay: 100 });
+    await userEvent.type(petNameInput, '멍멍이', { delay: 100 });
+
+    const petWeightInput = canvas.getByLabelText('몸무게 입력');
+    await userEvent.type(petWeightInput, '{backspace}{backspace}{backspace}', { delay: 100 });
+    await userEvent.type(petWeightInput, '35.5', { delay: 100 });
+
+    const editButton = canvas.getByText('수정');
+
+    expect(editButton).toBeEnabled();
+  },
+};
+
+export const InvalidForm: Story = {
+  args: [],
+
+  play: async ({ canvasElement }) => {
+    const canvas = within(canvasElement);
+
+    await waitFor(() => {
+      const element = screen.getByLabelText('이름 입력');
+      expect(element).toBeInTheDocument();
+    });
+
+    const petNameInput = canvas.getByLabelText('이름 입력');
+    await userEvent.type(petNameInput, '{backspace}{backspace}', { delay: 100 });
+    await userEvent.type(petNameInput, '멍멍이🐾', { delay: 100 });
+
+    const petWeightInput = canvas.getByLabelText('몸무게 입력');
+    await userEvent.type(petWeightInput, '{backspace}{backspace}{backspace}', { delay: 100 });
+    await userEvent.type(petWeightInput, '107', { delay: 100 });
+
+    const editButton = canvas.getByText('수정');
+
+    expect(editButton).toBeDisabled();
   },
 };

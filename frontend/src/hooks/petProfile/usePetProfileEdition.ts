@@ -64,8 +64,7 @@ export const usePetProfileEdition = () => {
       return { ...prev, weight: petWeight };
     });
 
-    if (isValidWeight(petWeight)) setIsValidWeightInput(true);
-    if (!isValidWeight(petWeight)) setIsValidWeightInput(false);
+    setIsValidWeightInput(isValidWeight(petWeight));
   };
 
   const onChangePetSize = (petSize: PetSize) => {
