@@ -107,14 +107,16 @@
                             <label for="brand_name">브랜드</label>
                             <input type="text" class="form-control" id="brand_name" name="brand_name">
                         </div>
-                        <div class="form-group">
-                            <label for="eu_standard">유럽영양기준</label>
-                            <input type="text" class="form-control" id="eu_standard" name="eu_standard">
+
+                        <div class="form-check">
+                            <input type="checkbox" class="form-check-input" id="eu_standard" name="eu_standard">
+                            <label class="form-check-label" for="eu_standard">유럽영양기준</label>
                         </div>
-                        <div class="form-group">
-                            <label for="us_standard">미국영양기준</label>
-                            <input type="text" class="form-control" id="us_standard" name="us_standard">
+                        <div class="form-check">
+                            <input type="checkbox" class="form-check-input" id="us_standard" name="us_standard">
+                            <label class="form-check-label" for="us_standard">미국영양기준</label>
                         </div>
+
                         <div class="form-group">
                             <label for="image_url">이미지 URL</label>
                             <input type="text" class="form-control" id="image_url" name="image_url">
@@ -124,22 +126,22 @@
                             <input type="text" class="form-control" id="functionality" name="functionality">
                         </div>
                         <div class="form-group">
-                            <label for="primary_ingredient">기능성</label>
+                            <label for="primary_ingredient">주원료</label>
                             <input type="text" class="form-control" id="primary_ingredient" name="primary_ingredient">
                         </div>
 
                         <div class="form-check">
-                            <input type="checkbox" class="form-check-input" id="hasResearchCenter"
-                                   name="hasResearchCenter">
-                            <label class="form-check-label" for="hasResearchCenter">연구 센터 보유</label>
+                            <input type="checkbox" class="form-check-input" id="has_research_center"
+                                   name="has_research_center">
+                            <label class="form-check-label" for="has_research_center">연구 센터 보유</label>
                         </div>
                         <div class="form-check">
-                            <input type="checkbox" class="form-check-input" id="hasResidentVet" name="hasResidentVet">
-                            <label class="form-check-label" for="hasResidentVet">주치 수의사 보유</label>
+                            <input type="checkbox" class="form-check-input" id="has_resident_vet" name="has_resident_vet">
+                            <label class="form-check-label" for="has_resident_vet">주치 수의사 보유</label>
                         </div>
 
                         <div class="text-center">
-                            <button type="button" class="btn btn-primary" id="sendBrand">생성</button>
+                            <button type="button" class="btn btn-primary" id="sendBrand">수정</button>
                         </div>
                     </form>
                 </div>
@@ -166,21 +168,19 @@
             success: function (response) {
                 $("#brand_name").val(response.brandName);
                 $("#pet_food_name").val(response.foodName);
-                // $("#eu_standard").val(response.eu_standard); // 유럽 영양 기준
-                // $("#us_standard").val(response.us_standard); // 미국 영양 기준
                 $("#image_url").val(response.imageUrl);
 
-                // 기능성 데이터 처리
-                // let functionalityList = response.body.functionality.map(item => item.functionality.name);
-                // $("#functionality").val(functionalityList.join(', '));
-                //
-                // // 주원료 데이터 처리
-                // let primaryIngredientList = response.body.primary_ingredient.map(item => item.primaryIngredient.name);
-                // $("#primary_ingredient").val(primaryIngredientList.join(', '));
+                $("#eu_standard").prop('checked', response.euStandard);
+                $("#us_standard").prop('checked', response.usStandard);
 
-                // 체크박스 처리
-                // $("#hasResearchCenter").prop('checked', response.body.brand.hasResearchCenter);
-                // $("#hasResidentVet").prop('checked', response.body.brand.hasResidentVet);
+                $("#has_research_center").prop('checked', response.hasResearchCenter);
+                $("#has_resident_vet").prop('checked', response.hasResidentVet);
+
+                let functionalityList = response.functionalities;
+                $("#functionality").val(functionalityList.join(', '));
+
+                let primaryIngredientList = response.primary_ingredients;
+                $("#primary_ingredient").val(primaryIngredientList.join(', '));
             },
             error: function () {
                 alert('데이터를 불러올 수 없습니다.');
