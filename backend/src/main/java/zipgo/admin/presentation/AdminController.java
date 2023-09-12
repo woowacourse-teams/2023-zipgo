@@ -1,8 +1,11 @@
 package zipgo.admin.presentation;
 
 import java.net.URI;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import lombok.RequiredArgsConstructor;
+import org.springframework.context.annotation.Profile;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -26,7 +29,9 @@ import zipgo.admin.dto.PrimaryIngredientCreateRequest;
 import zipgo.admin.dto.PrimaryIngredientSelectResponse;
 import zipgo.admin.dto.PetFoodCreateRequest;
 import zipgo.petfood.domain.PetFood;
+import zipgo.petfood.dto.PetFoodResponse;
 
+@Profile("dev")다
 @Controller
 @RequiredArgsConstructor
 @RequestMapping("/admin")
@@ -49,10 +54,9 @@ public class AdminController {
     }
 
     @GetMapping("/view/{petFoodId}")
-    String findById(@PathVariable Long petFoodId, Model model) {
-        PetFood petFood = adminQueryService.getPetFoodById(petFoodId);
-        model.addAttribute("petFood", petFood);
-        return "admin/view";
+    ResponseEntity<PetFoodResponse> findById(@PathVariable Long petFoodId) {
+        PetFoodResponse petFood = adminQueryService.getPetFoodById(petFoodId);
+        return ResponseEntity.ok(petFood);
     }
 
     @PostMapping("/brands")
