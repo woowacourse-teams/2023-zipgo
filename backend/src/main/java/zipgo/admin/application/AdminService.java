@@ -125,4 +125,8 @@ public class AdminService {
         petFood.initPrimaryIngredients();
     }
 
+    public void deletePetFood(Long petFoodId) {
+        petFoodRepository.deleteById(petFoodId);
+    }
+
 }

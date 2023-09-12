@@ -7,6 +7,7 @@ import org.springframework.context.annotation.Profile;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -122,6 +123,12 @@ public class AdminController {
         String imageUrl = imageService.save(image, ImageDirectoryUrl.PET_FOOD_DIRECTORY);
         Long petFoodId = adminService.createPetFood(petFoodCreateRequest, imageUrl);
         return ResponseEntity.created(URI.create("/pet-foods/" + petFoodId)).build();
+    }
+
+    @DeleteMapping("/pet-foods/delete/{petFoodId}")
+    public ResponseEntity<Void> deletePetFood(@PathVariable Long petFoodId) {
+        adminService.deletePetFood(petFoodId);
+        return ResponseEntity.noContent().build();
     }
 
 }
