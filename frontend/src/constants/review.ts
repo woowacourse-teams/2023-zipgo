@@ -9,7 +9,7 @@ export const REACTIONS = {
   TASTE_PREFERENCE: '기호성',
   STOOL_CONDITION: '대변상태',
   ADVERSE_REACTION: '이상반응',
-  NOTHING: '없어요',
+  NONE: '없어요',
 } as const;
 
 export const COMMENT_VISIABLE_LINE_LIMIT = 180;
