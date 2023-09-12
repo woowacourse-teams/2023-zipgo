@@ -213,7 +213,6 @@
             has_resident_vet: $("#has_resident_vet").is(":checked")
         };
 
-        // AJAX 요청을 보냅니다.
         $.ajax({
             url: `/admin/pet-foods/update/${pet_food_id}`,
             type: "PATCH",
