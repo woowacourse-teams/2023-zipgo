@@ -192,8 +192,8 @@
             eu_standard: $("#eu_standard").is(":checked"),
             us_standard: $("#us_standard").is(":checked"),
             image_url: $("#image_url").val(),
-            functionalities: $("#functionality").val().split(','),
-            primaryIngredients: $("#primary_ingredient").val().split(',')
+            functionalities: $("#functionality").val().split(', '),
+            primaryIngredients: $("#primary_ingredient").val().split(', ')
         };
 
         $.ajax({
