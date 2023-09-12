@@ -19,6 +19,7 @@ import zipgo.admin.application.AdminQueryService;
 import zipgo.admin.application.AdminService;
 import zipgo.admin.dto.BrandCreateRequest;
 import zipgo.admin.dto.BrandSelectResponse;
+import zipgo.admin.dto.PetFoodReadResponse;
 import zipgo.image.ImageDirectoryUrl;
 import zipgo.image.application.ImageService;
 import zipgo.admin.dto.FunctionalityCreateRequest;
@@ -52,8 +53,8 @@ public class AdminController {
     }
 
     @GetMapping("/pet-foods/{petFoodId}")
-    ResponseEntity<PetFoodResponse> findById(@PathVariable Long petFoodId) {
-        PetFoodResponse petFood = adminQueryService.getPetFoodById(petFoodId);
+    ResponseEntity<PetFoodReadResponse> findById(@PathVariable Long petFoodId) {
+        PetFoodReadResponse petFood = adminQueryService.getPetFoodById(petFoodId);
         return ResponseEntity.ok(petFood);
     }
 

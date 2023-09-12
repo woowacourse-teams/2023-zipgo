@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import zipgo.admin.dto.BrandSelectResponse;
 import zipgo.admin.dto.FunctionalitySelectResponse;
+import zipgo.admin.dto.PetFoodReadResponse;
 import zipgo.brand.domain.repository.BrandRepository;
 import zipgo.petfood.domain.Functionality;
 import zipgo.petfood.domain.PetFood;
@@ -53,9 +54,9 @@ public class AdminQueryService {
         return petFoodRepository.findAll();
     }
 
-    public PetFoodResponse getPetFoodById(Long petFoodId) {
+    public PetFoodReadResponse getPetFoodById(Long petFoodId) {
         PetFood petFood = petFoodRepository.getById(petFoodId);
-        return PetFoodResponse.from(petFood);
+        return PetFoodReadResponse.from(petFood);
     }
 
 }
