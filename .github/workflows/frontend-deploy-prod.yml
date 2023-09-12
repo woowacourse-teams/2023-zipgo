@@ -3,7 +3,7 @@ name: Frontend Deploy to Prod
 on:
   push:
     branches: [main, feature/#387]
-    paths: frontend/**
+    # paths: frontend/**
 
 jobs:
   build-dockerfile:
