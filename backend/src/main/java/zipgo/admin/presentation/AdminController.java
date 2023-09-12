@@ -33,7 +33,6 @@ import zipgo.admin.dto.PetFoodCreateRequest;
 import zipgo.petfood.domain.PetFood;
 import zipgo.petfood.dto.PetFoodResponse;
 
-@Profile({"dev", "local1"})
 @Controller
 @RequiredArgsConstructor
 @RequestMapping("/admin")

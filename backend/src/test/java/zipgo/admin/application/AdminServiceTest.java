@@ -1,7 +1,9 @@
 package zipgo.admin.application;
 
 import java.util.List;
+import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import zipgo.admin.dto.BrandCreateRequest;
@@ -16,8 +18,10 @@ import zipgo.petfood.domain.PrimaryIngredient;
 import zipgo.petfood.domain.repository.FunctionalityRepository;
 import zipgo.petfood.domain.repository.PetFoodRepository;
 import zipgo.petfood.domain.repository.PrimaryIngredientRepository;
+import zipgo.petfood.exception.PetFoodNotFoundException;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.*;
 import static org.junit.jupiter.api.Assertions.assertAll;
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static zipgo.brand.domain.fixture.BrandFixture.무민_브랜드_생성_요청;
@@ -137,10 +141,8 @@ class AdminServiceTest extends ServiceTest {
                 List.of("말미잘")
         );
 
-        final Long petFoodId = 1L;
-
         // when
-        adminService.updatePetFood(petFoodId, request);
+        adminService.updatePetFood(petFood.getId(), request);
 
         // then
         assertAll(
@@ -172,10 +174,8 @@ class AdminServiceTest extends ServiceTest {
                 List.of("")
         );
 
-        final Long petFoodId = 1L;
-
         // when
-        adminService.updatePetFood(petFoodId, request);
+        adminService.updatePetFood(petFood.getId(), request);
 
         // then
         assertAll(
@@ -184,6 +184,18 @@ class AdminServiceTest extends ServiceTest {
                 () -> assertThat(petFood.getImageUrl()).isEqualTo("변경된 이미지 URL"),
                 () -> assertThat(petFood.getPetFoodFunctionalities()).isEmpty(),
                 () -> assertThat(petFood.getPetFoodPrimaryIngredients()).isEmpty()
+        );
+    }
+
+    @Test
+    void 식품을_삭제한다() {
+        // when
+        adminService.deletePetFood(petFood.getId());
+
+        // then
+        assertThrows(
+                PetFoodNotFoundException.class,
+                () -> petFoodRepository.getById(petFood.getId())
         );
     }
 
