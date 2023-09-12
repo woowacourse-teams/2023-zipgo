@@ -2,8 +2,8 @@ name: Frontend Deploy to Dev
 
 on:
   push:
-    branches: [develop, feature/#387]
-    # paths: frontend/**
+    branches: [develop]
+    paths: frontend/**
 
 jobs:
   build-dockerfile:
