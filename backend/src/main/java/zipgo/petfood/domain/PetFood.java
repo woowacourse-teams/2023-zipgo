@@ -84,4 +84,19 @@ public class PetFood extends BaseTimeEntity {
         this.reviews.addReview(review);
     }
 
+    @Override
+    public String toString() {
+        return "PetFood{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", purchaseLink='" + purchaseLink + '\'' +
+                ", imageUrl='" + imageUrl + '\'' +
+                ", hasStandard=" + hasStandard +
+                ", reviews=" + reviews +
+                ", brand=" + brand +
+                ", petFoodPrimaryIngredients=" + petFoodPrimaryIngredients +
+                ", petFoodFunctionalities=" + petFoodFunctionalities +
+                '}';
+    }
+
 }

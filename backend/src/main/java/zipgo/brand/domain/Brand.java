@@ -52,4 +52,18 @@ public class Brand extends BaseTimeEntity {
     @OneToMany(mappedBy = "brand")
     private List<PetFood> petFoods;
 
+    @Override
+    public String toString() {
+        return "Brand{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", imageUrl='" + imageUrl + '\'' +
+                ", nation='" + nation + '\'' +
+                ", foundedYear=" + foundedYear +
+                ", hasResearchCenter=" + hasResearchCenter +
+                ", hasResidentVet=" + hasResidentVet +
+                ", petFoods=" + petFoods +
+                '}';
+    }
+
 }

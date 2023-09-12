@@ -1,9 +1,7 @@
 package zipgo.admin.presentation;
 
 import java.net.URI;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Profile;
 import org.springframework.http.ResponseEntity;
@@ -31,7 +29,7 @@ import zipgo.admin.dto.PetFoodCreateRequest;
 import zipgo.petfood.domain.PetFood;
 import zipgo.petfood.dto.PetFoodResponse;
 
-@Profile("dev")
+@Profile({"dev", "local1"})
 @Controller
 @RequiredArgsConstructor
 @RequestMapping("/admin")
@@ -46,14 +44,14 @@ public class AdminController {
         return "admin/home";
     }
 
-    @GetMapping("/view")
+    @GetMapping("/pet-foods")
     String findAll(Model model) {
         List<PetFood> petFoods = adminQueryService.getPetFoods();
         model.addAttribute("petFoods", petFoods);
-        return "admin/view";
+        return "admin/pet-foods";
     }
 
-    @GetMapping("/view/{petFoodId}")
+    @GetMapping("/pet-foods/{petFoodId}")
     ResponseEntity<PetFoodResponse> findById(@PathVariable Long petFoodId) {
         PetFoodResponse petFood = adminQueryService.getPetFoodById(petFoodId);
         return ResponseEntity.ok(petFood);

@@ -16,6 +16,8 @@ import zipgo.petfood.domain.repository.PetFoodQueryRepository;
 import zipgo.petfood.domain.repository.PetFoodRepository;
 import zipgo.petfood.domain.repository.PrimaryIngredientRepository;
 import zipgo.admin.dto.PrimaryIngredientSelectResponse;
+import zipgo.petfood.dto.GetPetFoodResponse;
+import zipgo.petfood.dto.PetFoodResponse;
 
 @Service
 @RequiredArgsConstructor
@@ -51,8 +53,9 @@ public class AdminQueryService {
         return petFoodRepository.findAll();
     }
 
-    public PetFood getPetFoodById(Long petFoodId) {
-        return petFoodRepository.getById(petFoodId);
+    public PetFoodResponse getPetFoodById(Long petFoodId) {
+        PetFood petFood = petFoodRepository.getById(petFoodId);
+        return PetFoodResponse.from(petFood);
     }
 
 }

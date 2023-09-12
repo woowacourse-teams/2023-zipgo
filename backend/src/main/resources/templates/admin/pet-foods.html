@@ -59,7 +59,7 @@
             <td>
                 <div class="col-md-3">
                     <button type="button" class="btn btn-primary btn-block open-update-modal" data-toggle="modal"
-                            data-target="#updateModal" data-petFoodId="1">수정
+                            data-target="#updateModal" data-pet-food-id="1">수정
                     </button>
                 </div>
             </td>
@@ -100,12 +100,12 @@
                 <div class="modal-body">
                     <form id="dataForm">
                         <div class="form-group">
-                            <label for="brand_name">식품이름</label>
-                            <input type="text" class="form-control" id="brand_name" name="brand_name">
-                        </div>
-                        <div class="form-group">
                             <label for="pet_food_name">식품이름</label>
                             <input type="text" class="form-control" id="pet_food_name" name="pet_food_name">
+                        </div>
+                        <div class="form-group">
+                            <label for="brand_name">브랜드</label>
+                            <input type="text" class="form-control" id="brand_name" name="brand_name">
                         </div>
                         <div class="form-group">
                             <label for="eu_standard">유럽영양기준</label>
@@ -158,27 +158,34 @@
 <!-- 내부 js -->
 <script>
     $(document).on("click", ".open-update-modal", function () {
-        let petFoodId = $(this).data('petFoodId');
-        console.log("petFoodId : " + petFoodId);
+        let petFoodId = $(this).data('pet-food-id');
 
         $.ajax({
-            url: `/admin/view/${petFoodId}`,
+            url: `/admin/pet-foods/${petFoodId}`,
             type: "GET",
             success: function (response) {
-                $("#brand_name").val(response.brand_name);
-                $("#pet_food_name").val(response.pet_food_name);
-                $("#eu_standard").val(response.eu_standard);
-                $("#us_standard").val(response.us_standard);
-                $("#image_url").val(response.image_url);
-                $("#functionality").val(response.functionality);
-                $("#primary_ingredient").val(response.primaryIngredient);
-                $("#hasResearchCenter").prop('checked', response.hasResearchCenter);
-                $("#hasResidentVet").prop('checked', response.hasResidentVet);
+                $("#brand_name").val(response.brandName);
+                $("#pet_food_name").val(response.foodName);
+                // $("#eu_standard").val(response.eu_standard); // 유럽 영양 기준
+                // $("#us_standard").val(response.us_standard); // 미국 영양 기준
+                $("#image_url").val(response.imageUrl);
+
+                // 기능성 데이터 처리
+                // let functionalityList = response.body.functionality.map(item => item.functionality.name);
+                // $("#functionality").val(functionalityList.join(', '));
+                //
+                // // 주원료 데이터 처리
+                // let primaryIngredientList = response.body.primary_ingredient.map(item => item.primaryIngredient.name);
+                // $("#primary_ingredient").val(primaryIngredientList.join(', '));
+
+                // 체크박스 처리
+                // $("#hasResearchCenter").prop('checked', response.body.brand.hasResearchCenter);
+                // $("#hasResidentVet").prop('checked', response.body.brand.hasResidentVet);
             },
             error: function () {
                 alert('데이터를 불러올 수 없습니다.');
             }
         });
     });
-
 </script>
+
