@@ -207,8 +207,8 @@
             eu_standard: $("#eu_standard").is(":checked"),
             us_standard: $("#us_standard").is(":checked"),
             image_url: $("#image_url").val(),
-            functionality: $("#functionality").val(),
-            primary_ingredient: $("#primary_ingredient").val(),
+            functionalities: $("#functionality").val().split(','),
+            primaryIngredients: $("#primary_ingredient").val().split(','),
             has_research_center: $("#has_research_center").is(":checked"),
             has_resident_vet: $("#has_resident_vet").is(":checked")
         };

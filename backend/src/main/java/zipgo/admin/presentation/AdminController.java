@@ -66,7 +66,7 @@ public class AdminController {
             @RequestBody PetFoodUpdateRequest petFoodUpdateRequest
     ) {
         System.out.println("petFoodId = " + petFoodId);
-        System.out.println("request = " + petFoodUpdateRequest);
+        System.out.println("petFoodUpdateRequest = " + petFoodUpdateRequest);
         return ResponseEntity.ok().build();
     }
 

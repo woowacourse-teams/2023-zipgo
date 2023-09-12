@@ -1,6 +1,7 @@
 package zipgo.admin.dto;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import java.util.List;
 
 public record PetFoodUpdateRequest (
         @JsonProperty("pet_food_name") String petFoodName,
@@ -8,11 +9,12 @@ public record PetFoodUpdateRequest (
         @JsonProperty("eu_standard") boolean euStandard,
         @JsonProperty("us_standard") boolean usStandard,
         @JsonProperty("image_url") String imageUrl,
-        @JsonProperty("functionality") String functionality,
-        @JsonProperty("primary_ingredient") String primaryIngredient,
+        @JsonProperty("functionalities") List<String> functionalities,
+        @JsonProperty("primary_ingredients") List<String> primaryIngredients,
         @JsonProperty("has_research_center") boolean hasResearchCenter,
         @JsonProperty("has_resident_vet") boolean hasResidentVet
 ) {
+
     @Override
     public String toString() {
         return "PetFoodUpdateRequest{" +
@@ -21,11 +23,12 @@ public record PetFoodUpdateRequest (
                 ", euStandard=" + euStandard +
                 ", usStandard=" + usStandard +
                 ", imageUrl='" + imageUrl + '\'' +
-                ", functionality='" + functionality + '\'' +
-                ", primaryIngredient='" + primaryIngredient + '\'' +
+                ", functionalities=" + functionalities +
+                ", primaryIngredients=" + primaryIngredients +
                 ", hasResearchCenter=" + hasResearchCenter +
                 ", hasResidentVet=" + hasResidentVet +
                 '}';
     }
+
 }
 
