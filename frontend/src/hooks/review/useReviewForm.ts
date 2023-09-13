@@ -10,6 +10,7 @@ import {
 import { routerPath } from '@/router/routes';
 import { AdverseReaction, StoolCondition, TastePreference } from '@/types/review/client';
 import { PostReviewReq } from '@/types/review/remote';
+import { zipgoLocalStorage } from '@/utils/localStorage';
 
 import { useAddReviewMutation, useEditReviewMutation, useReviewItemQuery } from '../query/review';
 
@@ -96,12 +97,14 @@ interface UseReviewFormProps {
 
 export const useReviewForm = (useReviewFormProps: UseReviewFormProps) => {
   const navigate = useNavigate();
+  const { id: petId } = zipgoLocalStorage.getPetProfile({ required: true });
   const { petFoodId, rating, isEditMode, reviewId } = useReviewFormProps;
   const { reviewItem } = useReviewItemQuery({ reviewId });
   const { addReviewMutation } = useAddReviewMutation();
   const { editReviewMutation } = useEditReviewMutation();
 
   const reviewInitialState: PostReviewReq = {
+    petId,
     petFoodId,
     rating,
     comment: '',
