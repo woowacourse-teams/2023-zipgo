@@ -68,7 +68,7 @@ const DialogHeader = styled.div`
   align-items: center;
 
   width: 100%;
-  height: 6rem;
+  height: 7.4rem;
   padding: 0 2rem;
 
   font-size: 1.8rem;
@@ -85,14 +85,24 @@ const DialogHeader = styled.div`
 const DialogContent = styled.div<{
   $paddingBottom?: string;
 }>`
+  scrollbar-width: none;
+
   position: relative;
 
+  overflow-y: auto;
   flex-grow: 1;
 
   width: 100%;
+  height: 50rem;
   padding: 2rem;
 
   background: ${({ theme }) => theme.color.grey200};
+
+  -ms-overflow-style: none;
+
+  &::-webkit-scrollbar {
+    width: 0;
+  }
 `;
 
 const ButtonWrapper = styled.div`
