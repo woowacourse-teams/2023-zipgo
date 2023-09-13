@@ -17,6 +17,7 @@ type SummaryKeywordsKo = Values<typeof REVIEW_SUMMARY_KEYWORDS>;
 
 interface Review {
   id: number;
+  writerId: number;
   rating: number;
   date: string;
   comment: string;
