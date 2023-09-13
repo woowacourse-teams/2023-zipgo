@@ -57,6 +57,7 @@ export const usePetListQuery = () => {
 };
 
 export const useAddPetMutation = () => {
+  const { refetch: refetchPetList } = usePetListQuery();
   const { updatePetProfile: updatePetProfileInHeader } = usePetProfile();
   const { mutate: addPet, ...addPetRestMutation } = useMutation<
     PostPetRes,
@@ -68,15 +69,13 @@ export const useAddPetMutation = () => {
     onSuccess: (postPetProfileRes, petProfile, context) => {
       const userInfo = zipgoLocalStorage.getUserInfo({ required: true });
 
-      const petProfileWithId = {
-        ...petProfile,
-        id: 1,
-        petSize: petProfile.breed === MIXED_BREED ? petProfile.petSize : PET_SIZES[0],
-      } as PetProfile;
-
-      updatePetProfileInHeader(petProfileWithId);
-
       zipgoLocalStorage.setUserInfo({ ...userInfo, hasPet: true });
+
+      refetchPetList().then(({ data }) => {
+        const newestPet = data?.pets.at(-1);
+
+        if (newestPet) updatePetProfileInHeader(newestPet);
+      });
 
       alert('반려동물 정보 등록이 완료되었습니다.');
     },
