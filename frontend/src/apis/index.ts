@@ -13,11 +13,12 @@ const defaultConfig = {
 
 export const createConfigWithAuth = (tokens: Tokens | null) =>
   tokens
-    ? Object.assign(defaultConfig, {
+    ? {
+        ...defaultConfig,
         headers: {
           Authorization: `Bearer ${tokens.accessToken}`,
         },
-      })
+      }
     : defaultConfig;
 
 export const clientBasic = axios.create(defaultConfig);
