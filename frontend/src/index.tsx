@@ -31,12 +31,14 @@ const errorFallback = ({ reset }: ErrorBoundaryValue) => (
   </button>
 );
 
-root.render(
-  <React.StrictMode>
-    <QueryClientProvider client={queryClient}>
-      <QueryBoundary errorFallback={errorFallback}>
-        <Router />
-      </QueryBoundary>
-    </QueryClientProvider>
-  </React.StrictMode>,
+const strictMode = process.env.STRICT_MODE === 'on';
+
+const app = (
+  <QueryClientProvider client={queryClient}>
+    <QueryBoundary errorFallback={errorFallback}>
+      <Router />
+    </QueryBoundary>
+  </QueryClientProvider>
 );
+
+root.render(strictMode ? <React.StrictMode>{app}</React.StrictMode> : app);
