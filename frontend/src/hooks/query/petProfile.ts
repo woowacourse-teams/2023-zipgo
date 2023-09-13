@@ -87,7 +87,8 @@ export const useAddPetMutation = () => {
 
 export const useEditPetMutation = () => {
   const { resetPetItemQuery } = usePetItemQuery({ petId: 0 });
-  const { updatePetProfile: updatePetProfileInHeader } = usePetProfile();
+  const { petProfile: petProfileInHeader, updatePetProfile: updatePetProfileInHeader } =
+    usePetProfile();
 
   const { mutate: editPet, ...editPetRestMutation } = useMutation<
     PutPetRes,
@@ -97,7 +98,8 @@ export const useEditPetMutation = () => {
   >({
     mutationFn: putPet,
     onSuccess: (putPetRes, newPetProfile, context) => {
-      updatePetProfileInHeader(newPetProfile);
+      if (newPetProfile.id === petProfileInHeader?.id) updatePetProfileInHeader(newPetProfile);
+
       resetPetItemQuery();
 
       alert('반려동물 정보 수정이 완료되었습니다.');
