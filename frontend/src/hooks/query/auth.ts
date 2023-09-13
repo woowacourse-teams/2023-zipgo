@@ -27,8 +27,14 @@ export const useAuthMutation = () => {
   const { mutate: loginZipgo, ...loginRestMutation } = useMutation({
     mutationFn: loginZipgoAuth,
     onSuccess({ accessToken, authResponse }) {
+      const newestPet = authResponse.pets.at(-1);
+      const selectedPet = zipgoLocalStorage.getPetProfile();
+
       zipgoLocalStorage.setTokens({ accessToken });
       zipgoLocalStorage.setUserInfo(authResponse);
+
+      if (!selectedPet && newestPet) zipgoLocalStorage.setPetProfile(newestPet);
+      if (selectedPet && newestPet) zipgoLocalStorage.setPetProfile(selectedPet);
 
       queryClient.invalidateQueries([QUERY_KEY.authenticateUser]);
 
