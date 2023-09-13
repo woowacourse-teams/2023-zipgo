@@ -1,4 +1,4 @@
-package zipgo.petfood.dto;
+package zipgo.petfood.dto.response;
 
 import java.util.List;
 import zipgo.petfood.domain.PetFood;

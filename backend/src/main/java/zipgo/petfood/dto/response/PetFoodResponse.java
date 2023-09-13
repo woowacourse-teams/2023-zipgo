@@ -1,4 +1,4 @@
-package zipgo.petfood.dto;
+package zipgo.petfood.dto.response;
 
 import zipgo.petfood.domain.PetFood;
 
