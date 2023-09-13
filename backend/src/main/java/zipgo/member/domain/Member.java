@@ -10,6 +10,7 @@ import java.util.ArrayList;
 import java.util.List;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
+import lombok.Builder.Default;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -40,6 +41,7 @@ public class Member extends BaseTimeEntity {
 
     private String profileImgUrl;
 
+    @Default
     @OneToMany(mappedBy = "owner")
     private List<Pet> pets = new ArrayList<>();
 
@@ -51,8 +53,11 @@ public class Member extends BaseTimeEntity {
         if (pets.contains(pet)) {
             return;
         }
-
         pets.add(pet);
+    }
+
+    public boolean isOwnerOf(Pet pet) {
+        return pets.contains(pet);
     }
 
 }

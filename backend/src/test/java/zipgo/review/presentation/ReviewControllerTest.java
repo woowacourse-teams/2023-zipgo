@@ -326,7 +326,7 @@ public class ReviewControllerTest extends AcceptanceTest {
         void 리뷰를_성공적으로_생성하면_201_반환() {
             // given
             var token = jwtProvider.create("1");
-            var 리뷰_생성_요청 = 리뷰_생성_요청(식품.getId());
+            var 리뷰_생성_요청 = 리뷰_생성_요청(식품.getId(), 반려동물.getId());
             var 요청_준비 = given(spec).header("Authorization", "Bearer " + token)
                     .body(리뷰_생성_요청)
                     .contentType(JSON).filter(리뷰_생성_API_문서_생성());
@@ -354,6 +354,7 @@ public class ReviewControllerTest extends AcceptanceTest {
             return document("리뷰 생성 - 성공", 문서_정보.requestSchema(요청_형식).responseSchema(성공_응답_형식),
                     requestHeaders(headerWithName("Authorization").description("인증을 위한 JWT")),
                     requestFields(fieldWithPath("petFoodId").description("식품 id").type(JsonFieldType.NUMBER),
+                            fieldWithPath("petId").description("반려동물 id").type(JsonFieldType.NUMBER),
                             fieldWithPath("rating").description("리뷰 별점").type(JsonFieldType.NUMBER),
                             fieldWithPath("comment").description("리뷰 코멘트").optional().type(JsonFieldType.STRING),
                             fieldWithPath("tastePreference").description("기호성").type(JsonFieldType.STRING),
@@ -366,7 +367,7 @@ public class ReviewControllerTest extends AcceptanceTest {
             // given
             var token = jwtProvider.create("1");
             var 요청_준비 = given(spec).header("Authorization", "Bearer " + token)
-                    .body(리뷰_생성_요청(잘못된_id)).contentType(JSON)
+                    .body(리뷰_생성_요청(잘못된_id, 반려동물.getId())).contentType(JSON)
                     .filter(API_예외응답_문서_생성());
 
             // when
@@ -425,7 +426,7 @@ public class ReviewControllerTest extends AcceptanceTest {
             // given
             var notOwnerToken = jwtProvider.create("2");
             var 요청_준비 = given(spec).header("Authorization", "Bearer " + notOwnerToken)
-                    .body(리뷰_생성_요청(식품.getId()))
+                    .body(리뷰_수정_요청())
                     .contentType(JSON).filter(API_예외응답_문서_생성());
 
             // when
