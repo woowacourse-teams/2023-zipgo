@@ -1,4 +1,4 @@
-import { PostImageFileReq, PostImageFileRes } from '@/types/image/remote';
+import { PostImageFileReq, PostImageFileRes } from '@/types/common/image/remote';
 
 import { client } from '.';
 

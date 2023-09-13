@@ -31,6 +31,7 @@ type Story = StoryObj<typeof ReviewItem>;
 export const Basic: Story = {
   args: {
     id: 1,
+    writerId: 1,
     rating: 4,
     date: '2023-05-26',
     comment:
@@ -60,6 +61,7 @@ export const Basic: Story = {
 export const LongComment: Story = {
   args: {
     id: 2,
+    writerId: 2,
     rating: 5,
     date: '2023-06-26',
     comment:
@@ -88,6 +90,7 @@ export const LongComment: Story = {
 export const ShortComment: Story = {
   args: {
     id: 1,
+    writerId: 3,
     rating: 5,
     date: '2023-07-26',
     comment:

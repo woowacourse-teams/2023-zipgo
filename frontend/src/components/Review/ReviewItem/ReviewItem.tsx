@@ -17,12 +17,12 @@ import { zipgoLocalStorage } from '@/utils/localStorage';
 interface ReviewItemProps extends Review {}
 
 const ReviewItem = (reviewItemProps: ReviewItemProps) => {
-  /** @todo 본인 리뷰 확인 - 추후 id로 변경 */
   const { isLoggedIn } = useAuth();
-  const petProfile = zipgoLocalStorage.getPetProfile();
+  const user = zipgoLocalStorage.getUserInfo();
 
   const {
     id: reviewId,
+    writerId,
     rating,
     date,
     tastePreference,
@@ -47,7 +47,7 @@ const ReviewItem = (reviewItemProps: ReviewItemProps) => {
   const { removeReviewMutation } = useRemoveReviewMutation();
   const [isCommentExpanded, setIsCommentExpanded] = useState(false);
 
-  const isMyReview = petProfile?.name === petName;
+  const isMyReview = user?.id === writerId;
 
   const { toggleHelpfulReaction } = useToggleHelpfulReactionMutation(reacted);
 

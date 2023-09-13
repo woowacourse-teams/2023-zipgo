@@ -4,6 +4,7 @@ const getReviews = (): GetReviewsRes => ({
   reviews: [
     {
       id: 1,
+      writerId: 1,
       petProfile: {
         id: 1,
         name: '에디',
@@ -33,6 +34,7 @@ const getReviews = (): GetReviewsRes => ({
     },
     {
       id: 2,
+      writerId: 2,
       petProfile: {
         id: 2,
         name: '노아이즈',
@@ -61,6 +63,7 @@ const getReviews = (): GetReviewsRes => ({
     },
     {
       id: 3,
+      writerId: 3,
       petProfile: {
         id: 11,
         name: '롤로노아 로지',

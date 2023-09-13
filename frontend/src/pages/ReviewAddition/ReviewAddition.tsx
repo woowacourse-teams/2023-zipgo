@@ -7,7 +7,6 @@ import FoodInfoInReviewForm from '@/components/Review/ReviewForm/FoodInfoInRevie
 import ReviewForm from '@/components/Review/ReviewForm/ReviewForm';
 import { useValidParams } from '@/hooks/@common/useValidParams';
 import { routerPath } from '@/router/routes';
-import { AdverseReaction, StoolCondition, TastePreference } from '@/types/review/client';
 
 interface LocationState {
   state: {
