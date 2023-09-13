@@ -1,5 +1,4 @@
 import { FormEvent, useEffect, useReducer } from 'react';
-import { useNavigate } from 'react-router-dom';
 
 import {
   ADVERSE_REACTIONS,
@@ -7,10 +6,9 @@ import {
   STOOL_CONDITIONS,
   TASTE_PREFERENCES,
 } from '@/constants/review';
-import { routerPath } from '@/router/routes';
+import { usePetProfile } from '@/context/petProfile/PetProfileContext';
 import { AdverseReaction, StoolCondition, TastePreference } from '@/types/review/client';
 import { PostReviewReq } from '@/types/review/remote';
-import { zipgoLocalStorage } from '@/utils/localStorage';
 
 import { useAddReviewMutation, useEditReviewMutation, useReviewItemQuery } from '../query/review';
 
@@ -96,15 +94,14 @@ interface UseReviewFormProps {
 }
 
 export const useReviewForm = (useReviewFormProps: UseReviewFormProps) => {
-  const navigate = useNavigate();
-  const { id: petId } = zipgoLocalStorage.getPetProfile({ required: true });
   const { petFoodId, rating, isEditMode, reviewId } = useReviewFormProps;
+  const { petProfile } = usePetProfile();
   const { reviewItem } = useReviewItemQuery({ reviewId });
   const { addReviewMutation } = useAddReviewMutation();
   const { editReviewMutation } = useEditReviewMutation();
 
   const reviewInitialState: PostReviewReq = {
-    petId,
+    petId: petProfile ? petProfile.id : -1,
     petFoodId,
     rating,
     comment: '',

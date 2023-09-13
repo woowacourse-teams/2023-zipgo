@@ -1,10 +1,8 @@
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 
 import { deletePet, getBreeds, getPet, getPets, postPet, putPet } from '@/apis/petProfile';
-import { MIXED_BREED, PET_SIZES } from '@/constants/petProfile';
 import { usePetProfile } from '@/context/petProfile/PetProfileContext';
 import { Parameter } from '@/types/common/utility';
-import { PetProfile } from '@/types/petProfile/client';
 import {
   DeletePetReq,
   DeletePetRes,
@@ -102,8 +100,6 @@ export const useEditPetMutation = () => {
       updatePetProfileInHeader(newPetProfile);
       resetPetItemQuery();
 
-      zipgoLocalStorage.setPetProfile(newPetProfile);
-
       alert('반려동물 정보 수정이 완료되었습니다.');
     },
     onError: () => {
@@ -115,8 +111,13 @@ export const useEditPetMutation = () => {
 };
 
 export const useRemovePetMutation = () => {
+  const { refetch: refetchPetList } = usePetListQuery();
   const { resetPetItemQuery } = usePetItemQuery({ petId: 0 });
-  const { resetPetProfile: resetPetProfileInHeader } = usePetProfile();
+  const {
+    petProfile: petProfileInHeader,
+    updatePetProfile: updatePetProfileInHeader,
+    resetPetProfile: resetPetProfileInHeader,
+  } = usePetProfile();
 
   const { mutate: removePet, ...removePetRestMutation } = useMutation<
     DeletePetRes,
@@ -130,7 +131,15 @@ export const useRemovePetMutation = () => {
 
       zipgoLocalStorage.setUserInfo({ ...userInfo, hasPet: false });
 
-      resetPetProfileInHeader();
+      if (deletePetReq.petId === petProfileInHeader?.id) {
+        refetchPetList().then(({ data }) => {
+          const newestPet = data?.pets.at(-1);
+
+          if (newestPet) updatePetProfileInHeader(newestPet);
+          if (!newestPet) resetPetProfileInHeader();
+        });
+      }
+
       resetPetItemQuery();
 
       alert('반려동물 정보를 삭제했습니다.');
