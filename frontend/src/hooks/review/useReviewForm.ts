@@ -121,18 +121,12 @@ export const useReviewForm = (useReviewFormProps: UseReviewFormProps) => {
     e.preventDefault();
 
     if (isEditMode && reviewItem) {
-      editReviewMutation.editReview({ reviewId, ...review }).then(() => {
-        alert('리뷰 수정이 완료되었습니다.');
-        navigate(routerPath.foodDetail({ petFoodId }));
-      });
+      editReviewMutation.editReview({ reviewId, ...review });
 
       return;
     }
 
-    addReviewMutation.addReview(review).then(() => {
-      alert('리뷰 작성이 완료되었습니다.');
-      navigate(routerPath.foodDetail({ petFoodId }));
-    });
+    addReviewMutation.addReview(review);
   };
 
   useEffect(() => {
