@@ -2,6 +2,7 @@ import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { useNavigate } from 'react-router-dom';
 
 import { authenticateUser, loginZipgoAuth, logoutKaKaoAuth } from '@/apis/auth';
+import { usePetProfile } from '@/context/petProfile/PetProfileContext';
 import { routerPath } from '@/router/routes';
 import { zipgoLocalStorage } from '@/utils/localStorage';
 
@@ -23,6 +24,7 @@ export const useAuthQuery = () => {
 export const useAuthMutation = () => {
   const navigate = useNavigate();
   const queryClient = useQueryClient();
+  const { updatePetProfile } = usePetProfile();
 
   const { mutate: loginZipgo, ...loginRestMutation } = useMutation({
     mutationFn: loginZipgoAuth,
@@ -33,8 +35,8 @@ export const useAuthMutation = () => {
       zipgoLocalStorage.setTokens({ accessToken });
       zipgoLocalStorage.setUserInfo(authResponse);
 
-      if (!selectedPet && newestPet) zipgoLocalStorage.setPetProfile(newestPet);
-      if (selectedPet && newestPet) zipgoLocalStorage.setPetProfile(selectedPet);
+      if (!selectedPet && newestPet) updatePetProfile(newestPet);
+      if (selectedPet && newestPet) updatePetProfile(selectedPet);
 
       queryClient.invalidateQueries([QUERY_KEY.authenticateUser]);
 
