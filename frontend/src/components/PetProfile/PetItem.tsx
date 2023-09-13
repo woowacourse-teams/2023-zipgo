@@ -43,6 +43,7 @@ const PetItem = (petItemProps: PetItemProps) => {
         </PetImageAndDetail>
       </PetItemContent>
       <EditLink
+        onClick={e => e.stopPropagation()}
         to={routerPath.petProfileEdition({ petId: petInfo.id })}
         aria-label="반려동물 정보 수정"
       >
