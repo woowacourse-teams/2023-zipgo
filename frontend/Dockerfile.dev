@@ -1,4 +1,4 @@
-FROM --platform=linux/arm64 node as builder
+FROM --platform=linux/arm64 node:20-alpine3.17 as builder
 WORKDIR /app
 
 # build
