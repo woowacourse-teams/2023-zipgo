@@ -1,8 +1,8 @@
 package zipgo.review.presentation;
 
-import jakarta.validation.Valid;
 import java.net.URI;
 import java.util.Optional;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -19,8 +19,10 @@ import zipgo.auth.presentation.Auth;
 import zipgo.auth.presentation.OptionalAuth;
 import zipgo.review.application.ReviewQueryService;
 import zipgo.review.application.ReviewService;
+import zipgo.review.application.dto.CustomReviewDto;
 import zipgo.review.domain.Review;
 import zipgo.review.dto.request.CreateReviewRequest;
+import zipgo.review.dto.request.GetCustomReviewRequest;
 import zipgo.review.dto.request.GetReviewsRequest;
 import zipgo.review.dto.request.UpdateReviewRequest;
 import zipgo.review.dto.response.GetReviewMetadataResponse;
@@ -48,7 +50,8 @@ public class ReviewController {
     @GetMapping
     public ResponseEntity<GetReviewsResponse> getAllReviews(
             @OptionalAuth AuthCredentials authCredentials,
-            @ModelAttribute @Valid GetReviewsRequest request) {
+            @ModelAttribute @Valid GetReviewsRequest request
+    ) {
         Long memberId = getMemberId(authCredentials);
         GetReviewsResponse reviews = reviewQueryService.getReviews(request.toQueryRequest(memberId));
 
@@ -57,6 +60,17 @@ public class ReviewController {
 
     private Long getMemberId(AuthCredentials authCredentials) {
         return Optional.ofNullable(authCredentials).map(AuthCredentials::id).orElse(null);
+    }
+
+    @GetMapping
+    public ResponseEntity<GetReviewsResponse> getCustomReviews(
+            @Auth AuthCredentials authCredentials,
+            @ModelAttribute @Valid GetCustomReviewRequest request
+    ) {
+        CustomReviewDto customReviewDto = request.toDto(authCredentials.id());
+        GetReviewsResponse reviews = reviewQueryService.getCustomReviews(customReviewDto);
+
+        return ResponseEntity.ok(reviews);
     }
 
     @GetMapping("/{id}")
@@ -108,7 +122,6 @@ public class ReviewController {
         reviewService.removeHelpfulReaction(authCredentials.id(), reviewId);
         return ResponseEntity.noContent().build();
     }
-
 
     @GetMapping("/summary")
     public ResponseEntity<GetReviewsSummaryResponse> getReviewsSummary(Long petFoodId) {
