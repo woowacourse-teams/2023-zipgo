@@ -6,6 +6,8 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Random;
+import org.junit.jupiter.api.DisplayNameGeneration;
+import org.junit.jupiter.api.DisplayNameGenerator;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,6 +34,7 @@ import zipgo.petfood.domain.repository.PetFoodRepository;
 import zipgo.review.application.SortBy;
 import zipgo.review.domain.HelpfulReaction;
 import zipgo.review.domain.Review;
+import zipgo.review.domain.repository.dto.FindCustomReviewsFilterRequest;
 import zipgo.review.domain.repository.dto.FindReviewsFilterRequest;
 import zipgo.review.domain.repository.dto.FindReviewsQueryResponse;
 import zipgo.review.domain.repository.dto.ReviewHelpfulReaction;
@@ -40,8 +43,11 @@ import zipgo.review.domain.type.AdverseReactionType;
 import static java.util.Collections.emptyList;
 import static java.util.Collections.reverseOrder;
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.*;
 import static zipgo.pet.domain.AgeGroup.PUPPY;
+import static zipgo.pet.domain.AgeGroup.SENIOR;
 import static zipgo.pet.domain.fixture.BreedsFixture.견종;
+import static zipgo.pet.domain.fixture.BreedsFixture.견종_생성;
 import static zipgo.pet.domain.fixture.PetSizeFixture.소형견;
 import static zipgo.petfood.domain.fixture.PetFoodFixture.모든_영양기준_만족_식품;
 import static zipgo.review.domain.type.AdverseReactionType.FRIZZY_FUR;
@@ -53,7 +59,9 @@ import static zipgo.review.domain.type.TastePreference.EATS_VERY_WELL;
 import static zipgo.review.fixture.ReviewFixture.극찬_리뷰_생성;
 
 @Import(QueryDslTestConfig.class)
+@SuppressWarnings("NonAsciiCharacters")
 @DataJpaTest(properties = {"spring.sql.init.mode=never"})
+@DisplayNameGeneration(DisplayNameGenerator.ReplaceUnderscores.class)
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
 class ReviewQueryRepositoryImplTest {
 
@@ -484,7 +492,7 @@ class ReviewQueryRepositoryImplTest {
 
             //then
             assertThat(리뷰_리스트)
-                    .extracting(review -> review.petSizeId())
+                    .extracting(FindReviewsQueryResponse::petSizeId)
                     .containsOnly(사이즈.getId());
         }
 
@@ -494,6 +502,68 @@ class ReviewQueryRepositoryImplTest {
                 Member 멤버 = memberRepository.save(MemberFixture.식별자_없는_멤버("email" + i));
                 Breeds 종류 = breedsRepository.save(견종(사이즈));
                 Pet 반려동물 = petRepository.save(PetFixture.반려동물(멤버, 종류));
+                Review 리뷰 = 극찬_리뷰_생성(반려동물, 식품, List.of("없어요"));
+                리뷰들.add(리뷰);
+            }
+            reviewRepository.saveAll(리뷰들);
+        }
+
+    }
+
+    @Nested
+    class 맞춤_리뷰목록_필터링 {
+
+
+        @Test
+        void 내_반려견과_같은_나이대만_필터링() {
+            // given
+            PetSize 사이즈 = petSizeRepository.save(소형견());
+            Breeds 견종 = breedsRepository.save(Breeds.builder().petSize(사이즈).name("풍산개").build());
+
+            PetFood 식품 = 식품_만들기();
+            랜덤_리뷰_생성(식품);
+
+            종류_출생연도_리뷰_반복_생성(5, 식품, 견종, 1997);
+
+            // when
+            var 요청 = FindCustomReviewsFilterRequest.builder()
+                    .petFoodId(식품.getId())
+                    .size(10)
+                    .sortBy(SortBy.RECENT)
+                    .breedId(견종.getId())
+                    .ageGroup(SENIOR)
+                    .build();
+            var 리뷰_리스트 = reviewQueryRepository.findCustomReviews(요청);
+
+            //then
+            assertAll(
+                    () -> assertThat(리뷰_리스트).hasSize(5),
+                    () -> assertThat(리뷰_리스트).extracting(FindReviewsQueryResponse::breedId).containsOnly(견종.getId()),
+                    () -> assertThat(리뷰_리스트).extracting(FindReviewsQueryResponse::petBirthYear)
+                            .allMatch(birthYear -> AgeGroup.fromYear(birthYear.getValue()) == SENIOR)
+            );
+        }
+
+        private void 랜덤_리뷰_생성(PetFood 식품) {
+            List<Review> 리뷰들 = new ArrayList<>();
+            for (int i = -20; i < 0; i += 1) {
+                Member 멤버 = memberRepository.save(MemberFixture.식별자_없는_멤버("email" + i));
+                PetSize 사이즈 = petSizeRepository.save(소형견());
+                Breeds 종류 = breedsRepository.save(견종_생성("풍산개" + i, 사이즈));
+                Pet 반려동물 = petRepository.save(PetFixture.반려동물(멤버, 종류));
+                Review 리뷰 = 극찬_리뷰_생성(반려동물, 식품, List.of("없어요"));
+                리뷰들.add(리뷰);
+            }
+            reviewRepository.saveAll(리뷰들);
+        }
+
+        private void 종류_출생연도_리뷰_반복_생성(int 횟수, PetFood 식품, Breeds 종류, int 출생연도) {
+            List<Review> 리뷰들 = new ArrayList<>();
+            for (int i = 0; i < 횟수; i++) {
+                Member 멤버 = memberRepository.save(MemberFixture.식별자_없는_멤버("email" + i));
+                Pet 반려동물 = petRepository.save(Pet.builder().name("무민이").owner(멤버)
+                        .imageUrl("https://image.zipgo.pet/dev/pet-image/dog_icon.svg")
+                        .birthYear(Year.of(출생연도)).breeds(종류).weight(5.0).build());
                 Review 리뷰 = 극찬_리뷰_생성(반려동물, 식품, List.of("없어요"));
                 리뷰들.add(리뷰);
             }

@@ -14,6 +14,7 @@ import zipgo.pet.domain.AgeGroup;
 import zipgo.review.application.SortBy;
 import zipgo.review.domain.Review;
 import zipgo.review.domain.repository.ReviewQueryRepository;
+import zipgo.review.domain.repository.dto.FindCustomReviewsFilterRequest;
 import zipgo.review.domain.repository.dto.FindReviewsFilterRequest;
 import zipgo.review.domain.repository.dto.FindReviewsQueryResponse;
 import zipgo.review.domain.repository.dto.QFindReviewsQueryResponse;
@@ -115,6 +116,57 @@ public class ReviewQueryRepositoryImpl implements ReviewQueryRepository {
         return review.petFood.id.eq(petFoodId);
     }
 
+    @Override
+    public List<FindReviewsQueryResponse> findCustomReviews(FindCustomReviewsFilterRequest request) {
+        Long petFoodId = request.petFoodId();
+        int size = request.size();
+        Long lastReviewId = request.lastReviewId();
+        Long breedId = request.breedId();
+        AgeGroup ageGroup = request.ageGroup();
+
+        return queryFactory.select(new QFindReviewsQueryResponse(
+                                review.id,
+                                pet.owner.id,
+                                review.rating,
+                                review.createdAt,
+                                review.comment,
+                                review.tastePreference,
+                                review.stoolCondition,
+                                pet.id,
+                                pet.name,
+                                pet.imageUrl,
+                                pet.birthYear,
+                                review.weight,
+                                breeds.id,
+                                breeds.name,
+                                breeds.petSize.id,
+                                breeds.petSize.name
+                        )
+                )
+                .from(review)
+                .join(review.pet, pet)
+                .join(pet.breeds, breeds)
+                .where(
+                        equalsPetFoodId(petFoodId),
+                        equalsBreedId(breedId),
+                        equalsAgeGroup(ageGroup),
+                        afterThan(lastReviewId)
+                )
+                .orderBy(getSorter(request.sortBy()))
+                .limit(size)
+                .fetch();
+    }
+
+    private BooleanExpression equalsBreedId(@NotNull Long breedId) {
+        return pet.breeds.id.eq(breedId);
+    }
+
+    private BooleanExpression equalsAgeGroup(@NotNull AgeGroup ageGroup) {
+        BooleanExpression greaterThanOrEqual = review.pet.birthYear.goe(ageGroup.calculateMinBirthYear());
+        BooleanExpression lessThanOrEqual = review.pet.birthYear.loe(ageGroup.calculateMaxBirthYear());
+
+        return Expressions.booleanOperation(Ops.AND, greaterThanOrEqual, lessThanOrEqual);
+    }
 
     private BooleanExpression afterThan(Long lastReviewId) {
         if (lastReviewId == null) {
