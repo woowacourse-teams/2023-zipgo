@@ -45,8 +45,7 @@ public class PetFoodController {
 
     @GetMapping("/{id}")
     public ResponseEntity<GetPetFoodResponse> getPetFood(@PathVariable Long id) {
-        GetPetFoodResponse petFoodResponse = petFoodQueryService.getPetFoodResponse(id);
-        return ResponseEntity.ok(petFoodResponse);
+        return ResponseEntity.ok(petFoodQueryService.getPetFoodResponse(id));
     }
 
     @GetMapping("/filters")

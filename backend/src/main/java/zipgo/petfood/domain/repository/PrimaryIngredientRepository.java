@@ -13,8 +13,7 @@ public interface PrimaryIngredientRepository extends JpaRepository<PrimaryIngred
     List<PrimaryIngredient> findDistinctPrimaryIngredients();
 
     default PrimaryIngredient getById(Long id) {
-        return findById(id)
-                .orElseThrow(() -> new PrimaryIngredientNotFoundException(id));
+        return findById(id).orElseThrow(() -> new PrimaryIngredientNotFoundException(id));
     }
 
 }
