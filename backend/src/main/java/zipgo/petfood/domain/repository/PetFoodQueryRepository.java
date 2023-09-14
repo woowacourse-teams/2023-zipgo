@@ -14,7 +14,7 @@ public interface PetFoodQueryRepository {
             int size
     );
 
-    Long getCount(
+    Long findPetFoodsCount(
             List<String> brandsName,
             List<String> standards,
             List<String> primaryIngredientList,

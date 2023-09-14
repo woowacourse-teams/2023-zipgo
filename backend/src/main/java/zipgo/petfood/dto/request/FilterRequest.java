@@ -18,4 +18,6 @@ public record FilterRequest(
         return new FilterRequest(brands, nutritionStandards, mainIngredients, functionalities);
     }
 
+
+
 }
