@@ -12,6 +12,7 @@ import zipgo.common.service.ServiceTest;
 import zipgo.petfood.domain.Functionality;
 import zipgo.petfood.domain.PetFood;
 import zipgo.petfood.domain.PrimaryIngredient;
+import zipgo.petfood.domain.fixture.FunctionalityFixture;
 import zipgo.petfood.domain.repository.FunctionalityRepository;
 import zipgo.petfood.domain.repository.PetFoodRepository;
 import zipgo.petfood.domain.repository.PrimaryIngredientRepository;
@@ -41,6 +42,7 @@ import static zipgo.petfood.domain.fixture.PetFoodFunctionalityFixture.식품_�
 import static zipgo.petfood.domain.fixture.PetFoodIngredientFixture.식품_주원료_연관관계_매핑;
 import static zipgo.petfood.domain.fixture.PrimaryIngredientFixture.주원료_닭고기;
 import static zipgo.petfood.domain.fixture.PrimaryIngredientFixture.주원료_돼지고기;
+import static zipgo.petfood.domain.fixture.PrimaryIngredientFixture.주원료_말미잘;
 import static zipgo.petfood.domain.fixture.PrimaryIngredientFixture.주원료_소고기;
 import static zipgo.petfood.dto.response.FilterResponse.NutrientStandardResponse;
 import static zipgo.petfood.dto.response.FilterResponse.PrimaryIngredientResponse;
@@ -125,11 +127,9 @@ class PetFoodQueryServiceTest extends ServiceTest {
                     size
             );
 
-//             then
+            //then
             assertAll(
                     () -> assertThat(petFoodsResponse.petFoods()).hasSize(1)
-//                    () -> assertThat(petFoodsResponse.petFoods()).extracting(PetFoodResponse::brandName)
-//                            .isEqualTo(List.of("퓨리나"))
             );
         }
 
@@ -204,9 +204,6 @@ class PetFoodQueryServiceTest extends ServiceTest {
             // then
             assertAll(
                     () -> assertThat(petFoodsResponse.petFoods()).hasSize(1)
-//                    () -> assertThat(petFoodsResponse.petFoods()).extracting(
-//                                    petFoodsResponse -> petFoodsResponse.getPetFoodPrimaryIngredients().get(0).getPrimaryIngredient().getName())
-//                            .isEqualTo(List.of("소고기"))
             );
         }
 
@@ -231,13 +228,10 @@ class PetFoodQueryServiceTest extends ServiceTest {
             // then
             assertAll(
                     () -> assertThat(petFoodsResponse.petFoods()).hasSize(1)
-//                    () -> assertThat(petFoodsResponse).extracting(
-//                                    petFood -> petFood.getPetFoodFunctionalities().get(0).getFunctionality().getName())
-//                            .isEqualTo(List.of("튼튼"))
             );
         }
 
-        // 아카나, 미국, 튼튼, 소고기
+
         @Test
         void 모든_필터를_만족하는_식품만_반환한다() {
             //given
@@ -259,14 +253,6 @@ class PetFoodQueryServiceTest extends ServiceTest {
             // then
             assertAll(
                     () -> assertThat(petFoodsResponse.petFoods()).hasSize(1)
-//                    () -> assertThat(petFoods).extracting(petFood -> petFood.getHasStandard().getEurope())
-//                            .contains(true),
-//                    () -> assertThat(petFoods).extracting(
-//                                    petFood -> petFood.getPetFoodPrimaryIngredients().get(0).getPrimaryIngredient().getName())
-//                            .isEqualTo(List.of("소고기")),
-//                    () -> assertThat(petFoods).extracting(
-//                                    petFood -> petFood.getPetFoodFunctionalities().get(0).getFunctionality().getName())
-//                            .isEqualTo(List.of("튼튼"))
             );
         }
 
@@ -377,7 +363,10 @@ class PetFoodQueryServiceTest extends ServiceTest {
             assertThat(응답.hasStandard().hasUsStandard()).isTrue();
         }
 
-    }    void 필터링에_필요한_식품_데이터를_조회한다() {
+    }
+
+    @Test
+    void 필터링에_필요한_식품_데이터를_조회한다() {
         // when
         FilterResponse metadata = petFoodQueryService.getMetadataForFilter();
 
