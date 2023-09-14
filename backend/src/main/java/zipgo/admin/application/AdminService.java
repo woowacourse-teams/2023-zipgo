@@ -90,14 +90,20 @@ public class AdminService {
     private void updateFunctionalities(PetFoodUpdateRequest request, PetFood petFood) {
         petFood.initFunctionalities();
         List<String> functionalitiesName = request.functionalities();
-
-        if (functionalitiesName.get(EMPTY_STRING_CHECK_INDEX).equals("")) {
+        if (functionalityNameIsEmpty(functionalitiesName)) {
             return;
         }
         List<Functionality> functionalities = request.functionalities().stream()
                 .map(functionalityName -> functionalityRepository.getByName(functionalityName))
                 .toList();
         changeFunctionalityRelations(functionalities, petFood);
+    }
+
+    private boolean functionalityNameIsEmpty(List<String> functionalitiesName) {
+        if (functionalitiesName.get(EMPTY_STRING_CHECK_INDEX).equals("")) {
+            return true;
+        }
+        return false;
     }
 
     private void changeFunctionalityRelations(List<Functionality> functionalities, PetFood petFood) {
@@ -113,13 +119,20 @@ public class AdminService {
     private void updatePrimaryIngredients(PetFoodUpdateRequest request, PetFood petFood) {
         petFood.initPrimaryIngredients();
         List<String> primaryIngredientsName = request.primaryIngredients();
-        if (primaryIngredientsName.get(EMPTY_STRING_CHECK_INDEX).equals("")) {
+        if (primaryIngredientsNameIsEmpty(primaryIngredientsName)) {
             return;
         }
         List<PrimaryIngredient> primaryIngredients = request.primaryIngredients().stream()
                 .map(functionalityName -> primaryIngredientRepository.getByName(functionalityName))
                 .toList();
         changePrimaryIngredientRelations(primaryIngredients, petFood);
+    }
+
+    private static boolean primaryIngredientsNameIsEmpty(List<String> primaryIngredientsName) {
+        if (primaryIngredientsName.get(EMPTY_STRING_CHECK_INDEX).equals("")) {
+            return true;
+        }
+        return false;
     }
 
     private void changePrimaryIngredientRelations(List<PrimaryIngredient> primaryIngredients, PetFood petFood) {
