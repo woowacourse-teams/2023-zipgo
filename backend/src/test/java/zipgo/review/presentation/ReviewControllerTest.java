@@ -1,11 +1,11 @@
 package zipgo.review.presentation;
 
-import com.epages.restdocs.apispec.ResourceSnippetDetails;
-import com.epages.restdocs.apispec.Schema;
-import io.restassured.response.Response;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
+import com.epages.restdocs.apispec.ResourceSnippetDetails;
+import com.epages.restdocs.apispec.Schema;
+import io.restassured.response.Response;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
@@ -55,14 +55,18 @@ import static org.springframework.restdocs.payload.PayloadDocumentation.response
 import static org.springframework.restdocs.request.RequestDocumentation.parameterWithName;
 import static org.springframework.restdocs.request.RequestDocumentation.pathParameters;
 import static org.springframework.restdocs.request.RequestDocumentation.queryParameters;
+import static zipgo.brand.domain.fixture.BrandFixture.아카나_식품_브랜드_생성;
 import static zipgo.pet.domain.fixture.BreedsFixture.견종;
 import static zipgo.pet.domain.fixture.PetFixture.반려동물;
 import static zipgo.pet.domain.fixture.PetSizeFixture.소형견;
 import static zipgo.petfood.domain.fixture.PetFoodFixture.모든_영양기준_만족_식품;
+import static zipgo.review.fixture.AdverseReactionFixture.눈물_이상반응;
+import static zipgo.review.fixture.AdverseReactionFixture.먹고_토_이상반응;
 import static zipgo.review.fixture.MemberFixture.무민;
 import static zipgo.review.fixture.ReviewFixture.극찬_리뷰_생성;
 import static zipgo.review.fixture.ReviewFixture.리뷰_생성_요청;
 import static zipgo.review.fixture.ReviewFixture.리뷰_수정_요청;
+import static zipgo.review.fixture.ReviewFixture.혹평_리뷰_생성;
 
 
 public class ReviewControllerTest extends AcceptanceTest {
@@ -253,6 +257,102 @@ public class ReviewControllerTest extends AcceptanceTest {
 
         private RestDocumentationFilter API_예외응답_문서_생성(String uniqueName) {
             return document(uniqueName, 문서_정보.responseSchema(에러_응답_형식));
+        }
+
+    }
+
+    @Nested
+    @DisplayName("맞춤 리뷰 조회 API")
+    class GetCustomReviews {
+
+        private Schema 성공_응답_형식 = schema("GetReviewsResponse");
+        private ResourceSnippetDetails 문서_정보 = resourceDetails().summary("맞춤 리뷰 목록 조회하기")
+                .description("해당 반려동물 식품에 대한 우리 아이 맞춤 리뷰를 조회합니다.");
+
+        @Test
+        void 맞춤_리뷰를_알_수_있다() {
+            // given
+            랜덤_리뷰_여러개_생성();
+            맞춤_리뷰_생성(반려동물);
+            var token = jwtProvider.create("1");
+            var 요청_준비 = given(spec).header("Authorization", "Bearer " + token)
+                    .contentType(JSON).filter(맞춤_리뷰_API_문서_생성("맞춤 리뷰 조회 - 성공"));
+
+            // when
+            var 응답 = 요청_준비.when()
+                    .queryParam("petFoodId", 식품.getId())
+                    .queryParam("petId", 반려동물.getId())
+                    .queryParam("size", 2)
+                    .get("/reviews/custom");
+
+            // then
+            응답.then()
+                    .assertThat().statusCode(OK.value())
+                    .assertThat().body("reviews.size()", is(1));
+        }
+
+        private void 랜덤_리뷰_여러개_생성() {
+            List<Review> 리뷰들 = new ArrayList<>();
+            for (int i = 0; i < 20; i++) {
+                Member 멤버 = memberRepository.save(MemberFixture.식별자_없는_멤버("email" + i));
+                PetSize 사이즈 = petSizeRepository.save(소형견());
+                Breeds 종류 = breedsRepository.save(견종(사이즈));
+                Pet 반려동물 = petRepository.save(반려동물(멤버, 종류));
+                Review 리뷰 = 극찬_리뷰_생성(반려동물, 식품,
+                        List.of("없어요"));
+                리뷰들.add(리뷰);
+            }
+            reviewRepository.saveAll(리뷰들);
+        }
+
+        private void 맞춤_리뷰_생성(Pet 반려동물) {
+            Brand 브랜드 = brandRepository.save(아카나_식품_브랜드_생성());
+            PetFood 식품 = petFoodRepository.save(모든_영양기준_만족_식품(브랜드));
+            Review 리뷰 = reviewRepository.save(
+                    혹평_리뷰_생성(반려동물, 식품, List.of(눈물_이상반응().getAdverseReactionType().getDescription(),
+                            먹고_토_이상반응().getAdverseReactionType().getDescription())));
+            식품.addReview(리뷰);
+        }
+
+        private RestDocumentationFilter 맞춤_리뷰_API_문서_생성(String uniqueName) {
+            return document(uniqueName, 문서_정보.responseSchema(성공_응답_형식),
+                    queryParameters(
+                            parameterWithName("petFoodId").description("식품 id"),
+                            parameterWithName("petId").description("반려동물 id"),
+                            parameterWithName("size").description("조회하고자 하는 리뷰의 개수"),
+                            parameterWithName("lastReviewId").description("이전 페이지의 마지막 리뷰 id").optional(),
+                            parameterWithName("sortBy").description("정렬 기준").optional()),
+                    responseFields(fieldWithPath("reviews[].id").description("리뷰 id").type(JsonFieldType.NUMBER),
+                            fieldWithPath("reviews[].writerId").description("작성자 id").type(JsonFieldType.NUMBER),
+                            fieldWithPath("reviews[].rating").description("리뷰 별점").type(JsonFieldType.NUMBER),
+                            fieldWithPath("reviews[].date").description("리뷰 생성일").type(JsonFieldType.STRING),
+                            fieldWithPath("reviews[].comment").description("리뷰 코멘트").type(JsonFieldType.STRING),
+                            fieldWithPath("reviews[].tastePreference").description("기호성").type(JsonFieldType.STRING),
+                            fieldWithPath("reviews[].stoolCondition").description("대변 상태").type(JsonFieldType.STRING),
+                            fieldWithPath("reviews[].adverseReactions").description("이상 반응들")
+                                    .type(JsonFieldType.ARRAY),
+                            fieldWithPath("reviews[].petProfile.id").description("반려동물 id").type(JsonFieldType.NUMBER),
+                            fieldWithPath("reviews[].petProfile.name").description("반려동물 이름")
+                                    .type(JsonFieldType.STRING),
+                            fieldWithPath("reviews[].petProfile.profileUrl").description("반려동물 이름")
+                                    .type(JsonFieldType.STRING),
+                            fieldWithPath("reviews[].petProfile.writtenAge").description("반려동물 나이")
+                                    .type(JsonFieldType.NUMBER),
+                            fieldWithPath("reviews[].petProfile.writtenWeight").description("반려동물 몸무게")
+                                    .type(JsonFieldType.NUMBER),
+                            fieldWithPath("reviews[].petProfile.breed.id").description("반려동물 견종 id")
+                                    .type(JsonFieldType.NUMBER),
+                            fieldWithPath("reviews[].petProfile.breed.name").description("반려동물 견종 이름")
+                                    .type(JsonFieldType.STRING),
+                            fieldWithPath("reviews[].petProfile.breed.size.id").description("반려동물 견종 크기 id")
+                                    .type(JsonFieldType.NUMBER),
+                            fieldWithPath("reviews[].petProfile.breed.size.name").description("반려동물 견종 크기 이름")
+                                    .type(JsonFieldType.STRING),
+                            fieldWithPath("reviews[].helpfulReaction.count").description("도움이 되었어요 수")
+                                    .type(JsonFieldType.NUMBER),
+                            fieldWithPath("reviews[].helpfulReaction.reacted").description("도움이 되었어요를 눌렀는지")
+                                    .type(JsonFieldType.BOOLEAN)));
+
         }
 
     }

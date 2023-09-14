@@ -19,6 +19,9 @@ public record CustomReviewDto(
         if (size <= 0) {
             throw new ReviewSizeNegativeException();
         }
+        if (sortById == null) {
+            sortById = 1L;
+        }
     }
 
 }

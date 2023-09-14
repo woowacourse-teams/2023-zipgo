@@ -7,7 +7,6 @@ import zipgo.review.application.dto.CustomReviewDto;
 public record GetCustomReviewRequest(
         @NotNull(message = "식품 id를 입력해주세요.")
         Long petFoodId,
-
         @Positive(message = "size는 0보다 커야합니다.")
         Integer size,
         Long lastReviewId,
