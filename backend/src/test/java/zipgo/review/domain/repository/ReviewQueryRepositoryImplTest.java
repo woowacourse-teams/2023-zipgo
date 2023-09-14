@@ -137,7 +137,7 @@ class ReviewQueryRepositoryImplTest {
             var 리뷰_리스트 = reviewQueryRepository.findReviewsBy(요청);
 
             // then
-            assertThat(리뷰_리스트.size()).isEqualTo(10);
+            assertThat(리뷰_리스트).hasSize(10);
         }
 
 
@@ -513,16 +513,13 @@ class ReviewQueryRepositoryImplTest {
     @Nested
     class 맞춤_리뷰목록_필터링 {
 
-
         @Test
         void 내_반려견과_같은_나이대만_필터링() {
             // given
             PetSize 사이즈 = petSizeRepository.save(소형견());
             Breeds 견종 = breedsRepository.save(Breeds.builder().petSize(사이즈).name("풍산개").build());
-
             PetFood 식품 = 식품_만들기();
             랜덤_리뷰_생성(식품);
-
             종류_출생연도_리뷰_반복_생성(5, 식품, 견종, 1997);
 
             // when
