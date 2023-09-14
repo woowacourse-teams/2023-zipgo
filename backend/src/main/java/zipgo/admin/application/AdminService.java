@@ -88,7 +88,7 @@ public class AdminService {
     }
 
     private void updateFunctionalities(PetFoodUpdateRequest request, PetFood petFood) {
-        petFood.initFunctionalities();
+        petFood.initPetFoodFunctionalities();
         List<String> functionalitiesName = request.functionalities();
         if (functionalityNameIsEmpty(functionalitiesName)) {
             return;
@@ -117,7 +117,7 @@ public class AdminService {
     }
 
     private void updatePrimaryIngredients(PetFoodUpdateRequest request, PetFood petFood) {
-        petFood.initPrimaryIngredients();
+        petFood.initPetFoodPrimaryIngredients();
         List<String> primaryIngredientsName = request.primaryIngredients();
         if (primaryIngredientsNameIsEmpty(primaryIngredientsName)) {
             return;

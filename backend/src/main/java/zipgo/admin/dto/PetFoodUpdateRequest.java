@@ -1,16 +1,19 @@
 package zipgo.admin.dto;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.databind.PropertyNamingStrategies;
+import com.fasterxml.jackson.databind.annotation.JsonNaming;
 import java.util.List;
 
+@JsonNaming(PropertyNamingStrategies.SnakeCaseStrategy.class)
 public record PetFoodUpdateRequest (
-        @JsonProperty("pet_food_name") String petFoodName,
-        @JsonProperty("brand_name") String brandName,
-        @JsonProperty("eu_standard") boolean euStandard,
-        @JsonProperty("us_standard") boolean usStandard,
-        @JsonProperty("image_url") String imageUrl,
-        @JsonProperty("functionalities") List<String> functionalities,
-        @JsonProperty("primary_ingredients") List<String> primaryIngredients
+        String petFoodName,
+        String brandName,
+        boolean euStandard,
+        boolean usStandard,
+        String imageUrl,
+        List<String> functionalities,
+        List<String> primaryIngredients
 ) {
 
 }
