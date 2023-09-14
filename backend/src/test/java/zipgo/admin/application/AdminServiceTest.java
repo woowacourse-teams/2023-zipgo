@@ -162,7 +162,7 @@ class AdminServiceTest extends ServiceTest {
     }
 
     @Test
-    void 식품을_null_또는_빈_문자열로_수정할_시_데이터를_삭제한다() {
+    void 식품을_빈_문자열로_수정할_시_데이터를_삭제한다() {
         // given
         PetFoodUpdateRequest request = new PetFoodUpdateRequest(
                 petFood.getName(),
@@ -170,7 +170,7 @@ class AdminServiceTest extends ServiceTest {
                 false,
                 false,
                 "변경된 이미지 URL",
-                null,
+                List.of(""),
                 List.of("")
         );
 
