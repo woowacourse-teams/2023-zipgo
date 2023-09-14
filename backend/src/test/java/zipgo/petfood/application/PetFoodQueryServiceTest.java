@@ -318,16 +318,14 @@ class PetFoodQueryServiceTest extends ServiceTest {
         void 처음_조회_시_정해진_size_이내로_반환한다() {
             //given
             Brand 인스팅트 = brandRepository.save(인스팅트_식품_브랜드_생성());
+            PrimaryIngredient 원재료_말미잘 = primaryIngredientRepository.save(주원료_말미잘());
+            Functionality 기능성_짱짱짱 = functionalityRepository.save(FunctionalityFixture.기능성_짱짱짱());
             for (int i = 0; i < 20; i++) {
                 PetFood 미국_영양기준_만족_식품 = savePetFood(인스팅트);
-
-                PrimaryIngredient 원재료_돼지고기 = 주원료_돼지고기();
-                식품_주원료_연관관계_매핑(미국_영양기준_만족_식품, 원재료_돼지고기);
-                primaryIngredientRepository.save(원재료_돼지고기);
-
-                Functionality 기능성_짱짱 = 기능성_짱짱();
-                식품_기능성_연관관계_매핑(미국_영양기준_만족_식품, 기능성_짱짱);
-                functionalityRepository.save(기능성_짱짱);
+                PetFood 미국_영양기준_만족_식품1 = 미국_영양기준_만족_식품(인스팅트);
+                식품_주원료_연관관계_매핑(미국_영양기준_만족_식품, 원재료_말미잘);
+                식품_기능성_연관관계_매핑(미국_영양기준_만족_식품, 기능성_짱짱짱);
+                petFoodRepository.save(미국_영양기준_만족_식품1);
             }
 
             // when

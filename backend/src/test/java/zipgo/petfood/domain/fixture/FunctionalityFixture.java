@@ -28,4 +28,11 @@ public class FunctionalityFixture {
         return 짱짱;
     }
 
+    public static Functionality 기능성_짱짱짱() {
+        Functionality 짱짱 = Functionality.builder()
+                .name("짱짱짱")
+                .build();
+        return 짱짱;
+    }
+
 }
