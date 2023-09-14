@@ -100,11 +100,11 @@ public class PetFood extends BaseTimeEntity {
         this.brand = brand;
     }
 
-    public void initFunctionalities() {
+    public void initPetFoodFunctionalities() {
         this.petFoodFunctionalities.clear();
     }
 
-    public void initPrimaryIngredients() {
+    public void initPetFoodPrimaryIngredients() {
         this.petFoodPrimaryIngredients.clear();
     }
 
