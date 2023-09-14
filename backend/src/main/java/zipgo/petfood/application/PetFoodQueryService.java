@@ -63,8 +63,8 @@ public class PetFoodQueryService {
 
     public FilterResponse getMetadataForFilter() {
         List<Brand> brands = brandRepository.findAll();
-        List<PrimaryIngredient> primaryIngredients = primaryIngredientRepository.findDistinctPrimaryIngredients();
-        List<Functionality> functionalities = functionalityRepository.findDistinctFunctionalities();
+        List<PrimaryIngredient> primaryIngredients = primaryIngredientRepository.findAll();
+        List<Functionality> functionalities = functionalityRepository.findAll();
         return FilterResponse.of(brands, primaryIngredients, functionalities);
     }
 
