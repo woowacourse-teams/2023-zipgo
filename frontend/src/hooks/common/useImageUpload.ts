@@ -2,7 +2,7 @@ import { ChangeEvent, useState } from 'react';
 
 import { useUploadImageMutation } from '../query/image';
 
-const MAX_FILE_SIZE = 1 * 1024 * 1024; // 1MB;
+const MAX_FILE_SIZE = 5 * 1024 * 1024; // 5MB;
 
 export const useImageUpload = () => {
   const [previewImage, setPreviewImage] = useState('');
@@ -20,7 +20,7 @@ export const useImageUpload = () => {
 
     if (imageFile.size > MAX_FILE_SIZE) {
       e.target.value = '';
-      alert('이미지 크기가 너무 큽니다. 1MB 이하의 이미지를 업로드해주세요.');
+      alert('이미지 크기가 너무 큽니다. 5MB 이하의 이미지를 업로드해주세요.');
       return;
     }
 

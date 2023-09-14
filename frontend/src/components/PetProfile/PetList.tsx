@@ -22,7 +22,7 @@ const PetList = () => {
           onClick={() => updatePetProfile(pet)}
         />
       ))}
-      {Boolean(!petList?.length) && <AddPetButton />}
+      <AddPetButton />
     </PetListLayout>
   );
 };
@@ -31,8 +31,8 @@ export default PetList;
 
 const AddPetButton = () => (
   <AddButtonWrapper to={PATH.PET_PROFILE_ADDITION}>
-    <img src={AddPetButtonIcon} alt="반려견 추가하기" />
-    <AddButtonText>반려견 등록하기</AddButtonText>
+    <img src={AddPetButtonIcon} alt="반려동물 등록버튼" />
+    <AddButtonText>우리 아이 등록하기</AddButtonText>
   </AddButtonWrapper>
 );
 

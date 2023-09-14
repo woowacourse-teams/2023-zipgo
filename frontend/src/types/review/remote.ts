@@ -29,6 +29,7 @@ interface GetReviewsRes {
 }
 
 interface PostReviewReq {
+  petId: number;
   petFoodId: number;
   rating: number;
   comment: string;
