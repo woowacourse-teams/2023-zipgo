@@ -9,14 +9,18 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import zipgo.pet.domain.AgeGroup;
+import zipgo.pet.domain.Pet;
 import zipgo.pet.domain.repository.BreedsRepository;
+import zipgo.pet.domain.repository.PetRepository;
 import zipgo.pet.domain.repository.PetSizeRepository;
 import zipgo.petfood.domain.PetFood;
 import zipgo.petfood.domain.Reviews;
 import zipgo.petfood.domain.repository.PetFoodRepository;
+import zipgo.review.application.dto.CustomReviewDto;
 import zipgo.review.domain.Review;
 import zipgo.review.domain.repository.ReviewQueryRepository;
 import zipgo.review.domain.repository.ReviewRepository;
+import zipgo.review.domain.repository.dto.FindCustomReviewsFilterRequest;
 import zipgo.review.domain.repository.dto.FindReviewsFilterRequest;
 import zipgo.review.domain.repository.dto.FindReviewsQueryResponse;
 import zipgo.review.domain.repository.dto.ReviewHelpfulReaction;
@@ -46,14 +50,26 @@ public class ReviewQueryService {
     private final ReviewRepository reviewRepository;
     private final ReviewQueryRepository reviewQueryRepository;
     private final PetFoodRepository petFoodRepository;
-    private final BreedsRepository breedsRepository;
+    private final PetRepository petRepository;
     private final PetSizeRepository petSizeRepository;
+    private final BreedsRepository breedsRepository;
 
     public GetReviewsResponse getReviews(FindReviewsFilterRequest request) {
         List<FindReviewsQueryResponse> reviews = reviewQueryRepository.findReviewsBy(request);
 
         Map<Long, List<String>> reviewIdToAdverseReactions = findAdverseReactionsBy(reviews);
         Map<Long, ReviewHelpfulReaction> reviewIdToHelpfulReactions = findHelpfulReactionsBy(request.memberId(), reviews);
+
+        return GetReviewsResponse.of(reviews, reviewIdToAdverseReactions, reviewIdToHelpfulReactions);
+    }
+
+    public GetReviewsResponse getCustomReviews(CustomReviewDto customReviewDto) {
+        Pet pet = petRepository.getById(customReviewDto.petId());
+        FindCustomReviewsFilterRequest request = FindCustomReviewsFilterRequest.of(customReviewDto, pet);
+        List<FindReviewsQueryResponse> reviews = reviewQueryRepository.findCustomReviews(request);
+
+        Map<Long, List<String>> reviewIdToAdverseReactions = findAdverseReactionsBy(reviews);
+        Map<Long, ReviewHelpfulReaction> reviewIdToHelpfulReactions = findHelpfulReactionsBy(customReviewDto.memberId(), reviews);
 
         return GetReviewsResponse.of(reviews, reviewIdToAdverseReactions, reviewIdToHelpfulReactions);
     }

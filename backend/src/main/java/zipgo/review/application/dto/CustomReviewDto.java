@@ -3,13 +3,16 @@ package zipgo.review.application.dto;
 import zipgo.pet.exception.PetFoodIdNotNullException;
 import zipgo.pet.exception.ReviewSizeNegativeException;
 
-public record GetReviewQueryRequest(
+public record CustomReviewDto(
         Long petFoodId,
         int size,
-        Long lastReviewId
+        Long lastReviewId,
+        Long sortById,
+        Long petId,
+        Long memberId
 ) {
 
-    public GetReviewQueryRequest {
+    public CustomReviewDto {
         if (petFoodId == null) {
             throw new PetFoodIdNotNullException();
         }

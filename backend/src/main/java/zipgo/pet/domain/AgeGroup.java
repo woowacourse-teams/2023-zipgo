@@ -4,6 +4,7 @@ package zipgo.pet.domain;
 import java.time.LocalDateTime;
 import java.time.Year;
 import java.util.Arrays;
+
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import zipgo.pet.exception.AgeGroupNotFoundException;
@@ -25,7 +26,7 @@ public enum AgeGroup {
     public static AgeGroup from(int age) {
         return Arrays.stream(values())
                 .filter(ageGroup -> ageGroup.greaterThanOrEqual <= age && age < ageGroup.lessThan)
-                .findFirst()
+                .findAny()
                 .orElseThrow(PetAgeNotFoundException::new);
     }
 
@@ -36,6 +37,14 @@ public enum AgeGroup {
             }
         }
         throw new AgeGroupNotFoundException();
+    }
+
+    public static AgeGroup fromYear(int year) {
+        return Arrays.stream(values())
+                .filter(ageGroup -> ageGroup.calculateMinBirthYear().getValue() <= year)
+                .filter(ageGroup -> year < ageGroup.calculateMaxBirthYear().getValue())
+                .findAny()
+                .orElseThrow(PetAgeNotFoundException::new);
     }
 
     public Year calculateMinBirthYear() {
