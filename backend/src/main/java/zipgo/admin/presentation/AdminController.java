@@ -120,7 +120,7 @@ public class AdminController {
             @RequestBody PetFoodUpdateRequest request
     ) {
         adminService.updatePetFood(petFoodId, request);
-        return ResponseEntity.ok().build();
+        return ResponseEntity.noContent().build();
     }
 
     @DeleteMapping("/pet-foods/{petFoodId}")
