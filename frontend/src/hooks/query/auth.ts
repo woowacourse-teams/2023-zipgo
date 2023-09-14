@@ -35,8 +35,8 @@ export const useAuthMutation = () => {
       zipgoLocalStorage.setTokens({ accessToken });
       zipgoLocalStorage.setUserInfo(authResponse);
 
-      if (!selectedPet && newestPet) updatePetProfile(newestPet);
-      if (selectedPet && newestPet) updatePetProfile(selectedPet);
+      if (selectedPet) updatePetProfile(selectedPet);
+      else if (newestPet) updatePetProfile(newestPet);
 
       queryClient.invalidateQueries([QUERY_KEY.authenticateUser]);
 
