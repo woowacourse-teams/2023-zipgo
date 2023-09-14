@@ -91,7 +91,7 @@ public class AdminService {
         petFood.initFunctionalities();
         List<String> functionalitiesName = request.functionalities();
 
-        if (functionalitiesName == null || functionalitiesName.get(EMPTY_STRING_CHECK_INDEX).equals("")) {
+        if (functionalitiesName.get(EMPTY_STRING_CHECK_INDEX).equals("")) {
             return;
         }
         List<Functionality> functionalities = request.functionalities().stream()
@@ -113,7 +113,7 @@ public class AdminService {
     private void updatePrimaryIngredients(PetFoodUpdateRequest request, PetFood petFood) {
         petFood.initPrimaryIngredients();
         List<String> primaryIngredientsName = request.primaryIngredients();
-        if (primaryIngredientsName == null || primaryIngredientsName.get(EMPTY_STRING_CHECK_INDEX).equals("")) {
+        if (primaryIngredientsName.get(EMPTY_STRING_CHECK_INDEX).equals("")) {
             return;
         }
         List<PrimaryIngredient> primaryIngredients = request.primaryIngredients().stream()

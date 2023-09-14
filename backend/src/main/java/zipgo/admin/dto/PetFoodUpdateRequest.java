@@ -13,18 +13,5 @@ public record PetFoodUpdateRequest (
         @JsonProperty("primary_ingredients") List<String> primaryIngredients
 ) {
 
-    @Override
-    public String toString() {
-        return "PetFoodUpdateRequest{" +
-                "petFoodName='" + petFoodName + '\'' +
-                ", brandName='" + brandName + '\'' +
-                ", euStandard=" + euStandard +
-                ", usStandard=" + usStandard +
-                ", imageUrl='" + imageUrl + '\'' +
-                ", functionalities=" + functionalities +
-                ", primaryIngredients=" + primaryIngredients +
-                '}';
-    }
-
 }
 
