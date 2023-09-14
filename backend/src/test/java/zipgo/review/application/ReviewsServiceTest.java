@@ -16,7 +16,6 @@ import zipgo.member.exception.MemberNotFoundException;
 import zipgo.pet.domain.Breeds;
 import zipgo.pet.domain.Pet;
 import zipgo.pet.domain.PetSize;
-import zipgo.pet.domain.fixture.BreedsFixture;
 import zipgo.pet.domain.repository.BreedsRepository;
 import zipgo.pet.domain.repository.PetRepository;
 import zipgo.pet.domain.repository.PetSizeRepository;
@@ -26,6 +25,7 @@ import zipgo.review.domain.HelpfulReaction;
 import zipgo.review.domain.Review;
 import zipgo.review.domain.repository.ReviewRepository;
 import zipgo.review.dto.request.CreateReviewRequest;
+import zipgo.review.exception.InvalidPetOwnerException;
 import zipgo.review.exception.ReviewException;
 import zipgo.review.exception.StoolConditionException;
 import zipgo.review.exception.TastePreferenceException;
@@ -94,10 +94,11 @@ class ReviewsServiceTest extends ServiceTest {
         Member 멤버 = memberRepository.save(무민());
         PetFood 저장된_식품 = petFoodRepository.save(식품);
         PetSize 크기 = petSizeRepository.save(소형견());
-        petRepository.save(반려동물(멤버, breedsRepository.save(BreedsFixture.견종(크기))));
+        Pet 반려동물 = 반려동물(멤버, breedsRepository.save(견종(크기)));
+        petRepository.save(반려동물);
 
         //when
-        reviewService.createReview(멤버.getId(), 리뷰_생성_요청(저장된_식품.getId()));
+        reviewService.createReview(멤버.getId(), 리뷰_생성_요청(저장된_식품.getId(), 반려동물.getId()));
 
         //then
         List<Review> reviews = reviewRepository.findAll();
@@ -123,6 +124,7 @@ class ReviewsServiceTest extends ServiceTest {
         PetFood 저장된_식품 = petFoodRepository.save(식품);
         CreateReviewRequest request = new CreateReviewRequest(
                 저장된_식품.getId(),
+                반려동물.getId(),
                 5,
                 "우리 아이랑 너무 잘 맞아요!",
                 "어쩔 TV",
@@ -141,10 +143,12 @@ class ReviewsServiceTest extends ServiceTest {
         PetFood 식품 = 모든_영양기준_만족_식품(브랜드);
         Member 멤버 = memberRepository.save(무민());
         PetSize 크기 = petSizeRepository.save(소형견());
-        petRepository.save(반려동물(멤버, breedsRepository.save(BreedsFixture.견종(크기))));
+        Pet 반려동물 = 반려동물(멤버, breedsRepository.save(견종(크기)));
+        petRepository.save(반려동물);
         PetFood 저장된_식품 = petFoodRepository.save(식품);
         CreateReviewRequest request = new CreateReviewRequest(
                 저장된_식품.getId(),
+                반려동물.getId(),
                 5,
                 "우리 아이랑 너무 잘 맞아요!",
                 "정말 잘 먹어요",
@@ -158,13 +162,30 @@ class ReviewsServiceTest extends ServiceTest {
     }
 
     @Test
+    void 본인의_반려동물이_아닌경우_예외처리() {
+        //given
+        PetFood 식품 = 모든_영양기준_만족_식품(브랜드);
+        Member 멤버 = memberRepository.save(무민());
+        Member 요청사용자 = memberRepository.save(멤버_이름("로지"));
+        PetSize 크기 = petSizeRepository.save(소형견());
+        Pet 반려동물 = 반려동물(멤버, breedsRepository.save(견종(크기)));
+        petRepository.save(반려동물);
+
+        //when
+        //then
+        assertThatThrownBy(() -> reviewService.createReview(요청사용자.getId(), 리뷰_생성_요청(식품.getId(), 반려동물.getId())))
+                .isInstanceOf(InvalidPetOwnerException.class);
+    }
+
+    @Test
     void 잘못된_멤버_아이디로_리뷰를_생성할_시_예외_처리() {
         //given
         PetFood 식품 = 모든_영양기준_만족_식품(브랜드);
         PetFood 저장된_식품 = petFoodRepository.save(식품);
 
+        CreateReviewRequest 리뷰_생성_요청 = 리뷰_생성_요청(저장된_식품.getId(), 1L);
         //when, then
-        assertThatThrownBy(() -> reviewService.createReview(1004L, 리뷰_생성_요청(저장된_식품.getId())))
+        assertThatThrownBy(() -> reviewService.createReview(1004L, 리뷰_생성_요청))
                 .isInstanceOf(MemberNotFoundException.class)
                 .hasMessage("회원을 찾을 수 없습니다. 알맞은 회원인지 확인해주세요.");
     }

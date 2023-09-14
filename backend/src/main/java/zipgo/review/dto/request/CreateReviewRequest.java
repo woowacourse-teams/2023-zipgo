@@ -16,6 +16,9 @@ public record CreateReviewRequest(
         @NotNull(message = "Null이 올 수 없습니다. 올바른 값인지 확인해주세요.")
         Long petFoodId,
 
+        @NotNull(message = "Null이 올 수 없습니다. 올바른 값인지 확인해주세요.")
+        Long petId,
+
         @Max(5)
         @Min(1)
         Integer rating,
@@ -32,7 +35,7 @@ public record CreateReviewRequest(
 ) {
 
     public Review toEntity(Pet pet, PetFood petFood) {
-        return Review.builder()
+        Review review = Review.builder()
                 .pet(pet)
                 .petFood(petFood)
                 .rating(rating())
@@ -41,6 +44,9 @@ public record CreateReviewRequest(
                 .tastePreference(TastePreference.from(tastePreference()))
                 .stoolCondition(StoolCondition.from(stoolCondition()))
                 .build();
+        review.addAdverseReactions(adverseReactions);
+        petFood.addReview(review);
+        return review;
     }
 
 }
