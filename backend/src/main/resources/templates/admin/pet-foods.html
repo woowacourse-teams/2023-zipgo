@@ -204,12 +204,12 @@
         };
 
         $.ajax({
-            url: `/admin/pet-foods/update/${pet_food_id}`,
-            type: "PATCH",
+            url: `/admin/pet-foods/${pet_food_id}`,
+            type: "PUT",
             contentType: "application/json",
             data: JSON.stringify(formData),
             success: function () {
-                alert("수정이 성공했습니다.");
+                alert("수정을 성공했습니다.");
                 $('#updateModal').modal('hide');
                 location.reload();
             },
@@ -227,7 +227,7 @@
 
         // 가져온 petFoodId를 사용하여 삭제 API를 호출합니다.
         $.ajax({
-            url: `/admin/pet-foods/delete/${petFoodId}`,
+            url: `/admin/pet-foods/${petFoodId}`,
             type: "DELETE",
             success: function () {
                 alert("삭제를 성공했습니다.");

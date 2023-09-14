@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestPart;
@@ -113,7 +114,7 @@ public class AdminController {
         return ResponseEntity.ok(adminQueryService.getPrimaryIngredients());
     }
 
-    @PatchMapping("/pet-foods/update/{petFoodId}")
+    @PutMapping("/pet-foods/{petFoodId}")
     ResponseEntity<Void> updatePetFood(
             @PathVariable Long petFoodId,
             @RequestBody PetFoodUpdateRequest request
@@ -122,7 +123,7 @@ public class AdminController {
         return ResponseEntity.ok().build();
     }
 
-    @DeleteMapping("/pet-foods/delete/{petFoodId}")
+    @DeleteMapping("/pet-foods/{petFoodId}")
     public ResponseEntity<Void> deletePetFood(@PathVariable Long petFoodId) {
         adminService.deletePetFood(petFoodId);
         return ResponseEntity.noContent().build();
