@@ -13,6 +13,7 @@ import zipgo.review.domain.Review;
 import zipgo.review.domain.repository.ReviewRepository;
 import zipgo.review.dto.request.CreateReviewRequest;
 import zipgo.review.dto.request.UpdateReviewRequest;
+import zipgo.review.exception.InvalidPetOwnerException;
 
 @Service
 @Transactional
@@ -28,7 +29,7 @@ public class ReviewService {
         Member member = memberRepository.getById(memberId);
         Pet pet = petRepository.getById(request.petId());
         if (!member.isOwnerOf(pet)) {
-            throw new IllegalArgumentException();
+            throw new InvalidPetOwnerException();
         }
 
         PetFood petFood = petFoodRepository.getById(request.petFoodId());

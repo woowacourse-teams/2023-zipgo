@@ -25,6 +25,7 @@ import zipgo.review.domain.HelpfulReaction;
 import zipgo.review.domain.Review;
 import zipgo.review.domain.repository.ReviewRepository;
 import zipgo.review.dto.request.CreateReviewRequest;
+import zipgo.review.exception.InvalidPetOwnerException;
 import zipgo.review.exception.ReviewException;
 import zipgo.review.exception.StoolConditionException;
 import zipgo.review.exception.TastePreferenceException;
@@ -158,6 +159,22 @@ class ReviewsServiceTest extends ServiceTest {
         //when, then
         assertThatThrownBy(() -> reviewService.createReview(멤버.getId(), request))
                 .isInstanceOf(StoolConditionException.NotFound.class);
+    }
+
+    @Test
+    void 본인의_반려동물이_아닌경우_예외처리() {
+        //given
+        PetFood 식품 = 모든_영양기준_만족_식품(브랜드);
+        Member 멤버 = memberRepository.save(무민());
+        Member 요청사용자 = memberRepository.save(멤버_이름("로지"));
+        PetSize 크기 = petSizeRepository.save(소형견());
+        Pet 반려동물 = 반려동물(멤버, breedsRepository.save(견종(크기)));
+        petRepository.save(반려동물);
+
+        //when
+        //then
+        assertThatThrownBy(() -> reviewService.createReview(요청사용자.getId(), 리뷰_생성_요청(식품.getId(), 반려동물.getId())))
+                .isInstanceOf(InvalidPetOwnerException.class);
     }
 
     @Test
