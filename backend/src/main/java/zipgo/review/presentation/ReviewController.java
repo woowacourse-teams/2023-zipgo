@@ -62,7 +62,7 @@ public class ReviewController {
         return Optional.ofNullable(authCredentials).map(AuthCredentials::id).orElse(null);
     }
 
-    @GetMapping
+    @GetMapping("/custom")
     public ResponseEntity<GetReviewsResponse> getCustomReviews(
             @Auth AuthCredentials authCredentials,
             @ModelAttribute @Valid GetCustomReviewRequest request
