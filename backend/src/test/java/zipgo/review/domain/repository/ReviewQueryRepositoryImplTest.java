@@ -514,7 +514,7 @@ class ReviewQueryRepositoryImplTest {
     class 맞춤_리뷰목록_필터링 {
 
         @Test
-        void 내_반려견과_같은_나이대만_필터링() {
+        void 내_아이와_같은_나이대_견종_목록만_필터링한다() {
             // given
             PetSize 사이즈 = petSizeRepository.save(소형견());
             Breeds 견종 = breedsRepository.save(Breeds.builder().petSize(사이즈).name("풍산개").build());
