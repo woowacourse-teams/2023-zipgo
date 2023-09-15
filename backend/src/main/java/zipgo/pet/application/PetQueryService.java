@@ -32,7 +32,7 @@ public class PetQueryService {
 
     public List<Breed> readBreeds() {
         Breeds breeds = Breeds.from(breedRepository.findAll());
-        return breeds.getValues();
+        return breeds.getOrderedBreeds();
     }
 
 }

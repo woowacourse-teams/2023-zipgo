@@ -3,8 +3,12 @@ package zipgo.pet.domain;
 import java.util.Collections;
 import java.util.List;
 
+import lombok.AccessLevel;
+import lombok.RequiredArgsConstructor;
+
 import static java.util.stream.Collectors.toList;
 
+@RequiredArgsConstructor(access = AccessLevel.PRIVATE)
 public class Breeds {
 
     private static final int FIRST_PLACE = 0;
@@ -14,10 +18,6 @@ public class Breeds {
 
     private final List<Breed> values;
 
-    private Breeds(List<Breed> values) {
-        this.values = values;
-    }
-
     public static Breeds from(List<Breed> breeds) {
         List<Breed> uniqueBreeds = breeds.stream()
                 .filter(breed -> !breed.getName().equals(MIXED_BREED_NAME))
@@ -26,7 +26,7 @@ public class Breeds {
         return new Breeds(uniqueBreeds);
     }
 
-    public List<Breed> getValues() {
+    public List<Breed> getOrderedBreeds() {
         return Collections.unmodifiableList(values);
     }
 

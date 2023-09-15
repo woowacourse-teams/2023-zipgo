@@ -26,7 +26,7 @@ class BreedsTest {
         Breeds 견종_일급_컬렉션 = Breeds.from(믹스견_목록);
 
         // when
-        List<Breed> 반환된_견종_목록 = 견종_일급_컬렉션.getValues();
+        List<Breed> 반환된_견종_목록 = 견종_일급_컬렉션.getOrderedBreeds();
 
         // then
         assertAll(
@@ -53,7 +53,7 @@ class BreedsTest {
         Breeds 견종_일급_컬렉션 = Breeds.from(견종_목록);
 
         // when
-        List<Breed> 반환된_견종_목록 = 견종_일급_컬렉션.getValues();
+        List<Breed> 반환된_견종_목록 = 견종_일급_컬렉션.getOrderedBreeds();
 
         // then
         assertThat(반환된_견종_목록.get(0).getName()).isEqualTo("믹스견");
