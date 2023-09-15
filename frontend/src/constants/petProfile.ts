@@ -2,6 +2,7 @@ import { PATH } from '@/router/routes';
 
 export const PET_AGE_MIN = 0;
 export const PET_AGE_MAX = 20;
+export const PET_AGE_ADULT = 6;
 
 export const MIXED_BREED = '믹스견';
 
