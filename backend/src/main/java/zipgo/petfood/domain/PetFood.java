@@ -57,11 +57,11 @@ public class PetFood extends BaseTimeEntity {
     private Brand brand;
 
     @Builder.Default
-    @OneToMany(mappedBy = "petFood", cascade = {CascadeType.PERSIST, REMOVE})
+    @OneToMany(mappedBy = "petFood", cascade = {CascadeType.PERSIST, REMOVE}, orphanRemoval = true)
     private List<PetFoodPrimaryIngredient> petFoodPrimaryIngredients = new ArrayList<>();
 
     @Builder.Default
-    @OneToMany(mappedBy = "petFood", cascade = {CascadeType.PERSIST, REMOVE})
+    @OneToMany(mappedBy = "petFood", cascade = {CascadeType.PERSIST, REMOVE}, orphanRemoval = true)
     private List<PetFoodFunctionality> petFoodFunctionalities = new ArrayList<>();
 
     public double calculateRatingAverage() {
@@ -82,6 +82,30 @@ public class PetFood extends BaseTimeEntity {
 
     public void addReview(Review review) {
         this.reviews.addReview(review);
+    }
+
+    public void updatePetFood(
+            String name,
+            boolean euStandard,
+            boolean usStandard,
+            String imageUrl
+    ) {
+        this.name = name;
+        this.hasStandard.updateEuStandard(euStandard);
+        this.hasStandard.updateUsStandard(usStandard);
+        this.imageUrl = imageUrl;
+    }
+
+    public void updateBrand(Brand brand) {
+        this.brand = brand;
+    }
+
+    public void initPetFoodFunctionalities() {
+        this.petFoodFunctionalities.clear();
+    }
+
+    public void initPetFoodPrimaryIngredients() {
+        this.petFoodPrimaryIngredients.clear();
     }
 
 }

@@ -1,5 +1,6 @@
 /* eslint-disable indent */
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
+import { useNavigate } from 'react-router-dom';
 
 import {
   deleteHelpfulReactions,
@@ -12,6 +13,7 @@ import {
   postReview,
   putReview,
 } from '@/apis/review';
+import { routerPath } from '@/router/routes';
 import { Parameter } from '@/types/common/utility';
 import { GetReviewsRes } from '@/types/review/remote';
 
@@ -48,12 +50,17 @@ export const useReviewListQuery = (payload: Parameter<typeof getReviews>) => {
 };
 
 export const useAddReviewMutation = () => {
+  const navigate = useNavigate();
   const queryClient = useQueryClient();
 
-  const { mutateAsync: addReview, ...addReviewRestMutation } = useMutation({
+  const { mutate: addReview, ...addReviewRestMutation } = useMutation({
     mutationFn: postReview,
     onSuccess: (_, { petFoodId }) => {
       queryClient.invalidateQueries([QUERY_KEY.reviewList, petFoodId]);
+
+      alert('리뷰 작성이 완료되었습니다.');
+
+      navigate(routerPath.foodDetail({ petFoodId }));
     },
   });
 
@@ -61,12 +68,17 @@ export const useAddReviewMutation = () => {
 };
 
 export const useEditReviewMutation = () => {
+  const navigate = useNavigate();
   const queryClient = useQueryClient();
 
-  const { mutateAsync: editReview, ...editReviewRestMutation } = useMutation({
+  const { mutate: editReview, ...editReviewRestMutation } = useMutation({
     mutationFn: putReview,
     onSuccess: (_, { petFoodId }) => {
       queryClient.invalidateQueries([QUERY_KEY.reviewList, petFoodId]);
+
+      alert('리뷰 수정이 완료되었습니다.');
+
+      navigate(routerPath.foodDetail({ petFoodId }));
     },
   });
 

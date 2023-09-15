@@ -1,5 +1,4 @@
 import { FormEvent, useEffect, useReducer } from 'react';
-import { useNavigate } from 'react-router-dom';
 
 import {
   ADVERSE_REACTIONS,
@@ -7,7 +6,7 @@ import {
   STOOL_CONDITIONS,
   TASTE_PREFERENCES,
 } from '@/constants/review';
-import { routerPath } from '@/router/routes';
+import { usePetProfile } from '@/context/petProfile/PetProfileContext';
 import { AdverseReaction, StoolCondition, TastePreference } from '@/types/review/client';
 import { PostReviewReq } from '@/types/review/remote';
 
@@ -95,13 +94,14 @@ interface UseReviewFormProps {
 }
 
 export const useReviewForm = (useReviewFormProps: UseReviewFormProps) => {
-  const navigate = useNavigate();
   const { petFoodId, rating, isEditMode, reviewId } = useReviewFormProps;
+  const { petProfile } = usePetProfile();
   const { reviewItem } = useReviewItemQuery({ reviewId });
   const { addReviewMutation } = useAddReviewMutation();
   const { editReviewMutation } = useEditReviewMutation();
 
   const reviewInitialState: PostReviewReq = {
+    petId: petProfile ? petProfile.id : -1,
     petFoodId,
     rating,
     comment: '',
@@ -118,18 +118,12 @@ export const useReviewForm = (useReviewFormProps: UseReviewFormProps) => {
     e.preventDefault();
 
     if (isEditMode && reviewItem) {
-      editReviewMutation.editReview({ reviewId, ...review }).then(() => {
-        alert('리뷰 수정이 완료되었습니다.');
-        navigate(routerPath.foodDetail({ petFoodId }));
-      });
+      editReviewMutation.editReview({ reviewId, ...review });
 
       return;
     }
 
-    addReviewMutation.addReview(review).then(() => {
-      alert('리뷰 작성이 완료되었습니다.');
-      navigate(routerPath.foodDetail({ petFoodId }));
-    });
+    addReviewMutation.addReview(review);
   };
 
   useEffect(() => {

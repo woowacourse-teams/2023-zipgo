@@ -12,4 +12,8 @@ public class FunctionalityNotFoundException extends ZipgoException {
         super(new ErrorCode(NOT_FOUND, format("아이디가 %d인 기능성을 찾을 수 없습니다.", id)));
     }
 
+    public FunctionalityNotFoundException(String name) {
+        super(new ErrorCode(NOT_FOUND, format("이름이 %s인 기능성을 찾을 수 없습니다.", name)));
+    }
+
 }

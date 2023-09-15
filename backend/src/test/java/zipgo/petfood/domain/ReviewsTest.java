@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.stream.Stream;
 import org.junit.jupiter.api.DisplayNameGeneration;
 import org.junit.jupiter.api.DisplayNameGenerator;
+import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
@@ -70,6 +71,20 @@ class ReviewsTest {
                 Arguments.of(List.of(1, 2, 3), 3, 33),
                 Arguments.of(List.of(4, 4, 4, 5, 5), 4, 60)
         );
+    }
+
+    @Test
+    void 별점당_몇_퍼센트의_비율을_가지고_있_반환한다() {
+        // given
+        Reviews 리뷰_리스트 = Reviews.builder()
+                .reviews(emptyList())
+                .build();
+
+        // when
+        int 계산_결과 = 리뷰_리스트.getRatingPercentage(1);
+
+        // then
+        assertThat(계산_결과).isZero();
     }
 
     @ParameterizedTest

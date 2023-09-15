@@ -5,12 +5,15 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import zipgo.member.domain.Member;
 import zipgo.member.domain.repository.MemberRepository;
+import zipgo.pet.domain.Pet;
+import zipgo.pet.domain.repository.PetRepository;
 import zipgo.petfood.domain.PetFood;
 import zipgo.petfood.domain.repository.PetFoodRepository;
 import zipgo.review.domain.Review;
 import zipgo.review.domain.repository.ReviewRepository;
 import zipgo.review.dto.request.CreateReviewRequest;
 import zipgo.review.dto.request.UpdateReviewRequest;
+import zipgo.review.exception.InvalidPetOwnerException;
 
 @Service
 @Transactional
@@ -20,15 +23,17 @@ public class ReviewService {
     private final ReviewRepository reviewRepository;
     private final MemberRepository memberRepository;
     private final PetFoodRepository petFoodRepository;
+    private final PetRepository petRepository;
 
     public Long createReview(Long memberId, CreateReviewRequest request) {
         Member member = memberRepository.getById(memberId);
+        Pet pet = petRepository.getById(request.petId());
+        if (!member.isOwnerOf(pet)) {
+            throw new InvalidPetOwnerException();
+        }
+
         PetFood petFood = petFoodRepository.getById(request.petFoodId());
-
-        Review review = request.toEntity(member.getPet(), petFood);
-        review.addAdverseReactions(request.adverseReactions());
-
-        petFood.addReview(review);
+        Review review = request.toEntity(pet, petFood);
         reviewRepository.save(review);
         return review.getId();
     }

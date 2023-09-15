@@ -15,9 +15,10 @@ import static zipgo.review.domain.type.TastePreference.NOT_AT_ALL;
 
 public class ReviewFixture {
 
-    public static CreateReviewRequest 리뷰_생성_요청(Long 식품_id) {
+    public static CreateReviewRequest 리뷰_생성_요청(Long 식품_id, Long 반려동물_id) {
         return new CreateReviewRequest(
                 식품_id,
+                반려동물_id,
                 5,
                 "우리 아이랑 너무 잘 맞아요!",
                 "정말 잘 먹어요",

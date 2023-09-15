@@ -12,4 +12,8 @@ public class PrimaryIngredientNotFoundException extends ZipgoException {
         super(new ErrorCode(NOT_FOUND, format("아이디가 %d인 주원료를 찾을 수 없습니다.", id)));
     }
 
+    public PrimaryIngredientNotFoundException(String name) {
+        super(new ErrorCode(NOT_FOUND, format("이름이 %s인 주원료를 찾을 수 없습니다.", name)));
+    }
+
 }

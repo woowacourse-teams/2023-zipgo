@@ -5,14 +5,16 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import jakarta.persistence.OneToOne;
+import jakarta.persistence.OneToMany;
+import java.util.ArrayList;
+import java.util.List;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
+import lombok.Builder.Default;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import zipgo.common.entity.BaseTimeEntity;
-import zipgo.member.exception.PetAlreadyRegisteredException;
 import zipgo.pet.domain.Pet;
 
 import static lombok.AccessLevel.PROTECTED;
@@ -39,18 +41,23 @@ public class Member extends BaseTimeEntity {
 
     private String profileImgUrl;
 
-    @OneToOne(mappedBy = "owner")
-    private Pet pet;
+    @Default
+    @OneToMany(mappedBy = "owner")
+    private List<Pet> pets = new ArrayList<>();
 
     public boolean hasPet() {
-        return pet != null;
+        return !pets.isEmpty();
     }
 
     public void addPet(Pet pet) {
-        if (hasPet()) {
-            throw new PetAlreadyRegisteredException();
+        if (pets.contains(pet)) {
+            return;
         }
-        this.pet = pet;
+        pets.add(pet);
+    }
+
+    public boolean isOwnerOf(Pet pet) {
+        return pets.contains(pet);
     }
 
 }
