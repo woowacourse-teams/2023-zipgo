@@ -1,6 +1,5 @@
 package zipgo.pet.domain.repository;
 
-import java.util.List;
 import java.util.Optional;
 import org.springframework.data.jpa.repository.JpaRepository;
 import zipgo.pet.domain.Breed;
@@ -21,7 +20,5 @@ public interface BreedRepository extends JpaRepository<Breed, Long> {
     default Breed getByName(String name) {
         return findByName(name).orElseThrow(BreedsNotFoundException::new);
     }
-
-    List<Breed> findByNameNotContaining(String name);
 
 }

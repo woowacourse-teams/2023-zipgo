@@ -53,20 +53,4 @@ class BreedRepositoryTest extends RepositoryTest {
         );
     }
 
-    @Test
-    void 특정_글자가_이름에_포함되지_않는_견종을_찾을_수_있다() {
-        // given
-        PetSize 대형견 = petSizeRepository.save(대형견());
-        PetSize 소형견 = petSizeRepository.save(소형견());
-        breedRepository.save(견종_생성("시고르잡종", 대형견));
-        breedRepository.save(견종_생성("시고르잡종", 소형견));
-        breedRepository.save(견종_생성("말티즈", 소형견));
-
-        // when
-        List<Breed> 견종_목록 = breedRepository.findByNameNotContaining("시고르잡종");
-
-        // then
-        assertThat(견종_목록).hasSize(1);
-    }
-
 }
