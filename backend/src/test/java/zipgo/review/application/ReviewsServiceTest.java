@@ -13,10 +13,10 @@ import zipgo.common.service.ServiceTest;
 import zipgo.member.domain.Member;
 import zipgo.member.domain.repository.MemberRepository;
 import zipgo.member.exception.MemberNotFoundException;
-import zipgo.pet.domain.Breeds;
+import zipgo.pet.domain.Breed;
 import zipgo.pet.domain.Pet;
 import zipgo.pet.domain.PetSize;
-import zipgo.pet.domain.repository.BreedsRepository;
+import zipgo.pet.domain.repository.BreedRepository;
 import zipgo.pet.domain.repository.PetRepository;
 import zipgo.pet.domain.repository.PetSizeRepository;
 import zipgo.petfood.domain.PetFood;
@@ -34,7 +34,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.junit.jupiter.api.Assertions.assertAll;
 import static zipgo.brand.domain.fixture.BrandFixture.아카나_식품_브랜드_생성;
-import static zipgo.pet.domain.fixture.BreedsFixture.견종;
+import static zipgo.pet.domain.fixture.BreedFixture.견종;
 import static zipgo.pet.domain.fixture.PetFixture.반려동물;
 import static zipgo.pet.domain.fixture.PetSizeFixture.소형견;
 import static zipgo.petfood.domain.fixture.PetFoodFixture.모든_영양기준_만족_식품;
@@ -65,7 +65,7 @@ class ReviewsServiceTest extends ServiceTest {
     private BrandRepository brandRepository;
 
     @Autowired
-    private BreedsRepository breedsRepository;
+    private BreedRepository breedRepository;
 
     @Autowired
     private PetSizeRepository petSizeRepository;
@@ -94,7 +94,7 @@ class ReviewsServiceTest extends ServiceTest {
         Member 멤버 = memberRepository.save(무민());
         PetFood 저장된_식품 = petFoodRepository.save(식품);
         PetSize 크기 = petSizeRepository.save(소형견());
-        Pet 반려동물 = 반려동물(멤버, breedsRepository.save(견종(크기)));
+        Pet 반려동물 = 반려동물(멤버, breedRepository.save(견종(크기)));
         petRepository.save(반려동물);
 
         //when
@@ -118,7 +118,7 @@ class ReviewsServiceTest extends ServiceTest {
         //given
         Member 멤버 = memberRepository.save(무민());
         PetSize 크기 = petSizeRepository.save(소형견());
-        Pet 반려동물 = 반려동물(멤버, breedsRepository.save(견종(크기)));
+        Pet 반려동물 = 반려동물(멤버, breedRepository.save(견종(크기)));
         petRepository.save(반려동물);
 
         PetFood 저장된_식품 = petFoodRepository.save(식품);
@@ -143,7 +143,7 @@ class ReviewsServiceTest extends ServiceTest {
         PetFood 식품 = 모든_영양기준_만족_식품(브랜드);
         Member 멤버 = memberRepository.save(무민());
         PetSize 크기 = petSizeRepository.save(소형견());
-        Pet 반려동물 = 반려동물(멤버, breedsRepository.save(견종(크기)));
+        Pet 반려동물 = 반려동물(멤버, breedRepository.save(견종(크기)));
         petRepository.save(반려동물);
         PetFood 저장된_식품 = petFoodRepository.save(식품);
         CreateReviewRequest request = new CreateReviewRequest(
@@ -168,7 +168,7 @@ class ReviewsServiceTest extends ServiceTest {
         Member 멤버 = memberRepository.save(무민());
         Member 요청사용자 = memberRepository.save(멤버_이름("로지"));
         PetSize 크기 = petSizeRepository.save(소형견());
-        Pet 반려동물 = 반려동물(멤버, breedsRepository.save(견종(크기)));
+        Pet 반려동물 = 반려동물(멤버, breedRepository.save(견종(크기)));
         petRepository.save(반려동물);
 
         //when
@@ -215,7 +215,7 @@ class ReviewsServiceTest extends ServiceTest {
 
     private Review 혹평리뷰(PetFood 식품, Member 멤버) {
         PetSize 사이즈 = petSizeRepository.save(소형견());
-        Breeds 종류 = breedsRepository.save(견종(사이즈));
+        Breed 종류 = breedRepository.save(견종(사이즈));
         Pet 반려동물 = petRepository.save(반려동물(멤버, 종류));
         return reviewRepository.save(혹평_리뷰_생성(반려동물, 식품,
                 List.of(눈물_이상반응().getAdverseReactionType().getDescription(),

@@ -55,11 +55,11 @@ public record GetReviewResponse(
 
     public static GetReviewResponse from(Review review, Long memberId) {
         BreedResponse breedResponse = BreedResponse.builder()
-                .id(review.getPet().getBreeds().getId())
-                .name(review.getPet().getBreeds().getName())
+                .id(review.getPet().getBreed().getId())
+                .name(review.getPet().getBreed().getName())
                 .size(PetSizeResponse.builder()
-                        .id(review.getPet().getBreeds().getPetSize().getId())
-                        .name(review.getPet().getBreeds().getPetSize().getName())
+                        .id(review.getPet().getBreed().getPetSize().getId())
+                        .name(review.getPet().getBreed().getPetSize().getName())
                         .build()).build();
         PetProfileResponse petProfileResponse = PetProfileResponse.builder()
                 .id(review.getPet().getId())

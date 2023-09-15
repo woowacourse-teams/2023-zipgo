@@ -49,7 +49,7 @@ public class Pet extends BaseTimeEntity {
 
     @ManyToOne(fetch = LAZY)
     @JoinColumn(nullable = false)
-    private Breeds breeds;
+    private Breed breed;
 
     @Enumerated(value = STRING)
     private Gender gender;
@@ -67,8 +67,8 @@ public class Pet extends BaseTimeEntity {
         this.birthYear = year;
     }
 
-    public void updateBreeds(Breeds breeds) {
-        this.breeds = breeds;
+    public void updateBreeds(Breed breed) {
+        this.breed = breed;
     }
 
     public void updateWeight(double weight) {

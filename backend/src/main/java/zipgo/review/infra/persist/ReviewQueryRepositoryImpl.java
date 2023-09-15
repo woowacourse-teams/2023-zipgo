@@ -20,8 +20,8 @@ import zipgo.review.domain.repository.dto.QFindReviewsQueryResponse;
 import zipgo.review.domain.repository.dto.ReviewHelpfulReaction;
 
 import static java.util.Collections.emptyList;
-import static zipgo.pet.domain.QBreeds.breeds;
 import static zipgo.pet.domain.QPet.pet;
+import static zipgo.pet.domain.QBreed.breed;
 import static zipgo.review.domain.QAdverseReaction.adverseReaction;
 import static zipgo.review.domain.QHelpfulReaction.helpfulReaction;
 import static zipgo.review.domain.QReview.review;
@@ -53,15 +53,15 @@ public class ReviewQueryRepositoryImpl implements ReviewQueryRepository {
                                 pet.imageUrl,
                                 pet.birthYear,
                                 review.weight,
-                                breeds.id,
-                                breeds.name,
-                                breeds.petSize.id,
-                                breeds.petSize.name
+                                breed.id,
+                                breed.name,
+                                breed.petSize.id,
+                                breed.petSize.name
                         )
                 )
                 .from(review)
                 .join(review.pet, pet)
-                .join(pet.breeds, breeds)
+                .join(pet.breed, breed)
                 .where(
                         equalsPetFoodId(petFoodId),
                         afterThan(lastReviewId),
@@ -87,14 +87,14 @@ public class ReviewQueryRepositoryImpl implements ReviewQueryRepository {
         if (breedIds.isEmpty()) {
             return null;
         }
-        return breeds.id.in(breedIds);
+        return breed.id.in(breedIds);
     }
 
     private BooleanExpression inPetSizes(List<Long> petSizeIds) {
         if (petSizeIds.isEmpty()) {
             return null;
         }
-        return breeds.petSize.id.in(petSizeIds);
+        return breed.petSize.id.in(petSizeIds);
     }
 
     private BooleanExpression inAgeGroup(List<AgeGroup> ageGroups) {

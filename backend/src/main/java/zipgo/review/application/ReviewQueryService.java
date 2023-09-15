@@ -9,7 +9,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import zipgo.pet.domain.AgeGroup;
-import zipgo.pet.domain.repository.BreedsRepository;
+import zipgo.pet.domain.repository.BreedRepository;
 import zipgo.pet.domain.repository.PetSizeRepository;
 import zipgo.petfood.domain.PetFood;
 import zipgo.petfood.domain.Reviews;
@@ -46,7 +46,7 @@ public class ReviewQueryService {
     private final ReviewRepository reviewRepository;
     private final ReviewQueryRepository reviewQueryRepository;
     private final PetFoodRepository petFoodRepository;
-    private final BreedsRepository breedsRepository;
+    private final BreedRepository breedRepository;
     private final PetSizeRepository petSizeRepository;
 
     public GetReviewsResponse getReviews(FindReviewsFilterRequest request) {
@@ -89,7 +89,7 @@ public class ReviewQueryService {
     }
 
     private List<Metadata> findAllBreeds() {
-        return breedsRepository.findAll().stream()
+        return breedRepository.findAll().stream()
                 .map(breed -> new Metadata(breed.getId(), breed.getName()))
                 .toList();
     }

@@ -24,7 +24,7 @@ import static lombok.EqualsAndHashCode.Include;
 @AllArgsConstructor
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @EqualsAndHashCode(onlyExplicitlyIncluded = true, callSuper = false)
-public class Breeds extends BaseTimeEntity {
+public class Breed extends BaseTimeEntity {
 
     @Id
     @Include

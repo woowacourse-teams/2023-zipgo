@@ -7,9 +7,9 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import zipgo.member.domain.Member;
 import zipgo.member.domain.repository.MemberRepository;
-import zipgo.pet.domain.Breeds;
+import zipgo.pet.domain.Breed;
 import zipgo.pet.domain.Pet;
-import zipgo.pet.domain.repository.BreedsRepository;
+import zipgo.pet.domain.repository.BreedRepository;
 import zipgo.pet.domain.repository.PetRepository;
 
 @Service
@@ -21,7 +21,7 @@ public class PetQueryService {
 
     private final PetRepository petRepository;
     private final MemberRepository memberRepository;
-    private final BreedsRepository breedsRepository;
+    private final BreedRepository breedRepository;
 
     public List<Pet> readMemberPets(Long memberId) {
         Member owner = memberRepository.getById(memberId);
@@ -32,15 +32,15 @@ public class PetQueryService {
         return petRepository.getById(petId);
     }
 
-    public List<Breeds> readBreeds() {
+    public List<Breed> readBreeds() {
         String excludeName = "믹스견";
-        List<Breeds> breeds = breedsRepository.findByNameNotContaining(excludeName);
+        List<Breed> breeds = breedRepository.findByNameNotContaining(excludeName);
 
-        Breeds mixedBreeds = Breeds.builder()
+        Breed mixedBreed = Breed.builder()
                 .id(0L)
                 .name(excludeName)
                 .build();
-        breeds.add(FIRST_PLACE, mixedBreeds);
+        breeds.add(FIRST_PLACE, mixedBreed);
         return new ArrayList<>(breeds);
     }
 
