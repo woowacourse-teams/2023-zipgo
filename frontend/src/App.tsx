@@ -3,7 +3,7 @@ import { PropsWithChildren, useEffect } from 'react';
 import { Outlet } from 'react-router-dom';
 
 import AxiosInterceptors from './components/@common/AxiosInterceptors/AxiosInterceptors';
-import QueryBoundary from './components/@common/QueryBoundary';
+import QueryBoundary from './components/@common/ErrorBoundary/QueryBoundary/QueryBoundary';
 import ToastContainer from './components/@common/Toast/ToastContainer';
 import useToast from './hooks/toast/useToast';
 import { ErrorBoundaryValue } from './types/common/errorBoundary';

@@ -1,7 +1,7 @@
 import styled from 'styled-components';
 
+import QueryBoundary from '@/components/@common/ErrorBoundary/QueryBoundary/QueryBoundary';
 import FilterSwitch from '@/components/@common/FilterSwitch/FilterSwitch';
-import QueryBoundary from '@/components/@common/QueryBoundary';
 import { useCustomReview } from '@/hooks/review/useCustomReview';
 
 import AlignSelect from './AlignSelect/AlignSelect';
