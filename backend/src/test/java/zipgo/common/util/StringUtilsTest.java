@@ -8,7 +8,7 @@ import static org.junit.jupiter.api.Assertions.assertAll;
 class StringUtilsTest {
 
     @Test
-    void convertStringsToCollection() {
+    void String을_Collection_으로_변환한다() {
         // given
         final String values = "1,2,3";
 
@@ -24,7 +24,7 @@ class StringUtilsTest {
     }
 
     @Test
-    void convertStringsToCollectionIfEmpty() {
+    void 빈_문자열을_Collection_으로_변환한다() {
         // given
         final String values = "";
 
