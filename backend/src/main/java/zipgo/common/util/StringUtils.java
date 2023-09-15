@@ -13,6 +13,9 @@ public class StringUtils {
 
     private static final String COMMA_SEPARATOR = ",";
 
+    private StringUtils() {
+    }
+
     public static List<String> convertStringsToCollection(String values) {
         if (Strings.hasText(values)) {
             String decodedValues = decode(values, UTF_8);
