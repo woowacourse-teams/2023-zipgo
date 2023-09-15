@@ -3,7 +3,7 @@ version: '3'
 services:
   mysql:
     container_name: zipgo
-    image: mysql/mysql-server:5.7
+    image: mysql/mysql-server
     environment:
       MYSQL_DATABASE: zipgo-mysql
       MYSQL_ROOT_HOST: '%'

@@ -52,4 +52,6 @@ class BrandTest {
         assertThat(토스).isNotEqualTo(삼성);
     }
 
+
+
 }
