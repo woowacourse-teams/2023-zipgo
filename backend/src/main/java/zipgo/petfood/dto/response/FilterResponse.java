@@ -19,8 +19,10 @@ public record FilterResponse(
     ) {
         return new FilterResponse(
                 brands.stream().map(BrandResponse::from).toList(),
-                primaryIngredients.stream().map(PrimaryIngredientResponse::from).toList(),
-                functionalities.stream().map(FunctionalityResponse::from).toList(),
+                primaryIngredients.stream()
+                        .map(PrimaryIngredientResponse::from).toList(),
+                functionalities.stream()
+                        .map(FunctionalityResponse::from).toList(),
                 //TODO 하드 코딩 생각
                 List.of(
                         NutrientStandardResponse.of(1L, "미국"),
