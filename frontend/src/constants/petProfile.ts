@@ -9,6 +9,7 @@ export const PET_SIZES = ['소형견', '중형견', '대형견'] as const;
 export const GENDERS = ['남', '여'] as const;
 export const MALE = '남';
 export const FEMALE = '여';
+export const AGE_GROUP = ['퍼피', '어덜트', '시니어'] as const;
 
 export const PET_PROFILE_ADDITION_STEP = {
   NAME: 1,
