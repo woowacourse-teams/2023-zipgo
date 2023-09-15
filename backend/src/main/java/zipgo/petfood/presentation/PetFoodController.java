@@ -7,13 +7,14 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
-import zipgo.common.util.StringUtils;
 import zipgo.petfood.application.PetFoodQueryService;
 import zipgo.petfood.dto.request.FilterRequest;
 import zipgo.petfood.dto.response.FilterMetadataResponse;
 import zipgo.petfood.dto.response.FilterResponse;
 import zipgo.petfood.dto.response.GetPetFoodResponse;
 import zipgo.petfood.dto.response.GetPetFoodsResponse;
+
+import static zipgo.common.util.StringUtils.convertStringsToCollection;
 
 @RestController
 @RequiredArgsConstructor
@@ -34,10 +35,10 @@ public class PetFoodController {
             @RequestParam(defaultValue = PET_FOODS_PAGING_SIZE, required = false) int size
     ) {
         FilterRequest filterRequest = FilterRequest.of(
-                StringUtils.convertStringsToCollection(brands),
-                StringUtils.convertStringsToCollection(nutritionStandards),
-                StringUtils.convertStringsToCollection(mainIngredients),
-                StringUtils.convertStringsToCollection(functionalities)
+                convertStringsToCollection(brands),
+                convertStringsToCollection(nutritionStandards),
+                convertStringsToCollection(mainIngredients),
+                convertStringsToCollection(functionalities)
         );
 
         return ResponseEntity.ok(petFoodQueryService.getPetFoodsByFilters(filterRequest, lastPetFoodId, size));
