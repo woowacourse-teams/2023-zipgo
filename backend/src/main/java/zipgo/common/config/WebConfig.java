@@ -22,6 +22,7 @@ public class WebConfig implements WebMvcConfigurer {
     private static final String ALLOWED_METHODS = "*";
     private static final String MAIN_SERVER_DOMAIN = "https://zipgo.pet";
     private static final String DEV_SERVER_DOMAIN = "https://dev.zipgo.pet";
+    private static final String API_DEV_SERVER_DOMAIN = "https://api.dev.zipgo.pet";
     private static final String FRONTEND_LOCALHOST = "http://localhost:3000";
 
     private final AuthInterceptor authInterceptor;
@@ -31,7 +32,7 @@ public class WebConfig implements WebMvcConfigurer {
     public void addCorsMappings(CorsRegistry registry) {
         registry.addMapping(ALLOW_ALL_PATH)
                 .allowedMethods(ALLOWED_METHODS)
-                .allowedOrigins(MAIN_SERVER_DOMAIN, DEV_SERVER_DOMAIN, FRONTEND_LOCALHOST)
+                .allowedOrigins(MAIN_SERVER_DOMAIN, DEV_SERVER_DOMAIN, API_DEV_SERVER_DOMAIN, FRONTEND_LOCALHOST)
                 .exposedHeaders(LOCATION);
     }
 
