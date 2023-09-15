@@ -41,7 +41,6 @@ public enum AgeGroup {
     public Year calculateMinBirthYear() {
         int currentYear = LocalDateTime.now().getYear();
         return Year.of(currentYear - this.lessThan + 1);
-
     }
 
     public Year calculateMaxBirthYear() {
