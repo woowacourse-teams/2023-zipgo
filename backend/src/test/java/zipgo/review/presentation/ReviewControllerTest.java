@@ -69,7 +69,7 @@ import static zipgo.review.fixture.ReviewFixture.리뷰_수정_요청;
 import static zipgo.review.fixture.ReviewFixture.혹평_리뷰_생성;
 
 
-public class ReviewControllerTest extends AcceptanceTest {
+class ReviewControllerTest extends AcceptanceTest {
 
     private PetFood 식품;
 
@@ -353,6 +353,48 @@ public class ReviewControllerTest extends AcceptanceTest {
                             fieldWithPath("reviews[].helpfulReaction.reacted").description("도움이 되었어요를 눌렀는지")
                                     .type(JsonFieldType.BOOLEAN)));
 
+        }
+
+        @Test
+        void 토큰이_없을_때() {
+            //given
+            var 요청_준비 = given(spec)
+                    .contentType(JSON)
+                    .filter(API_예외응답_문서_생성("실패 - 토큰이 없을 때"));
+
+            // when
+            var 응답 = 요청_준비.when()
+                    .queryParam("petFoodId", 식품.getId())
+                    .queryParam("petId", 반려동물.getId())
+                    .queryParam("size", 3)
+                    .get("/reviews/custom");
+
+            // then
+            응답.then()
+                    .assertThat().statusCode(FORBIDDEN.value());
+        }
+
+        @Test
+        void 사이즈를_0으로_했을_때() {
+            //given
+            var token = jwtProvider.create("1");
+            var 요청_준비 = given(spec).header("Authorization", "Bearer " + token)
+                    .contentType(JSON).filter(API_예외응답_문서_생성("실패 - size가 0일 때"));
+
+            // when
+            var 응답 = 요청_준비.when()
+                    .queryParam("petFoodId", 식품.getId())
+                    .queryParam("petId", 반려동물.getId())
+                    .queryParam("size", -1)
+                    .get("/reviews/custom");
+
+            // then
+            응답.then()
+                    .assertThat().statusCode(BAD_REQUEST.value());
+        }
+
+        private RestDocumentationFilter API_예외응답_문서_생성(String uniqueName) {
+            return document(uniqueName, 문서_정보.responseSchema(에러_응답_형식));
         }
 
     }

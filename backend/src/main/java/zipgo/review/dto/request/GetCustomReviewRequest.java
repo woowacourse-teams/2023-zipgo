@@ -2,8 +2,6 @@ package zipgo.review.dto.request;
 
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Positive;
-import zipgo.pet.exception.PetFoodIdNotNullException;
-import zipgo.pet.exception.ReviewSizeNegativeException;
 import zipgo.review.application.dto.CustomReviewDto;
 
 public record GetCustomReviewRequest(
@@ -18,12 +16,6 @@ public record GetCustomReviewRequest(
 ) {
 
     public GetCustomReviewRequest {
-        if (petFoodId == null) {
-            throw new PetFoodIdNotNullException();
-        }
-        if (size <= 0) {
-            throw new ReviewSizeNegativeException();
-        }
         if (sortById == null) {
             sortById = 1L;
         }
