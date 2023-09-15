@@ -128,18 +128,17 @@ export const useRemovePetMutation = () => {
     unknown
   >({
     mutationFn: deletePet,
-    onSuccess: (deletePetRes, deletePetReq, context) => {
+    onSuccess: async (deletePetRes, deletePetReq, context) => {
+      const { data } = await refetchPetList();
       const userInfo = zipgoLocalStorage.getUserInfo({ required: true });
 
-      zipgoLocalStorage.setUserInfo({ ...userInfo, hasPet: false });
+      if (data?.pets.length === 0) zipgoLocalStorage.setUserInfo({ ...userInfo, hasPet: false });
 
       if (deletePetReq.petId === petProfileInHeader?.id) {
-        refetchPetList().then(({ data }) => {
-          const newestPet = data?.pets.at(-1);
+        const newestPet = data?.pets.at(-1);
 
-          if (newestPet) updatePetProfileInHeader(newestPet);
-          if (!newestPet) resetPetProfileInHeader();
-        });
+        if (newestPet) updatePetProfileInHeader(newestPet);
+        if (!newestPet) resetPetProfileInHeader();
       }
 
       resetPetItemQuery();
