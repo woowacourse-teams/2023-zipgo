@@ -1,0 +1,2 @@
+DELETE http://localhost:8081/reviews/136/helpful-reactions
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiI4IiwiaWF0IjoxNjkzMTQwMDU0LCJleHAiOjE2OTM3NDQ4NTR9.Kqahwp_3bUH5g7JubP0nNig35TOqoHx8-ZtxtMB5XEI

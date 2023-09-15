@@ -1,0 +1,213 @@
+import org.hidetake.gradle.swagger.generator.GenerateSwaggerUI
+
+buildscript {
+    ext {
+        restdocsApiSpecVersion = '0.18.2'
+    }
+}
+
+plugins {
+    id 'java'
+    id 'org.springframework.boot' version '3.1.1'
+    id 'io.spring.dependency-management' version '1.1.0'
+    id 'jacoco'
+
+    id 'com.epages.restdocs-api-spec' version "${restdocsApiSpecVersion}"
+    id 'org.hidetake.swagger.generator' version '2.18.2'
+}
+
+group = 'zipgo'
+version = '0.0.1-SNAPSHOT'
+
+java {
+    sourceCompatibility = '17'
+}
+
+jacoco {
+    toolVersion = "0.8.8"
+}
+
+configurations {
+    compileOnly {
+        extendsFrom annotationProcessor
+    }
+}
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
+    implementation 'org.springframework.boot:spring-boot-starter-validation'
+    implementation 'org.springframework.boot:spring-boot-starter-web'
+
+    implementation 'org.springframework.boot:spring-boot-starter-thymeleaf'
+    implementation 'nz.net.ultraq.thymeleaf:thymeleaf-layout-dialect'
+
+    implementation 'io.jsonwebtoken:jjwt-api:0.11.5'
+    runtimeOnly 'io.jsonwebtoken:jjwt-impl:0.11.5'
+    runtimeOnly 'io.jsonwebtoken:jjwt-jackson:0.11.5'
+
+    compileOnly 'org.projectlombok:lombok'
+    annotationProcessor 'org.projectlombok:lombok'
+
+    implementation 'com.querydsl:querydsl-jpa:5.0.0:jakarta'
+    annotationProcessor "com.querydsl:querydsl-apt:${dependencyManagement.importedProperties['querydsl.version']}:jakarta"
+    annotationProcessor "jakarta.annotation:jakarta.annotation-api"
+    annotationProcessor "jakarta.persistence:jakarta.persistence-api"
+
+    implementation 'org.springframework.boot:spring-boot-starter-actuator'
+    implementation 'io.micrometer:micrometer-registry-prometheus'
+
+    implementation 'org.bgee.log4jdbc-log4j2:log4jdbc-log4j2-jdbc4.1:1.16'
+
+    runtimeOnly 'com.mysql:mysql-connector-j'
+    runtimeOnly 'com.h2database:h2'
+
+    implementation 'software.amazon.awssdk:s3:2.20.121'
+    compileOnly 'software.amazon.awssdk:url-connection-client:2.20.121'
+
+    testImplementation 'org.springframework.boot:spring-boot-starter-test'
+    testImplementation 'io.rest-assured:rest-assured:5.3.1'
+
+    testImplementation 'org.springframework.restdocs:spring-restdocs-restassured'
+    testImplementation "com.epages:restdocs-api-spec-restassured:${restdocsApiSpecVersion}"
+    testImplementation "com.epages:restdocs-api-spec-mockmvc:${restdocsApiSpecVersion}"
+    testImplementation "org.springframework.restdocs:spring-restdocs-mockmvc"
+    testImplementation 'io.rest-assured:rest-assured'
+
+    swaggerUI 'org.webjars:swagger-ui:4.11.1'
+}
+
+def generated = 'build/generated'
+
+tasks.withType(JavaCompile) {
+    options.getGeneratedSourceOutputDirectory().set(file(generated))
+}
+
+sourceSets {
+    main.java.srcDirs += [generated]
+}
+
+clean {
+    delete file(generated)
+}
+
+jacocoTestReport {
+    reports {
+        html.required = true
+
+        html.destination file("${buildDir}/jacoco/index.html")
+    }
+
+    afterEvaluate {
+        classDirectories.setFrom(
+                files(classDirectories.files.collect {
+                    fileTree(dir: it, excludes: [
+                            '**/*Application*',
+                            '**/*Exception*',
+                            '**/*Response*',
+                            '**/*Request*',
+                            '**/BaseTimeEntity',
+                            '**/*Dto*',
+                            '**/S3*',
+                            '**/*Interceptor*',
+                            '**/*ArgumentResolver*',
+                            '**/*ExceptionHandler*',
+                            '**/LoggingUtils',
+                            '**/*Url*',
+                            '**/*AdminController*'
+                    ])
+                })
+        )
+    }
+
+    finalizedBy 'jacocoTestCoverageVerification'
+}
+
+jacocoTestCoverageVerification {
+    def Qdomains = []
+
+    for (qPattern in '*.QA'..'*.QZ') { // qPattern = '*.QA', '*.QB', ... '*.QZ'
+        Qdomains.add(qPattern + '*')
+    }
+
+    violationRules {
+        rule {
+            enabled = true
+            element = "CLASS"
+
+            limit {
+                counter = 'LINE'
+                value = 'COVEREDRATIO'
+                minimum = 0.9
+            }
+
+            excludes = [
+                    '*.*Application',
+                    '*.*Exception*',
+                    '*.*Dto',
+                    '*.S3*',
+                    '*.*Response',
+                    '*.*Request',
+                    '*.BaseTimeEntity',
+                    '*.*Interceptor',
+                    '*.*ArgumentResolver',
+                    '*.*ExceptionHandler',
+                    '*.LoggingUtils',
+                    '*.*Url',
+                    '*.*AdminController'
+            ] + Qdomains
+        }
+    }
+}
+
+openapi3 {
+    servers = [
+            {
+                url = "https://api.zipgo.pet"
+                description = "개발 서버"
+            },
+            {
+                url = "http://localhost:8080"
+                description = "로컬 서버"
+            }
+    ]
+    title = "집사의고민 API Docs"
+    description = "집사의고민 API 명세서"
+    version = "1.0.0"
+    format = "yaml"
+}
+
+swaggerSources {
+    zipgo {
+        setInputFile(file("build/api-spec/openapi3.yaml"))
+    }
+}
+
+tasks.withType(GenerateSwaggerUI) {
+    dependsOn 'openapi3'
+}
+
+generateSwaggerUIZipgo {
+    doLast {
+        copy {
+            from outputDir.toPath()
+            into "build/resources/main/static/docs"
+        }
+    }
+}
+
+test {
+    useJUnitPlatform()
+    finalizedBy 'jacocoTestReport'
+}
+
+build {
+    dependsOn generateSwaggerUI
+}
+
+bootJar {
+    dependsOn generateSwaggerUI
+}

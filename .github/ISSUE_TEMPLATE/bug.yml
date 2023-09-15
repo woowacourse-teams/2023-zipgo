@@ -18,6 +18,10 @@ body:
       required: false
   - type: textarea
     attributes:
+      label: 🕖 예상 작업 소요 시간
+      description: 예상 작업 소요 시간을 적어주세요!
+  - type: textarea
+    attributes:
       label: 🌏 Environment
       description: 버그가 발생한 환경에 대해 작성해 주세요.
       placeholder: |

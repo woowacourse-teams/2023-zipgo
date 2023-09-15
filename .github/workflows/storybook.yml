@@ -1,0 +1,33 @@
+name: Frontend Storybook Test
+
+on:
+  push:
+    branches: [main, develop]
+    paths: frontend/**
+  pull_request:
+    branches: [main, develop]
+    paths: frontend/**
+
+jobs:
+  storybook-test:
+    defaults:
+      run:
+        working-directory: frontend
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-node@v3
+        with:
+          node-version: '18.x'
+      - name: Install dependencies
+        run: yarn
+      - name: Install Playwright
+        run: npx playwright install --with-deps
+      - name: Build Storybook
+        run: yarn build:sb
+      - name: Serve Storybook and run tests
+        run: |
+          npx concurrently -k -s first -n "SB,TEST" -c "magenta,blue" \
+            "yarn start:sb" \
+            "npx wait-on tcp:6006 && yarn test-storybook"

@@ -1,0 +1,43 @@
+spring:
+  datasource:
+    driver-class-name: org.h2.Driver
+    url: jdbc:h2:mem:test;MODE=MYSQL
+    username: sa
+    password:
+  jpa:
+    show-sql: true
+    hibernate:
+      ddl-auto: create
+    properties:
+      hibernate:
+        format_sql: true
+        default_batch_fetch_size: 30
+    defer-datasource-initialization: true
+  sql:
+    init:
+      mode: always
+  h2:
+    console:
+      enabled: true
+jwt:
+  secret-key: this1-is2-zipgo3-test4-secret5-key6
+  expire-length: 604800000
+oauth:
+  kakao:
+    client-id: this1-is2-zipgo3-test4-client5-id7
+    redirect-uri: test-redirect-uri
+    client-secret: my_secret
+logging:
+  level:
+    org:
+      hibernate:
+        type:
+          descriptor:
+            sql: trace
+cloud:
+  aws:
+    s3:
+      bucket: 버킷이름
+      zipgo-directory-name: 집고_디렉토리_이름
+      pet-image-directory: 집고_디렉토리_이미지
+      image-url: 집고_이미지_서버_유알엘

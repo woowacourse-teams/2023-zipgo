@@ -1,0 +1,47 @@
+---
+# port
+server:
+  port: 8080
+
+---
+# database
+spring:
+  datasource:
+    driver-class-name: net.sf.log4jdbc.sql.jdbcapi.DriverSpy
+    url: jdbc:log4jdbc:mysql://localhost:13306/zipgo
+    username: root
+    password: root
+# jpa
+  jpa:
+    database: mysql
+    database-platform: org.hibernate.dialect.MySQL57Dialect
+    generate-ddl: true
+    hibernate:
+      ddl-auto: none
+    properties:
+      hibernate:
+        format_sql: true
+        show_sql: true
+        default_batch_fetch_size: 30
+#    open-in-view: false
+    defer-datasource-initialization: true
+  sql:
+    init:
+      mode: never
+jwt:
+  secret-key: 027eb3f4aa36e178497290da0fa573ee
+  expire-length: 60480000000000000
+oauth:
+  kakao:
+    client-id: 027eb3f4aa36e178497290da0fa573ee
+    redirect-uri: http://localhost:3000/login
+
+---
+
+cloud:
+  aws:
+    s3:
+      bucket: 2023-team-project
+      zipgo-directory-name: 2023-zipgo
+      pet-image-directory: prod/pet-image/
+      image-url: https://image.zipgo.pet/

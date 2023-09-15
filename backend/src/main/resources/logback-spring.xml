@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration scan="true">
+    <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
+        <layout class="ch.qos.logback.classic.PatternLayout">
+            <Pattern>[%d{yyyy-MM-dd HH:mm:ss}:%-3relative][%thread] %-5level %logger{36} - %msg%n</Pattern>
+        </layout>
+    </appender>
+
+    <property name="LOG_PATH" value="./logs"/>
+
+    <turboFilter class="ch.qos.logback.classic.turbo.MarkerFilter">
+        <Marker>LOG4JDBC_NON_STATEMENT</Marker>
+        <OnMatch>DENY</OnMatch>
+        <OnMismatch>NEUTRAL</OnMismatch>
+    </turboFilter>
+
+    <include resource="info-appender.xml"/>
+    <include resource="warn-appender.xml"/>
+    <include resource="error-appender.xml"/>
+
+    <logger name="jdbc.sqltiming" level="INFO"/>
+
+    <root level="INFO">
+        <appender-ref ref="STDOUT"/>
+        <appender-ref ref="INFO_LOG"/>
+        <appender-ref ref="WARN_LOG"/>
+        <appender-ref ref="ERROR_LOG"/>
+    </root>
+</configuration>

@@ -1,0 +1,11 @@
+POST http://localhost:8080/pet-foods
+Content-Type: application/json
+
+< ./body.json
+
+###
+
+GET http://localhost:8080/pet-foods/filters
+
+
+

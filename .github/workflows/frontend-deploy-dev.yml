@@ -1,0 +1,67 @@
+name: Frontend Deploy to Dev
+
+on:
+  push:
+    branches: [develop]
+    paths: frontend/**
+
+jobs:
+  build-dockerfile:
+    defaults:
+      run:
+        working-directory: frontend
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+
+      - uses: actions/setup-node@v3
+        with:
+          node-version: '18.x'
+
+      - name: Install dependencies
+        run: yarn
+
+      - name: Set up QEMU
+        uses: docker/setup-qemu-action@v2
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v2
+
+      - name: Log in to DockerHub
+        uses: docker/login-action@v2
+        with:
+          username: ${{ secrets.DOCKER_USERNAME }}
+          password: ${{ secrets.DOCKER_PASSWORD }}
+
+      - name: Build and push
+        uses: docker/build-push-action@v4
+        with:
+          context: ./frontend
+          file: ./frontend/Dockerfile.dev
+          push: true
+          tags: ${{ secrets.FRONTEND_IMAGE_NAME }}:latest
+          platforms: |
+            linux/amd64
+            linux/arm64
+
+  deploy-to-develop-EC2:
+    needs: build-dockerfile
+    runs-on: front-dev-server
+
+    steps:
+      - name: Deploy to Develop EC2
+        run: |
+          docker stop ${{ secrets.FRONTEND_CONTAINER_NAME }} || true
+          docker rm ${{ secrets.FRONTEND_CONTAINER_NAME }} || true
+          docker pull ${{ secrets.FRONTEND_IMAGE_NAME }}:latest
+          docker run -d -p 3000:3000 --name ${{ secrets.FRONTEND_CONTAINER_NAME }} ${{ secrets.FRONTEND_IMAGE_NAME }}:latest
+
+      - name: Slack Notification
+        uses: 8398a7/action-slack@v3
+        with:
+          status: ${{ job.status }}
+          author_name: 프론트엔드 배포 알림
+          fields: repo,message,commit,author,action,eventName,ref,workflow,job,took
+        env:
+          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
+        if: always()

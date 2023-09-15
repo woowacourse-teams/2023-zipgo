@@ -1,0 +1,60 @@
+---
+# port
+server:
+  port: 8080
+
+---
+# database
+spring:
+  datasource:
+    driver-class-name: net.sf.log4jdbc.sql.jdbcapi.DriverSpy
+    url: ${JDBC_URL}
+    username: ${DB_USERNAME}
+    password: ${DB_PASSWORD}
+
+---
+# jpa
+spring:
+  jpa:
+    database: mysql
+    database-platform: org.hibernate.dialect.MySQL57Dialect
+    generate-ddl: true
+    hibernate:
+      ddl-auto: none
+    properties:
+      hibernate:
+        format_sql: true
+        show_sql: true
+        default_batch_fetch_size: 30
+#    open-in-view: false
+
+---
+# OAuth
+oauth:
+  kakao:
+    client-id: ${CLIENT_ID}
+    redirect-uri: ${REDIRECT_URI}
+    client-secret: ${CLIENT_SECRET}
+
+---
+# jwt
+jwt:
+  secret-key: ${ZIPGO_SECRET_KEY}
+  expire-length: ${EXPIRE_LENGTH}
+
+---
+# log
+logging:
+  level:
+    org.hibernate.SQL: error
+    org.hibernate.type: error
+
+---
+# cloud
+cloud:
+  aws:
+    s3:
+      bucket: ${BUCKET_NAME}
+      zipgo-directory-name: ${ZIPGO_DIRECTORY_NAME}
+      pet-image-directory: ${PET_IMAGE_DIRECTORY}
+      image-url: ${DEV_SERVER_IMAGE_URL}
