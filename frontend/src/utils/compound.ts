@@ -1,5 +1,7 @@
 import { Children, isValidElement, PropsWithChildren, ReactElement, ReactNode } from 'react';
 
+import { RenderProps } from '@/types/common/utility';
+
 export type AsChild = {
   asChild?: boolean;
 };
@@ -7,7 +9,7 @@ export type AsChild = {
 export type PropsWithAsChild<P = unknown> = PropsWithChildren<P> & AsChild;
 
 export type PropsWithRenderProps<P = unknown, R extends object = object> = Omit<P, 'children'> & {
-  children?: ReactNode | ((payload: R) => JSX.Element);
+  children?: ReactNode | RenderProps<R>;
 } & AsChild;
 
 type WithAsChild<P> = PropsWithChildren<{

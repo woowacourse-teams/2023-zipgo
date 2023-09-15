@@ -1,3 +1,5 @@
+export type RenderProps<P extends object = object> = (payload: P) => JSX.Element;
+
 export type Unpack<T> = T extends (infer U)[] ? U : T extends Set<infer U> ? U : T;
 
 export type Parameter<T extends (arg: never) => unknown> = Parameters<T>[0];
