@@ -11,10 +11,12 @@ import static java.util.Collections.EMPTY_LIST;
 
 public class StringUtils {
 
+    private static final String COMMA_SEPARATOR = ",";
+
     public static List<String> convertStringsToCollection(String values) {
         if (Strings.hasText(values)) {
             String decodedValues = decode(values, UTF_8);
-            return Arrays.asList(decodedValues.split(","));
+            return Arrays.asList(decodedValues.split(COMMA_SEPARATOR));
         }
         return EMPTY_LIST;
     }
