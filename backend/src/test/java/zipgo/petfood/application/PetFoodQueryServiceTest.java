@@ -1,6 +1,5 @@
 package zipgo.petfood.application;
 
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
@@ -129,7 +128,9 @@ class PetFoodQueryServiceTest extends ServiceTest {
 
             //then
             assertAll(
-                    () -> assertThat(petFoodsResponse.petFoods()).hasSize(1)
+                    () -> assertThat(petFoodsResponse.petFoods()).hasSize(1),
+                    () -> assertThat(petFoodsResponse.petFoods().get(0).brandName()).isEqualTo("퓨리나"),
+                    () -> assertThat(petFoodsResponse.petFoods().get(0).foodName()).isEqualTo("유럽 영양기준 만족 식품")
             );
         }
 
@@ -157,7 +158,9 @@ class PetFoodQueryServiceTest extends ServiceTest {
 
             // then
             assertAll(
-                    () -> assertThat(petFoodsResponse.petFoods()).hasSize(1)
+                    () -> assertThat(petFoodsResponse.petFoods()).hasSize(1),
+                    () -> assertThat(petFoodsResponse.petFoods().get(0).brandName()).isEqualTo("퓨리나"),
+                    () -> assertThat(petFoodsResponse.petFoods().get(0).foodName()).isEqualTo("유럽 영양기준 만족 식품")
             );
         }
 
@@ -180,8 +183,15 @@ class PetFoodQueryServiceTest extends ServiceTest {
             );
 
             // then
-            assertThat(petFoodsResponse.petFoods()).hasSize(2);
+            assertAll(
+                    () -> assertThat(petFoodsResponse.petFoods()).hasSize(2),
+                    () -> assertThat(petFoodsResponse.petFoods().get(0).brandName()).isEqualTo("퓨리나"),
+                    () -> assertThat(petFoodsResponse.petFoods().get(0).foodName()).isEqualTo("유럽 영양기준 만족 식품"),
+                    () -> assertThat(petFoodsResponse.petFoods().get(1).brandName()).isEqualTo("아카나"),
+                    () -> assertThat(petFoodsResponse.petFoods().get(1).foodName()).isEqualTo("모든 영양기준 만족 식품")
+            );
         }
+
 
         @Test
         void 주원료를_만족하는_식품만_반환한다() {
@@ -203,7 +213,9 @@ class PetFoodQueryServiceTest extends ServiceTest {
 
             // then
             assertAll(
-                    () -> assertThat(petFoodsResponse.petFoods()).hasSize(1)
+                    () -> assertThat(petFoodsResponse.petFoods()).hasSize(1),
+                    () -> assertThat(petFoodsResponse.petFoods().get(0).brandName()).isEqualTo("아카나"),
+                    () -> assertThat(petFoodsResponse.petFoods().get(0).foodName()).isEqualTo("모든 영양기준 만족 식품")
             );
         }
 
@@ -227,7 +239,9 @@ class PetFoodQueryServiceTest extends ServiceTest {
 
             // then
             assertAll(
-                    () -> assertThat(petFoodsResponse.petFoods()).hasSize(1)
+                    () -> assertThat(petFoodsResponse.petFoods()).hasSize(1),
+                    () -> assertThat(petFoodsResponse.petFoods().get(0).brandName()).isEqualTo("아카나"),
+                    () -> assertThat(petFoodsResponse.petFoods().get(0).foodName()).isEqualTo("모든 영양기준 만족 식품")
             );
         }
 
@@ -252,7 +266,9 @@ class PetFoodQueryServiceTest extends ServiceTest {
 
             // then
             assertAll(
-                    () -> assertThat(petFoodsResponse.petFoods()).hasSize(1)
+                    () -> assertThat(petFoodsResponse.petFoods()).hasSize(1),
+                    () -> assertThat(petFoodsResponse.petFoods().get(0).brandName()).isEqualTo("아카나"),
+                    () -> assertThat(petFoodsResponse.petFoods().get(0).foodName()).isEqualTo("모든 영양기준 만족 식품")
             );
         }
 
@@ -371,7 +387,7 @@ class PetFoodQueryServiceTest extends ServiceTest {
         FilterResponse metadata = petFoodQueryService.getMetadataForFilter();
 
         // then
-        Assertions.assertAll(
+        assertAll(
                 () -> assertThat(metadata.brands()).extracting(BrandResponse::brandName)
                         .contains("아카나", "오리젠", "퓨리나"),
                 () -> assertThat(metadata.functionalities()).extracting(FunctionalityResponse::functionality)
