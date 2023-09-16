@@ -30,6 +30,7 @@ import static zipgo.brand.domain.fixture.BrandFixture.오리젠_식품_브랜드
 import static zipgo.petfood.domain.fixture.FunctionalityFixture.기능성_다이어트;
 import static zipgo.petfood.domain.fixture.FunctionalityFixture.기능성_튼튼;
 import static zipgo.petfood.domain.fixture.FunctionalityFixture.다이어트_기능성_요청;
+import static zipgo.petfood.domain.fixture.FunctionalityFixture.짱짱짱_기능성_요청;
 import static zipgo.petfood.domain.fixture.PetFoodFixture.모든_영양기준_만족_식품;
 import static zipgo.petfood.domain.fixture.PetFoodFixture.식품_생성_요청;
 import static zipgo.petfood.domain.fixture.PetFoodFunctionalityFixture.식품_기능성_연관관계_매핑;
@@ -37,6 +38,7 @@ import static zipgo.petfood.domain.fixture.PetFoodPrimaryIngredientFixture.식�
 import static zipgo.petfood.domain.fixture.PrimaryIngredientFixture.닭고기_주원료_요청;
 import static zipgo.petfood.domain.fixture.PrimaryIngredientFixture.주원료_돼지고기;
 import static zipgo.petfood.domain.fixture.PrimaryIngredientFixture.주원료_말미잘;
+import static zipgo.petfood.domain.fixture.PrimaryIngredientFixture.주원료_소고기;
 
 class AdminServiceTest extends ServiceTest {
 
@@ -95,7 +97,7 @@ class AdminServiceTest extends ServiceTest {
     @Test
     void createFunctionality() {
         //when
-        Long functionalityId = adminService.createFunctionality(다이어트_기능성_요청);
+        Long functionalityId = adminService.createFunctionality(짱짱짱_기능성_요청);
 
         //then
         assertThat(functionalityRepository.getById(functionalityId)).isNotNull();
@@ -114,12 +116,10 @@ class AdminServiceTest extends ServiceTest {
     void createPetFood() {
         //given
         Brand brand = brandRepository.save(아카나_식품_브랜드_생성());
-        PrimaryIngredient 돼지고기 = primaryIngredientRepository.save(주원료_돼지고기());
-        PrimaryIngredient 말미잘 = primaryIngredientRepository.save(주원료_말미잘());
-        Functionality 다이어트 = functionalityRepository.save(기능성_다이어트());
+        PrimaryIngredient 소고기 = primaryIngredientRepository.save(주원료_소고기());
         Functionality 튼튼 = functionalityRepository.save(기능성_튼튼());
-        PetFoodCreateRequest 식품_생성_요청 = 식품_생성_요청(brand.getId(), List.of(다이어트.getId(), 튼튼.getId()),
-                List.of(돼지고기.getId(), 말미잘.getId()));
+        PetFoodCreateRequest 식품_생성_요청 = 식품_생성_요청(brand.getId(), List.of(튼튼.getId()),
+                List.of(소고기.getId()));
 
         //when
         Long petFoodId = adminService.createPetFood(식품_생성_요청, "imageUrl");
