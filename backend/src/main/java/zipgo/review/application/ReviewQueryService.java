@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import zipgo.pet.domain.AgeGroup;
 import zipgo.pet.domain.Breed;
+import zipgo.pet.domain.Breeds;
 import zipgo.pet.domain.repository.BreedRepository;
 import zipgo.pet.domain.repository.PetSizeRepository;
 import zipgo.petfood.domain.PetFood;
@@ -113,7 +114,8 @@ public class ReviewQueryService {
     }
 
     private List<Metadata> findAllBreeds() {
-        return breedRepository.findAll().stream()
+        Breeds breeds = Breeds.from(breedRepository.findAll());
+        return breeds.getOrderedBreeds().stream()
                 .map(breed -> new Metadata(breed.getId(), breed.getName()))
                 .toList();
     }
