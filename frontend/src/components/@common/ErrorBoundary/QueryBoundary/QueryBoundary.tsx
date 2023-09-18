@@ -1,8 +1,7 @@
-import { QueryErrorResetBoundary, useQueryErrorResetBoundary } from '@tanstack/react-query';
-import { ComponentProps, PropsWithChildren, ReactNode, Suspense } from 'react';
+import { QueryErrorResetBoundary } from '@tanstack/react-query';
+import { ComponentProps, PropsWithChildren, Suspense } from 'react';
 
 import { composeFunctions } from '@/utils/composeFunctions';
-import { composeEventHandlers } from '@/utils/dom';
 
 import LoadingSpinner from '../../LoadingSpinner';
 import APIBoundary from '../APIBoundary/APIBoundary';
