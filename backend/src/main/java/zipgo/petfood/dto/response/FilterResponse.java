@@ -1,4 +1,4 @@
-package zipgo.petfood.dto;
+package zipgo.petfood.dto.response;
 
 import java.util.List;
 import zipgo.brand.domain.Brand;
@@ -18,17 +18,16 @@ public record FilterResponse(
             List<Functionality> functionalities
     ) {
         return new FilterResponse(
-                brands.stream()
-                        .map(BrandResponse::from)
-                        .toList(),
+                brands.stream().map(BrandResponse::from).toList(),
                 primaryIngredients.stream()
-                        .map(PrimaryIngredientResponse::from)
-                        .toList(),
+                        .map(PrimaryIngredientResponse::from).toList(),
                 functionalities.stream()
-                        .map(FunctionalityResponse::from)
-                        .toList(),
-                List.of(NutrientStandardResponse.of(1L, "미국"),
-                        NutrientStandardResponse.of(2L, "유럽"))
+                        .map(FunctionalityResponse::from).toList(),
+                //TODO 하드 코딩 생각
+                List.of(
+                        NutrientStandardResponse.of(1L, "미국"),
+                        NutrientStandardResponse.of(2L, "유럽")
+                )
         );
     }
 

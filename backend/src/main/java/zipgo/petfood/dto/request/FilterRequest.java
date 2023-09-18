@@ -1,4 +1,4 @@
-package zipgo.petfood.dto;
+package zipgo.petfood.dto.request;
 
 import java.util.List;
 
@@ -17,5 +17,7 @@ public record FilterRequest(
     ) {
         return new FilterRequest(brands, nutritionStandards, mainIngredients, functionalities);
     }
+
+
 
 }

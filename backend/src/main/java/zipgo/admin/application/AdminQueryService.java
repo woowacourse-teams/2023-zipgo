@@ -36,14 +36,14 @@ public class AdminQueryService {
     }
 
     public List<FunctionalitySelectResponse> getFunctionalities() {
-        List<Functionality> distinctFunctionalities = functionalityRepository.findDistinctFunctionalities();
+        List<Functionality> distinctFunctionalities = functionalityRepository.findAll();
         return distinctFunctionalities.stream()
                 .map(functionality -> FunctionalitySelectResponse.of(functionality.getId(), functionality.getName()))
                 .collect(Collectors.toList());
     }
 
     public List<PrimaryIngredientSelectResponse> getPrimaryIngredients() {
-        List<PrimaryIngredient> primaryIngredients = primaryIngredientRepository.findDistinctPrimaryIngredients();
+        List<PrimaryIngredient> primaryIngredients = primaryIngredientRepository.findAll();
         return primaryIngredients.stream()
                 .map(primaryIngredient -> PrimaryIngredientSelectResponse.of(primaryIngredient.getId(),
                         primaryIngredient.getName()))

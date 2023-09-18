@@ -6,6 +6,7 @@ import zipgo.admin.dto.FunctionalityCreateRequest;
 public class FunctionalityFixture {
 
     public static FunctionalityCreateRequest 다이어트_기능성_요청 = new FunctionalityCreateRequest("다이어트");
+    public static FunctionalityCreateRequest 짱짱짱_기능성_요청 = new FunctionalityCreateRequest("짱짱짱");
 
     public static Functionality 기능성_다이어트() {
         Functionality 다이어트 = Functionality.builder()
@@ -24,6 +25,13 @@ public class FunctionalityFixture {
     public static Functionality 기능성_짱짱() {
         Functionality 짱짱 = Functionality.builder()
                 .name("짱짱")
+                .build();
+        return 짱짱;
+    }
+
+    public static Functionality 기능성_짱짱짱() {
+        Functionality 짱짱 = Functionality.builder()
+                .name("짱짱짱")
                 .build();
         return 짱짱;
     }
