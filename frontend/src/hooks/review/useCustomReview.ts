@@ -7,8 +7,8 @@ import useEasyNavigate from '../@common/useEasyNavigate';
 import useValidQueryString from '../common/useValidQueryString';
 
 export const useCustomReview = () => {
-  const queryStringObj = useValidQueryString(['ageGroups', 'breeds', 'sortBy']);
   const { replaceQueryString } = useEasyNavigate();
+  const queryStringObj = useValidQueryString(['ageGroups', 'breeds', 'sortBy']);
   const { petProfile } = usePetProfile();
   const [checked, setChecked] = useState(false);
 
@@ -19,7 +19,6 @@ export const useCustomReview = () => {
   const onClickCustomReviewButton = () => {
     if (!checked) {
       if (!petProfile) return;
-      console.log(petProfile);
 
       const newQueryStringObj = generateQueryString({
         ...queryStringObj,
