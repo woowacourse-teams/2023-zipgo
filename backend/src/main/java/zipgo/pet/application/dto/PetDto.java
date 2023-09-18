@@ -2,7 +2,7 @@ package zipgo.pet.application.dto;
 
 import java.time.Year;
 import zipgo.member.domain.Member;
-import zipgo.pet.domain.Breeds;
+import zipgo.pet.domain.Breed;
 import zipgo.pet.domain.Gender;
 import zipgo.pet.domain.Pet;
 
@@ -16,7 +16,7 @@ public record PetDto(
         double weight
 ) {
 
-    public Pet toEntity(Member owner, Breeds breeds) {
+    public Pet toEntity(Member owner, Breed breed) {
         int birthYear = Year.now().getValue() - age;
         return Pet.builder()
                 .birthYear(Year.of(birthYear))
@@ -24,7 +24,7 @@ public record PetDto(
                 .imageUrl(imageUrl)
                 .name(name)
                 .gender(Gender.from(gender))
-                .breeds(breeds)
+                .breed(breed)
                 .weight(weight)
                 .build();
     }

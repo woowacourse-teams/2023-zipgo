@@ -14,11 +14,11 @@ import zipgo.brand.domain.repository.BrandRepository;
 import zipgo.common.repository.RepositoryTest;
 import zipgo.member.domain.Member;
 import zipgo.member.domain.repository.MemberRepository;
-import zipgo.pet.domain.Breeds;
+import zipgo.pet.domain.Breed;
 import zipgo.pet.domain.Pet;
 import zipgo.pet.domain.PetSize;
 import zipgo.pet.domain.fixture.PetFixture;
-import zipgo.pet.domain.repository.BreedsRepository;
+import zipgo.pet.domain.repository.BreedRepository;
 import zipgo.pet.domain.repository.PetRepository;
 import zipgo.pet.domain.repository.PetSizeRepository;
 import zipgo.petfood.domain.PetFood;
@@ -29,7 +29,7 @@ import zipgo.review.exception.ReviewException;
 import zipgo.review.fixture.MemberFixture;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static zipgo.pet.domain.fixture.BreedsFixture.견종;
+import static zipgo.pet.domain.fixture.BreedFixture.견종;
 import static zipgo.pet.domain.fixture.PetSizeFixture.소형견;
 import static zipgo.review.fixture.MemberFixture.무민;
 import static zipgo.review.fixture.ReviewFixture.극찬_리뷰_생성;
@@ -46,7 +46,7 @@ public class ReviewRepositoryTest extends RepositoryTest {
     private PetSizeRepository petSizeRepository;
 
     @Autowired
-    private BreedsRepository breedsRepository;
+    private BreedRepository breedRepository;
 
     @Autowired
     private PetFoodRepository petFoodRepository;
@@ -98,7 +98,7 @@ public class ReviewRepositoryTest extends RepositoryTest {
         PetFood 식품 = petFoodRepository.save(PetFoodFixture.모든_영양기준_만족_식품(브랜드));
         Member 멤버 = memberRepository.save(무민());
         PetSize 사이즈 = petSizeRepository.save(소형견());
-        Breeds 종류 = breedsRepository.save(견종(사이즈));
+        Breed 종류 = breedRepository.save(견종(사이즈));
         Pet 반려동물 = petRepository.save(PetFixture.반려동물(멤버, 종류));
         return reviewRepository.save(극찬_리뷰_생성(반려동물, 식품, List.of("없어요")));
     }
@@ -132,13 +132,13 @@ public class ReviewRepositoryTest extends RepositoryTest {
         PetFood 식품 = petFoodRepository.save(PetFoodFixture.모든_영양기준_만족_식품(브랜드));
         Member 멤버 = memberRepository.save(무민());
         PetSize 사이즈 = petSizeRepository.save(소형견());
-        Breeds 종류 = breedsRepository.save(견종(사이즈));
+        Breed 종류 = breedRepository.save(견종(사이즈));
         Pet 반려동물 = petRepository.save(
                 Pet.builder()
                         .name("무민이")
                         .owner(멤버)
                         .birthYear(Year.of(생년))
-                        .breeds(종류)
+                        .breed(종류)
                         .weight(5.0)
                         .build()
         );

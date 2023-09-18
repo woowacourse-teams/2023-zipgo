@@ -37,7 +37,7 @@ import static org.springframework.restdocs.payload.PayloadDocumentation.fieldWit
 import static org.springframework.restdocs.payload.PayloadDocumentation.responseFields;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import static zipgo.member.domain.fixture.MemberFixture.식별자_있는_멤버;
-import static zipgo.pet.domain.fixture.BreedsFixture.견종;
+import static zipgo.pet.domain.fixture.BreedFixture.견종;
 import static zipgo.pet.domain.fixture.PetSizeFixture.대형견;
 
 
