@@ -43,5 +43,17 @@ public record FindReviewsFilterRequest(
         }
     }
 
+    public FindReviewsFilterRequest toMixedBreedRequest(List<Long> mixBreedIds) {
+        return new FindReviewsFilterRequest(
+                petFoodId,
+                size,
+                lastReviewId,
+                sortBy,
+                petSizes,
+                ageGroups,
+                mixBreedIds,
+                memberId
+        );
+    }
 
 }

@@ -9,6 +9,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import zipgo.pet.domain.AgeGroup;
+import zipgo.pet.domain.Breed;
 import zipgo.pet.domain.repository.BreedRepository;
 import zipgo.pet.domain.repository.PetSizeRepository;
 import zipgo.petfood.domain.PetFood;
@@ -34,6 +35,8 @@ import zipgo.review.dto.response.type.StoolConditionResponse;
 import zipgo.review.dto.response.type.TastePreferenceResponse;
 
 import static java.util.stream.Collectors.toMap;
+import static zipgo.pet.domain.Breeds.MIXED_BREED_ID;
+import static zipgo.pet.domain.Breeds.MIXED_BREED_NAME;
 
 @Service
 @RequiredArgsConstructor
@@ -50,12 +53,33 @@ public class ReviewQueryService {
     private final PetSizeRepository petSizeRepository;
 
     public GetReviewsResponse getReviews(FindReviewsFilterRequest request) {
+        List<Long> mixBreedIds = findMixedBreedIds();
+        if (isMixedBreed(request.breedIds(), mixBreedIds)) {
+            request = request.toMixedBreedRequest(mixBreedIds);
+        }
+
         List<FindReviewsQueryResponse> reviews = reviewQueryRepository.findReviewsBy(request);
 
         Map<Long, List<String>> reviewIdToAdverseReactions = findAdverseReactionsBy(reviews);
         Map<Long, ReviewHelpfulReaction> reviewIdToHelpfulReactions = findHelpfulReactionsBy(request.memberId(), reviews);
 
         return GetReviewsResponse.of(reviews, reviewIdToAdverseReactions, reviewIdToHelpfulReactions);
+    }
+
+    private List<Long> findMixedBreedIds() {
+        return breedRepository.findByName(MIXED_BREED_NAME).stream()
+                .map(Breed::getId)
+                .toList();
+    }
+
+    private boolean isMixedBreed(List<Long> requestIds, List<Long> mixBreedIds) {
+        if (requestIds.size() == 1 && requestIds.get(0) == MIXED_BREED_ID) {
+            return true;
+        }
+        if (requestIds.size() == 1 && mixBreedIds.contains(requestIds.get(0))) {
+            return true;
+        }
+        return false;
     }
 
     private Map<Long, ReviewHelpfulReaction> findHelpfulReactionsBy(Long memberId,
