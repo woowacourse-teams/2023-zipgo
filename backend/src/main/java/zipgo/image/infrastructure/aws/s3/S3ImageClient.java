@@ -16,9 +16,10 @@ public class S3ImageClient implements ImageClient {
     @Override
     public String upload(String fileName, MultipartFile file, String targetDirectory) {
         String bucket = awsS3Credentials.getBucket();
+        String envDirectory = awsS3Credentials.getEnv();
         String zipgoDirectory = awsS3Credentials.getZipgoDirectory();
 
-        String route = zipgoDirectory + targetDirectory + fileName;
+        String route = zipgoDirectory + envDirectory + targetDirectory + fileName;
 
         s3Uploader.upload(bucket, route, file);
         return awsS3Credentials.getImageUrl() + targetDirectory + fileName;
