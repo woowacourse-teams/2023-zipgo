@@ -1,6 +1,12 @@
 import { ChangeEvent, useState } from 'react';
 
-import { AGE_GROUP, PET_AGE_ADULT, PET_AGE_MAX, PET_AGE_MIN } from '@/constants/petProfile';
+import {
+  AGE_GROUP,
+  AGE_GROUP_ID,
+  PET_AGE_ADULT,
+  PET_AGE_MAX,
+  PET_AGE_MIN,
+} from '@/constants/petProfile';
 import { PetProfile, PetSize } from '@/types/petProfile/client';
 
 import useEasyNavigate from '../@common/useEasyNavigate';
@@ -45,11 +51,11 @@ export const usePetProfileEdition = () => {
     if (isValidAgeRange(petAge)) {
       setIsValidAgeSelect(true);
       setPet(prev => {
-        let ageGroupId = 2;
+        let ageGroupId: number = AGE_GROUP_ID.ADULT;
 
         if (!prev) return prev;
-        if (petAge <= PET_AGE_MIN) ageGroupId = 1;
-        if (petAge > PET_AGE_ADULT && petAge <= PET_AGE_MAX) ageGroupId = 3;
+        if (petAge <= PET_AGE_MIN) ageGroupId = AGE_GROUP_ID.PUPPY;
+        if (petAge > PET_AGE_ADULT && petAge <= PET_AGE_MAX) ageGroupId = AGE_GROUP_ID.SENIOR;
 
         const ageGroup = AGE_GROUP[ageGroupId - 1];
 

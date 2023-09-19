@@ -11,6 +11,11 @@ export const GENDERS = ['남', '여'] as const;
 export const MALE = '남';
 export const FEMALE = '여';
 export const AGE_GROUP = ['퍼피', '어덜트', '시니어'] as const;
+export const AGE_GROUP_ID = {
+  PUPPY: 1,
+  ADULT: 2,
+  SENIOR: 3,
+} as const;
 
 export const PET_PROFILE_ADDITION_STEP = {
   NAME: 1,
