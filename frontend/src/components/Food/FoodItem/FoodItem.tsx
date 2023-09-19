@@ -11,7 +11,7 @@ const FoodItem = (foodItemProps: FoodItemProps) => {
   return (
     <FoodItemWrapper to={`pet-food/${id}`}>
       <FoodImageWrapper>
-        <FoodImage src={imageUrl} alt="Food image" />
+        <FoodImage src={imageUrl} alt="Food image" loading="lazy" />
       </FoodImageWrapper>
       <BrandName>{brandName}</BrandName>
       <FoodName>{foodName}</FoodName>
