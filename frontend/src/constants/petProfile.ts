@@ -2,6 +2,7 @@ import { PATH } from '@/router/routes';
 
 export const PET_AGE_MIN = 0;
 export const PET_AGE_MAX = 20;
+export const PET_AGE_ADULT = 6;
 
 export const MIXED_BREED = '믹스견';
 
@@ -9,6 +10,12 @@ export const PET_SIZES = ['소형견', '중형견', '대형견'] as const;
 export const GENDERS = ['남', '여'] as const;
 export const MALE = '남';
 export const FEMALE = '여';
+export const AGE_GROUP = ['퍼피', '어덜트', '시니어'] as const;
+export const AGE_GROUP_ID = {
+  PUPPY: 1,
+  ADULT: 2,
+  SENIOR: 3,
+} as const;
 
 export const PET_PROFILE_ADDITION_STEP = {
   NAME: 1,

@@ -2,6 +2,8 @@ import { ChangeEvent, useEffect, useState } from 'react';
 
 import { parseCheckList } from '@/utils/parseCheckList';
 
+import useValidQueryString from '../common/useValidQueryString';
+
 type FilterMeta = {
   id: number;
   name: string;
@@ -19,10 +21,9 @@ const initialFilterList: Record<keyof MetaData, Set<number>> = {
   breeds: new Set(),
 };
 
-let cachedFilterList: Record<keyof MetaData, Set<number>>;
-
 const useReviewFilterList = () => {
-  const [filterList, setFilterList] = useState(cachedFilterList ?? initialFilterList);
+  const { ageGroups, breeds, custom } = useValidQueryString(['ageGroups', 'breeds', 'custom']);
+  const [filterList, setFilterList] = useState(initialFilterList);
 
   const parsedFilterList = parseCheckList(filterList);
 
@@ -33,6 +34,18 @@ const useReviewFilterList = () => {
     selected ? targetFilterList.delete(filterId) : targetFilterList.add(filterId);
 
     setFilterList(prev => ({ ...prev, [keyword]: new Set(targetFilterList) }));
+  };
+
+  const toggleCustomMode = () => {
+    if (custom === 'on') {
+      setFilterList(prev => ({
+        petSizes: new Set(),
+        ageGroups: new Set([Number(ageGroups)]),
+        breeds: new Set([Number(breeds)]),
+      }));
+    } else {
+      resetFilterList();
+    }
   };
 
   const resetFilterList = () => setFilterList(initialFilterList);
@@ -46,9 +59,9 @@ const useReviewFilterList = () => {
     setFilterList(prev => ({ ...prev, breeds }));
   };
 
-  useEffect(() => () => {
-    cachedFilterList = filterList;
-  });
+  useEffect(() => {
+    toggleCustomMode();
+  }, [custom]);
 
   return { filterList, parsedFilterList, toggleFilter, onSelectBreed, resetFilterList };
 };
