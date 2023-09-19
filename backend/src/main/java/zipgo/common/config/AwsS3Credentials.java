@@ -10,8 +10,8 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 public class AwsS3Credentials {
 
     private final String bucket;
-    private final String zipgoDirectoryName;
-    private final String petImageDirectory;
+    private final String zipgoDirectory;
+    private final String environment;
     private final String imageUrl;
 
 }
