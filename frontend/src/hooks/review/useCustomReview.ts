@@ -39,7 +39,7 @@ export const useCustomReview = () => {
 
   useEffect(() => {
     setChecked(isSimilarToMyPet);
-  }, [Object.values(queryStringObj).join('')]);
+  }, [Object.values(queryStringObj).join()]);
 
   return { checked, onClickCustomReviewButton };
 };

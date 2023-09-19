@@ -36,6 +36,18 @@ const useReviewFilterList = () => {
     setFilterList(prev => ({ ...prev, [keyword]: new Set(targetFilterList) }));
   };
 
+  const toggleCustomMode = () => {
+    if (custom === 'on') {
+      setFilterList(prev => ({
+        petSizes: new Set(),
+        ageGroups: new Set([Number(ageGroups)]),
+        breeds: new Set([Number(breeds)]),
+      }));
+    } else {
+      resetFilterList();
+    }
+  };
+
   const resetFilterList = () => setFilterList(initialFilterList);
 
   const onSelectBreed = (e: ChangeEvent<HTMLSelectElement>) => {
@@ -48,21 +60,7 @@ const useReviewFilterList = () => {
   };
 
   useEffect(() => {
-    if (custom === 'on') {
-      setFilterList(prev => ({
-        petSizes: new Set(),
-        ageGroups: new Set([Number(ageGroups)]),
-        breeds: new Set([Number(breeds)]),
-      }));
-
-      return;
-    }
-
-    setFilterList(prev => ({
-      petSizes: new Set(),
-      ageGroups: new Set(),
-      breeds: new Set(),
-    }));
+    toggleCustomMode();
   }, [custom]);
 
   return { filterList, parsedFilterList, toggleFilter, onSelectBreed, resetFilterList };
