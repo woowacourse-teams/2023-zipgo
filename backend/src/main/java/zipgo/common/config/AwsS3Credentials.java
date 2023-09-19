@@ -11,7 +11,7 @@ public class AwsS3Credentials {
 
     private final String bucket;
     private final String zipgoDirectory;
-    private final String environment;
+    private final String env;
     private final String imageUrl;
 
 }

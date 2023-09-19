@@ -54,7 +54,7 @@ logging:
 cloud:
   aws:
     s3:
-      bucket: ${BUCKET_NAME}
+      bucket: ${WOOTECO_BUCKET}
       zipgo-directory: ${ZIPGO_DIRECTORY}
-      environment: ${ENVIRONMENT_DIRECTORY}
-      image-url: ${DEV_IMAGE_URL}
+      env: ${ENVIRONMENT_DIRECTORY}
+      image-url: ${ZIPGO_IMAGE_URL}
