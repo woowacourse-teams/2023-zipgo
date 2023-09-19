@@ -74,10 +74,10 @@ public class ReviewQueryService {
     }
 
     private boolean isMixedBreed(List<Long> requestIds, List<Long> mixBreedIds) {
-        if (requestIds.size() == 1 && requestIds.get(0) == MIXED_BREED_ID) {
+        if (!requestIds.isEmpty() && requestIds.get(0) == MIXED_BREED_ID) {
             return true;
         }
-        if (requestIds.size() == 1 && mixBreedIds.contains(requestIds.get(0))) {
+        if (!requestIds.isEmpty() && mixBreedIds.contains(requestIds.get(0))) {
             return true;
         }
         return false;
