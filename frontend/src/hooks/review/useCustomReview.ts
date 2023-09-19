@@ -17,9 +17,15 @@ export const useCustomReview = () => {
     petProfile?.breedId === Number(queryStringObj.breeds);
 
   const onClickCustomReviewButton = () => {
-    if (!checked) {
-      if (!petProfile) return;
+    if (!petProfile) {
+      alert('반려동물 등록 후 이용 가능합니다.');
 
+      return;
+    }
+
+    if (checked) replaceQueryString('', { exclude: ['sortBy'] });
+
+    if (!checked) {
       const newQueryStringObj = generateQueryString({
         ...queryStringObj,
         ageGroups: petProfile.ageGroupId,
@@ -28,11 +34,7 @@ export const useCustomReview = () => {
       });
 
       replaceQueryString(newQueryStringObj, { exclude: [] });
-
-      return;
     }
-
-    replaceQueryString('', { exclude: ['sortBy'] });
   };
 
   useEffect(() => {
