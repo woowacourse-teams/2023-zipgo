@@ -55,7 +55,7 @@ public class ReviewQueryService {
 
     public GetReviewsResponse getReviews(FindReviewsFilterRequest request) {
         List<Long> mixBreedIds = findMixedBreedIds();
-        if (isMixedBreed(request.breedIds(), mixBreedIds)) {
+        if (isRequestContainMixBreeds(request.breedIds(), mixBreedIds)) {
             request = request.toMixedBreedRequest(mixBreedIds);
         }
 
@@ -73,7 +73,7 @@ public class ReviewQueryService {
                 .toList();
     }
 
-    private boolean isMixedBreed(List<Long> requestIds, List<Long> mixBreedIds) {
+    private boolean isRequestContainMixBreeds(List<Long> requestIds, List<Long> mixBreedIds) {
         if (!requestIds.isEmpty() && requestIds.get(0) == MIXED_BREED_ID) {
             return true;
         }
