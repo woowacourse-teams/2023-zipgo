@@ -1,7 +1,8 @@
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 
-import { Food, FoodDetail } from '@/types/food/client';
+import LazyImage from '@/components/@common/LazyImage/LazyImage';
+import { Food } from '@/types/food/client';
 
 interface FoodItemProps extends Food {}
 
@@ -11,7 +12,7 @@ const FoodItem = (foodItemProps: FoodItemProps) => {
   return (
     <FoodItemWrapper to={`pet-food/${id}`}>
       <FoodImageWrapper>
-        <FoodImage src={imageUrl} alt="Food image" loading="lazy" />
+        <FoodImage src={imageUrl} alt="Food image" />
       </FoodImageWrapper>
       <BrandName>{brandName}</BrandName>
       <FoodName>{foodName}</FoodName>
@@ -21,7 +22,7 @@ const FoodItem = (foodItemProps: FoodItemProps) => {
 
 export default FoodItem;
 
-const FoodImage = styled.img`
+const FoodImage = styled(LazyImage)`
   position: absolute;
   top: 0;
   left: 0;
