@@ -175,7 +175,7 @@ public class ReviewQueryRepositoryImpl implements ReviewQueryRepository {
     }
 
     @Override
-    public Review getReviewsWithReviewRelations(Long reviewId) {
+    public Review getReviewWithRelations(Long reviewId) {
         return queryFactory
                 .selectFrom(review)
                 .join(review.pet, pet)

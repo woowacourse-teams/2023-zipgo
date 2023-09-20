@@ -16,6 +16,7 @@ import zipgo.petfood.dto.response.FilterResponse;
 import zipgo.petfood.dto.response.GetPetFoodQueryResponse;
 import zipgo.petfood.dto.response.GetPetFoodResponse;
 import zipgo.petfood.dto.response.GetPetFoodsResponse;
+import zipgo.petfood.exception.PetFoodNotFoundException;
 import zipgo.petfood.infra.persist.PetFoodQueryRepositoryImpl;
 
 import java.util.List;
@@ -59,7 +60,7 @@ public class PetFoodQueryService {
     }
 
     public GetPetFoodResponse getPetFoodResponse(Long id) {
-        PetFood petfood = petFoodRepository.getById(id);
+        PetFood petfood = petFoodQueryRepository.findPetFoodWithRelations(id).orElseThrow(() -> new PetFoodNotFoundException(id));
         return GetPetFoodResponse.of(petfood, petfood.calculateRatingAverage(), petfood.countReviews());
     }
 
