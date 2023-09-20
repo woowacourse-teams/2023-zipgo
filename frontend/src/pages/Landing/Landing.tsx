@@ -33,7 +33,7 @@ const Landing = () => {
               <BannerTitle>집사의 고민</BannerTitle>
             </TitleContainer>
           </BannerText>
-          <BannerImg src={ZipgoBannerPng.src} onClick={onToast} />
+          <BannerImg src={ZipgoBannerPng.src} onClick={onToast} alt="집사의고민 배너 이미지" />
         </BannerSection>
         <ListSection>
           <FilterBottomSheet />
