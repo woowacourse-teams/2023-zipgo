@@ -79,7 +79,7 @@ public class ReviewQueryService {
     }
 
     public GetReviewResponse getReview(Long reviewId, Long memberId) {
-        Review review = reviewRepository.getById(reviewId);
+        Review review = reviewQueryRepository.getReviewsWithReviewRelations(reviewId);
         return GetReviewResponse.from(review, memberId);
     }
 
