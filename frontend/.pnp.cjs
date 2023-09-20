@@ -63,6 +63,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["babel-loader", "virtual:d9650954c7f1725ea712d2e40695de9ea5d1c0fa9b89379134c62909d440d91b03d6c37e2823804a3404472b90a5bec73c82193190dd3c4db4c9e9edd75db91e#npm:9.1.3"],\
             ["babel-plugin-styled-components", "virtual:d9650954c7f1725ea712d2e40695de9ea5d1c0fa9b89379134c62909d440d91b03d6c37e2823804a3404472b90a5bec73c82193190dd3c4db4c9e9edd75db91e#npm:2.1.4"],\
             ["babel-preset-react-app", "npm:10.0.1"],\
+            ["browser-image-compression", "npm:2.0.2"],\
             ["copy-webpack-plugin", "virtual:d9650954c7f1725ea712d2e40695de9ea5d1c0fa9b89379134c62909d440d91b03d6c37e2823804a3404472b90a5bec73c82193190dd3c4db4c9e9edd75db91e#npm:11.0.0"],\
             ["cross-env", "npm:7.0.3"],\
             ["dotenv", "npm:16.3.1"],\
@@ -12238,6 +12239,16 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           "linkType": "HARD"\
         }]\
       ]],\
+      ["browser-image-compression", [\
+        ["npm:2.0.2", {\
+          "packageLocation": "./.yarn/cache/browser-image-compression-npm-2.0.2-21a831f9cb-16051f07b0.zip/node_modules/browser-image-compression/",\
+          "packageDependencies": [\
+            ["browser-image-compression", "npm:2.0.2"],\
+            ["uzip", "npm:0.20201231.0"]\
+          ],\
+          "linkType": "HARD"\
+        }]\
+      ]],\
       ["browserify-zlib", [\
         ["npm:0.1.4", {\
           "packageLocation": "./.yarn/cache/browserify-zlib-npm-0.1.4-34d70ed43d-abee4cb434.zip/node_modules/browserify-zlib/",\
@@ -15630,6 +15641,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["babel-loader", "virtual:d9650954c7f1725ea712d2e40695de9ea5d1c0fa9b89379134c62909d440d91b03d6c37e2823804a3404472b90a5bec73c82193190dd3c4db4c9e9edd75db91e#npm:9.1.3"],\
             ["babel-plugin-styled-components", "virtual:d9650954c7f1725ea712d2e40695de9ea5d1c0fa9b89379134c62909d440d91b03d6c37e2823804a3404472b90a5bec73c82193190dd3c4db4c9e9edd75db91e#npm:2.1.4"],\
             ["babel-preset-react-app", "npm:10.0.1"],\
+            ["browser-image-compression", "npm:2.0.2"],\
             ["copy-webpack-plugin", "virtual:d9650954c7f1725ea712d2e40695de9ea5d1c0fa9b89379134c62909d440d91b03d6c37e2823804a3404472b90a5bec73c82193190dd3c4db4c9e9edd75db91e#npm:11.0.0"],\
             ["cross-env", "npm:7.0.3"],\
             ["dotenv", "npm:16.3.1"],\
@@ -24268,6 +24280,15 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           "packageLocation": "./.yarn/cache/uuid-npm-9.0.0-46c41e3e43-8dd2c83c43.zip/node_modules/uuid/",\
           "packageDependencies": [\
             ["uuid", "npm:9.0.0"]\
+          ],\
+          "linkType": "HARD"\
+        }]\
+      ]],\
+      ["uzip", [\
+        ["npm:0.20201231.0", {\
+          "packageLocation": "./.yarn/cache/uzip-npm-0.20201231.0-122f770c6a-34253f4c3d.zip/node_modules/uzip/",\
+          "packageDependencies": [\
+            ["uzip", "npm:0.20201231.0"]\
           ],\
           "linkType": "HARD"\
         }]\
