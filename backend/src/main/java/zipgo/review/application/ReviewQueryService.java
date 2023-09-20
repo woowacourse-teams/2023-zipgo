@@ -69,7 +69,7 @@ public class ReviewQueryService {
     }
 
     private List<Long> findMixedBreedIds() {
-        return breedRepository.findByName(MIXED_BREED_NAME).stream()
+        return breedRepository.findBreedsByNameContaining(MIXED_BREED_NAME).stream()
                 .map(Breed::getId)
                 .toList();
     }
