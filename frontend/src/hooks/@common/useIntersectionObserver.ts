@@ -1,26 +1,38 @@
-import { RefObject, useCallback, useEffect, useRef, useState } from 'react';
+import { MutableRefObject, useCallback, useEffect, useRef, useState } from 'react';
 
-export const useIntersectionObserver = <T extends HTMLElement>(target: RefObject<T>) => {
+interface UseIntersectionObserverOptions<T extends HTMLElement> {
+  ref?: MutableRefObject<T | null>;
+  observerOptions?: IntersectionObserverInit;
+}
+
+export const useIntersectionObserver = <T extends HTMLElement>(
+  options?: UseIntersectionObserverOptions<T>,
+) => {
+  const localRef = useRef<T>(null);
+
   const observerRef = useRef<IntersectionObserver | null>(null);
+
   const [isIntersected, setIsIntersected] = useState<boolean>(false);
+
+  const targetRef = options?.ref || localRef;
 
   const getObserver = useCallback(() => {
     if (!observerRef.current) {
       observerRef.current = new IntersectionObserver(entries => {
         setIsIntersected(entries.some(entry => entry.isIntersecting));
-      });
+      }, options?.observerOptions);
     }
 
     return observerRef.current;
   }, []);
 
   useEffect(() => {
-    if (target.current) getObserver().observe(target.current);
+    if (targetRef.current) getObserver().observe(targetRef.current);
 
     return () => {
       getObserver().disconnect();
     };
-  }, [target, getObserver]);
+  }, [targetRef, getObserver]);
 
-  return isIntersected;
+  return { targetRef, isIntersected };
 };
