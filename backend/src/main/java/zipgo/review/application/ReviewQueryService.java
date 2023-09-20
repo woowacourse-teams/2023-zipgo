@@ -3,11 +3,13 @@ package zipgo.review.application;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.function.Function;
 import java.util.stream.IntStream;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import zipgo.auth.dto.AuthCredentials;
 import zipgo.pet.domain.AgeGroup;
 import zipgo.pet.domain.repository.BreedRepository;
 import zipgo.pet.domain.repository.PetSizeRepository;
@@ -25,6 +27,7 @@ import zipgo.review.domain.type.StoolCondition;
 import zipgo.review.domain.type.TastePreference;
 import zipgo.review.dto.response.GetReviewMetadataResponse;
 import zipgo.review.dto.response.GetReviewMetadataResponse.Metadata;
+import zipgo.review.dto.response.GetReviewResponse;
 import zipgo.review.dto.response.GetReviewsResponse;
 import zipgo.review.dto.response.GetReviewsSummaryResponse;
 import zipgo.review.dto.response.type.AdverseReactionResponse;
@@ -75,8 +78,9 @@ public class ReviewQueryService {
                         .toList()));
     }
 
-    public Review getReview(Long reviewId) {
-        return reviewRepository.getById(reviewId);
+    public GetReviewResponse getReview(Long reviewId, Long memberId) {
+        Review review = reviewRepository.getById(reviewId);
+        return GetReviewResponse.from(review, memberId);
     }
 
     public GetReviewMetadataResponse getReviewMetadata() {

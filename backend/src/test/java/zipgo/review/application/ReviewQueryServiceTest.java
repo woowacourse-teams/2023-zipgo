@@ -140,17 +140,19 @@ class ReviewQueryServiceTest extends QueryServiceTest {
         Review 극찬_리뷰 = reviewRepository.save(극찬_리뷰_생성(반려동물, 식품, List.of("없어요")));
 
         //when
-        Review review = reviewQueryService.getReview(극찬_리뷰.getId());
+        GetReviewResponse getReviewResponse = reviewQueryService.getReview(극찬_리뷰.getId(), 멤버.getId());
 
         //then
-        assertAll(() -> assertThat(review.getPet().getOwner().getName()).isEqualTo("무민"),
-                () -> assertThat(review.getPet().getName()).isEqualTo("무민이"),
-                () -> assertThat(review.getRating()).isEqualTo(5),
-                () -> assertThat(review.getComment()).isEqualTo("우리 아이랑 너무 잘 맞아요!"),
-                () -> assertThat(review.getTastePreference()).isEqualTo(EATS_VERY_WELL),
-                () -> assertThat(review.getStoolCondition()).isEqualTo(SOFT_MOIST),
-                () -> assertThat(review.getPet().getOwner().getId()).isEqualTo(멤버.getId()),
-                () -> assertThat(review.getAdverseReactions().get(0).getAdverseReactionType()).isEqualTo(NONE));
+        assertAll(
+                () -> assertThat(getReviewResponse.id()).isEqualTo(극찬_리뷰.getId()),
+                () -> assertThat(getReviewResponse.writerId()).isEqualTo(멤버.getId()),
+                () -> assertThat(getReviewResponse.rating()).isEqualTo(5),
+                () -> assertThat(getReviewResponse.comment()).isEqualTo("우리 아이랑 너무 잘 맞아요!"),
+                () -> assertThat(getReviewResponse.tastePreference()).isEqualTo(EATS_VERY_WELL.getDescription()),
+                () -> assertThat(getReviewResponse.stoolCondition()).isEqualTo(SOFT_MOIST.getDescription()),
+                () -> assertThat(getReviewResponse.petProfile().name()).isEqualTo("무민이"),
+                () -> assertThat(getReviewResponse.adverseReactions().get(0)).isEqualTo(NONE.getDescription())
+        );
     }
 
     @Test
