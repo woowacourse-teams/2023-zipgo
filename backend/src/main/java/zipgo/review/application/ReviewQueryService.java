@@ -36,6 +36,7 @@ import zipgo.review.dto.response.type.StoolConditionResponse;
 import zipgo.review.dto.response.type.TastePreferenceResponse;
 
 import static java.util.stream.Collectors.toMap;
+import static zipgo.pet.domain.Breeds.FIRST_PLACE;
 import static zipgo.pet.domain.Breeds.MIXED_BREED_ID;
 import static zipgo.pet.domain.Breeds.MIXED_BREED_NAME;
 
@@ -74,10 +75,10 @@ public class ReviewQueryService {
     }
 
     private boolean isRequestContainingMixedBreed(List<Long> requestIds, List<Long> mixBreedIds) {
-        if (!requestIds.isEmpty() && requestIds.get(0) == MIXED_BREED_ID) {
+        if (!requestIds.isEmpty() && requestIds.get(FIRST_PLACE) == MIXED_BREED_ID) {
             return true;
         }
-        if (!requestIds.isEmpty() && mixBreedIds.contains(requestIds.get(0))) {
+        if (!requestIds.isEmpty() && mixBreedIds.contains(requestIds.get(FIRST_PLACE))) {
             return true;
         }
         return false;
