@@ -9,6 +9,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import zipgo.pet.domain.AgeGroup;
+import zipgo.pet.domain.Breed;
+import zipgo.pet.domain.Breeds;
 import zipgo.pet.domain.repository.BreedRepository;
 import zipgo.pet.domain.repository.PetSizeRepository;
 import zipgo.petfood.domain.PetFood;
@@ -34,6 +36,9 @@ import zipgo.review.dto.response.type.StoolConditionResponse;
 import zipgo.review.dto.response.type.TastePreferenceResponse;
 
 import static java.util.stream.Collectors.toMap;
+import static zipgo.pet.domain.Breeds.FIRST_PLACE;
+import static zipgo.pet.domain.Breeds.MIXED_BREED_ID;
+import static zipgo.pet.domain.Breeds.MIXED_BREED_NAME;
 
 @Service
 @RequiredArgsConstructor
@@ -50,12 +55,33 @@ public class ReviewQueryService {
     private final PetSizeRepository petSizeRepository;
 
     public GetReviewsResponse getReviews(FindReviewsFilterRequest request) {
+        List<Long> mixBreedIds = findMixedBreedIds();
+        if (isRequestContainingMixedBreed(request.breedIds(), mixBreedIds)) {
+            request = request.toMixedBreedRequest(mixBreedIds);
+        }
+
         List<FindReviewsQueryResponse> reviews = reviewQueryRepository.findReviewsBy(request);
 
         Map<Long, List<String>> reviewIdToAdverseReactions = findAdverseReactionsBy(reviews);
         Map<Long, ReviewHelpfulReaction> reviewIdToHelpfulReactions = findHelpfulReactionsBy(request.memberId(), reviews);
 
         return GetReviewsResponse.of(reviews, reviewIdToAdverseReactions, reviewIdToHelpfulReactions);
+    }
+
+    private List<Long> findMixedBreedIds() {
+        return breedRepository.findByName(MIXED_BREED_NAME).stream()
+                .map(Breed::getId)
+                .toList();
+    }
+
+    private boolean isRequestContainingMixedBreed(List<Long> requestIds, List<Long> mixBreedIds) {
+        if (!requestIds.isEmpty() && requestIds.get(FIRST_PLACE) == MIXED_BREED_ID) {
+            return true;
+        }
+        if (!requestIds.isEmpty() && mixBreedIds.contains(requestIds.get(FIRST_PLACE))) {
+            return true;
+        }
+        return false;
     }
 
     private Map<Long, ReviewHelpfulReaction> findHelpfulReactionsBy(Long memberId,
@@ -89,7 +115,8 @@ public class ReviewQueryService {
     }
 
     private List<Metadata> findAllBreeds() {
-        return breedRepository.findAll().stream()
+        Breeds breeds = Breeds.from(breedRepository.findAll());
+        return breeds.getOrderedBreeds().stream()
                 .map(breed -> new Metadata(breed.getId(), breed.getName()))
                 .toList();
     }
