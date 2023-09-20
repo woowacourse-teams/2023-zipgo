@@ -10,14 +10,14 @@ public record BreedResponses(List<BreedResponse> breeds) {
     public static BreedResponses from(List<Breed> breeds) {
         return new BreedResponses(
                 breeds.stream()
-                        .map(BreedResponse::of)
+                        .map(BreedResponse::from)
                         .toList()
         );
     }
 
     public record BreedResponse(long id, String name) {
 
-        public static BreedResponse of(Breed breed) {
+        public static BreedResponse from(Breed breed) {
             return new BreedResponse(
                     breed.getId(),
                     breed.getName()
