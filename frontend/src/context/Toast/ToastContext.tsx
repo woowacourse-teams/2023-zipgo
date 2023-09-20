@@ -14,50 +14,37 @@ import Toast from '@/components/@common/Toast/Toast';
 import { Type } from '@/constants/toast';
 import { Toast as ToastInterface, ToastContent, ToastId, ToastOption } from '@/types/toast/client';
 
+type CreateToastFunction = (content: ToastContent, option?: ToastOption) => ToastInterface;
+
+interface CreateToastByType {
+  success: CreateToastFunction;
+  info: CreateToastFunction;
+  warning: CreateToastFunction;
+}
+
 interface ToastContext {
-  toast: {
-    (content: ToastContent, option?: ToastOption): ToastInterface;
-    success: (content: ToastContent, option?: ToastOption) => ToastInterface;
-    info: (content: ToastContent, option?: ToastOption) => ToastInterface;
-    warning: (content: ToastContent, option?: ToastOption) => ToastInterface;
-  };
+  toast: CreateToastByType;
   currentToast: ToastInterface[];
 }
 
-const tempToast = (content: ToastContent, option?: ToastOption): ToastInterface => ({
-  content: '',
-  option: {
-    toastId: -1,
-    type: Type.INFO,
-  },
-});
+const createInitialToastByType =
+  (type: Type): CreateToastFunction =>
+  (content, option) => ({
+    content: '',
+    option: {
+      toastId: -1,
+      type,
+    },
+  });
 
-tempToast.success = (content: ToastContent, option?: ToastOption): ToastInterface => ({
-  content: '',
-  option: {
-    toastId: -1,
-    type: Type.SUCCESS,
-  },
-});
-
-tempToast.info = (content: ToastContent, option?: ToastOption): ToastInterface => ({
-  content: '',
-  option: {
-    toastId: -1,
-    type: Type.INFO,
-  },
-});
-
-tempToast.warning = (content: ToastContent, option?: ToastOption): ToastInterface => ({
-  content: '',
-  option: {
-    toastId: -1,
-    type: Type.WARNING,
-  },
-});
+const initialToast: CreateToastByType = {
+  success: createInitialToastByType(Type.SUCCESS),
+  info: createInitialToastByType(Type.INFO),
+  warning: createInitialToastByType(Type.WARNING),
+};
 
 const ToastContext = createContext<ToastContext>({
-  toast: tempToast,
+  toast: initialToast,
   currentToast: [],
 });
 
@@ -65,11 +52,9 @@ ToastContext.displayName = 'Toast';
 
 export const useToast = () => useContext(ToastContext);
 
-interface ToastProviderProps {}
-
 const Portal = ({ children }: PropsWithChildren) => createPortal(children, document.body);
 
-const ToastProvider = (props: PropsWithChildren<ToastProviderProps>) => {
+const ToastProvider = (props: PropsWithChildren) => {
   const { children } = props;
 
   const [toastStates, setToastStates] = useState<ToastInterface[]>([]);
@@ -96,19 +81,10 @@ const ToastProvider = (props: PropsWithChildren<ToastProviderProps>) => {
   }, []);
 
   const deleteToast = (toastId: ToastId) => {
-    const targetToastIndex = currentToast.current.findIndex(
-      toast => toast.option.toastId === toastId,
-    );
-    if (targetToastIndex !== -1) {
-      const copyArr = currentToast.current.slice();
-      copyArr.splice(targetToastIndex, 1);
+    currentToast.current = currentToast.current.filter(toast => toast.option.toastId !== toastId);
 
-      currentToast.current = copyArr;
-
-      setToastStates(currentToast.current);
-
-      timers.current.delete(toastId);
-    }
+    setToastStates(currentToast.current);
+    timers.current.delete(toastId);
   };
 
   const generateToastId = (): ToastId => toastId.current;
@@ -125,9 +101,6 @@ const ToastProvider = (props: PropsWithChildren<ToastProviderProps>) => {
     }),
     [getToastId],
   );
-
-  const createToastByType = (type: Type) => (content: ToastContent, option?: ToastOption) =>
-    dispatchToast(content, mergeOptions(type, option));
 
   const dispatchToast = useCallback(
     (content: ToastContent, option: ToastOption): ToastInterface => {
@@ -151,20 +124,27 @@ const ToastProvider = (props: PropsWithChildren<ToastProviderProps>) => {
     [appendToast],
   );
 
-  const toast = (content: ToastContent, option?: ToastOption) =>
-    dispatchToast(content, mergeOptions(Type.INFO, option));
+  const createToastByType = useCallback(
+    (type: Type) => (content: ToastContent, option?: ToastOption) =>
+      dispatchToast(content, mergeOptions(type, option)),
+    [dispatchToast, mergeOptions],
+  );
 
-  toast.success = createToastByType(Type.SUCCESS);
-  toast.info = createToastByType(Type.INFO);
-  toast.warning = createToastByType(Type.WARNING);
+  const toast: CreateToastByType = useMemo(
+    () => ({
+      success: createToastByType(Type.SUCCESS),
+      info: createToastByType(Type.INFO),
+      warning: createToastByType(Type.WARNING),
+    }),
+    [createToastByType],
+  );
 
   const memoizedValue = useMemo(
     () => ({
       toast,
       currentToast: toastStates,
     }),
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-    [toastStates],
+    [toast, toastStates],
   );
 
   return (
