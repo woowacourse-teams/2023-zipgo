@@ -23,8 +23,8 @@ const NutritionStandardBlock = (nutritionStandardBlockProps: NutritionStandardBl
   return (
     <NutritionStandardBlockWrapper>
       <StandardInfo>
-        <img src={isUs ? USFlag : EUFlag} alt={isUs ? '미국' : '유럽'} />
-        <StateText>{state}</StateText>
+        <CountryFlag src={isUs ? USFlag : EUFlag} alt={isUs ? '미국' : '유럽'} />
+        <CountryName>{state}</CountryName>
       </StandardInfo>
       <Label
         text={satisfied ? '충족' : '불충족'}
@@ -59,7 +59,12 @@ const StandardInfo = styled.div`
   align-items: center;
 `;
 
-const StateText = styled.h3`
+const CountryFlag = styled.img`
+  width: 4rem;
+  height: 4rem;
+`;
+
+const CountryName = styled.h3`
   font-size: 1.6rem;
   font-weight: 700;
   line-height: 1.7rem;
