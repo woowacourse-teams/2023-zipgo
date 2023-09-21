@@ -109,7 +109,7 @@ class ReviewsServiceTest extends ServiceTest {
                 () -> assertThat(review.getComment()).isEqualTo("우리 아이랑 너무 잘 맞아요!"),
                 () -> assertThat(review.getTastePreference()).isEqualTo(EATS_VERY_WELL),
                 () -> assertThat(review.getStoolCondition()).isEqualTo(SOFT_MOIST),
-                () -> assertThat(review.getAdverseReactions()).isEmpty()
+                () -> assertThat(review.getAdverseReactions()).hasSize(1)
         );
     }
 

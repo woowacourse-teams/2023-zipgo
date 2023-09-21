@@ -7,13 +7,17 @@ import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 import zipgo.petfood.domain.PetFood;
 import zipgo.petfood.domain.repository.PetFoodQueryRepository;
+import zipgo.petfood.dto.response.GetPetFoodQueryResponse;
+import zipgo.petfood.dto.response.QGetPetFoodQueryResponse;
 
 import java.util.List;
+import java.util.Optional;
 
 import static zipgo.brand.domain.QBrand.brand;
 import static zipgo.petfood.domain.QPetFood.petFood;
 import static zipgo.petfood.domain.QPetFoodFunctionality.petFoodFunctionality;
 import static zipgo.petfood.domain.QPetFoodPrimaryIngredient.petFoodPrimaryIngredient;
+import static zipgo.petfood.domain.QPrimaryIngredient.primaryIngredient;
 
 @Repository
 @RequiredArgsConstructor
@@ -22,7 +26,7 @@ public class PetFoodQueryRepositoryImpl implements PetFoodQueryRepository {
 
     private final JPAQueryFactory queryFactory;
 
-    public List<PetFood> findPagingPetFoods(
+    public List<GetPetFoodQueryResponse> findPagingPetFoods(
             List<String> brandsName,
             List<String> standards,
             List<String> primaryIngredientList,
@@ -31,12 +35,16 @@ public class PetFoodQueryRepositoryImpl implements PetFoodQueryRepository {
             int size
     ) {
         return queryFactory
-                .selectDistinct(petFood)
+                .select(new QGetPetFoodQueryResponse(
+                        petFood.id,
+                        petFood.name,
+                        brand.name,
+                        petFood.imageUrl)
+                )
                 .from(petFood)
-                .join(petFood.brand, brand)
-                .join(petFood.petFoodPrimaryIngredients, petFoodPrimaryIngredient)
-                .fetchJoin()
-                .join(petFood.petFoodFunctionalities, petFoodFunctionality)
+                .innerJoin(petFood.brand, brand)
+                .innerJoin(petFood.petFoodPrimaryIngredients, petFoodPrimaryIngredient)
+                .innerJoin(petFood.petFoodFunctionalities, petFoodFunctionality)
                 .where(
                         isLessThan(lastPetFoodId),
                         isContainBrand(brandsName),
@@ -45,6 +53,7 @@ public class PetFoodQueryRepositoryImpl implements PetFoodQueryRepository {
                         isContainFunctionalities(functionalityList)
                 )
                 .orderBy(petFood.id.desc())
+                .groupBy(petFood.id)
                 .limit(size)
                 .fetch();
     }
@@ -114,6 +123,19 @@ public class PetFoodQueryRepositoryImpl implements PetFoodQueryRepository {
                         isContainFunctionalities(functionalityList)
                 )
                 .fetchOne();
+    }
+
+    public Optional<PetFood> findPetFoodWithRelations(Long petFoodId) {
+        return Optional.ofNullable(queryFactory
+                .selectFrom(petFood)
+                .innerJoin(petFood.brand, brand)
+                .fetchJoin()
+                .innerJoin(petFood.petFoodPrimaryIngredients, petFoodPrimaryIngredient)
+                .fetchJoin()
+                .innerJoin(petFoodPrimaryIngredient.primaryIngredient, primaryIngredient)
+                .fetchJoin()
+                .where(petFood.id.eq(petFoodId))
+                .fetchOne());
     }
 
 }

@@ -3,6 +3,8 @@ package zipgo.common.config;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import software.amazon.awssdk.auth.credentials.InstanceProfileCredentialsProvider;
+import software.amazon.awssdk.auth.credentials.ProfileCredentialsProvider;
+import software.amazon.awssdk.http.urlconnection.UrlConnectionHttpClient;
 import software.amazon.awssdk.services.s3.S3Client;
 
 import static software.amazon.awssdk.regions.Region.AP_NORTHEAST_2;
@@ -14,6 +16,7 @@ public class S3Config {
     public S3Client s3Client() {
         return S3Client.builder()
                 .credentialsProvider(InstanceProfileCredentialsProvider.builder().build())
+                .httpClient(UrlConnectionHttpClient.builder().build())
                 .region(AP_NORTHEAST_2)
                 .build();
     }
