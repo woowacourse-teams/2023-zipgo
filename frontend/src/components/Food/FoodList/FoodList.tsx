@@ -23,7 +23,7 @@ const FoodList = (foodListProps: FoodListProps) => {
         <NoResultContainer>
           <NoResultText>
             필터링 결과가 없어요. <br />
-            다른 조건을 선택해주세요.
+            다른 옵션을 선택해주세요.
           </NoResultText>
         </NoResultContainer>
       )}
