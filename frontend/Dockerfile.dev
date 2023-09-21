@@ -3,7 +3,7 @@ WORKDIR /app
 
 # build
 COPY . /app
-RUN yarn add sharp --platform=linux --arch=arm64
+RUN yarn add sharp
 RUN yarn build:dev
 #RUN yarn build:sb
 
