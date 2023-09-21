@@ -1,6 +1,7 @@
 const paths = require('./paths');
 
-const getExternals = moduleList => moduleList.reduce((externals, lib) => ({...externals, lib}), {});
+const getExternals = moduleList =>
+  moduleList.reduce((externals, lib) => ({ ...externals, [lib]: lib }), {});
 
 const getLibsToCopyPattern = libList =>
   libList.map(lib => ({
