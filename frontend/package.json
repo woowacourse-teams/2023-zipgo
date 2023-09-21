@@ -5,7 +5,7 @@
     "type-check": "tsc --noEmit",
     "type-check:watch": "yarn type-check --watch",
     "start:dev": "cross-env NODE_ENV=development MSW=on STRICT_MODE=on webpack serve --config config/webpack.dev.js",
-    "start:prod": "serve -s dist",
+    "start:prod": "yarn build:prod && serve -s dist",
     "start:sb": "storybook dev -p 6006",
     "build:prod": "cross-env NODE_ENV=production webpack --progress --config config/webpack.prod.js",
     "build:dev": "cross-env NODE_ENV=development STRICT_MODE=off webpack --progress --config config/webpack.dev.js",
