@@ -22,7 +22,7 @@ const FilterBottomSheet = () => (
     <Dialog>
       <Dialog.Trigger asChild>
         <DialogTrigger type="button">
-          <img src={SettingsIcon} alt="필터 버튼 아이콘" />
+          <FilterTriggerIcon src={SettingsIcon} alt="필터 버튼 아이콘" />
           <span>필터</span>
         </DialogTrigger>
       </Dialog.Trigger>
@@ -231,6 +231,11 @@ const NavContent = styled.div<{
   padding-bottom: ${({ $paddingBottom }) => $paddingBottom && $paddingBottom};
 
   background: ${({ theme }) => theme.color.grey200};
+`;
+
+const FilterTriggerIcon = styled.img`
+  width: 2.2rem;
+  height: 2rem;
 `;
 
 const FilterContainer = styled.div`
