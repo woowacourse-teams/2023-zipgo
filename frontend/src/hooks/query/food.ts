@@ -18,7 +18,8 @@ export const useFoodListInfiniteQuery = (payload: Parameter<typeof getFoodList>)
     queryFn: ({ pageParam = { ...payload, size: String(SIZE_PER_PAGE) } }) =>
       getFoodList(pageParam),
     getNextPageParam: (lastFoodListRes, allFoodListRes) => {
-      const lastFood = lastFoodListRes.petFoods.at(-1);
+      const [lastFood] = lastFoodListRes.petFoods.slice(-1);
+
       const isLastPage =
         allFoodListRes.flatMap(foodListRes => foodListRes.petFoods).length >=
           lastFoodListRes.totalCount || lastFoodListRes.petFoods.length < SIZE_PER_PAGE;
