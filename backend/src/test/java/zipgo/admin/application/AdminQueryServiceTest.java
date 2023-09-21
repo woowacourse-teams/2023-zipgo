@@ -1,15 +1,21 @@
 package zipgo.admin.application;
 
 import java.util.List;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import zipgo.admin.dto.FunctionalitySelectResponse;
+import zipgo.admin.dto.PetFoodReadResponse;
+import zipgo.brand.domain.Brand;
 import zipgo.brand.domain.fixture.BrandFixture;
 import zipgo.brand.domain.repository.BrandRepository;
 import zipgo.common.service.QueryServiceTest;
+import zipgo.petfood.domain.PetFood;
 import zipgo.petfood.domain.fixture.FunctionalityFixture;
+import zipgo.petfood.domain.fixture.PetFoodFixture;
 import zipgo.petfood.domain.fixture.PrimaryIngredientFixture;
 import zipgo.petfood.domain.repository.FunctionalityRepository;
+import zipgo.petfood.domain.repository.PetFoodRepository;
 import zipgo.petfood.domain.repository.PrimaryIngredientRepository;
 import zipgo.admin.dto.PrimaryIngredientSelectResponse;
 
@@ -29,6 +35,9 @@ class AdminQueryServiceTest extends QueryServiceTest {
 
     @Autowired
     private AdminQueryService adminQueryService;
+
+    @Autowired
+    private PetFoodRepository petFoodRepository;
 
     @Test
     void getBrands() {
@@ -75,6 +84,21 @@ class AdminQueryServiceTest extends QueryServiceTest {
                 () -> assertThat(닭고기_response.name()).isEqualTo("닭고기"),
                 () -> assertThat(말미잘_response.name()).isEqualTo("말미잘")
         );
+    }
+
+    @Test
+    void 식품을_아이디로_조회한다() {
+        // given
+        Brand 아카나 = BrandFixture.아카나_식품_브랜드_생성();
+        brandRepository.save(아카나);
+        PetFood 식품 = PetFoodFixture.모든_영양기준_만족_식품(아카나);
+        petFoodRepository.save(식품);
+
+        // when
+        PetFoodReadResponse response = adminQueryService.getPetFoodById(식품.getId());
+
+        // then
+        assertThat(response.id()).isEqualTo(식품.getId());
     }
 
 }

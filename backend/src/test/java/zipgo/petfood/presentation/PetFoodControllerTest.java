@@ -2,7 +2,6 @@ package zipgo.petfood.presentation;
 
 import com.epages.restdocs.apispec.ResourceSnippetDetails;
 import com.epages.restdocs.apispec.Schema;
-import java.util.List;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
@@ -19,6 +18,8 @@ import zipgo.petfood.domain.PrimaryIngredient;
 import zipgo.petfood.domain.repository.FunctionalityRepository;
 import zipgo.petfood.domain.repository.PetFoodRepository;
 import zipgo.petfood.domain.repository.PrimaryIngredientRepository;
+
+import java.util.List;
 
 import static com.epages.restdocs.apispec.RestAssuredRestDocumentationWrapper.document;
 import static com.epages.restdocs.apispec.RestAssuredRestDocumentationWrapper.resourceDetails;
@@ -42,7 +43,7 @@ import static zipgo.petfood.domain.fixture.FunctionalityFixture.기능성_다이
 import static zipgo.petfood.domain.fixture.FunctionalityFixture.기능성_튼튼;
 import static zipgo.petfood.domain.fixture.PetFoodFixture.모든_영양기준_만족_식품;
 import static zipgo.petfood.domain.fixture.PetFoodFunctionalityFixture.식품_기능성_연관관계_매핑;
-import static zipgo.petfood.domain.fixture.PetFoodIngredientFixture.식품_주원료_연관관계_매핑;
+import static zipgo.petfood.domain.fixture.PetFoodPrimaryIngredientFixture.식품_주원료_연관관계_매핑;
 import static zipgo.petfood.domain.fixture.PrimaryIngredientFixture.주원료_닭고기;
 
 public class PetFoodControllerTest extends AcceptanceTest {
@@ -147,8 +148,7 @@ public class PetFoodControllerTest extends AcceptanceTest {
                             fieldWithPath("petFoods[].id").description("식품 id").type(JsonFieldType.NUMBER),
                             fieldWithPath("petFoods[].imageUrl").description("식품 이미지 url").type(JsonFieldType.STRING),
                             fieldWithPath("petFoods[].brandName").description("브랜드 이름").type(JsonFieldType.STRING),
-                            fieldWithPath("petFoods[].foodName").description("식품 이름").type(JsonFieldType.STRING),
-                            fieldWithPath("petFoods[].purchaseUrl").description("구매 링크").type(JsonFieldType.STRING)
+                            fieldWithPath("petFoods[].foodName").description("식품 이름").type(JsonFieldType.STRING)
                     ));
         }
 

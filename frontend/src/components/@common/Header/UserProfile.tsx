@@ -29,11 +29,11 @@ const UserProfile = () => {
         ) : (
           <RegisterPetText>여기를 눌러 반려견을 등록해주세요.</RegisterPetText>
         )}
-        <img src={BottomDropIcon} alt="반려견 등록" />
+        <Chevron src={BottomDropIcon} alt="반려견 등록 화살표" />
       </UserInfoContainer>
     </Dialog.Trigger>
   ) : (
-    <img src={ZipgoLogo} alt="집사의고민 로고" />
+    <Logo src={ZipgoLogo} alt="집사의고민 로고" />
   );
 };
 
@@ -69,4 +69,14 @@ const RegisterPetText = styled.p`
   font-weight: 500;
   color: ${({ theme }) => theme.color.white};
   letter-spacing: -0.05rem;
+`;
+
+const Logo = styled.img`
+  width: 11.3rem;
+  height: 3.6rem;
+`;
+
+const Chevron = styled.img`
+  width: 1.2rem;
+  height: 0.6rem;
 `;

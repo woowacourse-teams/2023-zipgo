@@ -48,7 +48,7 @@ const Trigger = (props: PropsWithChildren<TriggerProps>) => {
 
   /** @todo aria-controls: dialog content id */
   const triggerA11y = {
-    role: 'tablist',
+    role: 'button',
     'aria-haspopup': 'dialog',
     'aria-expanded': isOpened,
   } as const;

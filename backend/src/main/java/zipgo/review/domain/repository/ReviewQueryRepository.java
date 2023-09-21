@@ -14,4 +14,6 @@ public interface ReviewQueryRepository {
 
     List<ReviewHelpfulReaction> findReviewWithHelpfulReactions(List<Long> reviewIds, Long userId);
 
+    Review getReviewWithRelations(Long reviewId);
+
 }

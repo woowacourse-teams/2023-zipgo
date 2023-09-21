@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="layout/default">
+
+<th:block layout:fragment="content">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <style>
+            table {
+                font-family: Arial, sans-serif;
+                border-collapse: collapse;
+                width: 100%;
+            }
+
+            table, th, td {
+                border: 1px solid #dddddd;
+                text-align: left;
+                padding: 8px;
+            }
+
+            tr:nth-child(even) {
+                background-color: #f2f2f2; /* 변경할 배경색 지정 */
+            }
+        </style>
+        <!-- 내부 js -->
+        <script>
+            window.onload = function () {
+                console.log("");
+                console.log("[window onload] : [start]");
+                console.log("");
+            };
+        </script>
+
+    </head>
+
+    <body>
+    <table>
+
+        <thead>
+        <tr>
+            <th></th>
+            <th></th>
+            <th>식품ID</th>
+            <th>식품이름</th>
+            <th>브랜드</th>
+            <th>유럽 영양 기준</th>
+            <th>미국 영양 기준</th>
+            <th>이미지 URL</th>
+            <th>생성일자</th>
+            <th>기능성</th>
+            <th>주원료</th>
+        </tr>
+        </thead>
+
+        <tbody>
+        <tr th:each="list: ${petFoods}">
+            <td>
+                <div class="col-md-3">
+                    <button type="button" class="btn btn-primary open-update-modal" data-toggle="modal"
+                            data-target="#updateModal" th:attr="data-pet-food-id=${list.id}">수정
+                    </button>
+                </div>
+            </td>
+
+            <td>
+                <div class="col-md-3">
+                    <button type="button" class="btn btn-primary send-delete-btn" th:attr="data-pet-food-id=${list.id}">
+                        삭제
+                    </button>
+                </div>
+            </td>
+
+            <td><span th:text=" ${list.id}"></span></td>
+            <td><span th:text=" ${list.getName()}"></span></td>
+            <td><span th:text=" ${list.getBrand().getName()}"></span></td>
+            <td><span th:text=" ${list.getHasStandard().getEurope()}"></span></td>
+            <td><span th:text=" ${list.getHasStandard().getUnitedStates()}"></span></td>
+            <td><span th:text=" ${list.getImageUrl()}"></span></td>
+            <td><span th:text=" ${list.getCreatedAt()}"></span></td>
+            <td>
+                <ul>
+                    <li th:each="funtionality: ${list.getPetFoodFunctionalities()}">
+                        <span th:text="${funtionality.getFunctionality().getName()}"></span>
+                    </li>
+                </ul>
+            </td>
+            <td>
+                <ul>
+                    <li th:each="primaryIngredient: ${list.getPetFoodPrimaryIngredients()}">
+                        <span th:text="${primaryIngredient.getPrimaryIngredient().getName()}"></span>
+                    </li>
+                </ul>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+
+    <div class="modal fade" id="updateModal">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title">식품 수정</h4>
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                </div>
+                <div class="modal-body">
+                    <form id="dataForm">
+
+                        <div class="form-group">
+                            <label for="pet_food_id">식품ID</label>
+                            <input type="text" class="form-control" id="pet_food_id" name="pet_food_id">
+                        </div>
+
+                        <div class="form-group">
+                            <label for="pet_food_name">식품이름</label>
+                            <input type="text" class="form-control" id="pet_food_name" name="pet_food_name">
+                        </div>
+                        <div class="form-group">
+                            <label for="brand_name">브랜드</label>
+                            <input type="text" class="form-control" id="brand_name" name="brand_name">
+                        </div>
+
+                        <div class="form-check">
+                            <input type="checkbox" class="form-check-input" id="eu_standard" name="eu_standard">
+                            <label class="form-check-label" for="eu_standard">유럽영양기준</label>
+                        </div>
+                        <div class="form-check">
+                            <input type="checkbox" class="form-check-input" id="us_standard" name="us_standard">
+                            <label class="form-check-label" for="us_standard">미국영양기준</label>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="image_url">이미지 URL</label>
+                            <input type="text" class="form-control" id="image_url" name="image_url">
+                        </div>
+                        <div class="form-group">
+                            <label for="functionality">기능성</label>
+                            <input type="text" class="form-control" id="functionality" name="functionality">
+                        </div>
+                        <div class="form-group">
+                            <label for="primary_ingredient">주원료</label>
+                            <input type="text" class="form-control" id="primary_ingredient" name="primary_ingredient">
+                        </div>
+                        <div class="text-center">
+                            <button type="button" class="btn btn-primary" id="sendUpdate">수정</button>
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">닫기</button>
+                        </div>
+
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    </body>
+
+</th:block>
+</html>
+
+<!-- 내부 js -->
+<script>
+    // 단건 조회 API
+    $(document).on("click", ".open-update-modal", function () {
+        let petFoodId = $(this).data('pet-food-id');
+
+        $.ajax({
+            url: `/admin/pet-foods/${petFoodId}`,
+            type: "GET",
+            success: function (response) {
+                $("#pet_food_id").val(response.id);
+                $("#brand_name").val(response.brandName);
+                $("#pet_food_name").val(response.foodName);
+                $("#image_url").val(response.imageUrl);
+
+                $("#eu_standard").prop('checked', response.euStandard);
+                $("#us_standard").prop('checked', response.usStandard);
+
+                let functionalityList = response.functionalities;
+                $("#functionality").val(functionalityList.join(', '));
+
+                let primaryIngredientList = response.primaryIngredients;
+                $("#primary_ingredient").val(primaryIngredientList.join(', '));
+            },
+            error: function () {
+                alert('데이터를 불러올 수 없습니다.')
+            }
+        });
+    });
+
+    // 수정 API
+    $(document).on("click", "#sendUpdate", function () {
+        // 폼 데이터를 수집합니다.
+        let pet_food_id = $("#pet_food_id").val();
+
+        let formData = {
+            pet_food_name: $("#pet_food_name").val(),
+            brand_name: $("#brand_name").val(),
+            eu_standard: $("#eu_standard").is(":checked"),
+            us_standard: $("#us_standard").is(":checked"),
+            image_url: $("#image_url").val(),
+            functionalities: $("#functionality").val().split(', '),
+            primary_ingredients: $("#primary_ingredient").val().split(', ')
+        };
+
+        $.ajax({
+            url: `/admin/pet-foods/${pet_food_id}`,
+            type: "PUT",
+            contentType: "application/json",
+            data: JSON.stringify(formData),
+            success: function () {
+                alert("수정을 성공했습니다.");
+                $('#updateModal').modal('hide');
+                location.reload();
+            },
+            error: function () {
+                alert('데이터 수정을 실패했습니다.');
+            }
+        });
+    });
+
+    // 삭제 API
+    // 삭제 버튼 클릭 이벤트 핸들러
+    $(document).on("click", ".send-delete-btn", function () {
+        // 해당 삭제 버튼의 데이터 속성에서 ID를 가져옵니다.
+        let petFoodId = $(this).data('pet-food-id');
+
+        // 가져온 petFoodId를 사용하여 삭제 API를 호출합니다.
+        $.ajax({
+            url: `/admin/pet-foods/${petFoodId}`,
+            type: "DELETE",
+            success: function () {
+                alert("삭제를 성공했습니다.");
+                location.reload();
+            },
+            error: function () {
+                alert('데이터 삭제를 실패했습니다.');
+            }
+        });
+    });
+
+</script>
+

@@ -10,10 +10,10 @@ import org.springframework.restdocs.restassured.RestDocumentationFilter;
 import zipgo.common.acceptance.AcceptanceTest;
 import zipgo.member.domain.Member;
 import zipgo.member.domain.repository.MemberRepository;
-import zipgo.pet.domain.Breeds;
+import zipgo.pet.domain.Breed;
 import zipgo.pet.domain.Pet;
 import zipgo.pet.domain.PetSize;
-import zipgo.pet.domain.repository.BreedsRepository;
+import zipgo.pet.domain.repository.BreedRepository;
 import zipgo.pet.domain.repository.PetRepository;
 import zipgo.pet.domain.repository.PetSizeRepository;
 import zipgo.pet.dto.request.CreatePetRequest;
@@ -37,7 +37,7 @@ import static org.springframework.restdocs.payload.PayloadDocumentation.response
 import static org.springframework.restdocs.request.RequestDocumentation.parameterWithName;
 import static org.springframework.restdocs.request.RequestDocumentation.pathParameters;
 import static zipgo.pet.domain.Gender.MALE;
-import static zipgo.pet.domain.fixture.BreedsFixture.견종_생성;
+import static zipgo.pet.domain.fixture.BreedFixture.견종_생성;
 import static zipgo.pet.domain.fixture.PetSizeFixture.대형견;
 import static zipgo.pet.domain.fixture.PetSizeFixture.소형견;
 import static zipgo.review.fixture.MemberFixture.멤버_이름;
@@ -48,7 +48,7 @@ class PetControllerTest extends AcceptanceTest {
     private MemberRepository memberRepository;
 
     @Autowired
-    private BreedsRepository breedsRepository;
+    private BreedRepository breedRepository;
 
     @Autowired
     private PetSizeRepository petSizeRepository;
@@ -57,13 +57,13 @@ class PetControllerTest extends AcceptanceTest {
     private PetRepository petRepository;
 
     private PetSize 대형견;
-    private Breeds 시베리안_허스키;
+    private Breed 시베리안_허스키;
     private Member 갈비;
 
     @BeforeEach
     void setUp() {
         대형견 = petSizeRepository.save(대형견());
-        시베리안_허스키 = breedsRepository.save(견종_생성("시베리안 허스키", 대형견));
+        시베리안_허스키 = breedRepository.save(견종_생성("시베리안 허스키", 대형견));
         갈비 = memberRepository.save(멤버_이름("갈비"));
     }
 
@@ -90,8 +90,8 @@ class PetControllerTest extends AcceptanceTest {
             // given
             대형견 = petSizeRepository.save(대형견());
             var 소형견 = petSizeRepository.save(소형견());
-            breedsRepository.save(견종_생성("믹스견", 대형견));
-            breedsRepository.save(견종_생성("믹스견", 소형견));
+            breedRepository.save(견종_생성("믹스견", 대형견));
+            breedRepository.save(견종_생성("믹스견", 소형견));
             var token = jwtProvider.create("1");
             var 반려견_생성_요청 = new CreatePetRequest("나만의소중한", "남", "아기사진", 3, "믹스견", "소형견", 57.8);
             var 요청_준비 = given(spec).header("Authorization", "Bearer " + token).body(반려견_생성_요청)
@@ -323,7 +323,10 @@ class PetControllerTest extends AcceptanceTest {
                         fieldWithPath("pets[].id").description("반려견 식별자").type(JsonFieldType.NUMBER),
                         fieldWithPath("pets[].name").description("반려견 이름").type(JsonFieldType.STRING),
                         fieldWithPath("pets[].age").description("반려견 나이").type(JsonFieldType.NUMBER),
-                        fieldWithPath("pets[].breed").description("반려견 견종").type(JsonFieldType.STRING),
+                        fieldWithPath("pets[].breedId").description("반려동물 견종 식별자").type(JsonFieldType.NUMBER),
+                        fieldWithPath("pets[].breed").description("반려동물 견종").type(JsonFieldType.STRING),
+                        fieldWithPath("pets[].ageGroupId").description("반려동물 나이그룹 식별자").type(JsonFieldType.NUMBER),
+                        fieldWithPath("pets[].ageGroup").description("반려동물 나이그룹").type(JsonFieldType.STRING),
                         fieldWithPath("pets[].petSize").description("반려견 크기").type(JsonFieldType.STRING),
                         fieldWithPath("pets[].gender").description("반려견 성별").type(JsonFieldType.STRING),
                         fieldWithPath("pets[].weight").description("반려견 몸무게").type(JsonFieldType.NUMBER),
@@ -337,7 +340,10 @@ class PetControllerTest extends AcceptanceTest {
                         fieldWithPath("id").description("반려견 식별자").type(JsonFieldType.NUMBER),
                         fieldWithPath("name").description("반려견 이름").type(JsonFieldType.STRING),
                         fieldWithPath("age").description("반려견 나이").type(JsonFieldType.NUMBER),
-                        fieldWithPath("breed").description("반려견 견종").type(JsonFieldType.STRING),
+                        fieldWithPath("breedId").description("반려동물 견종 식별자").type(JsonFieldType.NUMBER),
+                        fieldWithPath("breed").description("반려동물 견종").type(JsonFieldType.STRING),
+                        fieldWithPath("ageGroupId").description("반려동물 나이그룹 식별자").type(JsonFieldType.NUMBER),
+                        fieldWithPath("ageGroup").description("반려동물 나이그룹").type(JsonFieldType.STRING),
                         fieldWithPath("petSize").description("반려견 크기").type(JsonFieldType.STRING),
                         fieldWithPath("gender").description("반려견 성별").type(JsonFieldType.STRING),
                         fieldWithPath("weight").description("반려견 몸무게").type(JsonFieldType.NUMBER),
@@ -368,7 +374,7 @@ class PetControllerTest extends AcceptanceTest {
                 .name("갈비")
                 .owner(갈비)
                 .gender(MALE)
-                .breeds(시베리안_허스키)
+                .breed(시베리안_허스키)
                 .birthYear(Year.of(2005))
                 .imageUrl("갈비_사진")
                 .weight(35.5)

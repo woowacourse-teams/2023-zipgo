@@ -1,42 +1,38 @@
 package zipgo.pet.domain;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.List;
 import lombok.AccessLevel;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.EqualsAndHashCode;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import zipgo.common.entity.BaseTimeEntity;
+import lombok.RequiredArgsConstructor;
 
-import static jakarta.persistence.FetchType.LAZY;
-import static jakarta.persistence.GenerationType.IDENTITY;
-import static lombok.EqualsAndHashCode.Include;
+import static java.util.stream.Collectors.toList;
 
-@Getter
-@Entity
-@Builder
-@AllArgsConstructor
-@NoArgsConstructor(access = AccessLevel.PROTECTED)
-@EqualsAndHashCode(onlyExplicitlyIncluded = true, callSuper = false)
-public class Breeds extends BaseTimeEntity {
+@RequiredArgsConstructor(access = AccessLevel.PRIVATE)
+public class Breeds {
 
-    @Id
-    @Include
-    @GeneratedValue(strategy = IDENTITY)
-    private Long id;
+    public static final long MIXED_BREED_ID = 0L;
+    public static final String MIXED_BREED_NAME = "믹스견";
+    public static final int FIRST_PLACE = 0;
+    private static final Breed MIXED_BREED = Breed.builder().id(MIXED_BREED_ID).name(MIXED_BREED_NAME).build();
 
-    @Column(nullable = false)
-    private String name;
+    private final List<Breed> values;
 
-    @ManyToOne(fetch = LAZY)
-    @JoinColumn(nullable = false)
-    private PetSize petSize;
+    public static Breeds from(List<Breed> breeds) {
+        List<Breed> uniqueBreeds = removeMixBreed(breeds);
+        Collections.sort(uniqueBreeds, Comparator.comparing(Breed::getName));
+        uniqueBreeds.add(FIRST_PLACE, MIXED_BREED);
+        return new Breeds(uniqueBreeds);
+    }
+
+    private static List<Breed> removeMixBreed(List<Breed> breeds) {
+        return breeds.stream()
+                .filter(breed -> !breed.getName().equals(MIXED_BREED_NAME))
+                .collect(toList());
+    }
+
+    public List<Breed> getOrderedBreeds() {
+        return Collections.unmodifiableList(values);
+    }
 
 }
-

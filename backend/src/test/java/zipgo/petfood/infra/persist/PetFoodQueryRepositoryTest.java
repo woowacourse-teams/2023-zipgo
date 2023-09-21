@@ -17,6 +17,7 @@ import zipgo.petfood.domain.PrimaryIngredient;
 import zipgo.petfood.domain.repository.FunctionalityRepository;
 import zipgo.petfood.domain.repository.PetFoodRepository;
 import zipgo.petfood.domain.repository.PrimaryIngredientRepository;
+import zipgo.petfood.dto.response.GetPetFoodQueryResponse;
 
 import static java.util.Collections.EMPTY_LIST;
 import static org.assertj.core.api.Assertions.assertThat;
@@ -30,7 +31,7 @@ import static zipgo.petfood.domain.fixture.PetFoodFixture.모든_영양기준_�
 import static zipgo.petfood.domain.fixture.PetFoodFixture.미국_영양기준_만족_식품;
 import static zipgo.petfood.domain.fixture.PetFoodFixture.유럽_영양기준_만족_식품;
 import static zipgo.petfood.domain.fixture.PetFoodFunctionalityFixture.식품_기능성_연관관계_매핑;
-import static zipgo.petfood.domain.fixture.PetFoodIngredientFixture.식품_주원료_연관관계_매핑;
+import static zipgo.petfood.domain.fixture.PetFoodPrimaryIngredientFixture.식품_주원료_연관관계_매핑;
 import static zipgo.petfood.domain.fixture.PrimaryIngredientFixture.주원료_닭고기;
 import static zipgo.petfood.domain.fixture.PrimaryIngredientFixture.주원료_돼지고기;
 import static zipgo.petfood.domain.fixture.PrimaryIngredientFixture.주원료_말미잘;
@@ -108,15 +109,15 @@ class PetFoodQueryRepositoryTest {
         List<String> functionalityList = EMPTY_LIST;
 
         // when
-        List<PetFood> petFoods = petFoodQueryRepository.findPagingPetFoods(brandsName, standards, primaryIngredientList,
+        List<GetPetFoodQueryResponse> responses = petFoodQueryRepository.findPagingPetFoods(brandsName, standards, primaryIngredientList,
                 functionalityList, lastPetFoodId, 20);
 
         // then
         Assertions.assertAll(
-                () -> assertThat(petFoods).hasSize(1),
-                () -> assertThat(petFoods).extracting(PetFood::getName)
+                () -> assertThat(responses).hasSize(1),
+                () -> assertThat(responses).extracting(GetPetFoodQueryResponse::foodName)
                         .contains("미국 영양기준 만족 식품"),
-                () -> assertThat(petFoods).extracting(petFood -> petFood.getBrand().getName())
+                () -> assertThat(responses).extracting(GetPetFoodQueryResponse::brandName)
                         .contains("오리젠")
         );
     }
@@ -138,11 +139,11 @@ class PetFoodQueryRepositoryTest {
         List<String> functionalityList = EMPTY_LIST;
 
         // when
-        List<PetFood> petFoods = petFoodQueryRepository.findPagingPetFoods(brandsName, standards, primaryIngredientList,
+        List<GetPetFoodQueryResponse> responses = petFoodQueryRepository.findPagingPetFoods(brandsName, standards, primaryIngredientList,
                 functionalityList, lastPetFoodId, 20);
 
         // then
-        assertThat(petFoods).hasSize(3);
+        assertThat(responses).hasSize(3);
     }
 
 }

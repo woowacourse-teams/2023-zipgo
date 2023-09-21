@@ -5,6 +5,10 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import zipgo.admin.dto.BrandCreateRequest;
+import zipgo.admin.dto.FunctionalityCreateRequest;
+import zipgo.admin.dto.PetFoodCreateRequest;
+import zipgo.admin.dto.PetFoodUpdateRequest;
+import zipgo.admin.dto.PrimaryIngredientCreateRequest;
 import zipgo.brand.domain.Brand;
 import zipgo.brand.domain.repository.BrandRepository;
 import zipgo.petfood.domain.Functionality;
@@ -13,16 +17,15 @@ import zipgo.petfood.domain.PetFoodFunctionality;
 import zipgo.petfood.domain.PetFoodPrimaryIngredient;
 import zipgo.petfood.domain.PrimaryIngredient;
 import zipgo.petfood.domain.repository.FunctionalityRepository;
-import zipgo.admin.dto.FunctionalityCreateRequest;
 import zipgo.petfood.domain.repository.PetFoodRepository;
 import zipgo.petfood.domain.repository.PrimaryIngredientRepository;
-import zipgo.admin.dto.PrimaryIngredientCreateRequest;
-import zipgo.admin.dto.PetFoodCreateRequest;
 
 @Service
 @Transactional
 @RequiredArgsConstructor
 public class AdminService {
+
+    private static final int EMPTY_STRING_CHECK_INDEX = 0;
 
     private final BrandRepository brandRepository;
     private final FunctionalityRepository functionalityRepository;
@@ -59,7 +62,8 @@ public class AdminService {
                 .map(primaryIngredientRepository::getById)
                 .toList();
         for (PrimaryIngredient primaryIngredient : primaryIngredients) {
-            petFood.addPetFoodPrimaryIngredient(PetFoodPrimaryIngredient.builder().petFood(petFood).primaryIngredient(primaryIngredient).build());
+            petFood.addPetFoodPrimaryIngredient(
+                    PetFoodPrimaryIngredient.builder().petFood(petFood).primaryIngredient(primaryIngredient).build());
         }
     }
 
@@ -68,8 +72,81 @@ public class AdminService {
                 .map(functionalityRepository::getById)
                 .toList();
         for (Functionality functionality : functionalities) {
-            petFood.addPetFoodFunctionality(PetFoodFunctionality.builder().petFood(petFood).functionality(functionality).build());
+            petFood.addPetFoodFunctionality(
+                    PetFoodFunctionality.builder().petFood(petFood).functionality(functionality).build());
         }
+    }
+
+    public void updatePetFood(Long petFoodId, PetFoodUpdateRequest request) {
+        PetFood petFood = petFoodRepository.getById(petFoodId);
+        petFood.updatePetFood(request.petFoodName(), request.euStandard(), request.usStandard(), request.imageUrl());
+        Brand brand = brandRepository.getByName(request.brandName());
+        petFood.updateBrand(brand);
+
+        updateFunctionalities(request, petFood);
+        updatePrimaryIngredients(request, petFood);
+    }
+
+    private void updateFunctionalities(PetFoodUpdateRequest request, PetFood petFood) {
+        petFood.initPetFoodFunctionalities();
+        List<String> functionalitiesName = request.functionalities();
+        if (functionalityNameIsEmpty(functionalitiesName)) {
+            return;
+        }
+        List<Functionality> functionalities = request.functionalities().stream()
+                .map(functionalityName -> functionalityRepository.getByName(functionalityName))
+                .toList();
+        changeFunctionalityRelations(functionalities, petFood);
+    }
+
+    private boolean functionalityNameIsEmpty(List<String> functionalitiesName) {
+        if (functionalitiesName.get(EMPTY_STRING_CHECK_INDEX).equals("")) {
+            return true;
+        }
+        return false;
+    }
+
+    private void changeFunctionalityRelations(List<Functionality> functionalities, PetFood petFood) {
+        for (Functionality functionality : functionalities) {
+            PetFoodFunctionality petFoodFunctionality = PetFoodFunctionality.builder()
+                    .functionality(functionality)
+                    .petFood(petFood)
+                    .build();
+            petFoodFunctionality.changeRelations(petFood, functionality);
+        }
+    }
+
+    private void updatePrimaryIngredients(PetFoodUpdateRequest request, PetFood petFood) {
+        petFood.initPetFoodPrimaryIngredients();
+        List<String> primaryIngredientsName = request.primaryIngredients();
+        if (primaryIngredientsNameIsEmpty(primaryIngredientsName)) {
+            return;
+        }
+        List<PrimaryIngredient> primaryIngredients = request.primaryIngredients().stream()
+                .map(functionalityName -> primaryIngredientRepository.getByName(functionalityName))
+                .toList();
+        changePrimaryIngredientRelations(primaryIngredients, petFood);
+    }
+
+    private static boolean primaryIngredientsNameIsEmpty(List<String> primaryIngredientsName) {
+        if (primaryIngredientsName.get(EMPTY_STRING_CHECK_INDEX).equals("")) {
+            return true;
+        }
+        return false;
+    }
+
+    private void changePrimaryIngredientRelations(List<PrimaryIngredient> primaryIngredients, PetFood petFood) {
+        for (PrimaryIngredient primaryIngredient : primaryIngredients) {
+            PetFoodPrimaryIngredient petFoodPrimaryIngredient = PetFoodPrimaryIngredient.builder()
+                    .primaryIngredient(primaryIngredient)
+                    .petFood(petFood)
+                    .build();
+            petFoodPrimaryIngredient.changeRelations(petFood, primaryIngredient);
+        }
+    }
+
+    public void deletePetFood(Long petFoodId) {
+        petFoodRepository.deleteById(petFoodId);
     }
 
 }

@@ -1,6 +1,6 @@
 import styled from 'styled-components';
 
-import ZipgoBanner from '@/assets/png/landing_banner.png';
+import ZipgoBannerPng from '@/assets/png/landing_banner.png?responsive';
 import Header from '@/components/@common/Header/Header';
 import Template from '@/components/@common/Template';
 import ToastContainer from '@/components/@common/Toast/ToastContainer';
@@ -33,7 +33,7 @@ const Landing = () => {
               <BannerTitle>집사의 고민</BannerTitle>
             </TitleContainer>
           </BannerText>
-          <BannerImg src={ZipgoBanner} onClick={onToast} />
+          <BannerImg src={ZipgoBannerPng.src} onClick={onToast} alt="집사의고민 배너 이미지" />
         </BannerSection>
         <ListSection>
           <FilterBottomSheet />

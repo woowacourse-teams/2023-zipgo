@@ -17,11 +17,11 @@ import zipgo.auth.dto.AuthCredentials;
 import zipgo.auth.presentation.Auth;
 import zipgo.pet.application.PetQueryService;
 import zipgo.pet.application.PetService;
-import zipgo.pet.domain.Breeds;
+import zipgo.pet.domain.Breed;
 import zipgo.pet.domain.Pet;
 import zipgo.pet.dto.request.CreatePetRequest;
 import zipgo.pet.dto.request.UpdatePetRequest;
-import zipgo.pet.dto.response.BreedsResponses;
+import zipgo.pet.dto.response.BreedResponses;
 import zipgo.pet.dto.response.PetResponse;
 import zipgo.pet.dto.response.PetResponses;
 
@@ -76,9 +76,9 @@ public class PetController {
     }
 
     @GetMapping("/breeds")
-    public ResponseEntity<BreedsResponses> readBreeds() {
-        List<Breeds> breeds = petQueryService.readBreeds();
-        return ResponseEntity.ok(BreedsResponses.from(breeds));
+    public ResponseEntity<BreedResponses> readBreeds() {
+        List<Breed> breeds = petQueryService.readBreeds();
+        return ResponseEntity.ok(BreedResponses.from(breeds));
     }
 
 }

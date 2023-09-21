@@ -25,4 +25,12 @@ public class HasStandard {
     @Column(nullable = false, name = "eu_standard")
     private Boolean europe = true;
 
+    public void updateEuStandard(boolean euStandard) {
+        this.europe = euStandard;
+    }
+
+    public void updateUsStandard(boolean usStandard) {
+        this.unitedStates = usStandard;
+    }
+
 }

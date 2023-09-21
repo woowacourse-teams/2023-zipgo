@@ -8,7 +8,7 @@ export const getValidQueries = <T extends string>(search: string, queryKeys: Rea
       const [key, value] = keyValue.split('=');
       const includes = getArrayMutationMethod(queryKeys, 'includes');
 
-      if (Object.hasOwn(queries, key)) {
+      if (Object.prototype.hasOwnProperty.call(queries, key)) {
         throw new Error('Duplicated query');
       }
 

@@ -37,7 +37,7 @@ import static org.springframework.restdocs.payload.PayloadDocumentation.fieldWit
 import static org.springframework.restdocs.payload.PayloadDocumentation.responseFields;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import static zipgo.member.domain.fixture.MemberFixture.식별자_있는_멤버;
-import static zipgo.pet.domain.fixture.BreedsFixture.견종;
+import static zipgo.pet.domain.fixture.BreedFixture.견종;
 import static zipgo.pet.domain.fixture.PetSizeFixture.대형견;
 
 
@@ -108,8 +108,10 @@ class AuthControllerMockArgumentResolverTest {
                         fieldWithPath("pets[].id").description("사용자 반려동물 식별자"),
                         fieldWithPath("pets[].name").description("사용자 반려동물 이름").type(JsonFieldType.STRING),
                         fieldWithPath("pets[].age").description("사용자 반려동물 나이").type(JsonFieldType.NUMBER),
+                        fieldWithPath("pets[].breedId").description("사용자 반려동물 견종 식별자"),
                         fieldWithPath("pets[].breed").description("사용자 반려동물 견종").type(JsonFieldType.STRING),
-                        fieldWithPath("pets[].breed").description("사용자 반려동물 견종").type(JsonFieldType.STRING),
+                        fieldWithPath("pets[].ageGroupId").description("사용자 반려동물 나이그룹 식별자").type(JsonFieldType.NUMBER),
+                        fieldWithPath("pets[].ageGroup").description("사용자 반려동물 나이그룹").type(JsonFieldType.STRING),
                         fieldWithPath("pets[].petSize").description("사용자 반려동물 견종 크기").type(JsonFieldType.STRING),
                         fieldWithPath("pets[].gender").description("사용자 반려동물 견종 성별").type(JsonFieldType.STRING),
                         fieldWithPath("pets[].weight").description("사용자 반려동물 견종 몸무게").type(JsonFieldType.NUMBER),

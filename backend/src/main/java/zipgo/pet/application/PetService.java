@@ -6,10 +6,10 @@ import org.springframework.transaction.annotation.Transactional;
 import zipgo.member.domain.Member;
 import zipgo.member.domain.repository.MemberRepository;
 import zipgo.pet.application.dto.PetDto;
-import zipgo.pet.domain.Breeds;
+import zipgo.pet.domain.Breed;
 import zipgo.pet.domain.Pet;
 import zipgo.pet.domain.PetSize;
-import zipgo.pet.domain.repository.BreedsRepository;
+import zipgo.pet.domain.repository.BreedRepository;
 import zipgo.pet.domain.repository.PetRepository;
 import zipgo.pet.domain.repository.PetSizeRepository;
 import zipgo.review.domain.repository.ReviewRepository;
@@ -23,26 +23,26 @@ public class PetService {
 
     private final PetRepository petRepository;
     private final MemberRepository memberRepository;
-    private final BreedsRepository breedsRepository;
+    private final BreedRepository breedRepository;
     private final PetSizeRepository petSizeRepository;
     private final ReviewRepository reviewRepository;
 
     public Long createPet(Long memberId, PetDto petDto) {
         Member owner = memberRepository.getById(memberId);
-        Breeds breeds = findBreeds(petDto);
+        Breed breed = findBreeds(petDto);
 
-        Pet pet = petDto.toEntity(owner, breeds);
+        Pet pet = petDto.toEntity(owner, breed);
         updateDefaultImage(pet);
 
         return petRepository.save(pet).getId();
     }
 
-    private Breeds findBreeds(PetDto petDto) {
+    private Breed findBreeds(PetDto petDto) {
         if (petDto.petSize() == null || petDto.petSize().isBlank()) {
-            return breedsRepository.getByName(petDto.breed());
+            return breedRepository.getByName(petDto.breed());
         }
         PetSize petSize = petSizeRepository.getByName(petDto.petSize());
-        return breedsRepository.getByPetSizeAndName(petSize, petDto.breed());
+        return breedRepository.getByPetSizeAndName(petSize, petDto.breed());
     }
 
     private void updateDefaultImage(Pet pet) {
@@ -57,15 +57,15 @@ public class PetService {
 
         pet.validateOwner(owner);
 
-        Breeds breeds = findBreeds(petDto);
-        update(petDto, pet, breeds);
+        Breed breed = findBreeds(petDto);
+        update(petDto, pet, breed);
     }
 
-    private void update(PetDto petDto, Pet pet, Breeds breeds) {
+    private void update(PetDto petDto, Pet pet, Breed breed) {
         pet.updateName(petDto.name());
         pet.updateImageUrl(petDto.imageUrl());
         updateDefaultImage(pet);
-        pet.updateBreeds(breeds);
+        pet.updateBreeds(breed);
         pet.updateBirthYear(petDto.calculateBirthYear());
         pet.updateWeight(petDto.weight());
     }

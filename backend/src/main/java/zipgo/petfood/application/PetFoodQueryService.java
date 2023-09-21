@@ -1,6 +1,5 @@
 package zipgo.petfood.application;
 
-import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -12,11 +11,15 @@ import zipgo.petfood.domain.PrimaryIngredient;
 import zipgo.petfood.domain.repository.FunctionalityRepository;
 import zipgo.petfood.domain.repository.PetFoodRepository;
 import zipgo.petfood.domain.repository.PrimaryIngredientRepository;
-import zipgo.petfood.dto.FilterRequest;
-import zipgo.petfood.dto.FilterResponse;
-import zipgo.petfood.dto.GetPetFoodResponse;
+import zipgo.petfood.dto.request.FilterRequest;
+import zipgo.petfood.dto.response.FilterResponse;
+import zipgo.petfood.dto.response.GetPetFoodQueryResponse;
+import zipgo.petfood.dto.response.GetPetFoodResponse;
+import zipgo.petfood.dto.response.GetPetFoodsResponse;
+import zipgo.petfood.exception.PetFoodNotFoundException;
 import zipgo.petfood.infra.persist.PetFoodQueryRepositoryImpl;
 
+import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -29,11 +32,14 @@ public class PetFoodQueryService {
     private final FunctionalityRepository functionalityRepository;
     private final PrimaryIngredientRepository primaryIngredientRepository;
 
-    public List<PetFood> getPetFoodsByFilters(
-            FilterRequest filterDto,
-            Long lastPetFoodId,
-            int size
-    ) {
+    public GetPetFoodsResponse getPetFoodsByFilters(FilterRequest filterDto, Long lastPetFoodId, int size) {
+        return GetPetFoodsResponse.from(
+                getPetFoodsCount(filterDto),
+                getPagingPetFoods(filterDto, lastPetFoodId, size)
+        );
+    }
+
+    private List<GetPetFoodQueryResponse> getPagingPetFoods(FilterRequest filterDto, Long lastPetFoodId, int size) {
         return petFoodQueryRepository.findPagingPetFoods(
                 filterDto.brands(),
                 filterDto.nutritionStandards(),
@@ -44,13 +50,8 @@ public class PetFoodQueryService {
         );
     }
 
-    public GetPetFoodResponse getPetFoodResponse(Long id) {
-        PetFood petfood = petFoodRepository.getById(id);
-        return GetPetFoodResponse.of(petfood, petfood.calculateRatingAverage(), petfood.countReviews());
-    }
-
-    public Long getPetFoodsCountByFilters(FilterRequest filterDto) {
-        return petFoodQueryRepository.getCount(
+    private Long getPetFoodsCount(FilterRequest filterDto) {
+        return petFoodQueryRepository.findPetFoodsCount(
                 filterDto.brands(),
                 filterDto.nutritionStandards(),
                 filterDto.mainIngredients(),
@@ -58,10 +59,15 @@ public class PetFoodQueryService {
         );
     }
 
+    public GetPetFoodResponse getPetFoodResponse(Long id) {
+        PetFood petfood = petFoodQueryRepository.findPetFoodWithRelations(id).orElseThrow(() -> new PetFoodNotFoundException(id));
+        return GetPetFoodResponse.of(petfood, petfood.calculateRatingAverage(), petfood.countReviews());
+    }
+
     public FilterResponse getMetadataForFilter() {
         List<Brand> brands = brandRepository.findAll();
-        List<PrimaryIngredient> primaryIngredients = primaryIngredientRepository.findDistinctPrimaryIngredients();
-        List<Functionality> functionalities = functionalityRepository.findDistinctFunctionalities();
+        List<PrimaryIngredient> primaryIngredients = primaryIngredientRepository.findAll();
+        List<Functionality> functionalities = functionalityRepository.findAll();
         return FilterResponse.of(brands, primaryIngredients, functionalities);
     }
 

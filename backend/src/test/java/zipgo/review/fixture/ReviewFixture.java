@@ -23,7 +23,7 @@ public class ReviewFixture {
                 "우리 아이랑 너무 잘 맞아요!",
                 "정말 잘 먹어요",
                 "촉촉 말랑해요",
-                new ArrayList<>()
+                List.of("먹고 토해요")
         );
     }
 

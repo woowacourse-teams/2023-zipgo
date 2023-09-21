@@ -51,7 +51,7 @@ jwt:
 cloud:
   aws:
     s3:
-      bucket: ${BUCKET_NAME}
-      zipgo-directory-name: ${ZIPGO_DIRECTORY_NAME}
-      pet-image-directory: ${PET_IMAGE_DIRECTORY}
-      image-url: ${DEV_SERVER_IMAGE_URL}
+      bucket: ${WOOTECO_BUCKET}
+      zipgo-directory: ${ZIPGO_DIRECTORY}
+      env: ${ENVIRONMENT_DIRECTORY}
+      image-url: ${ZIPGO_IMAGE_URL}

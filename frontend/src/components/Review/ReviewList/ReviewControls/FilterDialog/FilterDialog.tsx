@@ -41,7 +41,7 @@ const FilterDialog = () => {
         <Dialog.Content asChild>
           <DialogContentLayout>
             <TopContainer>
-              <DialogTitle>우리 아이 맞춤 리뷰 보기</DialogTitle>
+              <DialogTitle>리뷰 검색 필터</DialogTitle>
               <Dialog.Close asChild>
                 <Close>𝖷</Close>
               </Dialog.Close>
@@ -93,9 +93,14 @@ const FilterDialog = () => {
                 </Select>
               </FilterSection>
             </FilterContainer>
-            <Dialog.Close asChild onClick={confirm}>
-              <ConfirmButton type="button">적용하기 ＞</ConfirmButton>
-            </Dialog.Close>
+            <ButtonContainer>
+              <ResetButton type="button" onClick={resetFilterList}>
+                초기화
+              </ResetButton>
+              <Dialog.Close asChild onClick={confirm}>
+                <ConfirmButton type="button">적용하기 ＞</ConfirmButton>
+              </Dialog.Close>
+            </ButtonContainer>
           </DialogContentLayout>
         </Dialog.Content>
       </Dialog.Portal>
@@ -252,15 +257,58 @@ const Select = styled.select`
 `;
 
 const ConfirmButton = styled.button`
+  width: 70%;
   margin: 0 auto;
-  padding: 1rem 1.6rem;
+  padding: 1.6rem 2rem;
 
-  font-size: 1.4rem;
+  font-size: 1.6rem;
   font-weight: 500;
   font-style: normal;
+  line-height: 2rem;
   color: ${({ theme }) => theme.color.white};
 
   background: ${({ theme }) => theme.color.primary};
   border: none;
-  border-radius: 20px;
+  border-radius: 16px;
+
+  transition: transform 0.2s;
+
+  &:hover {
+    transform: scale(0.98);
+  }
+
+  &:active {
+    transform: scale(0.93);
+  }
+`;
+
+const ResetButton = styled.button`
+  margin: 0 auto;
+  padding: 1.6rem 2rem;
+
+  font-size: 1.6rem;
+  font-weight: 500;
+  font-style: normal;
+  line-height: 2rem;
+  color: ${({ theme }) => theme.color.grey400};
+
+  background-color: transparent;
+  border: none;
+
+  transition: transform 0.2s;
+
+  &:hover {
+    transform: scale(0.98);
+  }
+
+  &:active {
+    transform: scale(0.95);
+  }
+`;
+
+const ButtonContainer = styled.div`
+  display: flex;
+  align-items: center;
+
+  width: 100%;
 `;

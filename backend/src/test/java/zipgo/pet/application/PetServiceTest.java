@@ -7,10 +7,10 @@ import zipgo.common.service.ServiceTest;
 import zipgo.member.domain.Member;
 import zipgo.member.domain.repository.MemberRepository;
 import zipgo.member.exception.MemberNotFoundException;
-import zipgo.pet.domain.Breeds;
+import zipgo.pet.domain.Breed;
 import zipgo.pet.domain.Pet;
 import zipgo.pet.domain.PetSize;
-import zipgo.pet.domain.repository.BreedsRepository;
+import zipgo.pet.domain.repository.BreedRepository;
 import zipgo.pet.domain.repository.PetRepository;
 import zipgo.pet.domain.repository.PetSizeRepository;
 import zipgo.pet.dto.request.CreatePetRequest;
@@ -31,7 +31,7 @@ class PetServiceTest extends ServiceTest {
     private MemberRepository memberRepository;
 
     @Autowired
-    private BreedsRepository breedsRepository;
+    private BreedRepository breedRepository;
 
     @Autowired
     private PetSizeRepository petSizeRepository;
@@ -46,7 +46,7 @@ class PetServiceTest extends ServiceTest {
     void 반려견을_등록_할_수_있다() {
         // given
         PetSize 소형견 = 견종_크기_등록("소형견");
-        Breeds 포메라니안 = 견종_등록("포메라니안", 소형견);
+        Breed 포메라니안 = 견종_등록("포메라니안", 소형견);
         Member 가비 = 멤버_등록("가비");
 
         // when
@@ -57,7 +57,7 @@ class PetServiceTest extends ServiceTest {
         assertAll(
                 () -> assertThat(쫑이.getOwner().getName()).isEqualTo("가비"),
                 () -> assertThat(쫑이.getName()).isEqualTo("쫑이"),
-                () -> assertThat(쫑이.getBreeds().getName()).isEqualTo("포메라니안")
+                () -> assertThat(쫑이.getBreed().getName()).isEqualTo("포메라니안")
         );
     }
 
@@ -67,7 +67,7 @@ class PetServiceTest extends ServiceTest {
         PetSize 소형견 = 견종_크기_등록("소형견");
         PetSize 중형견 = 견종_크기_등록("중형견");
         PetSize 대형견 = 견종_크기_등록("중형견");
-        Breeds 소형_믹스견 = 견종_등록("믹스견", 소형견);
+        Breed 소형_믹스견 = 견종_등록("믹스견", 소형견);
         견종_등록("믹스견", 중형견);
         견종_등록("믹스견", 대형견);
         Member 가비 = 멤버_등록("가비");
@@ -80,7 +80,7 @@ class PetServiceTest extends ServiceTest {
         assertAll(
                 () -> assertThat(쫑이.getOwner().getName()).isEqualTo("가비"),
                 () -> assertThat(쫑이.getName()).isEqualTo("쫑이"),
-                () -> assertThat(쫑이.getBreeds().getName()).isEqualTo("믹스견")
+                () -> assertThat(쫑이.getBreed().getName()).isEqualTo("믹스견")
         );
     }
 
@@ -148,19 +148,19 @@ class PetServiceTest extends ServiceTest {
         return petSizeRepository.save(petSize);
     }
 
-    private Breeds 견종_등록(String 견종_이름, PetSize 크기) {
-        Breeds 견종 = Breeds.builder()
+    private Breed 견종_등록(String 견종_이름, PetSize 크기) {
+        Breed 견종 = Breed.builder()
                 .name(견종_이름)
                 .petSize(크기)
                 .build();
-        return breedsRepository.save(견종);
+        return breedRepository.save(견종);
     }
 
-    private CreatePetRequest 반려견_등록_요청(String 반려견_이름, Breeds 품종) {
+    private CreatePetRequest 반려견_등록_요청(String 반려견_이름, Breed 품종) {
         return new CreatePetRequest(반려견_이름, "남", 반려견_이름 + "img", 5, 품종.getName(), null, 65.4);
     }
 
-    private CreatePetRequest 믹스견_등록_요청(String 반려견_이름, Breeds 품종) {
+    private CreatePetRequest 믹스견_등록_요청(String 반려견_이름, Breed 품종) {
         return new CreatePetRequest(반려견_이름, "남", 반려견_이름 + "img", 5, 품종.getName(), "소형견", 65.4);
     }
 
@@ -175,13 +175,13 @@ class PetServiceTest extends ServiceTest {
 
     private Pet 쫑이_등록하기() {
         PetSize 소형견 = 견종_크기_등록("소형견");
-        Breeds 포메라니안 = 견종_등록("포메라니안", 소형견);
+        Breed 포메라니안 = 견종_등록("포메라니안", 소형견);
         Member 가비 = 멤버_등록("가비");
         Pet 쫑이 = Pet.builder()
                 .name("쫑이")
                 .owner(가비)
                 .gender(MALE)
-                .breeds(포메라니안)
+                .breed(포메라니안)
                 .birthYear(Year.of(2005))
                 .imageUrl("쫑이_사진")
                 .weight(35.5)

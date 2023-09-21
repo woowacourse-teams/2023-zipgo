@@ -7,7 +7,6 @@ import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.core.types.dsl.Expressions;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import jakarta.validation.constraints.NotNull;
-import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 import zipgo.pet.domain.AgeGroup;
@@ -19,9 +18,12 @@ import zipgo.review.domain.repository.dto.FindReviewsQueryResponse;
 import zipgo.review.domain.repository.dto.QFindReviewsQueryResponse;
 import zipgo.review.domain.repository.dto.ReviewHelpfulReaction;
 
+import java.util.List;
+
 import static java.util.Collections.emptyList;
-import static zipgo.pet.domain.QBreeds.breeds;
+import static zipgo.pet.domain.QBreed.breed;
 import static zipgo.pet.domain.QPet.pet;
+import static zipgo.pet.domain.QPetSize.petSize;
 import static zipgo.review.domain.QAdverseReaction.adverseReaction;
 import static zipgo.review.domain.QHelpfulReaction.helpfulReaction;
 import static zipgo.review.domain.QReview.review;
@@ -53,15 +55,15 @@ public class ReviewQueryRepositoryImpl implements ReviewQueryRepository {
                                 pet.imageUrl,
                                 pet.birthYear,
                                 review.weight,
-                                breeds.id,
-                                breeds.name,
-                                breeds.petSize.id,
-                                breeds.petSize.name
+                                breed.id,
+                                breed.name,
+                                breed.petSize.id,
+                                breed.petSize.name
                         )
                 )
                 .from(review)
                 .join(review.pet, pet)
-                .join(pet.breeds, breeds)
+                .join(pet.breed, breed)
                 .where(
                         equalsPetFoodId(petFoodId),
                         afterThan(lastReviewId),
@@ -87,14 +89,14 @@ public class ReviewQueryRepositoryImpl implements ReviewQueryRepository {
         if (breedIds.isEmpty()) {
             return null;
         }
-        return breeds.id.in(breedIds);
+        return breed.id.in(breedIds);
     }
 
     private BooleanExpression inPetSizes(List<Long> petSizeIds) {
         if (petSizeIds.isEmpty()) {
             return null;
         }
-        return breeds.petSize.id.in(petSizeIds);
+        return breed.petSize.id.in(petSizeIds);
     }
 
     private BooleanExpression inAgeGroup(List<AgeGroup> ageGroups) {
@@ -170,6 +172,23 @@ public class ReviewQueryRepositoryImpl implements ReviewQueryRepository {
             Long count = tuple.get(review.helpfulReactions.size()).longValue();
             return new ReviewHelpfulReaction(reviewId, count, reviewIdsReactedByMember.contains(reviewId));
         }).toList();
+    }
+
+    @Override
+    public Review getReviewWithRelations(Long reviewId) {
+        return queryFactory
+                .selectFrom(review)
+                .join(review.pet, pet)
+                .fetchJoin()
+                .join(pet.breed, breed)
+                .fetchJoin()
+                .join(breed.petSize, petSize)
+                .fetchJoin()
+                .leftJoin(review.helpfulReactions, helpfulReaction)
+                .fetchJoin()
+                .join(review.adverseReactions, adverseReaction)
+                .where(review.id.eq(reviewId))
+                .fetchOne();
     }
 
 }

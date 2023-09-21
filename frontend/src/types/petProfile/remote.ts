@@ -16,7 +16,8 @@ interface GetPetsRes {
   pets: PetProfile[];
 }
 
-interface PostPetReq extends Omit<PetProfile, 'id' | 'petSize'> {
+interface PostPetReq
+  extends Omit<PetProfile, 'id' | 'petSize' | 'breedId' | 'ageGroup' | 'ageGroupId'> {
   petSize?: PetSize;
 }
 
