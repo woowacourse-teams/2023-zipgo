@@ -3,9 +3,9 @@ import { useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 
-import ZipgoBanner from '@/assets/png/landing_banner.png';
 import KakaoSymbol from '@/assets/svg/kakao_symbol.svg';
 import ZipgoLogo from '@/assets/svg/zipgo_logo_dark.svg';
+import ZipgoBanner from '@/assets/webp/landing_banner.webp';
 import Template from '@/components/@common/Template';
 import { KAKAO_HREF } from '@/constants/auth';
 import { useAuth } from '@/hooks/auth';

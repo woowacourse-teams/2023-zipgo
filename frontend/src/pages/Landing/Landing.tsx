@@ -1,6 +1,6 @@
 import styled from 'styled-components';
 
-import ZipgoBannerPng from '@/assets/png/landing_banner.png';
+import ZipgoBannerPng from '@/assets/webp/landing_banner.webp';
 import Header from '@/components/@common/Header/Header';
 import Template from '@/components/@common/Template';
 import ToastContainer from '@/components/@common/Toast/ToastContainer';
