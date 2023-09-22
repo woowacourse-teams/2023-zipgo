@@ -83,6 +83,7 @@ module.exports = {
         tsx: 'never',
         svg: 'always',
         png: 'always',
+        webp: 'always',
       },
     ],
   },
