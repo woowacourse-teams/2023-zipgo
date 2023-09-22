@@ -1,9 +1,8 @@
-FROM --platform=linux/arm64 node:18.16.1-alpine as builder
+FROM node:18 as builder
 WORKDIR /app
 
 # build
 COPY . /app
-RUN yarn add sharp
 RUN yarn build:dev
 #RUN yarn build:sb
 
