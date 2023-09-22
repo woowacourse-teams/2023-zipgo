@@ -6,6 +6,7 @@ import App from '@/App';
 import GlobalStyle from '@/components/@common/GlobalStyle';
 import { PetAdditionProvider } from '@/context/petProfile/PetAdditionContext';
 import PetProfileProvider from '@/context/petProfile/PetProfileContext';
+import ToastProvider from '@/context/Toast/ToastContext';
 import PetProfileAddition from '@/pages/PetProfile/PetProfileAddition/PetProfileAddition';
 import PetProfileAgeAddition from '@/pages/PetProfile/PetProfileAddition/PetProfileAgeAddition';
 import PetProfileBreedAddition from '@/pages/PetProfile/PetProfileAddition/PetProfileBreedAddition';
@@ -100,10 +101,12 @@ export const router = createBrowserRouter([
 
 const Router = () => (
   <ThemeProvider theme={theme}>
-    <PetProfileProvider>
-      <GlobalStyle />
-      <RouterProvider router={router} />
-    </PetProfileProvider>
+    <ToastProvider>
+      <PetProfileProvider>
+        <GlobalStyle />
+        <RouterProvider router={router} />
+      </PetProfileProvider>
+    </ToastProvider>
   </ThemeProvider>
 );
 
