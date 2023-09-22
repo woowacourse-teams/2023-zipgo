@@ -45,41 +45,11 @@ module.exports = {
         ],
       },
       {
-        test: /\.(woff|woff2|eot|ttf|otf)$/i,
+        test: /\.(png|gif|svg|jpg|jpeg)$/i,
         type: 'asset/resource',
       },
       {
-        test: /\.(jpe?g|png|webp)$/,
-        use: [
-          {
-            loader: 'responsive-loader',
-            options: {
-              adapter: require('responsive-loader/sharp'),
-              sizes: [600],
-              format: 'webp',
-              placeholder: true,
-              quality: 50,
-              placeholderSize: 20,
-              name: '[name].[contenthash].[ext]',
-            },
-          },
-          {
-            loader: 'responsive-loader',
-            options: {
-              adapter: require('responsive-loader/sharp'),
-              sizes: [600],
-              format: 'png',
-              placeholder: true,
-              quality: 40,
-              placeholderSize: 20,
-              name: '[name].[contenthash].[ext]',
-            },
-          },
-        ],
-        type: 'javascript/auto',
-      },
-      {
-        test: /\.(gif|svg)$/i,
+        test: /\.(woff|woff2|eot|ttf|otf)$/i,
         type: 'asset/resource',
       },
     ],
