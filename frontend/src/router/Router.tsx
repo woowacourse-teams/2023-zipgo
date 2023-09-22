@@ -1,3 +1,4 @@
+import { lazy } from 'react';
 import { createBrowserRouter, RouterProvider } from 'react-router-dom';
 import { ThemeProvider } from 'styled-components';
 
@@ -6,10 +7,6 @@ import GlobalStyle from '@/components/@common/GlobalStyle';
 import { PetAdditionProvider } from '@/context/petProfile/PetAdditionContext';
 import PetProfileProvider from '@/context/petProfile/PetProfileContext';
 import ToastProvider from '@/context/Toast/ToastContext';
-import ErrorPage from '@/pages/Error/ErrorPage';
-import FoodDetail from '@/pages/FoodDetail/FoodDetail';
-import Landing from '@/pages/Landing/Landing';
-import Login from '@/pages/Login/Login';
 import PetProfileAddition from '@/pages/PetProfile/PetProfileAddition/PetProfileAddition';
 import PetProfileAgeAddition from '@/pages/PetProfile/PetProfileAddition/PetProfileAgeAddition';
 import PetProfileBreedAddition from '@/pages/PetProfile/PetProfileAddition/PetProfileBreedAddition';
@@ -19,11 +16,16 @@ import PetProfileNameAddition from '@/pages/PetProfile/PetProfileAddition/PetPro
 import PetProfilePetSizeAddition from '@/pages/PetProfile/PetProfileAddition/PetProfilePetSizeAddition';
 import PetProfileWeightAddition from '@/pages/PetProfile/PetProfileAddition/PetProfileWeightAddition';
 import PetProfileEdition from '@/pages/PetProfile/PetProfileEdition/PetProfileEdition';
-import ReviewAddition from '@/pages/ReviewAddition/ReviewAddition';
-import ReviewStarRating from '@/pages/ReviewStarRating/ReviewStarRating';
 import theme from '@/styles/theme';
 
 import { PATH } from './routes';
+
+const Landing = lazy(() => import('@/pages/Landing/Landing'));
+const Login = lazy(() => import('@/pages/Login/Login'));
+const FoodDetail = lazy(() => import('@/pages/FoodDetail/FoodDetail'));
+const ReviewAddition = lazy(() => import('@/pages/ReviewAddition/ReviewAddition'));
+const ReviewStarRating = lazy(() => import('@/pages/ReviewStarRating/ReviewStarRating'));
+const ErrorPage = lazy(() => import('@/pages/Error/ErrorPage'));
 
 export const router = createBrowserRouter([
   {

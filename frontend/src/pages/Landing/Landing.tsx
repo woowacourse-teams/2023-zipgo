@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import styled from 'styled-components';
 
-import ZipgoBanner from '@/assets/png/landing_banner.png';
+import ZipgoBannerPng from '@/assets/webp/landing_banner.webp';
 import Header from '@/components/@common/Header/Header';
 import Template from '@/components/@common/Template';
 import FilterBottomSheet from '@/components/Food/FilterBottomSheet/FilterBottomSheet';
@@ -41,7 +41,7 @@ const Landing = () => {
               <BannerTitle>집사의 고민</BannerTitle>
             </TitleContainer>
           </BannerText>
-          <BannerImg src={ZipgoBanner} onClick={onTouchDog} />
+          <BannerImg src={ZipgoBannerPng} onClick={onTouchDog} alt="집사의고민 배너 이미지" />
         </BannerSection>
         <ListSection>
           <FilterBottomSheet />

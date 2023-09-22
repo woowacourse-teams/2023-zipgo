@@ -1,22 +1,18 @@
 package zipgo.petfood.dto.response;
 
-import zipgo.petfood.domain.PetFood;
-
 public record PetFoodResponse(
         Long id,
         String imageUrl,
         String brandName,
-        String foodName,
-        String purchaseUrl
+        String foodName
 ) {
 
-    public static PetFoodResponse from(PetFood petFood) {
+    public static PetFoodResponse from(GetPetFoodQueryResponse petFood) {
         return new PetFoodResponse(
-                petFood.getId(),
-                petFood.getImageUrl(),
-                petFood.getBrand().getName(),
-                petFood.getName(),
-                petFood.getPurchaseLink()
+                petFood.petFoodId(),
+                petFood.imageUrl(),
+                petFood.brandName(),
+                petFood.foodName()
         );
     }
 

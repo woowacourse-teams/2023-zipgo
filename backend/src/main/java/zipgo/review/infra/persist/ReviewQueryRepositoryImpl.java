@@ -7,7 +7,6 @@ import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.core.types.dsl.Expressions;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import jakarta.validation.constraints.NotNull;
-import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 import zipgo.pet.domain.AgeGroup;
@@ -19,9 +18,12 @@ import zipgo.review.domain.repository.dto.FindReviewsQueryResponse;
 import zipgo.review.domain.repository.dto.QFindReviewsQueryResponse;
 import zipgo.review.domain.repository.dto.ReviewHelpfulReaction;
 
+import java.util.List;
+
 import static java.util.Collections.emptyList;
-import static zipgo.pet.domain.QPet.pet;
 import static zipgo.pet.domain.QBreed.breed;
+import static zipgo.pet.domain.QPet.pet;
+import static zipgo.pet.domain.QPetSize.petSize;
 import static zipgo.review.domain.QAdverseReaction.adverseReaction;
 import static zipgo.review.domain.QHelpfulReaction.helpfulReaction;
 import static zipgo.review.domain.QReview.review;
@@ -170,6 +172,23 @@ public class ReviewQueryRepositoryImpl implements ReviewQueryRepository {
             Long count = tuple.get(review.helpfulReactions.size()).longValue();
             return new ReviewHelpfulReaction(reviewId, count, reviewIdsReactedByMember.contains(reviewId));
         }).toList();
+    }
+
+    @Override
+    public Review getReviewWithRelations(Long reviewId) {
+        return queryFactory
+                .selectFrom(review)
+                .join(review.pet, pet)
+                .fetchJoin()
+                .join(pet.breed, breed)
+                .fetchJoin()
+                .join(breed.petSize, petSize)
+                .fetchJoin()
+                .leftJoin(review.helpfulReactions, helpfulReaction)
+                .fetchJoin()
+                .join(review.adverseReactions, adverseReaction)
+                .where(review.id.eq(reviewId))
+                .fetchOne();
     }
 
 }

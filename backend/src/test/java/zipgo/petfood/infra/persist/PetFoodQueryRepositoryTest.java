@@ -17,6 +17,7 @@ import zipgo.petfood.domain.PrimaryIngredient;
 import zipgo.petfood.domain.repository.FunctionalityRepository;
 import zipgo.petfood.domain.repository.PetFoodRepository;
 import zipgo.petfood.domain.repository.PrimaryIngredientRepository;
+import zipgo.petfood.dto.response.GetPetFoodQueryResponse;
 
 import static java.util.Collections.EMPTY_LIST;
 import static org.assertj.core.api.Assertions.assertThat;
@@ -108,15 +109,15 @@ class PetFoodQueryRepositoryTest {
         List<String> functionalityList = EMPTY_LIST;
 
         // when
-        List<PetFood> petFoods = petFoodQueryRepository.findPagingPetFoods(brandsName, standards, primaryIngredientList,
+        List<GetPetFoodQueryResponse> responses = petFoodQueryRepository.findPagingPetFoods(brandsName, standards, primaryIngredientList,
                 functionalityList, lastPetFoodId, 20);
 
         // then
         Assertions.assertAll(
-                () -> assertThat(petFoods).hasSize(1),
-                () -> assertThat(petFoods).extracting(PetFood::getName)
+                () -> assertThat(responses).hasSize(1),
+                () -> assertThat(responses).extracting(GetPetFoodQueryResponse::foodName)
                         .contains("미국 영양기준 만족 식품"),
-                () -> assertThat(petFoods).extracting(petFood -> petFood.getBrand().getName())
+                () -> assertThat(responses).extracting(GetPetFoodQueryResponse::brandName)
                         .contains("오리젠")
         );
     }
@@ -138,11 +139,11 @@ class PetFoodQueryRepositoryTest {
         List<String> functionalityList = EMPTY_LIST;
 
         // when
-        List<PetFood> petFoods = petFoodQueryRepository.findPagingPetFoods(brandsName, standards, primaryIngredientList,
+        List<GetPetFoodQueryResponse> responses = petFoodQueryRepository.findPagingPetFoods(brandsName, standards, primaryIngredientList,
                 functionalityList, lastPetFoodId, 20);
 
         // then
-        assertThat(petFoods).hasSize(3);
+        assertThat(responses).hasSize(3);
     }
 
 }

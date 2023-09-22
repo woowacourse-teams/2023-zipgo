@@ -25,6 +25,7 @@ module.exports = {
     path: paths.appOutput,
     publicPath: PUBLIC_PATH,
     clean: true,
+    assetModuleFilename: 'static/[name].[contenthash][ext]',
   },
   resolve: {
     extensions: paths.moduleFileExtensions.map(e => `.${e}`),
@@ -45,7 +46,7 @@ module.exports = {
         ],
       },
       {
-        test: /\.(png|svg|jpg|jpeg|gif)$/i,
+        test: /\.(png|gif|svg|jpg|jpeg|webp)$/i,
         type: 'asset/resource',
       },
       {

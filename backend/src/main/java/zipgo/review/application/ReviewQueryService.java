@@ -1,14 +1,11 @@
 package zipgo.review.application;
 
-import java.util.Arrays;
-import java.util.List;
-import java.util.Map;
-import java.util.function.Function;
-import java.util.stream.IntStream;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import zipgo.pet.domain.AgeGroup;
+import zipgo.pet.domain.Breed;
+import zipgo.pet.domain.Breeds;
 import zipgo.pet.domain.repository.BreedRepository;
 import zipgo.pet.domain.repository.PetSizeRepository;
 import zipgo.petfood.domain.PetFood;
@@ -16,7 +13,6 @@ import zipgo.petfood.domain.Reviews;
 import zipgo.petfood.domain.repository.PetFoodRepository;
 import zipgo.review.domain.Review;
 import zipgo.review.domain.repository.ReviewQueryRepository;
-import zipgo.review.domain.repository.ReviewRepository;
 import zipgo.review.domain.repository.dto.FindReviewsFilterRequest;
 import zipgo.review.domain.repository.dto.FindReviewsQueryResponse;
 import zipgo.review.domain.repository.dto.ReviewHelpfulReaction;
@@ -25,6 +21,7 @@ import zipgo.review.domain.type.StoolCondition;
 import zipgo.review.domain.type.TastePreference;
 import zipgo.review.dto.response.GetReviewMetadataResponse;
 import zipgo.review.dto.response.GetReviewMetadataResponse.Metadata;
+import zipgo.review.dto.response.GetReviewResponse;
 import zipgo.review.dto.response.GetReviewsResponse;
 import zipgo.review.dto.response.GetReviewsSummaryResponse;
 import zipgo.review.dto.response.type.AdverseReactionResponse;
@@ -33,7 +30,16 @@ import zipgo.review.dto.response.type.RatingSummaryResponse;
 import zipgo.review.dto.response.type.StoolConditionResponse;
 import zipgo.review.dto.response.type.TastePreferenceResponse;
 
+import java.util.Arrays;
+import java.util.List;
+import java.util.Map;
+import java.util.function.Function;
+import java.util.stream.IntStream;
+
 import static java.util.stream.Collectors.toMap;
+import static zipgo.pet.domain.Breeds.FIRST_PLACE;
+import static zipgo.pet.domain.Breeds.MIXED_BREED_ID;
+import static zipgo.pet.domain.Breeds.MIXED_BREED_NAME;
 
 @Service
 @RequiredArgsConstructor
@@ -43,19 +49,39 @@ public class ReviewQueryService {
     private static final int MIN_RATING = 1;
     private static final int MAX_RATING = 5;
 
-    private final ReviewRepository reviewRepository;
     private final ReviewQueryRepository reviewQueryRepository;
     private final PetFoodRepository petFoodRepository;
     private final BreedRepository breedRepository;
     private final PetSizeRepository petSizeRepository;
 
     public GetReviewsResponse getReviews(FindReviewsFilterRequest request) {
+        List<Long> mixBreedIds = findMixedBreedIds();
+        if (isRequestContainingMixedBreed(request.breedIds(), mixBreedIds)) {
+            request = request.toMixedBreedRequest(mixBreedIds);
+        }
+
         List<FindReviewsQueryResponse> reviews = reviewQueryRepository.findReviewsBy(request);
 
         Map<Long, List<String>> reviewIdToAdverseReactions = findAdverseReactionsBy(reviews);
         Map<Long, ReviewHelpfulReaction> reviewIdToHelpfulReactions = findHelpfulReactionsBy(request.memberId(), reviews);
 
         return GetReviewsResponse.of(reviews, reviewIdToAdverseReactions, reviewIdToHelpfulReactions);
+    }
+
+    private List<Long> findMixedBreedIds() {
+        return breedRepository.findBreedsByNameContaining(MIXED_BREED_NAME).stream()
+                .map(Breed::getId)
+                .toList();
+    }
+
+    private boolean isRequestContainingMixedBreed(List<Long> requestIds, List<Long> mixBreedIds) {
+        if (!requestIds.isEmpty() && requestIds.get(FIRST_PLACE) == MIXED_BREED_ID) {
+            return true;
+        }
+        if (!requestIds.isEmpty() && mixBreedIds.contains(requestIds.get(FIRST_PLACE))) {
+            return true;
+        }
+        return false;
     }
 
     private Map<Long, ReviewHelpfulReaction> findHelpfulReactionsBy(Long memberId,
@@ -75,8 +101,9 @@ public class ReviewQueryService {
                         .toList()));
     }
 
-    public Review getReview(Long reviewId) {
-        return reviewRepository.getById(reviewId);
+    public GetReviewResponse getReview(Long reviewId, Long memberId) {
+        Review review = reviewQueryRepository.getReviewWithRelations(reviewId);
+        return GetReviewResponse.from(review, memberId);
     }
 
     public GetReviewMetadataResponse getReviewMetadata() {
@@ -89,7 +116,8 @@ public class ReviewQueryService {
     }
 
     private List<Metadata> findAllBreeds() {
-        return breedRepository.findAll().stream()
+        Breeds breeds = Breeds.from(breedRepository.findAll());
+        return breeds.getOrderedBreeds().stream()
                 .map(breed -> new Metadata(breed.getId(), breed.getName()))
                 .toList();
     }

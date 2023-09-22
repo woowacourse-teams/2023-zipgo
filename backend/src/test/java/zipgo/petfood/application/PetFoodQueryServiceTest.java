@@ -358,12 +358,11 @@ class PetFoodQueryServiceTest extends ServiceTest {
         @Test
         void 식품_상세조회할수_있다() {
             //given
-            Brand 브랜드 = brandRepository.findAll().get(0);
-            PetFood 테스트용_식품 = 모든_영양기준_만족_식품(브랜드);
-            Long 아이디 = petFoodRepository.save(테스트용_식품).getId();
+            PetFood 테스트용_식품 = petFoodRepository.findAll().get(0);
+            Brand 브랜드 = brandRepository.findById(테스트용_식품.getBrand().getId()).get();
 
             //when
-            GetPetFoodResponse 응답 = petFoodQueryService.getPetFoodResponse(아이디);
+            GetPetFoodResponse 응답 = petFoodQueryService.getPetFoodResponse(테스트용_식품.getId());
 
             //then
             assertThat(응답.id()).isEqualTo(테스트용_식품.getId());

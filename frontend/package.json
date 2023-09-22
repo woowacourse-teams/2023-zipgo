@@ -5,7 +5,7 @@
     "type-check": "tsc --noEmit",
     "type-check:watch": "yarn type-check --watch",
     "start:dev": "cross-env NODE_ENV=development MSW=on STRICT_MODE=on webpack serve --config config/webpack.dev.js",
-    "start:prod": "serve -s dist",
+    "start:prod": "yarn build:prod && serve -s dist",
     "start:sb": "storybook dev -p 6006",
     "build:prod": "cross-env NODE_ENV=production webpack --progress --config config/webpack.prod.js",
     "build:dev": "cross-env NODE_ENV=development STRICT_MODE=off webpack --progress --config config/webpack.dev.js",
@@ -42,6 +42,7 @@
     "@types/react-dom": "^18",
     "@types/styled-components": "^5.1.26",
     "@types/testing-library__jest-dom": "^5.14.8",
+    "@types/webpack-bundle-analyzer": "^4",
     "@typescript-eslint/eslint-plugin": "latest",
     "@typescript-eslint/parser": "latest",
     "babel-loader": "^9.1.3",
@@ -83,6 +84,7 @@
     "type-fest": "^3.13.0",
     "typescript": "^5.1.6",
     "webpack": "^5.88.1",
+    "webpack-bundle-analyzer": "^4.9.1",
     "webpack-cli": "^5.1.4",
     "webpack-dev-server": "^4.15.1",
     "webpack-merge": "^5.9.0"
@@ -90,6 +92,7 @@
   "dependencies": {
     "@tanstack/react-query": "^4.29.19",
     "axios": "^1.4.0",
+    "browser-image-compression": "^2.0.2",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-router": "^6.14.2",
