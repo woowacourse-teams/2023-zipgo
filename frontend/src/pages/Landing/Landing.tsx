@@ -20,7 +20,7 @@ const Landing = () => {
 
   const onTouchDog = () => {
     if (dogTouchCount % 10 === 0) {
-      toast.warning('강아지를 꺠우지 않게 조심하세요!');
+      toast.warning('강아지를 깨우지 않게 조심하세요!');
     } else {
       toast.info(`강아지를 ${dogTouchCount}번 쓰다듬었어요.`);
     }
