@@ -1,20 +1,21 @@
-import { Component, ErrorInfo, ReactNode } from 'react';
+import { Component, ErrorInfo, PropsWithChildren, ReactNode } from 'react';
 
 import { ErrorBoundaryState, ErrorBoundaryValue } from '@/types/common/errorBoundary';
-
-interface ErrorBoundaryProps {
-  fallback?: ReactNode | ((props: ErrorBoundaryValue) => ReactNode);
-  children: ReactNode;
-  onReset?: VoidFunction;
-  onError?(error: Error, errorInfo: ErrorInfo): void;
-}
+import { RenderProps } from '@/types/common/utility';
 
 const initialState: ErrorBoundaryState = {
   hasError: false,
   error: null,
 };
 
-class ErrorBoundary extends Component<ErrorBoundaryProps, ErrorBoundaryState> {
+export interface ErrorBoundaryProps {
+  fallback?: ReactNode | RenderProps<ErrorBoundaryValue>;
+  ignore?: <E extends Error>(props: E) => boolean;
+  onReset?: VoidFunction;
+  onError?(error: Error, errorInfo: ErrorInfo): void;
+}
+
+class ErrorBoundary extends Component<PropsWithChildren<ErrorBoundaryProps>, ErrorBoundaryState> {
   constructor(props: ErrorBoundaryProps) {
     super(props);
     this.state = initialState;
@@ -22,7 +23,9 @@ class ErrorBoundary extends Component<ErrorBoundaryProps, ErrorBoundaryState> {
     this.reset = this.reset.bind(this);
   }
 
-  static getDerivedStateFromError(error: Error): ErrorBoundaryState {
+  static getDerivedStateFromError(error: Error) {
+    if (shouldIgnore(error)) throw error;
+
     return {
       hasError: true,
       error,
@@ -30,13 +33,20 @@ class ErrorBoundary extends Component<ErrorBoundaryProps, ErrorBoundaryState> {
   }
 
   componentDidCatch(error: Error, errorInfo: ErrorInfo): void {
-    this.props.onError?.(error, errorInfo);
+    const { onError, ignore } = this.props;
+
+    if (ignore?.(error)) {
+      throw error;
+    }
+
+    onError?.(error, errorInfo);
   }
 
   reset() {
     const { onReset } = this.props;
 
     onReset?.();
+
     this.setState(initialState);
   }
 
@@ -54,5 +64,8 @@ class ErrorBoundary extends Component<ErrorBoundaryProps, ErrorBoundaryState> {
     return fallback;
   }
 }
+
+export const shouldIgnore = (error: Error, ignoreKey = 'ignore') =>
+  Object.prototype.hasOwnProperty.call(error, ignoreKey);
 
 export default ErrorBoundary;
