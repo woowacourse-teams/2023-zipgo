@@ -22,11 +22,13 @@ import static java.nio.charset.StandardCharsets.UTF_8;
 public class JwtProvider {
 
     private final SecretKey key;
-    private final long validityInMilliseconds;
+    private final long accessTokenExpireLength;
+    private final long refreshTokenExpireLength;
 
     public JwtProvider(JwtCredentials jwtCredentials) {
         this.key = hmacShaKeyFor(jwtCredentials.getSecretKey().getBytes(UTF_8));
-        this.validityInMilliseconds = jwtCredentials.getExpireLength();
+        this.accessTokenExpireLength = jwtCredentials.getAccessTokenExpireLength();
+        this.refreshTokenExpireLength = jwtCredentials.getRefreshTokenExpireLength();
     }
 
     public String create(String payload) {
