@@ -9,6 +9,8 @@ import io.jsonwebtoken.MalformedJwtException;
 import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.security.SignatureException;
 import java.util.Date;
+import java.util.UUID;
+
 import javax.crypto.SecretKey;
 import org.springframework.stereotype.Component;
 import zipgo.auth.exception.TokenExpiredException;
@@ -31,15 +33,23 @@ public class JwtProvider {
         this.refreshTokenExpireLength = jwtCredentials.getRefreshTokenExpireLength();
     }
 
-    public String create(String payload) {
+    public String createAccessToken(String payload) {
+        return createToken(payload, accessTokenExpireLength, key);
+    }
+
+    private String createToken(String payload, long expireLength, SecretKey key) {
         Date now = new Date();
-        Date validity = new Date(now.getTime() + validityInMilliseconds);
+        Date expiration = new Date(now.getTime() + expireLength);
         return Jwts.builder()
                 .setSubject(payload)
                 .setIssuedAt(now)
-                .setExpiration(validity)
+                .setExpiration(expiration)
                 .signWith(key, SignatureAlgorithm.HS256)
                 .compact();
+    }
+
+    public String createRefreshToken() {
+        return createToken(UUID.randomUUID().toString(), refreshTokenExpireLength, key);
     }
 
     public String getPayload(String token) {

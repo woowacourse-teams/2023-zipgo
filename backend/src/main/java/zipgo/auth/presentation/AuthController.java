@@ -30,12 +30,16 @@ public class AuthController {
 
     @PostMapping("/login")
     public ResponseEntity<TokenResponse> login(@RequestParam("code") String authCode) {
-        String token = authService.createToken(authCode);
-        String memberId = jwtProvider.getPayload(token);
+        String accessToken = authService.createToken(authCode);
+        String memberId = jwtProvider.getPayload(accessToken);
         Member member = memberQueryService.findById(Long.valueOf(memberId));
         List<Pet> pets = petQueryService.readMemberPets(member.getId());
-        return ResponseEntity.ok(TokenResponse.of(token, member, pets));
+        return ResponseEntity.ok(TokenResponse.of(accessToken, member, pets));
     }
+
+
+
+
 
     @GetMapping
     public ResponseEntity<AuthResponse> getMemberDetail(@Auth AuthCredentials authCredentials) {

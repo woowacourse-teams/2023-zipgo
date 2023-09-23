@@ -73,7 +73,7 @@ class PetControllerTest extends AcceptanceTest {
         @Test
         void 성공하면_201_반환한다_허스키() {
             // given
-            var token = jwtProvider.create("1");
+            var token = jwtProvider.createAccessToken("1");
             var 반려견_생성_요청 = new CreatePetRequest("상근이", "남", "아기사진", 3, "시베리안 허스키", "", 57.8);
             var 요청_준비 = given(spec).header("Authorization", "Bearer " + token).body(반려견_생성_요청)
                     .contentType(JSON).filter(반려동물_등록_성공_API_문서_생성());
@@ -92,7 +92,7 @@ class PetControllerTest extends AcceptanceTest {
             var 소형견 = petSizeRepository.save(소형견());
             breedRepository.save(견종_생성("믹스견", 대형견));
             breedRepository.save(견종_생성("믹스견", 소형견));
-            var token = jwtProvider.create("1");
+            var token = jwtProvider.createAccessToken("1");
             var 반려견_생성_요청 = new CreatePetRequest("나만의소중한", "남", "아기사진", 3, "믹스견", "소형견", 57.8);
             var 요청_준비 = given(spec).header("Authorization", "Bearer " + token).body(반려견_생성_요청)
                     .contentType(JSON).filter(반려동물_등록_성공_API_문서_생성());
@@ -106,7 +106,7 @@ class PetControllerTest extends AcceptanceTest {
 
         @Test
         void 존재하지_않는_견종이면_404_반환한다() {
-            var token = jwtProvider.create("1");
+            var token = jwtProvider.createAccessToken("1");
             var 반려견_생성_요청 = new CreatePetRequest("상근이", "남", "아기사진", 3, "존재하지 않는 종", "대형견", 57.8);
             var 요청_준비 = given(spec).header("Authorization", "Bearer " + token).body(반려견_생성_요청)
                     .contentType(JSON).filter(API_반려동물_등록_예외응답_문서_생성());
@@ -120,7 +120,7 @@ class PetControllerTest extends AcceptanceTest {
 
         @Test
         void 존재하지_않는_견종_크기면_404_반환한다() {
-            var token = jwtProvider.create("1");
+            var token = jwtProvider.createAccessToken("1");
             var 반려견_생성_요청 = new CreatePetRequest("상근이", "남", "아기사진", 3, "시베리안 허스키", "초초초 대형견", 57.8);
             var 요청_준비 = given(spec).header("Authorization", "Bearer " + token).body(반려견_생성_요청)
                     .contentType(JSON).filter(API_반려동물_등록_예외응답_문서_생성());
@@ -141,7 +141,7 @@ class PetControllerTest extends AcceptanceTest {
         void 성공하면_204_반환한다() {
             // given
             var 쫑이 = 반려견_생성();
-            var 토큰 = jwtProvider.create("1");
+            var 토큰 = jwtProvider.createAccessToken("1");
             var 반려견_수정_요청 = new UpdatePetRequest("상근이", "남", "아기사진", 3, "시베리안 허스키", "대형견", 57.8);
             var 요청_준비 = given(spec).header("Authorization", "Bearer " + 토큰).body(반려견_수정_요청)
                     .contentType(JSON).filter(반려동물_정보_수정_API_성공());
@@ -157,7 +157,7 @@ class PetControllerTest extends AcceptanceTest {
         void 반려견과_주인이_맞지_않으면_404_반환한다() {
             // given
             var 쫑이 = 반려견_생성();
-            var 토큰 = jwtProvider.create("2");
+            var 토큰 = jwtProvider.createAccessToken("2");
             var 반려견_수정_요청 = new UpdatePetRequest("상근이", "남", "아기사진", 3, "시베리안 허스키", "대형견", 57.8);
             var 요청_준비 = given(spec).header("Authorization", "Bearer " + 토큰).body(반려견_수정_요청)
                     .contentType(JSON).filter(API_반려동물_수정_예외응답_문서_생성());
@@ -173,7 +173,7 @@ class PetControllerTest extends AcceptanceTest {
         void 존재하지_않는_petId로_요청시_404_반환한다() {
             // given
             var 존재하지_않는_petId = 999999L;
-            var 토큰 = jwtProvider.create("1");
+            var 토큰 = jwtProvider.createAccessToken("1");
             var 반려견_수정_요청 = new UpdatePetRequest("상근이", "남", "아기사진", 3, "시베리안 허스키", "대형견", 57.8);
             var 요청_준비 = given(spec).header("Authorization", "Bearer " + 토큰).body(반려견_수정_요청)
                     .contentType(JSON).filter(API_반려동물_수정_예외응답_문서_생성());
@@ -194,7 +194,7 @@ class PetControllerTest extends AcceptanceTest {
         void 성공하면_204를_반환한다() {
             // given
             var 쫑이 = 반려견_생성();
-            var 토큰 = jwtProvider.create(String.valueOf(갈비.getId()));
+            var 토큰 = jwtProvider.createAccessToken(String.valueOf(갈비.getId()));
             var 요청_준비 = given(spec).header("Authorization", "Bearer " + 토큰)
                     .contentType(JSON).filter(반려동물_삭제_API_성공());
 
@@ -210,7 +210,7 @@ class PetControllerTest extends AcceptanceTest {
             // given
             var 쫑이 = 반려견_생성();
             Member 주인_아닌_사람 = memberRepository.save(MemberFixture.무민());
-            var 토큰 = jwtProvider.create(String.valueOf(주인_아닌_사람.getId()));
+            var 토큰 = jwtProvider.createAccessToken(String.valueOf(주인_아닌_사람.getId()));
             var 요청_준비 = given(spec).header("Authorization", "Bearer " + 토큰)
                     .contentType(JSON).filter(API_반려동물_삭제_예외응답_문서_생성());
 
@@ -241,7 +241,7 @@ class PetControllerTest extends AcceptanceTest {
     void 사용자_반려동물_조회_성공시_200_반환한다() {
         // given
         var 갈비 = petRepository.save(반려견_생성());
-        var 토큰 = jwtProvider.create(String.valueOf(갈비.getOwner().getId()));
+        var 토큰 = jwtProvider.createAccessToken(String.valueOf(갈비.getOwner().getId()));
 
         var 요청_준비 = given(spec)
                 .header("Authorization", "Bearer " + 토큰)

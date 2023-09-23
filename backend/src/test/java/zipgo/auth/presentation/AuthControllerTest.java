@@ -64,7 +64,7 @@ class AuthControllerTest {
     @Test
     void 로그인_성공() throws Exception {
         // given
-        when(authService.createToken("인가_코드"))
+        when(authService.createAccessToken("인가_코드"))
                 .thenReturn("생성된_토큰");
         when(jwtProvider.getPayload("생성된_토큰"))
                 .thenReturn("1");
@@ -85,7 +85,7 @@ class AuthControllerTest {
     @Test
     void 로그인_성공_후_사용자의_반려동물이_없다면_pets는_빈_배열이다() throws Exception {
         // given
-        when(authService.createToken("인가_코드"))
+        when(authService.createAccessToken("인가_코드"))
                 .thenReturn("생성된_토큰");
         when(jwtProvider.getPayload("생성된_토큰"))
                 .thenReturn("1");
@@ -106,7 +106,7 @@ class AuthControllerTest {
     @Test
     void 자원_서버의_토큰을_가져오는데_실패하면_예외가_발생한다() throws Exception {
         // given
-        when(authService.createToken("인가_코드"))
+        when(authService.createAccessToken("인가_코드"))
                 .thenThrow(new OAuthTokenNotBringException());
 
         // when

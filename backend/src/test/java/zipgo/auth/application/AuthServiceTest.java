@@ -42,11 +42,11 @@ class AuthServiceTest {
         Member 저장된_멤버 = 식별자_있는_멤버();
         when(memberRepository.findByEmail("이메일"))
                 .thenReturn(Optional.of(저장된_멤버));
-        when(jwtProvider.create(String.valueOf(저장된_멤버.getId())))
+        when(jwtProvider.createAccessToken(String.valueOf(저장된_멤버.getId())))
                 .thenReturn("생성된 토큰");
 
         // when
-        String 토큰 = authService.createToken("코드");
+        String 토큰 = authService.createAccessToken("코드");
 
         // then
         assertThat(토큰).isEqualTo("생성된 토큰");
@@ -60,11 +60,11 @@ class AuthServiceTest {
                 .thenReturn(Optional.empty());
         when(memberRepository.save(식별자_없는_멤버()))
                 .thenReturn(식별자_있는_멤버());
-        when(jwtProvider.create("1"))
+        when(jwtProvider.createAccessToken("1"))
                 .thenReturn("생성된 토큰");
 
         // when
-        String 토큰 = authService.createToken("코드");
+        String 토큰 = authService.createAccessToken("코드");
 
         // then
         assertThat(토큰).isEqualTo("생성된 토큰");
