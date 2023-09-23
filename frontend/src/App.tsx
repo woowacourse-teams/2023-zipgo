@@ -1,11 +1,13 @@
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { PropsWithChildren, useEffect } from 'react';
 import { Outlet } from 'react-router-dom';
+import { ThemeProvider } from 'styled-components';
 
 import AxiosInterceptors from './components/@common/AxiosInterceptors/AxiosInterceptors';
 import QueryBoundary from './components/@common/ErrorBoundary/QueryBoundary/QueryBoundary';
-import ToastContainer from './components/@common/Toast/ToastContainer';
-import useToast from './hooks/toast/useToast';
+import GlobalStyle from './components/@common/GlobalStyle';
+import ToastProvider, { useToast } from './context/Toast/ToastContext';
+import theme from './styles/theme';
 import { ErrorBoundaryValue } from './types/common/errorBoundary';
 import { setScreenSize } from './utils/setScreenSize';
 
@@ -29,22 +31,24 @@ const queryClient = new QueryClient({
 });
 
 const App = () => (
-  <QueryClientProvider client={queryClient}>
-    <QueryBoundary errorFallback={errorFallback}>
-      <GlobalEvent>
-        <AxiosInterceptors>
-          <Outlet />
-        </AxiosInterceptors>
-      </GlobalEvent>
-    </QueryBoundary>
-  </QueryClientProvider>
+  <ThemeProvider theme={theme}>
+    <QueryClientProvider client={queryClient}>
+      <QueryBoundary errorFallback={errorFallback}>
+        <ToastProvider>
+          <AxiosInterceptors>
+            <GlobalStyle />
+            <GlobalEvent />
+            <Outlet />
+          </AxiosInterceptors>
+        </ToastProvider>
+      </QueryBoundary>
+    </QueryClientProvider>
+  </ThemeProvider>
 );
 export default App;
 
-const GlobalEvent = (props: PropsWithChildren) => {
-  const { children } = props;
-
-  const { toast, currentToast } = useToast();
+const GlobalEvent = () => {
+  const { toast } = useToast();
 
   useEffect(() => {
     setScreenSize();
@@ -80,10 +84,5 @@ const GlobalEvent = (props: PropsWithChildren) => {
     };
   }, []);
 
-  return (
-    <>
-      {children}
-      <ToastContainer currentToast={currentToast} />;
-    </>
-  );
+  return null;
 };
