@@ -13,8 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.restdocs.AutoConfigureRestDocs;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.http.MediaType;
-import org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders;
+import org.springframework.http.ResponseCookie;
 import org.springframework.restdocs.mockmvc.RestDocumentationResultHandler;
 import org.springframework.restdocs.payload.JsonFieldType;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
@@ -31,8 +30,8 @@ import zipgo.pet.domain.fixture.PetFixture;
 import static com.epages.restdocs.apispec.RestAssuredRestDocumentationWrapper.resourceDetails;
 import static java.util.Collections.EMPTY_LIST;
 import static org.mockito.Mockito.when;
-import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.post;
 import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.get;
+import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.post;
 import static org.springframework.restdocs.payload.PayloadDocumentation.fieldWithPath;
 import static org.springframework.restdocs.payload.PayloadDocumentation.responseFields;
 import static org.springframework.restdocs.request.RequestDocumentation.parameterWithName;
@@ -73,11 +72,12 @@ class AuthControllerTest {
     @Test
     void 로그인_성공() throws Exception {
         // given
-        var 토큰 = Tokens.of("작고_소중한_엑세스_토큰", "작고_소중한_리프레시_토큰");
+        var 토큰 = Tokens.of("accessTokenValue", "refreshTokenValue");
         when(authService.login("인가_코드"))
                 .thenReturn(토큰);
+        var 리프레시_토큰_쿠키 = ResponseCookie.from("refreshToken", 토큰.refreshToken()).build();
         when(refreshTokenCookieProvider.createCookie(토큰.refreshToken()))
-                .thenReturn(new Cookie("refreshToken", 토큰.refreshToken()));
+                .thenReturn(리프레시_토큰_쿠키);
         when(jwtProvider.getPayload(토큰.accessToken()))
                 .thenReturn("1");
         when(memberQueryService.findById(1L))
@@ -97,11 +97,12 @@ class AuthControllerTest {
     @Test
     void 로그인_성공_후_사용자의_반려동물이_없다면_pets는_빈_배열이다() throws Exception {
         // given
-        var 토큰 = Tokens.of("작고_소중한_엑세스_토큰", "작고_소중한_리프레시_토큰");
+        var 토큰 = Tokens.of("accessTokenValue", "refreshTokenValue");
         when(authService.login("인가_코드"))
                 .thenReturn(토큰);
+        var 리프레시_토큰_쿠키 = ResponseCookie.from("refreshToken", 토큰.refreshToken()).build();
         when(refreshTokenCookieProvider.createCookie(토큰.refreshToken()))
-                .thenReturn(new Cookie("refreshToken", 토큰.refreshToken()));
+                .thenReturn(리프레시_토큰_쿠키);
         when(jwtProvider.getPayload(토큰.accessToken()))
                 .thenReturn("1");
         when(memberQueryService.findById(1L))
@@ -135,11 +136,12 @@ class AuthControllerTest {
     @Test
     void 토큰을_갱신할_수_있다() throws Exception {
         // given
-        var 토큰 = Tokens.of("갱신된_엑세스_토큰", "갱신된_리프레시_토큰");
+        var 토큰 = Tokens.of("accessTokenValue", "refreshTokenValue");
+        var 리프레시_토큰_쿠키 = ResponseCookie.from("refreshToken", 토큰.refreshToken()).build();
         when(authService.renewTokens("작고_소중한_리프레시_토큰"))
                 .thenReturn(토큰);
         when(refreshTokenCookieProvider.createCookie(토큰.refreshToken()))
-                .thenReturn(new Cookie("refreshToken", 토큰.refreshToken()));
+                .thenReturn(리프레시_토큰_쿠키);
 
         // when
         var 요청 = mockMvc.perform(get("/auth/refresh")
@@ -149,7 +151,6 @@ class AuthControllerTest {
         // then
         요청.andExpect(status().isOk());
     }
-
 
     private RestDocumentationResultHandler 로그인_성공_문서_생성() {
         return MockMvcRestDocumentationWrapper.document("로그인 성공 - 반려동물 기등록",

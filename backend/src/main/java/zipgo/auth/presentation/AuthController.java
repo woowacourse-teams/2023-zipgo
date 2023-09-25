@@ -1,9 +1,8 @@
 package zipgo.auth.presentation;
 
 import java.util.List;
-
-import jakarta.servlet.http.Cookie;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.ResponseCookie;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CookieValue;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -41,23 +40,23 @@ public class AuthController {
     @PostMapping("/login")
     public ResponseEntity<TokenResponse> login(@RequestParam("code") String authCode) {
         Tokens tokens = authService.login(authCode);
-        Cookie cookie = refreshTokenCookieProvider.createCookie(tokens.refreshToken());
+        ResponseCookie cookie = refreshTokenCookieProvider.createCookie(tokens.refreshToken());
 
         String memberId = jwtProvider.getPayload(tokens.accessToken());
         Member member = memberQueryService.findById(Long.valueOf(memberId));
         List<Pet> pets = petQueryService.readMemberPets(member.getId());
 
         return ResponseEntity.ok()
-                .header(SET_COOKIE, cookie.getName() + "=" + cookie.getValue() + ";")
+                .header(SET_COOKIE, cookie.toString())
                 .body(TokenResponse.of(tokens.accessToken(), member, pets));
     }
 
     @GetMapping("/refresh")
     public ResponseEntity<AccessTokenResponse> renewTokens(@CookieValue(value = REFRESH_TOKEN) String refreshToken) {
         Tokens tokens = authService.renewTokens(refreshToken);
-        Cookie cookie = refreshTokenCookieProvider.createCookie(tokens.refreshToken());
+        ResponseCookie cookie = refreshTokenCookieProvider.createCookie(tokens.refreshToken());
         return ResponseEntity.ok()
-                .header(SET_COOKIE, cookie.getName() + "=" + cookie.getValue() + ";")
+                .header(SET_COOKIE, cookie.toString())
                 .body(new AccessTokenResponse(tokens.accessToken()));
     }
 
