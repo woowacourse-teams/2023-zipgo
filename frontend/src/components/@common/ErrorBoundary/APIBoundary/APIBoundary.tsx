@@ -14,10 +14,7 @@ const APIBoundary = (props: PropsWithChildren<APIBoundaryProps>) => (
         throw new UnexpectedError(error);
       }
 
-      /** @description 통신 성공 */
-      /**
-       * @todo custom error code 추가 후 에러 핸들링
-       */
+      throw new APIError(error);
     }}
     {...props}
   />
