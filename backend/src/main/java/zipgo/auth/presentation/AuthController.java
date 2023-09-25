@@ -1,9 +1,7 @@
 package zipgo.auth.presentation;
 
 import java.util.List;
-
 import jakarta.servlet.http.Cookie;
-import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -16,49 +14,37 @@ import zipgo.auth.dto.AuthCredentials;
 import zipgo.auth.dto.AuthResponse;
 import zipgo.auth.dto.TokenResponse;
 import zipgo.auth.support.JwtProvider;
+import zipgo.auth.support.RefreshTokenCookieProvider;
 import zipgo.member.application.MemberQueryService;
 import zipgo.member.domain.Member;
 import zipgo.pet.application.PetQueryService;
 import zipgo.pet.domain.Pet;
+
+import static org.springframework.http.HttpHeaders.SET_COOKIE;
 
 @RestController
 @RequestMapping("/auth")
 @RequiredArgsConstructor
 public class AuthController {
 
-    private static final String REFRESH_TOKEN = "refreshToken";
-
-
     private final AuthService authService;
     private final JwtProvider jwtProvider;
+    private final RefreshTokenCookieProvider refreshTokenCookieProvider;
     private final MemberQueryService memberQueryService;
     private final PetQueryService petQueryService;
 
     @PostMapping("/login")
-    public ResponseEntity<TokenResponse> login(
-            @RequestParam("code") String authCode,
-            HttpServletResponse response
-    ) {
+    public ResponseEntity<TokenResponse> login(@RequestParam("code") String authCode) {
         String accessToken = authService.createAccessToken(authCode);
-        setRefreshTokenCookie(response);
+        String refreshToken = authService.createRefreshToken();
+        Cookie cookie = refreshTokenCookieProvider.createCookie(refreshToken);
 
         String memberId = jwtProvider.getPayload(accessToken);
         Member member = memberQueryService.findById(Long.valueOf(memberId));
         List<Pet> pets = petQueryService.readMemberPets(member.getId());
-        return ResponseEntity.ok(TokenResponse.of(accessToken, member, pets));
-
-    }
-
-    private void setRefreshTokenCookie(HttpServletResponse response) {
-        String refreshToken = authService.createRefreshToken();
-        Cookie refreshTokenCookie = new Cookie(REFRESH_TOKEN, refreshToken);
-
-        refreshTokenCookie.setMaxAge(99999999);
-        refreshTokenCookie.setHttpOnly(true);
-        refreshTokenCookie.setSecure(true);
-        refreshTokenCookie.setPath("/");
-
-        response.addCookie(refreshTokenCookie);
+        return ResponseEntity.ok()
+                .header(SET_COOKIE, cookie.toString())
+                .body(TokenResponse.of(accessToken, member, pets));
     }
 
     @GetMapping
