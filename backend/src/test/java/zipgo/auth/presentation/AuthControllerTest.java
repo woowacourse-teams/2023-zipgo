@@ -1,9 +1,10 @@
 package zipgo.auth.presentation;
 
+import java.util.List;
 import com.epages.restdocs.apispec.MockMvcRestDocumentationWrapper;
 import com.epages.restdocs.apispec.ResourceSnippetDetails;
 import com.epages.restdocs.apispec.Schema;
-import java.util.List;
+import jakarta.servlet.http.Cookie;
 import org.junit.jupiter.api.DisplayNameGeneration;
 import org.junit.jupiter.api.DisplayNameGenerator;
 import org.junit.jupiter.api.Test;
@@ -12,13 +13,17 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.restdocs.AutoConfigureRestDocs;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.http.MediaType;
+import org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders;
 import org.springframework.restdocs.mockmvc.RestDocumentationResultHandler;
 import org.springframework.restdocs.payload.JsonFieldType;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.web.servlet.MockMvc;
 import zipgo.auth.application.AuthService;
+import zipgo.auth.dto.Tokens;
 import zipgo.auth.exception.OAuthTokenNotBringException;
 import zipgo.auth.support.JwtProvider;
+import zipgo.auth.support.RefreshTokenCookieProvider;
 import zipgo.member.application.MemberQueryService;
 import zipgo.pet.application.PetQueryService;
 import zipgo.pet.domain.fixture.PetFixture;
@@ -27,6 +32,7 @@ import static com.epages.restdocs.apispec.RestAssuredRestDocumentationWrapper.re
 import static java.util.Collections.EMPTY_LIST;
 import static org.mockito.Mockito.when;
 import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.post;
+import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.get;
 import static org.springframework.restdocs.payload.PayloadDocumentation.fieldWithPath;
 import static org.springframework.restdocs.payload.PayloadDocumentation.responseFields;
 import static org.springframework.restdocs.request.RequestDocumentation.parameterWithName;
@@ -59,14 +65,20 @@ class AuthControllerTest {
     private JwtProvider jwtProvider;
 
     @MockBean
+    private RefreshTokenCookieProvider refreshTokenCookieProvider;
+
+    @MockBean
     private AuthService authService;
 
     @Test
     void 로그인_성공() throws Exception {
         // given
-        when(authService.createAccessToken("인가_코드"))
-                .thenReturn("생성된_토큰");
-        when(jwtProvider.getPayload("생성된_토큰"))
+        var 토큰 = Tokens.of("작고_소중한_엑세스_토큰", "작고_소중한_리프레시_토큰");
+        when(authService.login("인가_코드"))
+                .thenReturn(토큰);
+        when(refreshTokenCookieProvider.createCookie(토큰.refreshToken()))
+                .thenReturn(new Cookie("refreshToken", 토큰.refreshToken()));
+        when(jwtProvider.getPayload(토큰.accessToken()))
                 .thenReturn("1");
         when(memberQueryService.findById(1L))
                 .thenReturn(식별자_있는_멤버());
@@ -85,9 +97,12 @@ class AuthControllerTest {
     @Test
     void 로그인_성공_후_사용자의_반려동물이_없다면_pets는_빈_배열이다() throws Exception {
         // given
-        when(authService.createAccessToken("인가_코드"))
-                .thenReturn("생성된_토큰");
-        when(jwtProvider.getPayload("생성된_토큰"))
+        var 토큰 = Tokens.of("작고_소중한_엑세스_토큰", "작고_소중한_리프레시_토큰");
+        when(authService.login("인가_코드"))
+                .thenReturn(토큰);
+        when(refreshTokenCookieProvider.createCookie(토큰.refreshToken()))
+                .thenReturn(new Cookie("refreshToken", 토큰.refreshToken()));
+        when(jwtProvider.getPayload(토큰.accessToken()))
                 .thenReturn("1");
         when(memberQueryService.findById(1L))
                 .thenReturn(식별자_있는_멤버());
@@ -106,7 +121,7 @@ class AuthControllerTest {
     @Test
     void 자원_서버의_토큰을_가져오는데_실패하면_예외가_발생한다() throws Exception {
         // given
-        when(authService.createAccessToken("인가_코드"))
+        when(authService.login("인가_코드"))
                 .thenThrow(new OAuthTokenNotBringException());
 
         // when
@@ -116,6 +131,25 @@ class AuthControllerTest {
         // then
         요청.andExpect(status().isBadGateway());
     }
+
+    @Test
+    void 토큰을_갱신할_수_있다() throws Exception {
+        // given
+        var 토큰 = Tokens.of("갱신된_엑세스_토큰", "갱신된_리프레시_토큰");
+        when(authService.renewTokens("작고_소중한_리프레시_토큰"))
+                .thenReturn(토큰);
+        when(refreshTokenCookieProvider.createCookie(토큰.refreshToken()))
+                .thenReturn(new Cookie("refreshToken", 토큰.refreshToken()));
+
+        // when
+        var 요청 = mockMvc.perform(get("/auth/refresh")
+                        .cookie(new Cookie("refreshToken", "작고_소중한_리프레시_토큰")))
+                .andDo(토큰_갱신_성공_문서_생성());
+
+        // then
+        요청.andExpect(status().isOk());
+    }
+
 
     private RestDocumentationResultHandler 로그인_성공_문서_생성() {
         return MockMvcRestDocumentationWrapper.document("로그인 성공 - 반려동물 기등록",
@@ -159,6 +193,19 @@ class AuthControllerTest {
                         fieldWithPath("authResponse.hasPet").description("반려동물 등록 여부").type(JsonFieldType.BOOLEAN),
                         fieldWithPath("authResponse.pets").description("반려동물 프로필").type(JsonFieldType.ARRAY)
                 ));
+    }
+
+    private RestDocumentationResultHandler 토큰_갱신_성공_문서_생성() {
+        Schema 응답_형식 = Schema.schema("TokenResponse");
+        ResourceSnippetDetails 문서_정보 = resourceDetails().summary("로그인")
+                .description("로그인 합니다.")
+                .responseSchema(응답_형식);
+
+        return MockMvcRestDocumentationWrapper.document("토큰 갱신 성공",
+                문서_정보,
+                responseFields(
+                        fieldWithPath("accessToken").description("accessToken").type(JsonFieldType.STRING))
+        );
     }
 
 }

@@ -7,6 +7,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import zipgo.auth.dto.Tokens;
 import zipgo.auth.infra.kakao.KakaoOAuthClient;
 import zipgo.auth.infra.kakao.dto.KakaoMemberResponse;
 import zipgo.auth.support.JwtProvider;
@@ -46,10 +47,10 @@ class AuthServiceTest {
                 .thenReturn("생성된 토큰");
 
         // when
-        String 토큰 = authService.createAccessToken("코드");
+        Tokens 토큰 = authService.login("코드");
 
         // then
-        assertThat(토큰).isEqualTo("생성된 토큰");
+        assertThat(토큰.accessToken()).isEqualTo("생성된 토큰");
     }
 
     @Test
@@ -64,10 +65,10 @@ class AuthServiceTest {
                 .thenReturn("생성된 토큰");
 
         // when
-        String 토큰 = authService.createAccessToken("코드");
+        Tokens 토큰 = authService.login("코드");
 
         // then
-        assertThat(토큰).isEqualTo("생성된 토큰");
+        assertThat(토큰.accessToken()).isEqualTo("생성된 토큰");
     }
 
     private void 카카오_토큰_받기_성공() {

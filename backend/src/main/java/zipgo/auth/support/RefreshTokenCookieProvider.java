@@ -7,7 +7,7 @@ import zipgo.common.config.JwtCredentials;
 @Component
 public class RefreshTokenCookieProvider {
 
-    private static final String REFRESH_TOKEN = "refreshToken";
+    public static final String REFRESH_TOKEN = "refreshToken";
     private static final String VALID_COOKIE_PATH = "/";
 
     private final int expireLength;
