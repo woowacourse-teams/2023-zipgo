@@ -12,6 +12,10 @@ type ManageableAxiosError<E extends AxiosError> = {
   [key in keyof StandardInfo<E>]-?: StandardInfo<E>[key];
 } & Omit<E, ManageableStandard>;
 
+type WithAPIErrorCode<T> = T & {
+  code: APIErrorCode;
+};
+
 type ErrorInfo<T extends ErrorCode> = {
   code: T;
 };
@@ -24,7 +28,8 @@ const createErrorParams = <Code extends ErrorCode>(
   info: ErrorInfo<Code>,
   value?: unknown,
 ): [string, CustomErrorOptions<Code>] => {
-  const message = ERROR_MESSAGE_KIT[info.code];
+  /** @description 서버의 잘못된 코드 제공 방지 */
+  const message = ERROR_MESSAGE_KIT[info.code] || ERROR_MESSAGE_KIT.UNEXPECTED_ERROR;
   const options = { cause: { code: info.code, value } };
 
   return [message, options];
@@ -50,7 +55,7 @@ class CustomError<Code extends ErrorCode> extends Error {
   }
 }
 
-export class RuntimeError<Code extends RuntimeErrorCode> extends CustomError<Code> {
+class RuntimeError<Code extends RuntimeErrorCode> extends CustomError<Code> {
   constructor(info: ErrorInfo<Code>, value?: unknown) {
     super(info, JSON.stringify(value));
 
@@ -58,18 +63,27 @@ export class RuntimeError<Code extends RuntimeErrorCode> extends CustomError<Cod
   }
 }
 
-export class UnexpectedError extends CustomError<'UNEXPECTED_ERROR'> {
+class UnexpectedError extends CustomError<'UNEXPECTED_ERROR'> {
   constructor(error?: Error) {
     super({ code: 'UNEXPECTED_ERROR' }, error);
 
     this.ignore = true;
   }
 }
-export class APIError<Code extends ErrorCode> extends CustomError<Code> {
-  // constructor(value?: unknown) {
-  //   super({ code: 'RUNTIME_ERROR' }, JSON.stringify(value));
-  //   this.name = ERROR_CODE_KIT.RUNTIME_ERROR;
-  // }
+
+class APIError<T, D> extends CustomError<APIErrorCode> {
+  status;
+
+  constructor(error: ManageableAxiosError<AxiosError<WithAPIErrorCode<T>, D>>) {
+    /** @description 서버의 코드 미제공 방지 */
+    const code = error.response.data.code || API_ERROR_CODE_KIT.API_ERROR_CODE_MISSING;
+
+    super({ code });
+
+    this.status = error.response.status;
+  }
 }
+
+export { APIError, RuntimeError, UnexpectedError };
 
 export type { ManageableAxiosError };
