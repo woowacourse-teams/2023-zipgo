@@ -1,7 +1,9 @@
 import { AxiosError, isAxiosError } from 'axios';
 import { ComponentProps, PropsWithChildren } from 'react';
 
-import ErrorBoundary from '../ErrorBoundary';
+import { UnexpectedError } from '@/utils/errors';
+
+import { ErrorBoundary } from '../ErrorBoundary';
 
 type ManageableStandard = 'config' | 'request' | 'response';
 
@@ -17,9 +19,9 @@ const APIBoundary = (props: PropsWithChildren<APIBoundaryProps>) => (
   <ErrorBoundary
     onError={error => {
       if (!isAxiosError(error) || !canManage(error)) {
-        // eslint-disable-next-line no-throw-literal
-        throw { ...error, ignore: true };
+        throw new UnexpectedError(error);
       }
+
       /** @description 통신 성공 */
       /**
        * @todo custom error code 추가 후 에러 핸들링
