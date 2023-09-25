@@ -1,3 +1,4 @@
+/* eslint-disable max-classes-per-file */
 import { Component, ErrorInfo, PropsWithChildren, ReactNode } from 'react';
 
 import { ErrorBoundaryState, ErrorBoundaryValue } from '@/types/common/errorBoundary';
@@ -65,7 +66,16 @@ class ErrorBoundary extends Component<PropsWithChildren<ErrorBoundaryProps>, Err
   }
 }
 
-export const shouldIgnore = (error: Error, ignoreKey = 'ignore') =>
+class EndOfErrorBoundary extends ErrorBoundary {
+  static getDerivedStateFromError(error: Error) {
+    return {
+      hasError: true,
+      error,
+    };
+  }
+}
+
+const shouldIgnore = (error: Error, ignoreKey = 'ignore') =>
   Object.prototype.hasOwnProperty.call(error, ignoreKey);
 
-export default ErrorBoundary;
+export { EndOfErrorBoundary, ErrorBoundary };
