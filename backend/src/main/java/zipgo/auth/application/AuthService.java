@@ -24,7 +24,7 @@ public class AuthService {
         Member member = memberRepository.findByEmail(oAuthMemberResponse.getEmail())
                 .orElseGet(() -> memberRepository.save(oAuthMemberResponse.toMember()));
 
-        return jwtProvider.createAccessToken(String.valueOf(member.getId()));
+        return jwtProvider.createAccessToken(member.getId().toString());
     }
 
     public String createRefreshToken() {
