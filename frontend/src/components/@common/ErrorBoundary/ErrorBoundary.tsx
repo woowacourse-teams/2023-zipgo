@@ -51,7 +51,7 @@ class ErrorBoundary extends Component<PropsWithChildren<ErrorBoundaryProps>, Err
   }
 
   render() {
-    const { hasError } = this.state;
+    const { error, hasError } = this.state;
 
     const { children, fallback } = this.props;
 
@@ -59,7 +59,7 @@ class ErrorBoundary extends Component<PropsWithChildren<ErrorBoundaryProps>, Err
 
     if (!fallback) return null;
 
-    if (typeof fallback === 'function') return fallback({ reset: this.reset });
+    if (typeof fallback === 'function') return fallback({ reset: this.reset, error });
 
     return fallback;
   }
