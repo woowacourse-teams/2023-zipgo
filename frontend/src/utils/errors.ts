@@ -52,10 +52,12 @@ export class UnexpectedError extends CustomError<'UNEXPECTED_ERROR'> {
   constructor(error?: Error) {
     super({ code: 'UNEXPECTED_ERROR' }, error);
 
-    if (error) {
-      this.message = error.message;
-    }
-
     this.ignore = true;
   }
+}
+export class APIError<Code extends ErrorCode> extends CustomError<Code> {
+  // constructor(value?: unknown) {
+  //   super({ code: 'RUNTIME_ERROR' }, JSON.stringify(value));
+  //   this.name = ERROR_CODE_KIT.RUNTIME_ERROR;
+  // }
 }
