@@ -1,17 +1,9 @@
 import { AxiosError, isAxiosError } from 'axios';
 import { ComponentProps, PropsWithChildren } from 'react';
 
-import { UnexpectedError } from '@/utils/errors';
+import { APIError, ManageableAxiosError, UnexpectedError } from '@/utils/errors';
 
 import { ErrorBoundary } from '../ErrorBoundary';
-
-type ManageableStandard = 'config' | 'request' | 'response';
-
-type StandardInfo<E extends AxiosError> = Pick<E, ManageableStandard>;
-
-type ManageableAxiosError<E extends AxiosError> = {
-  [key in keyof StandardInfo<E>]-?: StandardInfo<E>[key];
-} & Omit<E, ManageableStandard>;
 
 export type APIBoundaryProps = ComponentProps<typeof ErrorBoundary>;
 

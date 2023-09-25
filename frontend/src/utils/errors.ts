@@ -1,8 +1,18 @@
 /* eslint-disable max-classes-per-file */
-import type { ErrorCode, RuntimeErrorCode } from '../constants/errors';
-import { ERROR_MESSAGE_KIT } from '../constants/errors';
+import { AxiosError } from 'axios';
 
-type ErrorInfo<T extends ErrorCode = 'UNEXPECTED_ERROR'> = {
+import type { APIErrorCode, ErrorCode, RuntimeErrorCode } from '../constants/errors';
+import { API_ERROR_CODE_KIT, ERROR_MESSAGE_KIT } from '../constants/errors';
+
+type ManageableStandard = 'config' | 'request' | 'response';
+
+type StandardInfo<E extends AxiosError> = Pick<E, ManageableStandard>;
+
+type ManageableAxiosError<E extends AxiosError> = {
+  [key in keyof StandardInfo<E>]-?: StandardInfo<E>[key];
+} & Omit<E, ManageableStandard>;
+
+type ErrorInfo<T extends ErrorCode> = {
   code: T;
 };
 
@@ -61,3 +71,5 @@ export class APIError<Code extends ErrorCode> extends CustomError<Code> {
   //   this.name = ERROR_CODE_KIT.RUNTIME_ERROR;
   // }
 }
+
+export type { ManageableAxiosError };
