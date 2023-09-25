@@ -1,5 +1,6 @@
 export interface ErrorBoundaryValue {
   reset: VoidFunction;
+  error: Error;
 }
 
 export type ErrorBoundaryState =
