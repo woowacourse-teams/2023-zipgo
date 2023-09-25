@@ -4,9 +4,9 @@ export type ErrorCodeKit = typeof ERROR_CODE_KIT;
 export type ErrorMessageKit = typeof ERROR_MESSAGE_KIT;
 export type RuntimeErrorMessageKit = typeof RUNTIME_ERROR_MESSAGE_KIT;
 
-const UNEXPECTED_ERROR = '알 수 없는 오류가 발생했습니다.';
-const WRONG_URL_FORMAT = '잘못된 경로 형식입니다.';
-const WRONG_QUERY_STRING = '잘못된 쿼리 스트링입니다.';
+const UNEXPECTED_ERROR = '페이지에 문제가 발생했어요';
+const WRONG_URL_FORMAT = '존재하지 않는 페이지예요';
+const WRONG_QUERY_STRING = '존재하지 않는 페이지예요';
 
 export const RUNTIME_ERROR_CODE_KIT = {
   WRONG_URL_FORMAT: 'WRONG_URL_FORMAT',
