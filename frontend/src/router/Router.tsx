@@ -4,6 +4,7 @@ import { createBrowserRouter, RouterProvider } from 'react-router-dom';
 import App from '@/App';
 import { PetAdditionProvider } from '@/context/petProfile/PetAdditionContext';
 import PetProfileProvider from '@/context/petProfile/PetProfileContext';
+import ErrorPage from '@/pages/Error/ErrorPage';
 import PetProfileAddition from '@/pages/PetProfile/PetProfileAddition/PetProfileAddition';
 import PetProfileAgeAddition from '@/pages/PetProfile/PetProfileAddition/PetProfileAgeAddition';
 import PetProfileBreedAddition from '@/pages/PetProfile/PetProfileAddition/PetProfileBreedAddition';
@@ -21,13 +22,12 @@ const Login = lazy(() => import('@/pages/Login/Login'));
 const FoodDetail = lazy(() => import('@/pages/FoodDetail/FoodDetail'));
 const ReviewAddition = lazy(() => import('@/pages/ReviewAddition/ReviewAddition'));
 const ReviewStarRating = lazy(() => import('@/pages/ReviewStarRating/ReviewStarRating'));
-const ErrorPage = lazy(() => import('@/pages/Error/ErrorPage'));
+// const ErrorPage = lazy(() => import('@/pages/Error/ErrorPage'));
 
 export const router = createBrowserRouter([
   {
     path: PATH.HOME,
     element: <App />,
-    errorElement: <ErrorPage />,
     children: [
       {
         index: true,
@@ -90,6 +90,10 @@ export const router = createBrowserRouter([
             element: <PetProfileImageAddition />,
           },
         ],
+      },
+      {
+        path: PATH.EXCEPTION,
+        element: <ErrorPage />,
       },
     ],
   },
