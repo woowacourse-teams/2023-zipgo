@@ -17,7 +17,7 @@ public class AuthService {
     private final JwtProvider jwtProvider;
     private final MemberRepository memberRepository;
 
-    public String createToken(String authCode) {
+    public String createAccessToken(String authCode) {
         String accessToken = oAuthClient.getAccessToken(authCode);
         OAuthMemberResponse oAuthMemberResponse = oAuthClient.getMember(accessToken);
 
@@ -25,6 +25,10 @@ public class AuthService {
                 .orElseGet(() -> memberRepository.save(oAuthMemberResponse.toMember()));
 
         return jwtProvider.createAccessToken(String.valueOf(member.getId()));
+    }
+
+    public String createRefreshToken() {
+        return jwtProvider.createRefreshToken();
     }
 
 }
