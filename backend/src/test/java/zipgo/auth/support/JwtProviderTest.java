@@ -27,13 +27,22 @@ class JwtProviderTest {
     @Test
     void 토큰을_생성한다() {
         // given
-        String 페이로드 = String.valueOf(1L);
+        Long 사용자_식별자 = 1L;
 
-        // expect
-        String 토큰 = jwtProvider.createAccessToken(페이로드);
+        // when
+        String 엑세스_토큰 = jwtProvider.createAccessToken(사용자_식별자.toString());
 
         // then
-        assertThat(토큰).isNotNull();
+        assertThat(엑세스_토큰).isNotNull();
+    }
+
+    @Test
+    void 리프레시_토큰을_생성한다() {
+        // given, when
+        String 리프레시_토큰 = jwtProvider.createRefreshToken();
+
+        // then
+        assertThat(리프레시_토큰).isNotEmpty();
     }
 
     @Test
@@ -42,10 +51,10 @@ class JwtProviderTest {
         String 페이로드 = String.valueOf(1L);
 
         // when
-        String 토큰 = jwtProvider.createAccessToken(페이로드);
+        String 엑세스_토큰 = jwtProvider.createAccessToken(페이로드);
 
         // then
-        assertThat(jwtProvider.getPayload(토큰)).isEqualTo(페이로드);
+        assertThat(jwtProvider.getPayload(엑세스_토큰)).isEqualTo("1");
     }
 
     @Test
@@ -96,10 +105,10 @@ class JwtProviderTest {
     void 유효한_토큰인지_검증한다() {
         // given
         String 페이로드 = String.valueOf(1L);
-        String 토큰 = jwtProvider.createAccessToken(페이로드);
+        String 엑세스_토큰 = jwtProvider.createAccessToken(페이로드);
 
         // when
-        assertDoesNotThrow(() -> jwtProvider.validateParseJws(토큰));
+        assertDoesNotThrow(() -> jwtProvider.validateParseJws(엑세스_토큰));
     }
 
     @Test
@@ -113,10 +122,10 @@ class JwtProviderTest {
                 )
         );
         String 페이로드 = String.valueOf(1L);
-        String 토큰 = 유효기간이_지난_jwtProvider.createAccessToken(페이로드);
+        String 엑세스_토큰 = 유효기간이_지난_jwtProvider.createAccessToken(페이로드);
 
         // expect
-        assertThatThrownBy(() -> 유효기간이_지난_jwtProvider.validateParseJws(토큰))
+        assertThatThrownBy(() -> 유효기간이_지난_jwtProvider.validateParseJws(엑세스_토큰))
                 .isInstanceOf(TokenExpiredException.class)
                 .hasMessageContaining("만료된 토큰입니다. 올바른 토큰으로 다시 시도해주세요.");
     }
