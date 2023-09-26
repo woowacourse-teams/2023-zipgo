@@ -1,6 +1,7 @@
 package zipgo.auth.support;
 
 import java.time.Duration;
+
 import org.springframework.http.ResponseCookie;
 import org.springframework.stereotype.Component;
 import zipgo.common.config.JwtCredentials;
@@ -10,6 +11,8 @@ public class RefreshTokenCookieProvider {
 
     public static final String REFRESH_TOKEN = "refreshToken";
     private static final String VALID_COOKIE_PATH = "/";
+    private static final String LOGOUT_COOKIE_VALUE = "";
+    private static final int LOGOUT_COOKIE_AGE = 0;
 
     private final long expireLength;
 
@@ -23,6 +26,12 @@ public class RefreshTokenCookieProvider {
                 .path(VALID_COOKIE_PATH)
                 .secure(true)
                 .httpOnly(true)
+                .build();
+    }
+
+    public ResponseCookie createLogoutCookie() {
+        return ResponseCookie.from(REFRESH_TOKEN, LOGOUT_COOKIE_VALUE)
+                .maxAge(LOGOUT_COOKIE_AGE)
                 .build();
     }
 

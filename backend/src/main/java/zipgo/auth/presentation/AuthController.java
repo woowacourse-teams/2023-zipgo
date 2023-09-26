@@ -1,6 +1,7 @@
 package zipgo.auth.presentation;
 
 import java.util.List;
+
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseCookie;
 import org.springframework.http.ResponseEntity;
@@ -58,6 +59,14 @@ public class AuthController {
         return ResponseEntity.ok()
                 .header(SET_COOKIE, cookie.toString())
                 .body(new AccessTokenResponse(tokens.accessToken()));
+    }
+
+    @PostMapping("/logout")
+    public ResponseEntity<Void> logOut() {
+        ResponseCookie logoutCookie = refreshTokenCookieProvider.createLogoutCookie();
+        return ResponseEntity.ok()
+                .header(SET_COOKIE, logoutCookie.toString())
+                .build();
     }
 
     @GetMapping

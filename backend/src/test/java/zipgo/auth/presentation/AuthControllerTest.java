@@ -1,6 +1,7 @@
 package zipgo.auth.presentation;
 
 import java.util.List;
+
 import com.epages.restdocs.apispec.MockMvcRestDocumentationWrapper;
 import com.epages.restdocs.apispec.ResourceSnippetDetails;
 import com.epages.restdocs.apispec.Schema;
@@ -152,6 +153,22 @@ class AuthControllerTest {
         요청.andExpect(status().isOk());
     }
 
+
+    @Test
+    void 로그아웃_성공() throws Exception {
+        // given
+        when(refreshTokenCookieProvider.createLogoutCookie())
+                .thenReturn(ResponseCookie.from("refreshToken", "").build());
+
+        // when
+        var 요청 = mockMvc.perform(post("/auth/logout"))
+                .andDo(로그아웃_문서_생성());
+
+        // then
+        요청.andExpect(status().isOk());
+    }
+
+
     private RestDocumentationResultHandler 로그인_성공_문서_생성() {
         return MockMvcRestDocumentationWrapper.document("로그인 성공 - 반려동물 기등록",
                 문서_정보,
@@ -207,6 +224,12 @@ class AuthControllerTest {
                 responseFields(
                         fieldWithPath("accessToken").description("accessToken").type(JsonFieldType.STRING))
         );
+    }
+
+    private RestDocumentationResultHandler 로그아웃_문서_생성() {
+        ResourceSnippetDetails 문서_정보 = resourceDetails().summary("로그아웃을 합니다");
+
+        return MockMvcRestDocumentationWrapper.document("로그아웃 성공", 문서_정보);
     }
 
 }
