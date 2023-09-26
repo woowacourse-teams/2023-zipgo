@@ -1,12 +1,15 @@
 package zipgo.auth.application;
 
 import java.util.Optional;
+
 import org.junit.jupiter.api.DisplayNameGeneration;
 import org.junit.jupiter.api.DisplayNameGenerator;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import zipgo.auth.domain.RefreshToken;
+import zipgo.auth.domain.repository.RefreshTokenRepository;
 import zipgo.auth.dto.Tokens;
 import zipgo.auth.infra.kakao.KakaoOAuthClient;
 import zipgo.auth.infra.kakao.dto.KakaoMemberResponse;
@@ -15,6 +18,7 @@ import zipgo.member.domain.Member;
 import zipgo.member.domain.repository.MemberRepository;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.assertAll;
 import static org.mockito.Mockito.when;
 import static zipgo.member.domain.fixture.MemberFixture.식별자_없는_멤버;
 import static zipgo.member.domain.fixture.MemberFixture.식별자_있는_멤버;
@@ -33,28 +37,36 @@ class AuthServiceTest {
     @MockBean
     private MemberRepository memberRepository;
 
+    @MockBean
+    private RefreshTokenRepository refreshTokenRepository;
+
     @Autowired
     private AuthService authService;
 
     @Test
-    void 기존_멤버의_토큰을_발급한다() {
+    void 로그인에_성공하면_토큰을_발급한다() {
         // given
         카카오_토큰_받기_성공();
         Member 저장된_멤버 = 식별자_있는_멤버();
         when(memberRepository.findByEmail("이메일"))
                 .thenReturn(Optional.of(저장된_멤버));
-        when(jwtProvider.createAccessToken(String.valueOf(저장된_멤버.getId())))
-                .thenReturn("생성된 토큰");
+        when(jwtProvider.createAccessToken(저장된_멤버.getId().toString()))
+                .thenReturn("생성된 엑세스 토큰");
+        when(jwtProvider.createRefreshToken())
+                .thenReturn("생성된 리프레시 토큰");
 
         // when
         Tokens 토큰 = authService.login("코드");
 
         // then
-        assertThat(토큰.accessToken()).isEqualTo("생성된 토큰");
+        assertAll(
+                () -> assertThat(토큰.accessToken()).isEqualTo("생성된 엑세스 토큰"),
+                () -> assertThat(토큰.refreshToken()).isEqualTo("생성된 리프레시 토큰")
+        );
     }
 
     @Test
-    void 새로_가입한_멤버의_토큰을_발급한다() {
+    void 새로_가입한_회원의_토큰을_발급한다() {
         // given
         카카오_토큰_받기_성공();
         when(memberRepository.findByEmail("이메일"))
@@ -69,6 +81,28 @@ class AuthServiceTest {
 
         // then
         assertThat(토큰.accessToken()).isEqualTo("생성된 토큰");
+    }
+
+    @Test
+    void 리프레시_토큰을_받아_토큰을_갱신한다() {
+        // given
+        String 토큰 = "token";
+        Long 사용자_식별자 = 1L;
+        when(refreshTokenRepository.getByToken(토큰))
+                .thenReturn(new RefreshToken(사용자_식별자, "기존 토큰"));
+        when(jwtProvider.createAccessToken(사용자_식별자.toString()))
+                .thenReturn("생성된 엑세스 토큰");
+        when(jwtProvider.createRefreshToken())
+                .thenReturn("생성된 리프레시 토큰");
+
+        // when
+        Tokens tokens = authService.renewTokens(토큰);
+
+        // then
+        assertAll(
+                () -> assertThat(tokens.accessToken()).isEqualTo("생성된 엑세스 토큰"),
+                () -> assertThat(tokens.refreshToken()).isEqualTo("생성된 리프레시 토큰")
+        );
     }
 
     private void 카카오_토큰_받기_성공() {
