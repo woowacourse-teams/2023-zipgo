@@ -19,9 +19,12 @@ import org.springframework.restdocs.mockmvc.RestDocumentationResultHandler;
 import org.springframework.restdocs.payload.JsonFieldType;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.ResultHandler;
 import zipgo.auth.application.AuthService;
 import zipgo.auth.dto.Tokens;
 import zipgo.auth.exception.OAuthTokenNotBringException;
+import zipgo.auth.exception.TokenExpiredException;
+import zipgo.auth.exception.TokenInvalidException;
 import zipgo.auth.support.JwtProvider;
 import zipgo.auth.support.RefreshTokenCookieProvider;
 import zipgo.member.application.MemberQueryService;
@@ -153,6 +156,20 @@ class AuthControllerTest {
         요청.andExpect(status().isOk());
     }
 
+    @Test
+    void 토큰_갱신에_실패하면_401_반환() throws Exception {
+        // given
+        when(authService.renewTokens("작고 소중한 리프레시 토큰"))
+                .thenThrow(new TokenExpiredException());
+
+        // when
+        var 요청 = mockMvc.perform(get("/auth/refresh")
+                .cookie(new Cookie("refreshToken", "작고 소중한 리프레시 토큰")))
+                .andDo(토큰_갱신_실패_문서_생성());
+
+        // then
+        요청.andExpect(status().isUnauthorized());
+    }
 
     @Test
     void 로그아웃_성공() throws Exception {
@@ -167,7 +184,6 @@ class AuthControllerTest {
         // then
         요청.andExpect(status().isOk());
     }
-
 
     private RestDocumentationResultHandler 로그인_성공_문서_생성() {
         return MockMvcRestDocumentationWrapper.document("로그인 성공 - 반려동물 기등록",
@@ -226,10 +242,16 @@ class AuthControllerTest {
         );
     }
 
-    private RestDocumentationResultHandler 로그아웃_문서_생성() {
-        ResourceSnippetDetails 문서_정보 = resourceDetails().summary("로그아웃을 합니다");
+    private ResultHandler 토큰_갱신_실패_문서_생성() {
+        return MockMvcRestDocumentationWrapper.document("토큰 갱신 실패",
+                resourceDetails().summary("토큰 갱신 실패")
+        );
+    }
 
-        return MockMvcRestDocumentationWrapper.document("로그아웃 성공", 문서_정보);
+    private RestDocumentationResultHandler 로그아웃_문서_생성() {
+        return MockMvcRestDocumentationWrapper.document("로그아웃 성공",
+                resourceDetails().summary("로그아웃을 합니다")
+        );
     }
 
 }
