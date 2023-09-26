@@ -15,7 +15,7 @@ import zipgo.auth.application.AuthService;
 import zipgo.auth.dto.AccessTokenResponse;
 import zipgo.auth.dto.AuthCredentials;
 import zipgo.auth.dto.AuthResponse;
-import zipgo.auth.dto.TokenResponse;
+import zipgo.auth.dto.LoginResponse;
 import zipgo.auth.dto.Tokens;
 import zipgo.auth.support.JwtProvider;
 import zipgo.auth.support.RefreshTokenCookieProvider;
@@ -39,7 +39,7 @@ public class AuthController {
     private final PetQueryService petQueryService;
 
     @PostMapping("/login")
-    public ResponseEntity<TokenResponse> login(@RequestParam("code") String authCode) {
+    public ResponseEntity<LoginResponse> login(@RequestParam("code") String authCode) {
         Tokens tokens = authService.login(authCode);
         ResponseCookie cookie = refreshTokenCookieProvider.createCookie(tokens.refreshToken());
 
@@ -49,7 +49,7 @@ public class AuthController {
 
         return ResponseEntity.ok()
                 .header(SET_COOKIE, cookie.toString())
-                .body(TokenResponse.of(tokens.accessToken(), member, pets));
+                .body(LoginResponse.of(tokens.accessToken(), member, pets));
     }
 
     @GetMapping("/refresh")
@@ -58,7 +58,7 @@ public class AuthController {
         ResponseCookie cookie = refreshTokenCookieProvider.createCookie(tokens.refreshToken());
         return ResponseEntity.ok()
                 .header(SET_COOKIE, cookie.toString())
-                .body(new AccessTokenResponse(tokens.accessToken()));
+                .body(AccessTokenResponse.from(tokens.accessToken()));
     }
 
     @PostMapping("/logout")
