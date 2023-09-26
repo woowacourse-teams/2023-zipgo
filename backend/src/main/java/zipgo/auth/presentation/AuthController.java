@@ -16,7 +16,7 @@ import zipgo.auth.dto.AccessTokenResponse;
 import zipgo.auth.dto.AuthCredentials;
 import zipgo.auth.dto.AuthResponse;
 import zipgo.auth.dto.LoginResponse;
-import zipgo.auth.dto.Tokens;
+import zipgo.auth.dto.TokenDto;
 import zipgo.auth.support.JwtProvider;
 import zipgo.auth.support.RefreshTokenCookieProvider;
 import zipgo.member.application.MemberQueryService;
@@ -40,25 +40,25 @@ public class AuthController {
 
     @PostMapping("/login")
     public ResponseEntity<LoginResponse> login(@RequestParam("code") String authCode) {
-        Tokens tokens = authService.login(authCode);
-        ResponseCookie cookie = refreshTokenCookieProvider.createCookie(tokens.refreshToken());
+        TokenDto tokenDto = authService.login(authCode);
+        ResponseCookie cookie = refreshTokenCookieProvider.createCookie(tokenDto.refreshToken());
 
-        String memberId = jwtProvider.getPayload(tokens.accessToken());
+        String memberId = jwtProvider.getPayload(tokenDto.accessToken());
         Member member = memberQueryService.findById(Long.valueOf(memberId));
         List<Pet> pets = petQueryService.readMemberPets(member.getId());
 
         return ResponseEntity.ok()
                 .header(SET_COOKIE, cookie.toString())
-                .body(LoginResponse.of(tokens.accessToken(), member, pets));
+                .body(LoginResponse.of(tokenDto.accessToken(), member, pets));
     }
 
     @GetMapping("/refresh")
     public ResponseEntity<AccessTokenResponse> renewTokens(@CookieValue(value = REFRESH_TOKEN) String refreshToken) {
-        Tokens tokens = authService.renewTokens(refreshToken);
-        ResponseCookie cookie = refreshTokenCookieProvider.createCookie(tokens.refreshToken());
+        TokenDto tokenDto = authService.renewTokens(refreshToken);
+        ResponseCookie cookie = refreshTokenCookieProvider.createCookie(tokenDto.refreshToken());
         return ResponseEntity.ok()
                 .header(SET_COOKIE, cookie.toString())
-                .body(AccessTokenResponse.from(tokens.accessToken()));
+                .body(AccessTokenResponse.from(tokenDto.accessToken()));
     }
 
     @PostMapping("/log-out")

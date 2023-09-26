@@ -1,12 +1,12 @@
 package zipgo.auth.dto;
 
-public record Tokens (
+public record TokenDto(
         String accessToken,
         String refreshToken
 ) {
 
-    public static Tokens of(String accessToken, String refreshToken) {
-        return new Tokens(
+    public static TokenDto of(String accessToken, String refreshToken) {
+        return new TokenDto(
                 accessToken,
                 refreshToken
         );

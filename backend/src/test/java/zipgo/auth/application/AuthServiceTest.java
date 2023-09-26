@@ -10,7 +10,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import zipgo.auth.domain.RefreshToken;
 import zipgo.auth.domain.repository.RefreshTokenRepository;
-import zipgo.auth.dto.Tokens;
+import zipgo.auth.dto.TokenDto;
 import zipgo.auth.infra.kakao.KakaoOAuthClient;
 import zipgo.auth.infra.kakao.dto.KakaoMemberResponse;
 import zipgo.auth.support.JwtProvider;
@@ -56,7 +56,7 @@ class AuthServiceTest {
                 .thenReturn("생성된 리프레시 토큰");
 
         // when
-        Tokens 토큰 = authService.login("코드");
+        TokenDto 토큰 = authService.login("코드");
 
         // then
         assertAll(
@@ -77,7 +77,7 @@ class AuthServiceTest {
                 .thenReturn("생성된 토큰");
 
         // when
-        Tokens 토큰 = authService.login("코드");
+        TokenDto 토큰 = authService.login("코드");
 
         // then
         assertThat(토큰.accessToken()).isEqualTo("생성된 토큰");
@@ -96,12 +96,12 @@ class AuthServiceTest {
                 .thenReturn("생성된 리프레시 토큰");
 
         // when
-        Tokens tokens = authService.renewTokens(토큰);
+        TokenDto tokenDto = authService.renewTokens(토큰);
 
         // then
         assertAll(
-                () -> assertThat(tokens.accessToken()).isEqualTo("생성된 엑세스 토큰"),
-                () -> assertThat(tokens.refreshToken()).isEqualTo("생성된 리프레시 토큰")
+                () -> assertThat(tokenDto.accessToken()).isEqualTo("생성된 엑세스 토큰"),
+                () -> assertThat(tokenDto.refreshToken()).isEqualTo("생성된 리프레시 토큰")
         );
     }
 

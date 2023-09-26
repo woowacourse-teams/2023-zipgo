@@ -21,7 +21,7 @@ import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultHandler;
 import zipgo.auth.application.AuthService;
-import zipgo.auth.dto.Tokens;
+import zipgo.auth.dto.TokenDto;
 import zipgo.auth.exception.OAuthTokenNotBringException;
 import zipgo.auth.exception.TokenExpiredException;
 import zipgo.auth.support.JwtProvider;
@@ -75,7 +75,7 @@ class AuthControllerTest {
     @Test
     void 로그인_성공() throws Exception {
         // given
-        var 토큰 = Tokens.of("accessTokenValue", "refreshTokenValue");
+        var 토큰 = TokenDto.of("accessTokenValue", "refreshTokenValue");
         when(authService.login("인가_코드"))
                 .thenReturn(토큰);
         var 리프레시_토큰_쿠키 = ResponseCookie.from("refreshToken", 토큰.refreshToken()).build();
@@ -100,7 +100,7 @@ class AuthControllerTest {
     @Test
     void 로그인_성공_후_사용자의_반려동물이_없다면_pets는_빈_배열이다() throws Exception {
         // given
-        var 토큰 = Tokens.of("accessTokenValue", "refreshTokenValue");
+        var 토큰 = TokenDto.of("accessTokenValue", "refreshTokenValue");
         when(authService.login("인가_코드"))
                 .thenReturn(토큰);
         var 리프레시_토큰_쿠키 = ResponseCookie.from("refreshToken", 토큰.refreshToken()).build();
@@ -139,7 +139,7 @@ class AuthControllerTest {
     @Test
     void 토큰을_갱신할_수_있다() throws Exception {
         // given
-        var 토큰 = Tokens.of("accessTokenValue", "refreshTokenValue");
+        var 토큰 = TokenDto.of("accessTokenValue", "refreshTokenValue");
         var 리프레시_토큰_쿠키 = ResponseCookie.from("refreshToken", 토큰.refreshToken()).build();
         when(authService.renewTokens("작고_소중한_리프레시_토큰"))
                 .thenReturn(토큰);
