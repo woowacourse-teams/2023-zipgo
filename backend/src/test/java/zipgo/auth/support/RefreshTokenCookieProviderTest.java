@@ -49,7 +49,7 @@ class RefreshTokenCookieProviderTest {
 
         // then
         assertAll(
-                () -> assertThat(logoutCookie.getValue()).isEqualTo("refreshToken"),
+                () -> assertThat(logoutCookie.getValue()).isEmpty(),
                 () -> assertThat(logoutCookie.getMaxAge()).isZero()
         );
     }
