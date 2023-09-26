@@ -24,7 +24,6 @@ import zipgo.auth.application.AuthService;
 import zipgo.auth.dto.Tokens;
 import zipgo.auth.exception.OAuthTokenNotBringException;
 import zipgo.auth.exception.TokenExpiredException;
-import zipgo.auth.exception.TokenInvalidException;
 import zipgo.auth.support.JwtProvider;
 import zipgo.auth.support.RefreshTokenCookieProvider;
 import zipgo.member.application.MemberQueryService;
@@ -178,7 +177,7 @@ class AuthControllerTest {
                 .thenReturn(ResponseCookie.from("refreshToken", "").build());
 
         // when
-        var 요청 = mockMvc.perform(post("/auth/logout"))
+        var 요청 = mockMvc.perform(post("/auth/log-out"))
                 .andDo(로그아웃_문서_생성());
 
         // then
