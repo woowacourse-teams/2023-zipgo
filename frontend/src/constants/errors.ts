@@ -9,8 +9,9 @@ export type APIErrorMessageKit = typeof API_ERROR_MESSAGE_KIT;
 export const DEFAULT_STATUS = 404;
 
 const UNEXPECTED_ERROR = '페이지에 문제가 발생했어요';
-const WRONG_URL_FORMAT = '존재하지 않는 페이지예요';
-const WRONG_QUERY_STRING = '존재하지 않는 페이지예요';
+const NOT_FOUND = '존재하지 않는 페이지예요';
+const WRONG_URL_FORMAT = NOT_FOUND;
+const WRONG_QUERY_STRING = NOT_FOUND;
 
 const API_ERROR_CODE_MISSING = UNEXPECTED_ERROR;
 
@@ -25,6 +26,7 @@ export const API_ERROR_CODE_KIT = {
 
 export const ERROR_CODE_KIT: Record<keyof ErrorMessageKit, keyof ErrorMessageKit> = {
   UNEXPECTED_ERROR: 'UNEXPECTED_ERROR',
+  NOT_FOUND: 'NOT_FOUND',
   ...RUNTIME_ERROR_CODE_KIT,
   ...API_ERROR_CODE_KIT,
 };
@@ -40,6 +42,7 @@ export const API_ERROR_MESSAGE_KIT = {
 
 export const ERROR_MESSAGE_KIT = {
   UNEXPECTED_ERROR,
+  NOT_FOUND,
   ...RUNTIME_ERROR_MESSAGE_KIT,
   ...API_ERROR_MESSAGE_KIT,
 } as const;
