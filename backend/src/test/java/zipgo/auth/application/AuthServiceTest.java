@@ -1,125 +1,61 @@
 package zipgo.auth.application;
 
-import java.util.Optional;
 
-import org.junit.jupiter.api.DisplayNameGeneration;
-import org.junit.jupiter.api.DisplayNameGenerator;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.test.mock.mockito.MockBean;
 import zipgo.auth.domain.RefreshToken;
 import zipgo.auth.domain.repository.RefreshTokenRepository;
-import zipgo.auth.dto.TokenDto;
-import zipgo.auth.infra.kakao.KakaoOAuthClient;
-import zipgo.auth.infra.kakao.dto.KakaoMemberResponse;
+import zipgo.auth.exception.TokenInvalidException;
 import zipgo.auth.support.JwtProvider;
-import zipgo.member.domain.Member;
-import zipgo.member.domain.repository.MemberRepository;
-
+import zipgo.common.service.ServiceTest;
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.assertAll;
-import static org.mockito.Mockito.when;
-import static zipgo.member.domain.fixture.MemberFixture.식별자_없는_멤버;
-import static zipgo.member.domain.fixture.MemberFixture.식별자_있는_멤버;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
-@SpringBootTest
-@SuppressWarnings("NonAsciiCharacters")
-@DisplayNameGeneration(DisplayNameGenerator.ReplaceUnderscores.class)
-class AuthServiceTest {
+class AuthServiceTest extends ServiceTest {
 
-    @MockBean
-    private KakaoOAuthClient oAuthClient;
-
-    @MockBean
-    private JwtProvider jwtProvider;
-
-    @MockBean
-    private MemberRepository memberRepository;
-
-    @MockBean
+    @Autowired
     private RefreshTokenRepository refreshTokenRepository;
+
+    @Autowired
+    private JwtProvider jwtProvider;
 
     @Autowired
     private AuthService authService;
 
     @Test
-    void 로그인에_성공하면_토큰을_발급한다() {
+    void 토큰_갱신시_리프레시_토큰을_받아_엑세스_토큰을_발급한다() {
         // given
-        카카오_토큰_받기_성공();
-        Member 저장된_멤버 = 식별자_있는_멤버();
-        when(memberRepository.findByEmail("이메일"))
-                .thenReturn(Optional.of(저장된_멤버));
-        when(jwtProvider.createAccessToken(저장된_멤버.getId().toString()))
-                .thenReturn("생성된 엑세스 토큰");
-        when(jwtProvider.createRefreshToken())
-                .thenReturn("생성된 리프레시 토큰");
-
-        // when
-        TokenDto 토큰 = authService.login("코드");
-
-        // then
-        assertAll(
-                () -> assertThat(토큰.accessToken()).isEqualTo("생성된 엑세스 토큰"),
-                () -> assertThat(토큰.refreshToken()).isEqualTo("생성된 리프레시 토큰")
-        );
-    }
-
-    @Test
-    void 새로_가입한_회원의_토큰을_발급한다() {
-        // given
-        카카오_토큰_받기_성공();
-        when(memberRepository.findByEmail("이메일"))
-                .thenReturn(Optional.empty());
-        when(memberRepository.save(식별자_없는_멤버()))
-                .thenReturn(식별자_있는_멤버());
-        when(jwtProvider.createAccessToken("1"))
-                .thenReturn("생성된 토큰");
-
-        // when
-        TokenDto 토큰 = authService.login("코드");
-
-        // then
-        assertThat(토큰.accessToken()).isEqualTo("생성된 토큰");
-    }
-
-    @Test
-    void 리프레시_토큰을_받아_토큰을_갱신한다() {
-        // given
-        String 토큰 = "token";
         Long 사용자_식별자 = 1L;
-        when(refreshTokenRepository.getByToken(토큰))
-                .thenReturn(new RefreshToken(사용자_식별자, "기존 토큰"));
-        when(jwtProvider.createAccessToken(사용자_식별자.toString()))
-                .thenReturn("생성된 엑세스 토큰");
-        when(jwtProvider.createRefreshToken())
-                .thenReturn("생성된 리프레시 토큰");
+        String 리프레시_토큰 = jwtProvider.createRefreshToken();
+        refreshTokenRepository.save(new RefreshToken(사용자_식별자, 리프레시_토큰));
 
         // when
-        TokenDto tokenDto = authService.renewTokens(토큰);
+        String 엑세스_토큰 = authService.renewAccessToken(리프레시_토큰);
 
         // then
-        assertAll(
-                () -> assertThat(tokenDto.accessToken()).isEqualTo("생성된 엑세스 토큰"),
-                () -> assertThat(tokenDto.refreshToken()).isEqualTo("생성된 리프레시 토큰")
-        );
+        String 페이로드 = jwtProvider.getPayload(엑세스_토큰);
+        assertThat(페이로드).isEqualTo("1");
     }
 
-    private void 카카오_토큰_받기_성공() {
-        when(oAuthClient.getAccessToken("코드"))
-                .thenReturn("토큰");
-        when(oAuthClient.getMember("토큰"))
-                .thenReturn(카카오_응답());
+    @Test
+    void 토큰_갱신시_리프레시_토큰이_유효하지_않다면_에외가_발생한다() {
+        // expect
+        assertThatThrownBy(() -> authService.renewAccessToken("검증되지 않은 토큰"))
+                .isInstanceOf(TokenInvalidException.class)
+                .hasMessageContaining("잘못된 토큰입니다. 올바른 토큰으로 다시 시도해주세요");
     }
 
-    private KakaoMemberResponse 카카오_응답() {
-        return KakaoMemberResponse.builder().kakaoAccount(KakaoMemberResponse.KakaoAccount.builder()
-                .email("이메일")
-                .profile(KakaoMemberResponse.Profile.builder()
-                        .nickname("이름")
-                        .picture("사진")
-                        .build())
-                .build()).build();
+    @Test
+    void 로그아웃시_저장된_토큰이_사라진다() {
+        // given
+        Long memberId = 1L;
+        refreshTokenRepository.save(new RefreshToken(memberId, "저장시킨 토큰"));
+
+        // when
+        authService.logout(memberId);
+
+        // then
+        assertThat(refreshTokenRepository.findByToken("저장시킨 토큰")).isEmpty();
     }
 
 }
