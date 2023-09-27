@@ -1,5 +1,5 @@
 /* eslint-disable max-classes-per-file */
-import { AxiosError } from 'axios';
+import { AxiosError, isAxiosError } from 'axios';
 
 import type { APIErrorCode, ErrorCode, RuntimeErrorCode } from '../constants/errors';
 import { API_ERROR_CODE_KIT, ERROR_MESSAGE_KIT } from '../constants/errors';
@@ -24,17 +24,6 @@ type CustomErrorOptions<T extends ErrorCode> = {
   cause: { code: T; value?: unknown };
 };
 
-const createErrorParams = <Code extends ErrorCode>(
-  info: ErrorInfo<Code>,
-  value?: unknown,
-): [string, CustomErrorOptions<Code>] => {
-  /** @description 서버의 잘못된 코드 제공 방지 */
-  const message = ERROR_MESSAGE_KIT[info.code] || ERROR_MESSAGE_KIT.UNEXPECTED_ERROR;
-  const options = { cause: { code: info.code, value } };
-
-  return [message, options];
-};
-
 class CustomError<Code extends ErrorCode> extends Error {
   cause: CustomErrorOptions<Code>['cause'];
 
@@ -52,6 +41,14 @@ class CustomError<Code extends ErrorCode> extends Error {
     this.cause = options.cause;
 
     this.ignore = false;
+  }
+
+  static convertToError(error: unknown) {
+    if (!isAxiosError(error) || !APIError.canManage(error)) {
+      return new UnexpectedError(error);
+    }
+
+    return new APIError(error);
   }
 }
 
@@ -82,9 +79,26 @@ class APIError<T, D> extends CustomError<APIErrorCode> {
 
     this.status = error.response.status;
   }
+
+  /**
+   * @description `No Internet` 과 `Server not reachable' 구분이 되지 않지만 online event로 핸들링한다
+   */
+  static canManage<T, D>(error: AxiosError<T, D>): error is ManageableAxiosError<typeof error> {
+    return error.config && error.request && error.response;
+  }
 }
 
-const canManage = <T, D>(error: AxiosError<T, D>): error is ManageableAxiosError<typeof error> =>
-  error.config && error.request && error.response;
+const createErrorParams = <Code extends ErrorCode>(
+  info: ErrorInfo<Code>,
+  value?: unknown,
+): [string, CustomErrorOptions<Code>] => {
+  /** @description 서버의 잘못된 코드 제공 방지 */
+  const message = ERROR_MESSAGE_KIT[info.code] || ERROR_MESSAGE_KIT.UNEXPECTED_ERROR;
+  const options = { cause: { code: info.code, value } };
+
+  return [message, options];
+};
+
+export { APIError, CustomError, RuntimeError, UnexpectedError };
 
 export type { ManageableAxiosError };
