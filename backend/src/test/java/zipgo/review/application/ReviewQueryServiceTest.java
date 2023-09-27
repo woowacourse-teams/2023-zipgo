@@ -1,6 +1,5 @@
 package zipgo.review.application;
 
-import java.util.List;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,6 +27,8 @@ import zipgo.review.dto.response.type.AdverseReactionResponse;
 import zipgo.review.dto.response.type.RatingInfoResponse;
 import zipgo.review.dto.response.type.StoolConditionResponse;
 import zipgo.review.dto.response.type.TastePreferenceResponse;
+
+import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertAll;
@@ -204,7 +205,7 @@ class ReviewQueryServiceTest extends QueryServiceTest {
         public static void validateReviewsRatingSummary(GetReviewsSummaryResponse reviewsSummary) {
             assertAll(
                     () -> assertThat(reviewsSummary.rating().rating()).hasSize(5),
-                    () -> assertThat(reviewsSummary.rating().rating()).extracting(RatingInfoResponse::rating)
+                    () -> assertThat(reviewsSummary.rating().rating()).extracting(RatingInfoResponse::name)
                             .contains("1", "2", "3", "4", "5"),
                     () -> assertThat(reviewsSummary.rating().rating()).extracting(RatingInfoResponse::percentage)
                             .contains(0, 50)
