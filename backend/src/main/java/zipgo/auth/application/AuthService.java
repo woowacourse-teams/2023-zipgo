@@ -41,13 +41,17 @@ public class AuthService {
         return TokenDto.of(accessToken, refreshToken);
     }
 
-    public TokenDto renewTokens(String token) {
+    public String renewAccessToken(String token) {
         jwtProvider.validateParseJws(token);
 
         RefreshToken savedRefreshToken = refreshTokenRepository.getByToken(token);
         Long memberId = savedRefreshToken.getMemberId();
 
-        return createTokens(memberId);
+        return jwtProvider.createAccessToken(memberId.toString());
+    }
+
+    public void logout(Long memberId) {
+        refreshTokenRepository.deleteByMemberId(memberId);
     }
 
 }

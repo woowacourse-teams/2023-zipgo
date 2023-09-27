@@ -54,15 +54,13 @@ public class AuthController {
 
     @GetMapping("/refresh")
     public ResponseEntity<AccessTokenResponse> renewTokens(@CookieValue(value = REFRESH_TOKEN) String refreshToken) {
-        TokenDto tokenDto = authService.renewTokens(refreshToken);
-        ResponseCookie cookie = refreshTokenCookieProvider.createCookie(tokenDto.refreshToken());
-        return ResponseEntity.ok()
-                .header(SET_COOKIE, cookie.toString())
-                .body(AccessTokenResponse.from(tokenDto.accessToken()));
+        String accessToken = authService.renewAccessToken(refreshToken);
+        return ResponseEntity.ok(AccessTokenResponse.from(accessToken));
     }
 
     @PostMapping("/log-out")
-    public ResponseEntity<Void> logOut() {
+    public ResponseEntity<Void> logOut(@Auth AuthCredentials authCredentials) {
+        authService.logout(authCredentials.id());
         ResponseCookie logoutCookie = refreshTokenCookieProvider.createLogoutCookie();
         return ResponseEntity.ok()
                 .header(SET_COOKIE, logoutCookie.toString())
