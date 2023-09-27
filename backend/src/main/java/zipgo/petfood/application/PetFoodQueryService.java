@@ -9,7 +9,6 @@ import zipgo.petfood.domain.Functionality;
 import zipgo.petfood.domain.PetFood;
 import zipgo.petfood.domain.PrimaryIngredient;
 import zipgo.petfood.domain.repository.FunctionalityRepository;
-import zipgo.petfood.domain.repository.PetFoodRepository;
 import zipgo.petfood.domain.repository.PrimaryIngredientRepository;
 import zipgo.petfood.dto.request.FilterRequest;
 import zipgo.petfood.dto.response.FilterResponse;
@@ -26,7 +25,6 @@ import java.util.List;
 @Transactional(readOnly = true)
 public class PetFoodQueryService {
 
-    private final PetFoodRepository petFoodRepository;
     private final PetFoodQueryRepositoryImpl petFoodQueryRepository;
     private final BrandRepository brandRepository;
     private final FunctionalityRepository functionalityRepository;
