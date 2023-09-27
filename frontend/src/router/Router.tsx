@@ -93,7 +93,7 @@ export const router = createBrowserRouter([
       },
       {
         path: PATH.EXCEPTION,
-        element: <ErrorPage />,
+        element: <ErrorPage.NotFound />,
       },
     ],
   },
