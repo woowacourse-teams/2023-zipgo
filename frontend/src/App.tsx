@@ -7,6 +7,7 @@ import AxiosInterceptors from './components/@common/AxiosInterceptors/AxiosInter
 import { EndOfErrorBoundary } from './components/@common/ErrorBoundary/ErrorBoundary';
 import QueryBoundary from './components/@common/ErrorBoundary/QueryBoundary/QueryBoundary';
 import GlobalStyle from './components/@common/GlobalStyle';
+import { ONE_HOUR } from './constants/time';
 import ToastProvider, { useToast } from './context/Toast/ToastContext';
 import ErrorPage from './pages/Error/ErrorPage';
 import theme from './styles/theme';
@@ -23,6 +24,8 @@ const queryClient = new QueryClient({
       suspense: true,
       retry: false,
       useErrorBoundary: true,
+      staleTime: ONE_HOUR,
+      cacheTime: ONE_HOUR,
     },
   },
 });
