@@ -84,6 +84,7 @@ class APIError<T, D> extends CustomError<APIErrorCode> {
   }
 }
 
-export { APIError, RuntimeError, UnexpectedError };
+const canManage = <T, D>(error: AxiosError<T, D>): error is ManageableAxiosError<typeof error> =>
+  error.config && error.request && error.response;
 
 export type { ManageableAxiosError };
