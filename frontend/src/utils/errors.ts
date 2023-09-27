@@ -20,12 +20,12 @@ type ErrorInfo<T extends ErrorCode> = {
   code: T;
 };
 
-type CustomErrorOptions<T extends ErrorCode> = {
+type ZipgoErrorOptions<T extends ErrorCode> = {
   cause: { code: T; value?: unknown };
 };
 
-class CustomError<Code extends ErrorCode> extends Error {
-  cause: CustomErrorOptions<Code>['cause'];
+class ZipgoError<Code extends ErrorCode> extends Error {
+  cause: ZipgoErrorOptions<Code>['cause'];
 
   ignore: boolean;
 
@@ -52,7 +52,7 @@ class CustomError<Code extends ErrorCode> extends Error {
   }
 }
 
-class RuntimeError<Code extends RuntimeErrorCode> extends CustomError<Code> {
+class RuntimeError<Code extends RuntimeErrorCode> extends ZipgoError<Code> {
   constructor(info: ErrorInfo<Code>, value?: unknown) {
     super(info, JSON.stringify(value));
 
@@ -60,7 +60,7 @@ class RuntimeError<Code extends RuntimeErrorCode> extends CustomError<Code> {
   }
 }
 
-class UnexpectedError extends CustomError<'UNEXPECTED_ERROR'> {
+class UnexpectedError extends ZipgoError<'UNEXPECTED_ERROR'> {
   constructor(value?: unknown) {
     super({ code: 'UNEXPECTED_ERROR' }, value);
 
@@ -68,7 +68,7 @@ class UnexpectedError extends CustomError<'UNEXPECTED_ERROR'> {
   }
 }
 
-class APIError<T, D> extends CustomError<APIErrorCode> {
+class APIError<T, D> extends ZipgoError<APIErrorCode> {
   status;
 
   constructor(error: ManageableAxiosError<AxiosError<WithAPIErrorCode<T>, D>>) {
@@ -91,7 +91,7 @@ class APIError<T, D> extends CustomError<APIErrorCode> {
 const createErrorParams = <Code extends ErrorCode>(
   info: ErrorInfo<Code>,
   value?: unknown,
-): [string, CustomErrorOptions<Code>] => {
+): [string, ZipgoErrorOptions<Code>] => {
   /** @description 서버의 잘못된 코드 제공 방지 */
   const message = ERROR_MESSAGE_KIT[info.code] || ERROR_MESSAGE_KIT.UNEXPECTED_ERROR;
   const options = { cause: { code: info.code, value } };
@@ -99,6 +99,6 @@ const createErrorParams = <Code extends ErrorCode>(
   return [message, options];
 };
 
-export { APIError, CustomError, RuntimeError, UnexpectedError };
+export { APIError, RuntimeError, UnexpectedError, ZipgoError };
 
 export type { ManageableAxiosError };
