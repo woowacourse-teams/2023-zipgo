@@ -1,20 +1,20 @@
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
-import { PropsWithChildren, useEffect } from 'react';
+import { useEffect } from 'react';
 import { Outlet } from 'react-router-dom';
 import { ThemeProvider } from 'styled-components';
 
 import AxiosInterceptors from './components/@common/AxiosInterceptors/AxiosInterceptors';
+import { EndOfErrorBoundary } from './components/@common/ErrorBoundary/ErrorBoundary';
 import QueryBoundary from './components/@common/ErrorBoundary/QueryBoundary/QueryBoundary';
 import GlobalStyle from './components/@common/GlobalStyle';
 import ToastProvider, { useToast } from './context/Toast/ToastContext';
+import ErrorPage from './pages/Error/ErrorPage';
 import theme from './styles/theme';
 import { ErrorBoundaryValue } from './types/common/errorBoundary';
 import { setScreenSize } from './utils/setScreenSize';
 
-const errorFallback = ({ reset }: ErrorBoundaryValue) => (
-  <button type="button" onClick={reset}>
-    retry
-  </button>
+const errorFallback = ({ reset, error }: ErrorBoundaryValue) => (
+  <ErrorPage reset={reset} error={error} />
 );
 
 const queryClient = new QueryClient({
@@ -24,24 +24,23 @@ const queryClient = new QueryClient({
       retry: false,
       useErrorBoundary: true,
     },
-    mutations: {
-      useErrorBoundary: true,
-    },
   },
 });
 
 const App = () => (
   <ThemeProvider theme={theme}>
+    <GlobalStyle />
     <QueryClientProvider client={queryClient}>
-      <QueryBoundary errorFallback={errorFallback}>
-        <ToastProvider>
-          <AxiosInterceptors>
-            <GlobalStyle />
-            <GlobalEvent />
-            <Outlet />
-          </AxiosInterceptors>
-        </ToastProvider>
-      </QueryBoundary>
+      <EndOfErrorBoundary fallback={errorFallback}>
+        <QueryBoundary errorFallback={errorFallback}>
+          <ToastProvider>
+            <AxiosInterceptors>
+              <GlobalEvent />
+              <Outlet />
+            </AxiosInterceptors>
+          </ToastProvider>
+        </QueryBoundary>
+      </EndOfErrorBoundary>
     </QueryClientProvider>
   </ThemeProvider>
 );
