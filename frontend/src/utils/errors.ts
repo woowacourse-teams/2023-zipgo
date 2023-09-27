@@ -64,8 +64,8 @@ class RuntimeError<Code extends RuntimeErrorCode> extends CustomError<Code> {
 }
 
 class UnexpectedError extends CustomError<'UNEXPECTED_ERROR'> {
-  constructor(error?: Error) {
-    super({ code: 'UNEXPECTED_ERROR' }, error);
+  constructor(value?: unknown) {
+    super({ code: 'UNEXPECTED_ERROR' }, value);
 
     this.ignore = true;
   }
