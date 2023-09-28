@@ -5,15 +5,18 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import lombok.AccessLevel;
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import zipgo.common.entity.BaseTimeEntity;
 
 import static lombok.EqualsAndHashCode.Include;
 
 @Getter
 @Entity
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class RefreshToken {
+@EqualsAndHashCode(onlyExplicitlyIncluded = true, callSuper = false)
+public class RefreshToken extends BaseTimeEntity {
 
     @Id
     @Include
