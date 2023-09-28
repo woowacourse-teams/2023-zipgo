@@ -30,7 +30,7 @@ class AuthServiceTest extends ServiceTest {
         refreshTokenRepository.save(new RefreshToken(사용자_식별자, 리프레시_토큰));
 
         // when
-        String 엑세스_토큰 = authService.renewAccessToken(리프레시_토큰);
+        String 엑세스_토큰 = authService.renewAccessTokenBy(리프레시_토큰);
 
         // then
         String 페이로드 = jwtProvider.getPayload(엑세스_토큰);
@@ -40,7 +40,7 @@ class AuthServiceTest extends ServiceTest {
     @Test
     void 토큰_갱신시_리프레시_토큰이_유효하지_않다면_에외가_발생한다() {
         // expect
-        assertThatThrownBy(() -> authService.renewAccessToken("검증되지 않은 토큰"))
+        assertThatThrownBy(() -> authService.renewAccessTokenBy("검증되지 않은 토큰"))
                 .isInstanceOf(TokenInvalidException.class)
                 .hasMessageContaining("잘못된 토큰입니다. 올바른 토큰으로 다시 시도해주세요");
     }
