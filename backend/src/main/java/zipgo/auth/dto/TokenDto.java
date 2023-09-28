@@ -6,10 +6,7 @@ public record TokenDto(
 ) {
 
     public static TokenDto of(String accessToken, String refreshToken) {
-        return new TokenDto(
-                accessToken,
-                refreshToken
-        );
+        return new TokenDto(accessToken, refreshToken);
     }
 
 }

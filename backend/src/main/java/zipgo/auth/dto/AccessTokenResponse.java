@@ -5,9 +5,7 @@ public record AccessTokenResponse (
 ) {
 
     public static AccessTokenResponse from(String accessToken) {
-        return new AccessTokenResponse(
-                accessToken
-        );
+        return new AccessTokenResponse(accessToken);
     }
 
 }
