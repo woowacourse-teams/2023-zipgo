@@ -23,6 +23,8 @@ import static org.springframework.restdocs.payload.PayloadDocumentation.response
 
 class AuthControllerTest extends AcceptanceTest {
 
+    private static final String TEST_SECRET_KEY = "this1-is2-zipgo3-test4-secret5-key6";
+
     private ResourceSnippetDetails API_정보 = resourceDetails()
             .summary("토큰 갱신 및 로그아웃")
             .description("access token을 갱신하고 로그아웃을 합니다");
@@ -73,7 +75,7 @@ class AuthControllerTest extends AcceptanceTest {
         private JwtProvider 유효기간_만료된_jwtProvider_생성() {
             return new JwtProvider(
                     new JwtCredentials(
-                            "this1-is2-zipgo3-test4-secret5-key6",
+                            TEST_SECRET_KEY,
                             -99999999,
                             -99999999
                     )
