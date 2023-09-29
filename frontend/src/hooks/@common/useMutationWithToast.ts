@@ -10,21 +10,26 @@ const useMutationWithToast = <
   TVariables = void,
   TContext = unknown,
 >(
-  options: UseMutationOptions<TData, TError, TVariables, TContext>,
+  options: UseMutationOptions<TData, TError, TVariables, TContext> & { critical?: boolean },
 ) => {
   const { toast } = useToast();
+
+  const { critical } = options;
 
   return useMutation({
     ...options,
     onError(...args) {
-      const [rejectedValue] = args;
-
-      const error = ZipgoError.convertToError(rejectedValue);
-
       options.onError?.(...args);
 
-      toast.warning(error.message);
+      if (!critical) {
+        const [rejectedValue] = args;
+
+        const error = ZipgoError.convertToError(rejectedValue);
+
+        toast.warning(error.message);
+      }
     },
+    useErrorBoundary: critical,
   });
 };
 
