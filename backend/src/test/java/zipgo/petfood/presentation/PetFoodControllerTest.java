@@ -67,7 +67,7 @@ public class PetFoodControllerTest extends AcceptanceTest {
                 .description("식품 전체를 조회합니다.");
 
         @Test
-        void 필터를_지정하지_않고_요청한다() {
+        void 필터를_지정하지_않고_요청하면_200을_반환한다() {
             // given
             PetFood 모든_영양기준_만족_식품 = 모든_영양기준_만족_식품(brandRepository.save(아카나_식품_브랜드_생성()));
 
@@ -92,7 +92,7 @@ public class PetFoodControllerTest extends AcceptanceTest {
         }
 
         @Test
-        void 필터를_지정해서_요청한다() {
+        void 필터를_지정해서_요청하면_200을_반환한다() {
             // given
             PetFood 모든_영양기준_만족_식품 = 모든_영양기준_만족_식품(brandRepository.save(아카나_식품_브랜드_생성()));
 
@@ -158,7 +158,7 @@ public class PetFoodControllerTest extends AcceptanceTest {
                 .description("id에 해당하는 식품 상세정보를 조회합니다.");
 
         @Test
-        void 올바른_요청() {
+        void 식품_상세를_요청하면_200을_반환한다() {
             // given
             PetFood 모든_영양기준_만족_식품 = 모든_영양기준_만족_식품(brandRepository.save(아카나_식품_브랜드_생성()));
 
@@ -210,7 +210,7 @@ public class PetFoodControllerTest extends AcceptanceTest {
         }
 
         @Test
-        void 존재하지_않는_아이디로_요청한다() {
+        void 존재하지_않는_아이디로_요청하면_404를_반환한다() {
             //given
             var 요청_준비 = given(spec)
                     .contentType(JSON)
@@ -227,7 +227,7 @@ public class PetFoodControllerTest extends AcceptanceTest {
         }
 
         @Test
-        void 올바르지_않은_형식의_아이디로_요청한다() {
+        void 올바르지_않은_형식의_아이디로_요청하면_400을_반환한다() {
             //given
             var 요청_준비 = given(spec)
                     .contentType(JSON)
@@ -282,7 +282,7 @@ public class PetFoodControllerTest extends AcceptanceTest {
                 .description("필터링에 필요한 메타데이터 정보를 조회합니다.");
 
         @Test
-        void 필터링에_필요한_메타데이터를_조회한다() {
+        void 필터링에_필요한_메타데이터를_조회하면_200을_반환한다() {
             // given
             PetFood 모든_영양기준_만족_식품 = 모든_영양기준_만족_식품(brandRepository.save(아카나_식품_브랜드_생성()));
 
