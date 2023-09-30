@@ -5,11 +5,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import zipgo.brand.domain.Brand;
 import zipgo.brand.domain.fixture.BrandFixture;
 import zipgo.brand.domain.repository.BrandRepository;
-import zipgo.common.service.QueryServiceTest;
+import zipgo.common.service.ServiceTest;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-class BrandQueryServiceTest extends QueryServiceTest {
+class BrandQueryServiceTest extends ServiceTest {
 
     @Autowired
     private BrandRepository brandRepository;
