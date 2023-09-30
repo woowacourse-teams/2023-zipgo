@@ -13,11 +13,11 @@ public class PetFoodPrimaryIngredientFixture {
         return petFoodPrimaryIngredient;
     }
 
-    public static PetFoodPrimaryIngredient 식품_주원료_추가(PetFood petFood,
-                                               PrimaryIngredient primaryIngredient,
-                                               PrimaryIngredientRepository primaryIngredientRepository
+    public static PetFoodPrimaryIngredient 식품_주원료_추가(
+            PetFood petFood,
+            PrimaryIngredient primaryIngredient
     ) {
-        return 식품_주원료_연관관계_매핑(petFood, primaryIngredientRepository.save(primaryIngredient));
+        return 식품_주원료_연관관계_매핑(petFood, primaryIngredient);
     }
 
 }

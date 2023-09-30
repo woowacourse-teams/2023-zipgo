@@ -18,10 +18,9 @@ public class PetFoodFunctionalityFixture {
 
     public static PetFoodFunctionality 식품_기능성_추가(
             PetFood petFood,
-            Functionality functionality,
-            FunctionalityRepository functionalityRepository
+            Functionality functionality
     ) {
-        return 식품_기능성_연관관계_매핑(petFood, functionalityRepository.save(functionality));
+        return 식품_기능성_연관관계_매핑(petFood, functionality);
     }
 
 }

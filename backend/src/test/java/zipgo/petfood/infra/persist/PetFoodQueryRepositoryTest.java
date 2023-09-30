@@ -27,7 +27,6 @@ import static zipgo.petfood.domain.fixture.FunctionalityFixture.기능성_짱짱
 import static zipgo.petfood.domain.fixture.FunctionalityFixture.기능성_튼튼;
 import static zipgo.petfood.domain.fixture.PetFoodFixture.모든_영양기준_만족_식품;
 import static zipgo.petfood.domain.fixture.PetFoodFixture.미국_영양기준_만족_식품;
-import static zipgo.petfood.domain.fixture.PetFoodFixture.식품_저장;
 import static zipgo.petfood.domain.fixture.PetFoodFixture.유럽_영양기준_만족_식품;
 import static zipgo.petfood.domain.fixture.PetFoodFunctionalityFixture.식품_기능성_연관관계_매핑;
 import static zipgo.petfood.domain.fixture.PetFoodFunctionalityFixture.식품_기능성_추가;
@@ -66,15 +65,15 @@ class PetFoodQueryRepositoryTest {
         PetFood 미국_영양기준_만족_식품 = 미국_영양기준_만족_식품(brandRepository.save(오리젠_식품_브랜드_생성()));
         PetFood 유럽_영양기준_만족_식품 = 유럽_영양기준_만족_식품(brandRepository.save(퓨리나_식품_브랜드_생성()));
 
-        식품_기능성_추가(모든_영양기준_만족_식품, 기능성_튼튼(), functionalityRepository);
-        식품_기능성_추가(미국_영양기준_만족_식품, 기능성_짱짱(), functionalityRepository);
-        식품_기능성_추가(유럽_영양기준_만족_식품, 기능성_다이어트(), functionalityRepository);
+        식품_기능성_추가(모든_영양기준_만족_식품, functionalityRepository.save(기능성_튼튼()));
+        식품_기능성_추가(미국_영양기준_만족_식품, functionalityRepository.save(기능성_짱짱()));
+        식품_기능성_추가(유럽_영양기준_만족_식품, functionalityRepository.save(기능성_다이어트()));
 
-        식품_주원료_추가(모든_영양기준_만족_식품, 주원료_소고기(), primaryIngredientRepository);
-        식품_주원료_추가(미국_영양기준_만족_식품, 주원료_돼지고기(), primaryIngredientRepository);
-        식품_주원료_추가(유럽_영양기준_만족_식품, 주원료_닭고기(), primaryIngredientRepository);
+        식품_주원료_추가(모든_영양기준_만족_식품, primaryIngredientRepository.save(주원료_소고기()));
+        식품_주원료_추가(미국_영양기준_만족_식품, primaryIngredientRepository.save(주원료_돼지고기()));
+        식품_주원료_추가(유럽_영양기준_만족_식품, primaryIngredientRepository.save(주원료_닭고기()));
 
-        식품_저장(petFoodRepository, 모든_영양기준_만족_식품, 미국_영양기준_만족_식품, 유럽_영양기준_만족_식품);
+        petFoodRepository.saveAll(List.of(모든_영양기준_만족_식품, 미국_영양기준_만족_식품, 유럽_영양기준_만족_식품));
 
         List<PetFood> allFoods = petFoodRepository.findAll();
         Long lastPetFoodId = allFoods.get(allFoods.size() - 1).getId();
@@ -106,15 +105,15 @@ class PetFoodQueryRepositoryTest {
         PetFood 미국_영양기준_만족_식품 = 미국_영양기준_만족_식품(brandRepository.save(오리젠_식품_브랜드_생성()));
         PetFood 유럽_영양기준_만족_식품 = 유럽_영양기준_만족_식품(brandRepository.save(퓨리나_식품_브랜드_생성()));
 
-        식품_기능성_추가(모든_영양기준_만족_식품, 기능성_튼튼(), functionalityRepository);
-        식품_기능성_추가(미국_영양기준_만족_식품, 기능성_짱짱(), functionalityRepository);
-        식품_기능성_추가(유럽_영양기준_만족_식품, 기능성_다이어트(), functionalityRepository);
+        식품_기능성_추가(모든_영양기준_만족_식품, functionalityRepository.save(기능성_튼튼()));
+        식품_기능성_추가(미국_영양기준_만족_식품, functionalityRepository.save(기능성_짱짱()));
+        식품_기능성_추가(유럽_영양기준_만족_식품, functionalityRepository.save(기능성_다이어트()));
 
-        식품_주원료_추가(모든_영양기준_만족_식품, 주원료_소고기(), primaryIngredientRepository);
-        식품_주원료_추가(미국_영양기준_만족_식품, 주원료_돼지고기(), primaryIngredientRepository);
-        식품_주원료_추가(유럽_영양기준_만족_식품, 주원료_닭고기(), primaryIngredientRepository);
+        식품_주원료_추가(모든_영양기준_만족_식품, primaryIngredientRepository.save(주원료_소고기()));
+        식품_주원료_추가(미국_영양기준_만족_식품, primaryIngredientRepository.save(주원료_돼지고기()));
+        식품_주원료_추가(유럽_영양기준_만족_식품, primaryIngredientRepository.save(주원료_닭고기()));
 
-        식품_저장(petFoodRepository, 모든_영양기준_만족_식품, 미국_영양기준_만족_식품, 유럽_영양기준_만족_식품);
+        petFoodRepository.saveAll(List.of(모든_영양기준_만족_식품, 미국_영양기준_만족_식품, 유럽_영양기준_만족_식품));
 
         List<PetFood> allFoods = petFoodRepository.findAll();
         Long lastPetFoodId = allFoods.get(allFoods.size() - 1).getId();

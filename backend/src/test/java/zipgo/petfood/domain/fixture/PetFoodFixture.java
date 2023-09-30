@@ -50,8 +50,4 @@ public class PetFoodFixture {
                 .build();
     }
 
-    public static void 식품_저장(PetFoodRepository petFoodRepository, PetFood... PetFoods) {
-        petFoodRepository.saveAll(Arrays.asList(PetFoods));
-    }
-
 }
