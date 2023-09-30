@@ -14,15 +14,15 @@ public class RefreshTokenCookieProvider {
     private static final String LOGOUT_COOKIE_VALUE = "";
     private static final int LOGOUT_COOKIE_AGE = 0;
 
-    private final long expireLength;
+    private final long expirationTime;
 
     public RefreshTokenCookieProvider(JwtCredentials jwtCredentials) {
-        this.expireLength = jwtCredentials.getRefreshTokenExpireLength();
+        this.expirationTime = jwtCredentials.getRefreshTokenExpirationTime();
     }
 
     public ResponseCookie createCookie(String refreshToken) {
         return ResponseCookie.from(REFRESH_TOKEN, refreshToken)
-                .maxAge(Duration.ofMillis(expireLength))
+                .maxAge(Duration.ofMillis(expirationTime))
                 .path(VALID_COOKIE_PATH)
                 .secure(true)
                 .httpOnly(true)

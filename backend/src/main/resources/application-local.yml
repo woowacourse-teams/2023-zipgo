@@ -44,8 +44,8 @@ oauth:
 # jwt
 jwt:
   secret-key: ${ZIPGO_SECRET_KEY}
-  access-token-expire-length: ${ACCESS_TOKEN_EXPIRE_LENGTH}
-  refresh-token-expire-length: ${REFRESH_TOKEN_EXPIRE_LENGTH}
+  access-token-expiration-time: ${ACCESS_TOKEN_EXPIRATION_TIME}
+  refresh-token-expiration-time: ${REFRESH_TOKEN_EXPIRATION_TIME}
 
 ---
 # aws

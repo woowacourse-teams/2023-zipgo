@@ -21,8 +21,8 @@ spring:
       enabled: true
 jwt:
   secret-key: this1-is2-zipgo3-test4-secret5-key6
-  access-token-expire-length: 604800000
-  refresh-token-expire-length: 9999999999999
+  access-token-expiration-time: 604800000
+  refresh-token-expiration-time: 9999999999999
 oauth:
   kakao:
     client-id: this1-is2-zipgo3-test4-client5-id7
