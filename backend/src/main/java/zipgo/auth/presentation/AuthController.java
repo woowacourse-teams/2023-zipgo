@@ -58,8 +58,8 @@ public class AuthController {
         return ResponseEntity.ok(AccessTokenResponse.from(accessToken));
     }
 
-    @PostMapping("/log-out")
-    public ResponseEntity<Void> logOut(@Auth AuthCredentials authCredentials) {
+    @PostMapping("/logout")
+    public ResponseEntity<Void> logout(@Auth AuthCredentials authCredentials) {
         authService.logout(authCredentials.id());
         ResponseCookie logoutCookie = refreshTokenCookieProvider.createLogoutCookie();
         return ResponseEntity.ok()
