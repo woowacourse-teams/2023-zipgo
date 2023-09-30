@@ -19,6 +19,7 @@ import zipgo.petfood.dto.response.FilterResponse.BrandResponse;
 import zipgo.petfood.dto.response.FilterResponse.FunctionalityResponse;
 import zipgo.petfood.dto.response.GetPetFoodResponse;
 import zipgo.petfood.dto.response.GetPetFoodsResponse;
+import zipgo.petfood.dto.response.PetFoodResponse;
 
 import java.util.Arrays;
 import java.util.List;
@@ -370,9 +371,6 @@ class PetFoodQueryServiceTest extends ServiceTest {
 
             petFoodRepository.saveAll(List.of(모든_영양기준_만족_식품, 미국_영양기준_만족_식품, 유럽_영양기준_만족_식품));
 
-            List<PetFood> allFoods = petFoodRepository.findAll();
-            Long lastPetFoodId = getLastPetFoodId(allFoods);
-
             // when
             GetPetFoodsResponse petFoodsResponse = petFoodQueryService.getPetFoodsByFilters(
                     FilterRequest.of(
@@ -381,16 +379,16 @@ class PetFoodQueryServiceTest extends ServiceTest {
                             EMPTY_LIST,
                             EMPTY_LIST
                     ),
-                    lastPetFoodId,
+                    유럽_영양기준_만족_식품.getId() - 1,
                     size
             );
 
             // then
-            assertThat(petFoodsResponse.petFoods()).hasSize(allFoods.size());
+            assertThat(petFoodsResponse.petFoods()).hasSize(2);
         }
 
         @Test
-        void 처음_조회_시_정해진_size_이내로_반환한다() {
+        void 처음_조회시_식품이_최신순으로_정해진_size_이내로_반환한다() {
             //given
             Brand 인스팅트 = brandRepository.save(인스팅트_식품_브랜드_생성());
             PrimaryIngredient 원재료_말미잘 = primaryIngredientRepository.save(주원료_말미잘());
@@ -414,11 +412,25 @@ class PetFoodQueryServiceTest extends ServiceTest {
             );
 
             // then
-            assertThat(petFoodsResponse.petFoods()).hasSize(20);
+            final List<PetFoodResponse> petFoods = petFoodsResponse.petFoods();
+            assertAll(
+                    () -> assertThat(petFoodsResponse.totalCount()).isEqualTo(25),
+                    () -> assertThat(petFoodsResponse.petFoods()).hasSize(20),
+                    () -> assertThat(isLatest(petFoods.get(0).id(), petFoods)).isTrue()
+            );
         }
 
         private PetFood savePetFood(Brand 브랜드) {
             return petFoodRepository.save(미국_영양기준_만족_식품(브랜드));
+        }
+
+        private boolean isLatest(long id, List<PetFoodResponse> petFoodResponses) {
+            for (PetFoodResponse petFoodResponse : petFoodResponses) {
+                if (petFoodResponse.id() > id) {
+                    return false;
+                }
+            }
+            return true;
         }
 
     }
@@ -427,7 +439,7 @@ class PetFoodQueryServiceTest extends ServiceTest {
     class 상세_조회 {
 
         @Test
-        void 식품_상세조회할수_있다() {
+        void 식품에_대한_상세조회를_할_수_있다() {
             //given
             PetFood 모든_영양기준_만족_식품 = 모든_영양기준_만족_식품(brandRepository.save(아카나_식품_브랜드_생성()));
             PetFood 미국_영양기준_만족_식품 = 미국_영양기준_만족_식품(brandRepository.save(오리젠_식품_브랜드_생성()));
@@ -450,17 +462,19 @@ class PetFoodQueryServiceTest extends ServiceTest {
             GetPetFoodResponse 응답 = petFoodQueryService.getPetFoodResponse(테스트용_식품.getId());
 
             //then
-            assertThat(응답.id()).isEqualTo(테스트용_식품.getId());
-            assertThat(응답.name()).isEqualTo(테스트용_식품.getName());
-            assertThat(응답.imageUrl()).isEqualTo(테스트용_식품.getImageUrl());
-            assertThat(응답.purchaseUrl()).isEqualTo(테스트용_식품.getPurchaseLink());
-            assertThat(응답.brand().name()).isEqualTo(브랜드.getName());
-            assertThat(응답.brand().foundedYear()).isEqualTo(브랜드.getFoundedYear());
-            assertThat(응답.brand().nation()).isEqualTo(브랜드.getNation());
-            assertThat(응답.rating()).isEqualTo(0);
-            assertThat(응답.reviewCount()).isEqualTo(0);
-            assertThat(응답.hasStandard().hasEuStandard()).isTrue();
-            assertThat(응답.hasStandard().hasUsStandard()).isTrue();
+            assertAll(
+                    () -> assertThat(응답.id()).isEqualTo(테스트용_식품.getId()),
+                    () -> assertThat(응답.name()).isEqualTo(테스트용_식품.getName()),
+                    () -> assertThat(응답.imageUrl()).isEqualTo(테스트용_식품.getImageUrl()),
+                    () -> assertThat(응답.purchaseUrl()).isEqualTo(테스트용_식품.getPurchaseLink()),
+                    () -> assertThat(응답.brand().name()).isEqualTo(브랜드.getName()),
+                    () -> assertThat(응답.brand().foundedYear()).isEqualTo(브랜드.getFoundedYear()),
+                    () -> assertThat(응답.brand().nation()).isEqualTo(브랜드.getNation()),
+                    () -> assertThat(응답.rating()).isEqualTo(0),
+                    () -> assertThat(응답.reviewCount()).isEqualTo(0),
+                    () -> assertThat(응답.hasStandard().hasEuStandard()).isTrue(),
+                    () -> assertThat(응답.hasStandard().hasUsStandard()).isTrue()
+            );
         }
 
     }
@@ -468,19 +482,9 @@ class PetFoodQueryServiceTest extends ServiceTest {
     @Test
     void 필터링에_필요한_식품_데이터를_조회한다() {
         // given
-        PetFood 모든_영양기준_만족_식품 = 모든_영양기준_만족_식품(brandRepository.save(아카나_식품_브랜드_생성()));
-        PetFood 미국_영양기준_만족_식품 = 미국_영양기준_만족_식품(brandRepository.save(오리젠_식품_브랜드_생성()));
-        PetFood 유럽_영양기준_만족_식품 = 유럽_영양기준_만족_식품(brandRepository.save(퓨리나_식품_브랜드_생성()));
-
-        식품_기능성_추가(모든_영양기준_만족_식품, 기능성_튼튼(), functionalityRepository);
-        식품_기능성_추가(미국_영양기준_만족_식품, 기능성_짱짱(), functionalityRepository);
-        식품_기능성_추가(유럽_영양기준_만족_식품, 기능성_다이어트(), functionalityRepository);
-
-        식품_주원료_추가(모든_영양기준_만족_식품, 주원료_소고기(), primaryIngredientRepository);
-        식품_주원료_추가(미국_영양기준_만족_식품, 주원료_돼지고기(), primaryIngredientRepository);
-        식품_주원료_추가(유럽_영양기준_만족_식품, 주원료_닭고기(), primaryIngredientRepository);
-
-        식품_저장(petFoodRepository, 모든_영양기준_만족_식품, 미국_영양기준_만족_식품, 유럽_영양기준_만족_식품);
+        saveBrands(아카나_식품_브랜드_생성(), 오리젠_식품_브랜드_생성(), 퓨리나_식품_브랜드_생성());
+        saveFunctionalities(기능성_튼튼(), 기능성_짱짱(), 기능성_다이어트());
+        savePrimaryIngredients(주원료_소고기(), 주원료_돼지고기(), 주원료_닭고기());
 
         // when
         FilterResponse metadata = petFoodQueryService.getMetadataForFilter();
@@ -496,6 +500,18 @@ class PetFoodQueryServiceTest extends ServiceTest {
                 () -> assertThat(metadata.nutritionStandards()).extracting(NutrientStandardResponse::nation)
                         .contains("미국", "유럽")
         );
+    }
+
+    private void saveBrands(Brand... brands) {
+        brandRepository.saveAll(Arrays.asList(brands));
+    }
+
+    private void saveFunctionalities(Functionality... functionalities) {
+        functionalityRepository.saveAll(Arrays.asList(functionalities));
+    }
+
+    private void savePrimaryIngredients(PrimaryIngredient... primaryIngredients) {
+        primaryIngredientRepository.saveAll(Arrays.asList(primaryIngredients));
     }
 
 }
