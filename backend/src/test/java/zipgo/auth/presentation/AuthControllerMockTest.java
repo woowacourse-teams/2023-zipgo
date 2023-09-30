@@ -1,24 +1,18 @@
 package zipgo.auth.presentation;
 
-import java.util.List;
-
 import com.epages.restdocs.apispec.MockMvcRestDocumentationWrapper;
 import com.epages.restdocs.apispec.ResourceSnippetDetails;
 import com.epages.restdocs.apispec.Schema;
 import org.junit.jupiter.api.Test;
-import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
-import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.ResponseCookie;
 import org.springframework.restdocs.mockmvc.RestDocumentationResultHandler;
 import org.springframework.restdocs.payload.JsonFieldType;
-import zipgo.auth.application.AuthService;
 import zipgo.auth.dto.TokenDto;
 import zipgo.auth.exception.OAuthTokenNotBringException;
-import zipgo.auth.support.RefreshTokenCookieProvider;
 import zipgo.common.acceptance.MockMvcTest;
-import zipgo.member.application.MemberQueryService;
-import zipgo.pet.application.PetQueryService;
 import zipgo.pet.domain.fixture.PetFixture;
+
+import java.util.List;
 
 import static com.epages.restdocs.apispec.RestAssuredRestDocumentationWrapper.resourceDetails;
 import static java.util.Collections.EMPTY_LIST;
@@ -31,25 +25,12 @@ import static org.springframework.restdocs.request.RequestDocumentation.queryPar
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import static zipgo.member.domain.fixture.MemberFixture.식별자_있는_멤버;
 
-@WebMvcTest(controllers = AuthController.class)
 class AuthControllerMockTest extends MockMvcTest {
 
     private static final Schema 응답_형식 = Schema.schema("TokenResponse");
     private static final ResourceSnippetDetails 문서_정보 = resourceDetails().summary("로그인")
             .description("로그인 합니다.")
             .responseSchema(응답_형식);
-
-    @MockBean
-    private MemberQueryService memberQueryService;
-
-    @MockBean
-    private PetQueryService petQueryService;
-
-    @MockBean
-    private RefreshTokenCookieProvider refreshTokenCookieProvider;
-
-    @MockBean
-    private AuthService authService;
 
     @Test
     void 로그인_성공() throws Exception {

@@ -10,7 +10,6 @@ import org.springframework.restdocs.payload.JsonFieldType;
 import org.springframework.restdocs.restassured.RestDocumentationFilter;
 import zipgo.brand.domain.repository.BrandRepository;
 import zipgo.common.acceptance.AcceptanceTest;
-import zipgo.petfood.domain.PetFood;
 import zipgo.petfood.domain.repository.FunctionalityRepository;
 import zipgo.petfood.domain.repository.PetFoodRepository;
 import zipgo.petfood.domain.repository.PrimaryIngredientRepository;
@@ -69,7 +68,7 @@ public class PetFoodControllerTest extends AcceptanceTest {
         @Test
         void 필터를_지정하지_않고_요청하면_200을_반환한다() {
             // given
-            PetFood 모든_영양기준_만족_식품 = 모든_영양기준_만족_식품(brandRepository.save(아카나_식품_브랜드_생성()));
+            var 모든_영양기준_만족_식품 = 모든_영양기준_만족_식품(brandRepository.save(아카나_식품_브랜드_생성()));
 
             식품_기능성_추가(모든_영양기준_만족_식품, functionalityRepository.save(기능성_다이어트()));
             식품_기능성_추가(모든_영양기준_만족_식품, functionalityRepository.save(기능성_튼튼()));
@@ -94,7 +93,7 @@ public class PetFoodControllerTest extends AcceptanceTest {
         @Test
         void 필터를_지정해서_요청하면_200을_반환한다() {
             // given
-            PetFood 모든_영양기준_만족_식품 = 모든_영양기준_만족_식품(brandRepository.save(아카나_식품_브랜드_생성()));
+            var 모든_영양기준_만족_식품 = 모든_영양기준_만족_식품(brandRepository.save(아카나_식품_브랜드_생성()));
 
             식품_기능성_추가(모든_영양기준_만족_식품, functionalityRepository.save(기능성_다이어트()));
             식품_기능성_추가(모든_영양기준_만족_식품, functionalityRepository.save(기능성_튼튼()));
@@ -160,7 +159,7 @@ public class PetFoodControllerTest extends AcceptanceTest {
         @Test
         void 식품_상세를_요청하면_200을_반환한다() {
             // given
-            PetFood 모든_영양기준_만족_식품 = 모든_영양기준_만족_식품(brandRepository.save(아카나_식품_브랜드_생성()));
+            var 모든_영양기준_만족_식품 = 모든_영양기준_만족_식품(brandRepository.save(아카나_식품_브랜드_생성()));
 
             식품_기능성_추가(모든_영양기준_만족_식품, functionalityRepository.save(기능성_다이어트()));
             식품_기능성_추가(모든_영양기준_만족_식품, functionalityRepository.save(기능성_튼튼()));
@@ -284,7 +283,7 @@ public class PetFoodControllerTest extends AcceptanceTest {
         @Test
         void 필터링에_필요한_메타데이터를_조회하면_200을_반환한다() {
             // given
-            PetFood 모든_영양기준_만족_식품 = 모든_영양기준_만족_식품(brandRepository.save(아카나_식품_브랜드_생성()));
+            var 모든_영양기준_만족_식품 = 모든_영양기준_만족_식품(brandRepository.save(아카나_식품_브랜드_생성()));
 
             식품_기능성_추가(모든_영양기준_만족_식품, functionalityRepository.save(기능성_다이어트()));
             식품_기능성_추가(모든_영양기준_만족_식품, functionalityRepository.save(기능성_튼튼()));
