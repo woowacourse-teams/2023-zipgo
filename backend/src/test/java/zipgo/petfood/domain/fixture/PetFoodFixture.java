@@ -1,11 +1,13 @@
 package zipgo.petfood.domain.fixture;
 
+import java.util.Arrays;
 import java.util.List;
 import zipgo.brand.domain.Brand;
 import zipgo.petfood.domain.HasStandard;
 import zipgo.petfood.domain.PetFood;
 import zipgo.petfood.domain.Reviews;
 import zipgo.admin.dto.PetFoodCreateRequest;
+import zipgo.petfood.domain.repository.PetFoodRepository;
 
 import static zipgo.petfood.domain.PetFood.builder;
 
@@ -46,6 +48,10 @@ public class PetFoodFixture {
                 .hasStandard(HasStandard.builder().unitedStates(false).europe(true).build())
                 .reviews(new Reviews())
                 .build();
+    }
+
+    public static void 식품_저장(PetFoodRepository petFoodRepository, PetFood... PetFoods) {
+        petFoodRepository.saveAll(Arrays.asList(PetFoods));
     }
 
 }
