@@ -9,6 +9,7 @@ import org.springframework.transaction.annotation.Transactional;
 import zipgo.brand.domain.repository.BrandRepository;
 import zipgo.petfood.domain.PetFood;
 import zipgo.petfood.domain.repository.FunctionalityRepository;
+import zipgo.petfood.domain.repository.PetFoodQueryRepository;
 import zipgo.petfood.domain.repository.PetFoodRepository;
 import zipgo.petfood.domain.repository.PrimaryIngredientRepository;
 import zipgo.petfood.dto.response.GetPetFoodQueryResponse;
@@ -47,7 +48,7 @@ class PetFoodQueryRepositoryTest {
     private PetFoodRepository petFoodRepository;
 
     @Autowired
-    private PetFoodQueryRepositoryImpl petFoodQueryRepository;
+    private PetFoodQueryRepository petFoodQueryRepository;
 
     @Autowired
     private BrandRepository brandRepository;
@@ -59,7 +60,7 @@ class PetFoodQueryRepositoryTest {
     private PrimaryIngredientRepository primaryIngredientRepository;
 
     @Test
-    void 조건에_맞는_식품을_필터링한다() {
+    void 조건에_맞는_식품을_반환한다() {
         // given
         PetFood 모든_영양기준_만족_식품 = 모든_영양기준_만족_식품(brandRepository.save(아카나_식품_브랜드_생성()));
         PetFood 미국_영양기준_만족_식품 = 미국_영양기준_만족_식품(brandRepository.save(오리젠_식품_브랜드_생성()));
@@ -99,7 +100,7 @@ class PetFoodQueryRepositoryTest {
     }
 
     @Test
-    void 같은_식품을_제거하고_limit_개수만큼_반환한다() {
+    void 조건에_맞는_식품의_전체_개수를_반환한다() {
         // given
         PetFood 모든_영양기준_만족_식품 = 모든_영양기준_만족_식품(brandRepository.save(아카나_식품_브랜드_생성()));
         PetFood 미국_영양기준_만족_식품 = 미국_영양기준_만족_식품(brandRepository.save(오리젠_식품_브랜드_생성()));
@@ -127,14 +128,13 @@ class PetFoodQueryRepositoryTest {
         List<String> standards = EMPTY_LIST;
         List<String> primaryIngredientList = EMPTY_LIST;
         List<String> functionalityList = EMPTY_LIST;
-        int size = 20;
 
         // when
-        List<GetPetFoodQueryResponse> responses = petFoodQueryRepository.findPagingPetFoods(brandsName, standards,
-                primaryIngredientList, functionalityList, lastPetFoodId, size);
+        Long petFoodsCount = petFoodQueryRepository.findPetFoodsCount(brandsName, standards,
+                primaryIngredientList, functionalityList);
 
         // then
-        assertThat(responses).hasSize(3);
+        assertThat(petFoodsCount).isEqualTo(3);
     }
 
 }
