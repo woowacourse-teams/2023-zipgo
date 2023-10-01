@@ -1,14 +1,14 @@
 type ErrorCode = keyof typeof ERROR_CODE_KIT;
 type RuntimeErrorCode = keyof typeof RUNTIME_ERROR_CODE_KIT;
 type APIErrorCode = keyof typeof API_ERROR_CODE_KIT;
-type ErrorCodeKit = typeof ERROR_CODE_KIT;
 type ErrorMessageKit = typeof ERROR_MESSAGE_KIT;
-type RuntimeErrorMessageKit = typeof RUNTIME_ERROR_MESSAGE_KIT;
-type APIErrorMessageKit = typeof API_ERROR_MESSAGE_KIT;
 
 const DEFAULT_STATUS = 404;
 
 const IGNORE_KEY = 'ignore';
+
+const OFFLINE = '네트워크 상태를 확인해 주세요!';
+const ONLINE = '네트워크가 연결되었습니다!';
 
 const UNEXPECTED_ERROR = '서비스에 문제가 발생했어요';
 const NOT_FOUND = '존재하지 않는 페이지예요';
@@ -29,6 +29,8 @@ const API_ERROR_CODE_KIT = {
 const ERROR_CODE_KIT: Record<keyof ErrorMessageKit, keyof ErrorMessageKit> = {
   UNEXPECTED_ERROR: 'UNEXPECTED_ERROR',
   NOT_FOUND: 'NOT_FOUND',
+  OFFLINE: 'OFFLINE',
+  ONLINE: 'ONLINE',
   ...RUNTIME_ERROR_CODE_KIT,
   ...API_ERROR_CODE_KIT,
 };
@@ -45,27 +47,12 @@ const API_ERROR_MESSAGE_KIT = {
 const ERROR_MESSAGE_KIT = {
   UNEXPECTED_ERROR,
   NOT_FOUND,
+  OFFLINE,
+  ONLINE,
   ...RUNTIME_ERROR_MESSAGE_KIT,
   ...API_ERROR_MESSAGE_KIT,
 } as const;
 
-export type {
-  APIErrorCode,
-  APIErrorMessageKit,
-  ErrorCode,
-  ErrorCodeKit,
-  ErrorMessageKit,
-  RuntimeErrorCode,
-  RuntimeErrorMessageKit,
-};
+export type { APIErrorCode, ErrorCode, RuntimeErrorCode };
 
-export {
-  API_ERROR_CODE_KIT,
-  API_ERROR_MESSAGE_KIT,
-  DEFAULT_STATUS,
-  ERROR_CODE_KIT,
-  ERROR_MESSAGE_KIT,
-  IGNORE_KEY,
-  RUNTIME_ERROR_CODE_KIT,
-  RUNTIME_ERROR_MESSAGE_KIT,
-};
+export { API_ERROR_CODE_KIT, DEFAULT_STATUS, ERROR_CODE_KIT, ERROR_MESSAGE_KIT, IGNORE_KEY };

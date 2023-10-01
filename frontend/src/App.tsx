@@ -7,11 +7,13 @@ import AxiosInterceptors from './components/@common/AxiosInterceptors/AxiosInter
 import { EndOfErrorBoundary } from './components/@common/ErrorBoundary/ErrorBoundary';
 import QueryBoundary from './components/@common/ErrorBoundary/QueryBoundary/QueryBoundary';
 import GlobalStyle from './components/@common/GlobalStyle';
+import { ERROR_MESSAGE_KIT } from './constants/errors';
 import { ONE_HOUR } from './constants/time';
 import ToastProvider, { useToast } from './context/Toast/ToastContext';
 import ErrorPage from './pages/Error/ErrorPage';
 import theme from './styles/theme';
 import { ErrorBoundaryValue } from './types/common/errorBoundary';
+import { UnexpectedError } from './utils/errors';
 import { setScreenSize } from './utils/setScreenSize';
 
 const errorFallback = ({ reset, error }: ErrorBoundaryValue) => (
@@ -66,11 +68,11 @@ const GlobalEvent = () => {
     };
 
     const onOffline = () => {
-      toast.warning('네트워크 상태를 확인해 주세요!');
+      toast.warning(ERROR_MESSAGE_KIT.OFFLINE);
     };
 
     const onOnline = () => {
-      toast.success('네트워크가 연결되었습니다!');
+      toast.success(ERROR_MESSAGE_KIT.ONLINE);
     };
 
     window.addEventListener('resize', onResize);
