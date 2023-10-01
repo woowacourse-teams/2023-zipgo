@@ -5,9 +5,11 @@ import java.util.Optional;
 import org.junit.jupiter.api.DisplayNameGeneration;
 import org.junit.jupiter.api.DisplayNameGenerator;
 import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.test.mock.mockito.MockBean;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.junit.jupiter.MockitoExtension;
+import zipgo.auth.domain.repository.RefreshTokenRepository;
 import zipgo.auth.dto.TokenDto;
 import zipgo.auth.infra.kakao.KakaoOAuthClient;
 import zipgo.auth.infra.kakao.dto.KakaoMemberResponse;
@@ -21,21 +23,24 @@ import static org.mockito.Mockito.when;
 import static zipgo.member.domain.fixture.MemberFixture.식별자_없는_멤버;
 import static zipgo.member.domain.fixture.MemberFixture.식별자_있는_멤버;
 
-@SpringBootTest
+@ExtendWith(MockitoExtension.class)
 @SuppressWarnings("NonAsciiCharacters")
 @DisplayNameGeneration(DisplayNameGenerator.ReplaceUnderscores.class)
 class AuthServiceMockTest {
 
-    @MockBean
+    @Mock
     private KakaoOAuthClient oAuthClient;
 
-    @MockBean
+    @Mock
     private JwtProvider jwtProvider;
 
-    @MockBean
+    @Mock
     private MemberRepository memberRepository;
 
-    @Autowired
+    @Mock
+    private RefreshTokenRepository refreshTokenRepository;
+
+    @InjectMocks
     private AuthService authService;
 
     @Test
@@ -47,6 +52,8 @@ class AuthServiceMockTest {
                 .thenReturn(Optional.of(저장된_멤버));
         when(jwtProvider.createAccessToken(저장된_멤버.getId().toString()))
                 .thenReturn("생성된 엑세스 토큰");
+        when(jwtProvider.createRefreshToken())
+                .thenReturn("생성된 리프레시 토큰");
         when(jwtProvider.createRefreshToken())
                 .thenReturn("생성된 리프레시 토큰");
 
