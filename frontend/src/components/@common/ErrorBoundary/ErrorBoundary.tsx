@@ -79,6 +79,4 @@ class EndOfErrorBoundary extends ErrorBoundary {
 const shouldIgnore = (error: Error, ignoreKey = IGNORE_KEY) =>
   Object.prototype.hasOwnProperty.call(error, ignoreKey);
 
-export type { ErrorBoundaryProps };
-
 export { EndOfErrorBoundary, ErrorBoundary };
