@@ -4,7 +4,7 @@ import { APIError, ZipgoError } from '@/utils/errors';
 
 import { ErrorBoundary } from '../ErrorBoundary';
 
-export type APIBoundaryProps = ComponentProps<typeof ErrorBoundary>;
+type APIBoundaryProps = ComponentProps<typeof ErrorBoundary>;
 
 const APIBoundary = (props: PropsWithChildren<APIBoundaryProps>) => {
   const handleAPIError = (error: unknown) => {
@@ -15,5 +15,7 @@ const APIBoundary = (props: PropsWithChildren<APIBoundaryProps>) => {
 
   return <ErrorBoundary onError={handleAPIError} {...props} />;
 };
+
+export type { APIBoundaryProps };
 
 export default APIBoundary;
