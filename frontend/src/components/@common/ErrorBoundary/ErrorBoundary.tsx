@@ -1,6 +1,7 @@
 /* eslint-disable max-classes-per-file */
 import { Component, ErrorInfo, PropsWithChildren, ReactNode } from 'react';
 
+import { IGNORE_KEY } from '@/constants/errors';
 import { ErrorBoundaryState, ErrorBoundaryValue } from '@/types/common/errorBoundary';
 import { RenderProps } from '@/types/common/utility';
 
@@ -75,7 +76,7 @@ class EndOfErrorBoundary extends ErrorBoundary {
   }
 }
 
-const shouldIgnore = (error: Error, ignoreKey = 'ignore') =>
+const shouldIgnore = (error: Error, ignoreKey = IGNORE_KEY) =>
   Object.prototype.hasOwnProperty.call(error, ignoreKey);
 
 export { EndOfErrorBoundary, ErrorBoundary };

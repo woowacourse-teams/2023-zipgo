@@ -2,7 +2,7 @@
 import { AxiosError, isAxiosError } from 'axios';
 
 import type { APIErrorCode, ErrorCode, RuntimeErrorCode } from '../constants/errors';
-import { API_ERROR_CODE_KIT, ERROR_MESSAGE_KIT } from '../constants/errors';
+import { API_ERROR_CODE_KIT, ERROR_MESSAGE_KIT, IGNORE_KEY } from '../constants/errors';
 
 type ManageableStandard = 'config' | 'request' | 'response';
 
@@ -27,7 +27,7 @@ type ZipgoErrorOptions<T extends ErrorCode> = {
 class ZipgoError<Code extends ErrorCode> extends Error {
   cause: ZipgoErrorOptions<Code>['cause'];
 
-  ignore: boolean;
+  [IGNORE_KEY]: boolean;
 
   constructor(info: ErrorInfo<Code>, value?: unknown) {
     const [message, options] = createErrorParams(info, value);

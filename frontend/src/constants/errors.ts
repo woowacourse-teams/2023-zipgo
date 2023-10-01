@@ -8,6 +8,8 @@ export type APIErrorMessageKit = typeof API_ERROR_MESSAGE_KIT;
 
 export const DEFAULT_STATUS = 404;
 
+export const IGNORE_KEY = 'ignore';
+
 const UNEXPECTED_ERROR = '서비스에 문제가 발생했어요';
 const NOT_FOUND = '존재하지 않는 페이지예요';
 const WRONG_URL_FORMAT = NOT_FOUND;
