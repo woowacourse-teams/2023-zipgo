@@ -1,17 +1,20 @@
 import { isAxiosError } from 'axios';
-import { PropsWithChildren, useEffect } from 'react';
+import { PropsWithChildren } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 import { client } from '@/apis';
+import { APIError } from '@/utils/errors';
 import { zipgoLocalStorage } from '@/utils/localStorage';
 
 const AxiosInterceptors = (props: PropsWithChildren) => {
   const { children } = props;
 
+  const { request, response } = client.interceptors;
+
   const navigate = useNavigate();
 
-  useEffect(() => {
-    const requestInterceptor = client.interceptors.request.use(config => {
+  if (!request.handlers.length && !response.handlers.length) {
+    client.interceptors.request.use(config => {
       const tokens = zipgoLocalStorage.getTokens();
 
       if (tokens) {
@@ -22,12 +25,12 @@ const AxiosInterceptors = (props: PropsWithChildren) => {
       return config;
     });
 
-    const responseInterceptor = client.interceptors.response.use(
+    client.interceptors.response.use(
       response => response,
       async error => {
-        if (!isAxiosError(error)) return error;
+        if (!isAxiosError(error) || !APIError.canManage(error)) return error;
 
-        if (error.response && error.response.status === 401) {
+        if (error.response.status === 401) {
           alert('세션이 만료되었습니다.');
 
           zipgoLocalStorage.clearAuth();
@@ -38,12 +41,7 @@ const AxiosInterceptors = (props: PropsWithChildren) => {
         return error;
       },
     );
-
-    return () => {
-      client.interceptors.request.eject(requestInterceptor);
-      client.interceptors.response.eject(responseInterceptor);
-    };
-  }, []);
+  }
 
   return children;
 };
