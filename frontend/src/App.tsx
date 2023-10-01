@@ -10,6 +10,7 @@ import GlobalStyle from './components/@common/GlobalStyle';
 import { ERROR_MESSAGE_KIT } from './constants/errors';
 import { ONE_HOUR } from './constants/time';
 import ToastProvider, { useToast } from './context/Toast/ToastContext';
+import useErrorBoundary from './hooks/@common/useErrorBoundary';
 import ErrorPage from './pages/Error/ErrorPage';
 import theme from './styles/theme';
 import { ErrorBoundaryValue } from './types/common/errorBoundary';
@@ -54,6 +55,8 @@ export default App;
 const GlobalEvent = () => {
   const { toast } = useToast();
 
+  const { setError } = useErrorBoundary();
+
   useEffect(() => {
     setScreenSize();
   }, []);
@@ -64,7 +67,7 @@ const GlobalEvent = () => {
     };
 
     const onUnhandledRejection = () => {
-      toast.warning('일시적인 에러가 발생했습니다. 잠시 후 다시 시도해 주세요!');
+      setError(new UnexpectedError('Unhandled rejection'));
     };
 
     const onOffline = () => {
