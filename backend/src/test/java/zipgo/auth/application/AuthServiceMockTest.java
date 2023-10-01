@@ -50,7 +50,7 @@ class AuthServiceMockTest {
         Member 저장된_멤버 = 식별자_있는_멤버();
         when(memberRepository.findByEmail("이메일"))
                 .thenReturn(Optional.of(저장된_멤버));
-        when(jwtProvider.createAccessToken(저장된_멤버.getId().toString()))
+        when(jwtProvider.createAccessToken(저장된_멤버.getId()))
                 .thenReturn("생성된 엑세스 토큰");
         when(jwtProvider.createRefreshToken())
                 .thenReturn("생성된 리프레시 토큰");
@@ -75,7 +75,7 @@ class AuthServiceMockTest {
                 .thenReturn(Optional.empty());
         when(memberRepository.save(식별자_없는_멤버()))
                 .thenReturn(식별자_있는_멤버());
-        when(jwtProvider.createAccessToken("1"))
+        when(jwtProvider.createAccessToken(1L))
                 .thenReturn("생성된 토큰");
 
         // when

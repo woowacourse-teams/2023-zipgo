@@ -32,7 +32,7 @@ public class AuthService {
     }
 
     private TokenDto createTokens(Long memberId) {
-        String accessToken = jwtProvider.createAccessToken(memberId.toString());
+        String accessToken = jwtProvider.createAccessToken(memberId);
         String refreshToken = jwtProvider.createRefreshToken();
 
         refreshTokenRepository.deleteByMemberId(memberId);
@@ -47,7 +47,7 @@ public class AuthService {
         RefreshToken savedRefreshToken = refreshTokenRepository.getByToken(refreshToken);
         Long memberId = savedRefreshToken.getMemberId();
 
-        return jwtProvider.createAccessToken(memberId.toString());
+        return jwtProvider.createAccessToken(memberId);
     }
 
     public void logout(Long memberId) {

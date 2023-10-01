@@ -32,8 +32,8 @@ public class JwtProvider {
         this.refreshTokenExpirationTime = jwtCredentials.getRefreshTokenExpirationTime();
     }
 
-    public String createAccessToken(String payload) {
-        return createToken(payload, accessTokenExpirationTime, key);
+    public String createAccessToken(Long memberId) {
+        return createToken(memberId.toString(), accessTokenExpirationTime, key);
     }
 
     private String createToken(String payload, long expireLength, SecretKey key) {

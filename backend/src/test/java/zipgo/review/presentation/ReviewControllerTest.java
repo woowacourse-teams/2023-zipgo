@@ -325,7 +325,7 @@ public class ReviewControllerTest extends AcceptanceTest {
         @Test
         void 리뷰를_성공적으로_생성하면_201_반환() {
             // given
-            var token = jwtProvider.createAccessToken("1");
+            var token = jwtProvider.createAccessToken(1L);
             var 리뷰_생성_요청 = 리뷰_생성_요청(식품.getId(), 반려동물.getId());
             var 요청_준비 = given(spec).header("Authorization", "Bearer " + token)
                     .body(리뷰_생성_요청)
@@ -365,7 +365,7 @@ public class ReviewControllerTest extends AcceptanceTest {
         @Test
         void 없는_식품에_대해_리뷰를_생성하면_404_반환() {
             // given
-            var token = jwtProvider.createAccessToken("1");
+            var token = jwtProvider.createAccessToken(1L);
             var 요청_준비 = given(spec).header("Authorization", "Bearer " + token)
                     .body(리뷰_생성_요청(잘못된_id, 반려동물.getId())).contentType(JSON)
                     .filter(API_예외응답_문서_생성());
@@ -396,7 +396,7 @@ public class ReviewControllerTest extends AcceptanceTest {
         @Test
         void 리뷰를_성공적으로_수정하면_204_반환() {
             // given
-            var token = jwtProvider.createAccessToken("1");
+            var token = jwtProvider.createAccessToken(1L);
             var 요청_준비 = given(spec).header("Authorization", "Bearer " + token)
                     .body(리뷰_수정_요청()).contentType(JSON)
                     .filter(리뷰_수정_API_문서_생성());
@@ -424,7 +424,7 @@ public class ReviewControllerTest extends AcceptanceTest {
         @Test
         void 리뷰를_쓴_사람이_아닌_멤버가_리뷰를_수정하면_403_반환() {
             // given
-            var notOwnerToken = jwtProvider.createAccessToken("2");
+            var notOwnerToken = jwtProvider.createAccessToken(2L);
             var 요청_준비 = given(spec).header("Authorization", "Bearer " + notOwnerToken)
                     .body(리뷰_수정_요청())
                     .contentType(JSON).filter(API_예외응답_문서_생성());
@@ -455,7 +455,7 @@ public class ReviewControllerTest extends AcceptanceTest {
         @Test
         void 리뷰를_성공적으로_삭제하면_204_반환() {
             // given
-            var token = jwtProvider.createAccessToken("1");
+            var token = jwtProvider.createAccessToken(1L);
             var 요청_준비 = given(spec).header("Authorization", "Bearer " + token)
                     .body(리뷰_수정_요청()).contentType(JSON)
                     .filter(리뷰_삭제_API_문서_생성());
@@ -476,7 +476,7 @@ public class ReviewControllerTest extends AcceptanceTest {
         @Test
         void 리뷰를_쓴_사람이_아닌_멤버가_리뷰를_삭제하면_403_반환() {
             // given
-            var notOwnerToken = jwtProvider.createAccessToken("2");
+            var notOwnerToken = jwtProvider.createAccessToken(2L);
             var 요청_준비 = given(spec)
                     .header("Authorization", "Bearer " + notOwnerToken)
                     .contentType(JSON)
@@ -604,7 +604,7 @@ public class ReviewControllerTest extends AcceptanceTest {
         void 도움이돼요_추가_성공() {
             //given
             var 다른_회원 = memberRepository.save(Member.builder().email("도움이돼요_추가할_회원").name("회원명").build());
-            var 다른_회원의_JWT = jwtProvider.createAccessToken(다른_회원.getId().toString());
+            var 다른_회원의_JWT = jwtProvider.createAccessToken(다른_회원.getId());
 
             var 요청_준비 = given().spec(spec)
                     .contentType(JSON)
@@ -631,7 +631,7 @@ public class ReviewControllerTest extends AcceptanceTest {
         void 작성자가_도움이돼요를_추가하면_예외가_발생() {
             //given
             var 리뷰_작성자_id = 리뷰.getPet().getOwner().getId();
-            var 리뷰_작성자_JWT = jwtProvider.createAccessToken(리뷰_작성자_id.toString());
+            var 리뷰_작성자_JWT = jwtProvider.createAccessToken(리뷰_작성자_id);
 
             //when
             var 요청_준비 = given().spec(spec)
@@ -655,7 +655,7 @@ public class ReviewControllerTest extends AcceptanceTest {
         void 이미_눌렀던_리뷰일_경우() {
             //given
             var 다른_회원 = memberRepository.save(Member.builder().email("도움이돼요_추가할_회원").name("회원명").build());
-            var 다른_회원의_JWT = jwtProvider.createAccessToken(다른_회원.getId().toString());
+            var 다른_회원의_JWT = jwtProvider.createAccessToken(다른_회원.getId());
 
             given().spec(spec).contentType(JSON)
                     .pathParam("reviewId", 리뷰.getId())
@@ -700,7 +700,7 @@ public class ReviewControllerTest extends AcceptanceTest {
         void 도움이돼요_취소_성공() {
             //given
             var 다른_회원 = memberRepository.save(Member.builder().email("도움이돼요_추가할_회원").name("회원명").build());
-            var 다른_회원의_JWT = jwtProvider.createAccessToken(다른_회원.getId().toString());
+            var 다른_회원의_JWT = jwtProvider.createAccessToken(다른_회원.getId());
 
             given().spec(spec).contentType(JSON)
                     .pathParam("reviewId", 리뷰.getId())
@@ -725,7 +725,7 @@ public class ReviewControllerTest extends AcceptanceTest {
         void 누르지_않은_리뷰에서_취소() {
             //given
             var 다른_회원 = memberRepository.save(Member.builder().email("도움이돼요_추가할_회원").name("회원명").build());
-            var 다른_회원의_JWT = jwtProvider.createAccessToken(다른_회원.getId().toString());
+            var 다른_회원의_JWT = jwtProvider.createAccessToken(다른_회원.getId());
 
             var 요청_준비 = given().spec(spec)
                     .contentType(JSON)

@@ -93,7 +93,7 @@ class AuthControllerTest extends AcceptanceTest {
         @Test
         void 로그아웃_성공() {
             // given
-            var 엑세스_토큰 = jwtProvider.createAccessToken("1");
+            var 엑세스_토큰 = jwtProvider.createAccessToken(1L);
             var 요청_준비 = given(spec)
                     .header("Authorization", "Bearer " + 엑세스_토큰)
                     .filter(로그아웃_성공_문서_생성());
