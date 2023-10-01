@@ -22,7 +22,6 @@ const Login = lazy(() => import('@/pages/Login/Login'));
 const FoodDetail = lazy(() => import('@/pages/FoodDetail/FoodDetail'));
 const ReviewAddition = lazy(() => import('@/pages/ReviewAddition/ReviewAddition'));
 const ReviewStarRating = lazy(() => import('@/pages/ReviewStarRating/ReviewStarRating'));
-// const ErrorPage = lazy(() => import('@/pages/Error/ErrorPage'));
 
 export const router = createBrowserRouter([
   {
