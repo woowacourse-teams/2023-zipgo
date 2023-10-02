@@ -39,8 +39,8 @@ public class AuthController {
     private final PetQueryService petQueryService;
 
     @PostMapping("/login")
-    public ResponseEntity<LoginResponse> login(@RequestParam("code") String authCode) {
-        TokenDto tokenDto = authService.login(authCode);
+    public ResponseEntity<LoginResponse> login(@RequestParam("code") String authCode, @RequestParam("redirect-uri") String redirectUri) {
+        TokenDto tokenDto = authService.login(authCode, redirectUri);
         ResponseCookie cookie = refreshTokenCookieProvider.createCookie(tokenDto.refreshToken());
 
         String memberId = jwtProvider.getPayload(tokenDto.accessToken());

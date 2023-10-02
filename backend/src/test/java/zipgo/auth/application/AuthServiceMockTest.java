@@ -58,7 +58,7 @@ class AuthServiceMockTest {
                 .thenReturn("생성된 리프레시 토큰");
 
         // when
-        TokenDto 토큰 = authService.login("코드");
+        TokenDto 토큰 = authService.login("코드", "리다이렉트_유알아이");
 
         // then
         assertAll(
@@ -79,14 +79,14 @@ class AuthServiceMockTest {
                 .thenReturn("생성된 토큰");
 
         // when
-        TokenDto 토큰 = authService.login("코드");
+        TokenDto 토큰 = authService.login("코드", "리다이렉트_유알아이");
 
         // then
         assertThat(토큰.accessToken()).isEqualTo("생성된 토큰");
     }
 
     private void 카카오_토큰_받기_성공() {
-        when(oAuthClient.getAccessToken("코드"))
+        when(oAuthClient.getAccessToken("코드", "리다이렉트_유알아이"))
                 .thenReturn("토큰");
         when(oAuthClient.getMember("토큰"))
                 .thenReturn(카카오_응답());

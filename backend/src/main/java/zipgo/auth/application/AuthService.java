@@ -21,8 +21,8 @@ public class AuthService {
     private final MemberRepository memberRepository;
     private final RefreshTokenRepository refreshTokenRepository;
 
-    public TokenDto login(String authCode) {
-        String accessToken = oAuthClient.getAccessToken(authCode);
+    public TokenDto login(String authCode, String redirectUri) {
+        String accessToken = oAuthClient.getAccessToken(authCode, redirectUri);
         OAuthMemberResponse oAuthMemberResponse = oAuthClient.getMember(accessToken);
 
         Member member = memberRepository.findByEmail(oAuthMemberResponse.getEmail())

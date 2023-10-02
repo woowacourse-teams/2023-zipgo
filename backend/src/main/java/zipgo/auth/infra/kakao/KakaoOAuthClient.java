@@ -34,9 +34,9 @@ public class KakaoOAuthClient implements OAuthClient {
     private final RestTemplate restTemplate;
 
     @Override
-    public String getAccessToken(String authCode) {
+    public String getAccessToken(String authCode, String redirectUri) {
         HttpHeaders header = createRequestHeader();
-        MultiValueMap<String, String> body = createRequestBodyWithAuthCode(authCode);
+        MultiValueMap<String, String> body = createRequestBodyWithAuthCode(authCode, redirectUri);
         HttpEntity<MultiValueMap<String, String>> request = new HttpEntity<>(body, header);
         ResponseEntity<KakaoTokenResponse> kakaoTokenResponse = getKakaoToken(request);
 
@@ -49,11 +49,11 @@ public class KakaoOAuthClient implements OAuthClient {
         return header;
     }
 
-    private MultiValueMap<String, String> createRequestBodyWithAuthCode(String authCode) {
+    private MultiValueMap<String, String> createRequestBodyWithAuthCode(String authCode, String redirectUri) {
         MultiValueMap<String, String> body = new LinkedMultiValueMap<>();
         body.add("grant_type", GRANT_TYPE);
         body.add("client_id", kakaoCredentials.getClientId());
-        body.add("redirect_uri", kakaoCredentials.getRedirectUri());
+        body.add("redirect_uri", redirectUri);
         body.add("client_secret", kakaoCredentials.getClientSecret());
         body.add("code", authCode);
         return body;

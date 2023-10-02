@@ -63,7 +63,7 @@ class KakaoOAuthClientTest {
                     .thenReturn(응답);
 
             // when
-            String accessToken = kakaoOAuthClient.getAccessToken("authCode");
+            String accessToken = kakaoOAuthClient.getAccessToken("authCode", "redirectUri");
 
             // then
             assertThat(accessToken).isEqualTo("accessToken");
@@ -101,7 +101,7 @@ class KakaoOAuthClientTest {
             )).thenThrow(HttpClientErrorException.class);
 
             // expect
-            assertThatThrownBy(() -> kakaoOAuthClient.getAccessToken("authCode"))
+            assertThatThrownBy(() -> kakaoOAuthClient.getAccessToken("authCode", "redirectUri"))
                     .isInstanceOf(OAuthTokenNotBringException.class)
                     .hasMessageContaining("서드파티 서비스에서 토큰을 받아오지 못했습니다. 잠시후 다시 시도해주세요.");
         }
