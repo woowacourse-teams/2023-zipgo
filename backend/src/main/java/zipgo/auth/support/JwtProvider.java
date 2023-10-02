@@ -1,14 +1,15 @@
 package zipgo.auth.support;
 
 
+import java.util.Date;
+import java.util.UUID;
+
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.Jws;
+import io.jsonwebtoken.JwtException;
 import io.jsonwebtoken.Jwts;
-import io.jsonwebtoken.MalformedJwtException;
 import io.jsonwebtoken.SignatureAlgorithm;
-import io.jsonwebtoken.security.SignatureException;
-import java.util.Date;
 import javax.crypto.SecretKey;
 import org.springframework.stereotype.Component;
 import zipgo.auth.exception.TokenExpiredException;
@@ -22,22 +23,32 @@ import static java.nio.charset.StandardCharsets.UTF_8;
 public class JwtProvider {
 
     private final SecretKey key;
-    private final long validityInMilliseconds;
+    private final long accessTokenExpirationTime;
+    private final long refreshTokenExpirationTime;
 
     public JwtProvider(JwtCredentials jwtCredentials) {
         this.key = hmacShaKeyFor(jwtCredentials.getSecretKey().getBytes(UTF_8));
-        this.validityInMilliseconds = jwtCredentials.getExpireLength();
+        this.accessTokenExpirationTime = jwtCredentials.getAccessTokenExpirationTime();
+        this.refreshTokenExpirationTime = jwtCredentials.getRefreshTokenExpirationTime();
     }
 
-    public String create(String payload) {
+    public String createAccessToken(Long memberId) {
+        return createToken(memberId.toString(), accessTokenExpirationTime, key);
+    }
+
+    private String createToken(String payload, long expireLength, SecretKey key) {
         Date now = new Date();
-        Date validity = new Date(now.getTime() + validityInMilliseconds);
+        Date expiration = new Date(now.getTime() + expireLength);
         return Jwts.builder()
                 .setSubject(payload)
                 .setIssuedAt(now)
-                .setExpiration(validity)
+                .setExpiration(expiration)
                 .signWith(key, SignatureAlgorithm.HS256)
                 .compact();
+    }
+
+    public String createRefreshToken() {
+        return createToken(UUID.randomUUID().toString(), refreshTokenExpirationTime, key);
     }
 
     public String getPayload(String token) {
@@ -50,13 +61,9 @@ public class JwtProvider {
                     .setSigningKey(key)
                     .build()
                     .parseClaimsJws(token);
-        } catch (MalformedJwtException e) {
-            throw new TokenInvalidException();
         } catch (ExpiredJwtException e) {
             throw new TokenExpiredException();
-        } catch (SignatureException e) {
-            throw new TokenInvalidException();
-        } catch (Exception e) {
+        } catch (JwtException e) {
             throw new TokenInvalidException();
         }
     }

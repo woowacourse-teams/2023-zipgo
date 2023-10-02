@@ -83,9 +83,7 @@ class AdminControllerMockTest extends MockMvcTest {
                         partWithName("brandCreateRequest").description("브랜드 생성 요청").attributes(
                                 key("contentType").value("application/json")
                         )));
-    }{
-}
-
+    }
 
     @Nested
     class 식품_생성 {

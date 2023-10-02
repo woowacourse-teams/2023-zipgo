@@ -22,30 +22,39 @@ class JwtProviderTest {
 
     private static final String TEST_SECRET_KEY = "this1-is2-zipgo3-test4-secret5-key6";
 
-    private final JwtProvider jwtProvider = new JwtProvider(new JwtCredentials(TEST_SECRET_KEY, 100000L));
+    private final JwtProvider jwtProvider = new JwtProvider(new JwtCredentials(TEST_SECRET_KEY, 100000L, 100000L));
 
     @Test
     void 토큰을_생성한다() {
         // given
-        String 페이로드 = String.valueOf(1L);
+        Long 사용자_식별자 = 1L;
 
-        // expect
-        String 토큰 = jwtProvider.create(페이로드);
+        // when
+        String 엑세스_토큰 = jwtProvider.createAccessToken(사용자_식별자);
 
         // then
-        assertThat(토큰).isNotNull();
+        assertThat(엑세스_토큰).isNotNull();
+    }
+
+    @Test
+    void 리프레시_토큰을_생성한다() {
+        // given, when
+        String 리프레시_토큰 = jwtProvider.createRefreshToken();
+
+        // then
+        assertThat(리프레시_토큰).isNotEmpty();
     }
 
     @Test
     void 올바른_토큰의_정보로_payload를_조회한다() {
         // given
-        String 페이로드 = String.valueOf(1L);
+        Long 사용자_식별자 = 1L;
 
         // when
-        String 토큰 = jwtProvider.create(페이로드);
+        String 엑세스_토큰 = jwtProvider.createAccessToken(사용자_식별자);
 
         // then
-        assertThat(jwtProvider.getPayload(토큰)).isEqualTo(페이로드);
+        assertThat(jwtProvider.getPayload(엑세스_토큰)).isEqualTo("1");
     }
 
     @Test
@@ -78,12 +87,13 @@ class JwtProviderTest {
         JwtProvider 다른_키의_jwt_provider = new JwtProvider(
                 new JwtCredentials(
                         "빨주노초파남보나만의열쇠",
+                        123123123123L,
                         123123123123L
                 )
         );
 
         // when
-        String 다른_키로_만든_토큰 = 다른_키의_jwt_provider.create(String.valueOf(1L));
+        String 다른_키로_만든_토큰 = 다른_키의_jwt_provider.createAccessToken(1L);
 
         // then
         assertThatThrownBy(() -> jwtProvider.getPayload(다른_키로_만든_토큰))
@@ -94,11 +104,11 @@ class JwtProviderTest {
     @Test
     void 유효한_토큰인지_검증한다() {
         // given
-        String 페이로드 = String.valueOf(1L);
-        String 토큰 = jwtProvider.create(페이로드);
+        Long 사용자_식별자 = 1L;
+        String 엑세스_토큰 = jwtProvider.createAccessToken(사용자_식별자);
 
-        // when
-        assertDoesNotThrow(() -> jwtProvider.validateParseJws(토큰));
+        // expect
+        assertDoesNotThrow(() -> jwtProvider.validateParseJws(엑세스_토큰));
     }
 
     @Test
@@ -107,14 +117,15 @@ class JwtProviderTest {
         JwtProvider 유효기간이_지난_jwtProvider = new JwtProvider(
                 new JwtCredentials(
                         TEST_SECRET_KEY,
-                        -99999999999L
+                        -99999999999L,
+                        111111L
                 )
         );
-        String 페이로드 = String.valueOf(1L);
-        String 토큰 = 유효기간이_지난_jwtProvider.create(페이로드);
+        Long 사용자_식별자 = 1L;
+        String 엑세스_토큰 = 유효기간이_지난_jwtProvider.createAccessToken(사용자_식별자);
 
         // expect
-        assertThatThrownBy(() -> 유효기간이_지난_jwtProvider.validateParseJws(토큰))
+        assertThatThrownBy(() -> 유효기간이_지난_jwtProvider.validateParseJws(엑세스_토큰))
                 .isInstanceOf(TokenExpiredException.class)
                 .hasMessageContaining("만료된 토큰입니다. 올바른 토큰으로 다시 시도해주세요.");
     }

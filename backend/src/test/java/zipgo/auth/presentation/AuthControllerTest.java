@@ -1,148 +1,152 @@
 package zipgo.auth.presentation;
 
-import com.epages.restdocs.apispec.MockMvcRestDocumentationWrapper;
 import com.epages.restdocs.apispec.ResourceSnippetDetails;
-import com.epages.restdocs.apispec.Schema;
+import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
-import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
-import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.restdocs.mockmvc.RestDocumentationResultHandler;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.restdocs.payload.JsonFieldType;
-import zipgo.auth.application.AuthService;
-import zipgo.auth.exception.OAuthTokenNotBringException;
-import zipgo.common.acceptance.MockMvcTest;
-import zipgo.member.application.MemberQueryService;
-import zipgo.pet.application.PetQueryService;
-import zipgo.pet.domain.fixture.PetFixture;
+import org.springframework.restdocs.restassured.RestDocumentationFilter;
+import zipgo.auth.domain.RefreshToken;
+import zipgo.auth.domain.repository.RefreshTokenRepository;
+import zipgo.auth.support.JwtProvider;
+import zipgo.common.acceptance.AcceptanceTest;
+import zipgo.common.config.JwtCredentials;
 
-import java.util.List;
-
+import static com.epages.restdocs.apispec.RestAssuredRestDocumentationWrapper.document;
 import static com.epages.restdocs.apispec.RestAssuredRestDocumentationWrapper.resourceDetails;
-import static java.util.Collections.EMPTY_LIST;
-import static org.mockito.Mockito.when;
-import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.post;
+import static io.restassured.RestAssured.given;
+import static org.springframework.http.HttpHeaders.SET_COOKIE;
+import static org.springframework.http.HttpStatus.FORBIDDEN;
+import static org.springframework.http.HttpStatus.OK;
+import static org.springframework.http.HttpStatus.UNAUTHORIZED;
+import static org.springframework.restdocs.headers.HeaderDocumentation.headerWithName;
+import static org.springframework.restdocs.headers.HeaderDocumentation.responseHeaders;
 import static org.springframework.restdocs.payload.PayloadDocumentation.fieldWithPath;
 import static org.springframework.restdocs.payload.PayloadDocumentation.responseFields;
-import static org.springframework.restdocs.request.RequestDocumentation.parameterWithName;
-import static org.springframework.restdocs.request.RequestDocumentation.queryParameters;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
-import static zipgo.member.domain.fixture.MemberFixture.식별자_있는_멤버;
 
-@WebMvcTest(controllers = AuthController.class)
-class AuthControllerTest extends MockMvcTest {
+class AuthControllerTest extends AcceptanceTest {
 
-    private static final Schema 응답_형식 = Schema.schema("TokenResponse");
-    private static final ResourceSnippetDetails 문서_정보 = resourceDetails().summary("로그인")
-            .description("로그인 합니다.")
-            .responseSchema(응답_형식);
+    private static final String TEST_SECRET_KEY = "this1-is2-zipgo3-test4-secret5-key6";
 
-    @MockBean
-    private MemberQueryService memberQueryService;
+    private ResourceSnippetDetails API_정보 = resourceDetails()
+            .summary("토큰 갱신 및 로그아웃")
+            .description("access token을 갱신하고 로그아웃을 합니다");
 
-    @MockBean
-    private PetQueryService petQueryService;
 
-    @MockBean
-    private AuthService authService;
+    @Autowired
+    private RefreshTokenRepository refreshTokenRepository;
 
-    @Test
-    void 로그인_성공() throws Exception {
-        // given
-        when(authService.createToken("인가_코드"))
-                .thenReturn("생성된_토큰");
-        when(jwtProvider.getPayload("생성된_토큰"))
-                .thenReturn("1");
-        when(memberQueryService.findById(1L))
-                .thenReturn(식별자_있는_멤버());
-        when(petQueryService.readMemberPets(1L))
-                .thenReturn(List.of(PetFixture.반려동물()));
+    @Nested
+    class 토큰_갱신 {
 
-        // when
-        var 요청 = mockMvc.perform(post("/auth/login")
-                        .param("code", "인가_코드"))
-                .andDo(로그인_성공_문서_생성());
+        @Test
+        void 엑세스_토큰을_갱신할_수_있다() {
+            // given
+            var 리프레시_토큰 = jwtProvider.createRefreshToken();
+            refreshTokenRepository.save(new RefreshToken(1L, 리프레시_토큰));
 
-        // then
-        요청.andExpect(status().isOk());
+            var 요청_준비 = given(spec)
+                    .cookie("refreshToken", 리프레시_토큰)
+                    .filter(토큰_갱신_성공_문서_생성());
+
+            // when
+            var 응답 = 요청_준비.when()
+                    .get("/auth/refresh");
+
+            // then
+            응답.then()
+                    .assertThat().statusCode(OK.value());
+        }
+
+        @Test
+        void 실패하면_401_반환() {
+            var 토큰_생성기 = 유효기간_만료된_jwtProvider_생성();
+            var 유효기간_만료된_리프레시_토큰 = 토큰_생성기.createRefreshToken();
+            var 요청_준비 = given(spec)
+                    .cookie("refreshToken", 유효기간_만료된_리프레시_토큰)
+                    .filter(토큰_갱신_실패_문서_생성());
+
+            // when
+            var 응답 = 요청_준비.when()
+                    .get("/auth/refresh");
+
+            // then
+            응답.then()
+                    .assertThat().statusCode(UNAUTHORIZED.value());
+        }
+
+        private JwtProvider 유효기간_만료된_jwtProvider_생성() {
+            return new JwtProvider(
+                    new JwtCredentials(
+                            TEST_SECRET_KEY,
+                            9999999,
+                            -99999999
+                    )
+            );
+        }
+
     }
 
-    @Test
-    void 로그인_성공_후_사용자의_반려동물이_없다면_pets는_빈_배열이다() throws Exception {
-        // given
-        when(authService.createToken("인가_코드"))
-                .thenReturn("생성된_토큰");
-        when(jwtProvider.getPayload("생성된_토큰"))
-                .thenReturn("1");
-        when(memberQueryService.findById(1L))
-                .thenReturn(식별자_있는_멤버());
-        when(petQueryService.readMemberPets(1L))
-                .thenReturn(EMPTY_LIST);
+    @Nested
+    class 로그아웃 {
 
-        // when
-        var 요청 = mockMvc.perform(post("/auth/login")
-                        .param("code", "인가_코드"))
-                .andDo(로그인_성공_반려동물_정보_없음_문서_생성());
+        @Test
+        void 로그아웃_성공() {
+            // given
+            var 엑세스_토큰 = jwtProvider.createAccessToken(1L);
+            var 요청_준비 = given(spec)
+                    .header("Authorization", "Bearer " + 엑세스_토큰)
+                    .filter(로그아웃_성공_문서_생성());
 
-        // then
-        요청.andExpect(status().isOk());
+            // when
+            var 응답 = 요청_준비.when()
+                    .post("/auth/logout");
+
+            // then
+            응답.then()
+                    .cookie("refreshToken", "")
+                    .statusCode(OK.value());
+        }
+
+        @Test
+        void 엑세스_토큰이_유효하지_않으면_로그아웃_실패() {
+            // given
+            var 요청_준비 = given(spec)
+                    .header("Authorization", "Bearer " + "잘못된토큰이라네")
+                    .filter(로그아웃_실패_문서_생성());
+
+            // when
+            var 응답 = 요청_준비.when()
+                    .post("/auth/logout");
+
+            // then
+            응답.then().statusCode(FORBIDDEN.value());
+        }
+
     }
 
-    @Test
-    void 자원_서버의_토큰을_가져오는데_실패하면_예외가_발생한다() throws Exception {
-        // given
-        when(authService.createToken("인가_코드"))
-                .thenThrow(new OAuthTokenNotBringException());
-
-        // when
-        var 요청 = mockMvc.perform(post("/auth/login")
-                .param("code", "인가_코드"));
-
-        // then
-        요청.andExpect(status().isBadGateway());
-    }
-
-    private RestDocumentationResultHandler 로그인_성공_문서_생성() {
-        return MockMvcRestDocumentationWrapper.document("로그인 성공 - 반려동물 기등록",
-                문서_정보,
-                queryParameters(
-                        parameterWithName("code").optional().description("로그인 API")
-                ),
+    private RestDocumentationFilter 토큰_갱신_성공_문서_생성() {
+        return document("access token 갱신 성공",
+                API_정보,
                 responseFields(
-                        fieldWithPath("accessToken").description("accessToken").type(JsonFieldType.STRING),
-                        fieldWithPath("authResponse.id").description("사용자 식별자").type(JsonFieldType.NUMBER),
-                        fieldWithPath("authResponse.name").description("사용자 이름").type(JsonFieldType.STRING),
-                        fieldWithPath("authResponse.email").description("사용자 이메일").type(JsonFieldType.STRING),
-                        fieldWithPath("authResponse.profileImageUrl").description("사용자 프로필 사진").type(JsonFieldType.STRING),
-                        fieldWithPath("authResponse.hasPet").description("반려동물 등록 여부").type(JsonFieldType.BOOLEAN),
-                        fieldWithPath("authResponse.pets[].id").description("반려동물 식별자"),
-                        fieldWithPath("authResponse.pets[].name").description("반려동물 이름").type(JsonFieldType.STRING),
-                        fieldWithPath("authResponse.pets[].age").description("반려동물 나이").type(JsonFieldType.NUMBER),
-                        fieldWithPath("authResponse.pets[].breedId").description("반려동물 견종 식별자"),
-                        fieldWithPath("authResponse.pets[].breed").description("반려동물 견종").type(JsonFieldType.STRING),
-                        fieldWithPath("authResponse.pets[].ageGroupId").description("반려동물 나이그룹 식별자").type(JsonFieldType.NUMBER),
-                        fieldWithPath("authResponse.pets[].ageGroup").description("반려동물 나이그룹").type(JsonFieldType.STRING),
-                        fieldWithPath("authResponse.pets[].petSize").description("반려동물 크기").type(JsonFieldType.STRING),
-                        fieldWithPath("authResponse.pets[].gender").description("반려동물 성별").type(JsonFieldType.STRING),
-                        fieldWithPath("authResponse.pets[].weight").description("반려동물 몸무게").type(JsonFieldType.NUMBER),
-                        fieldWithPath("authResponse.pets[].imageUrl").description("반려동물 사진 주소").type(JsonFieldType.STRING)
+                        fieldWithPath("accessToken").description("갱신된 accessToken").type(JsonFieldType.STRING)
                 ));
     }
 
-    private RestDocumentationResultHandler 로그인_성공_반려동물_정보_없음_문서_생성() {
-        return MockMvcRestDocumentationWrapper.document("로그인 성공 - 반려동물 미등록",
-                문서_정보,
-                queryParameters(
-                        parameterWithName("code").optional().description("로그인 API")
-                ),
-                responseFields(
-                        fieldWithPath("accessToken").description("accessToken").type(JsonFieldType.STRING),
-                        fieldWithPath("authResponse.id").description("사용자 식별자").type(JsonFieldType.NUMBER),
-                        fieldWithPath("authResponse.name").description("사용자 이름").type(JsonFieldType.STRING),
-                        fieldWithPath("authResponse.email").description("사용자 이메일").type(JsonFieldType.STRING),
-                        fieldWithPath("authResponse.profileImageUrl").description("사용자 프로필 사진").type(JsonFieldType.STRING),
-                        fieldWithPath("authResponse.hasPet").description("반려동물 등록 여부").type(JsonFieldType.BOOLEAN),
-                        fieldWithPath("authResponse.pets").description("반려동물 프로필").type(JsonFieldType.ARRAY)
-                ));
+    private RestDocumentationFilter 토큰_갱신_실패_문서_생성() {
+        return document("access token 갱신 실패 (유효하지 않은 인증 형식)", API_정보.responseSchema(에러_응답_형식));
+    }
+
+    private RestDocumentationFilter 로그아웃_성공_문서_생성() {
+        return document("로그아웃 성공", API_정보,
+                responseHeaders(
+                        headerWithName(SET_COOKIE).description("로그아웃 리프레시 토큰 쿠키")
+                )
+        );
+    }
+
+    private RestDocumentationFilter 로그아웃_실패_문서_생성() {
+        return document("로그아웃 실패 (유효하지 않은 인증 형식)", API_정보.responseSchema(에러_응답_형식));
     }
 
 }
