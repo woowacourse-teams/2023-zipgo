@@ -1,23 +1,17 @@
 package zipgo.image.presentaion;
 
 import com.epages.restdocs.apispec.MockMvcRestDocumentationWrapper;
-import org.junit.jupiter.api.DisplayNameGeneration;
-import org.junit.jupiter.api.DisplayNameGenerator;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.restdocs.AutoConfigureRestDocs;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
 import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.restdocs.mockmvc.RestDocumentationResultHandler;
 import org.springframework.restdocs.payload.JsonFieldType;
-import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.web.servlet.MockMvc;
-import zipgo.auth.presentation.AuthInterceptor;
 import zipgo.auth.presentation.JwtMandatoryArgumentResolver;
-import zipgo.auth.support.JwtProvider;
+import zipgo.common.acceptance.MockMvcTest;
 import zipgo.image.ImageDirectoryUrl;
 import zipgo.image.application.ImageService;
 
@@ -32,24 +26,14 @@ import static org.springframework.restdocs.request.RequestDocumentation.partWith
 import static org.springframework.restdocs.request.RequestDocumentation.requestParts;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-@AutoConfigureRestDocs
-@ExtendWith(SpringExtension.class)
-@SuppressWarnings("NonAsciiCharacters")
 @WebMvcTest(controllers = ImageController.class)
-@DisplayNameGeneration(DisplayNameGenerator.ReplaceUnderscores.class)
-class ImageControllerTest {
+class ImageControllerTest extends MockMvcTest {
 
     @Autowired
     private MockMvc mockMvc;
 
     @MockBean
     private ImageService imageService;
-
-    @MockBean
-    private JwtProvider jwtProvider;
-
-    @MockBean
-    private AuthInterceptor authInterceptor;
 
     @MockBean
     private JwtMandatoryArgumentResolver argumentResolver;
