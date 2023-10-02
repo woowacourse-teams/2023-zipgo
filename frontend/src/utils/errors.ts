@@ -44,6 +44,8 @@ class ZipgoError<Code extends ErrorCode> extends Error {
   }
 
   static convertToError(error: unknown) {
+    if (error instanceof ZipgoError) return error;
+
     if (!isAxiosError(error) || !APIError.canManage(error)) {
       return new UnexpectedError(error);
     }
