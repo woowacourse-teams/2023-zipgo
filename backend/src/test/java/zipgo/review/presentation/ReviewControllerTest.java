@@ -3,9 +3,6 @@ package zipgo.review.presentation;
 import com.epages.restdocs.apispec.ResourceSnippetDetails;
 import com.epages.restdocs.apispec.Schema;
 import io.restassured.response.Response;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.stream.Collectors;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
@@ -32,37 +29,28 @@ import zipgo.review.domain.Review;
 import zipgo.review.domain.repository.ReviewRepository;
 import zipgo.review.fixture.ReviewFixture;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.stream.Collectors;
+
 import static com.epages.restdocs.apispec.RestAssuredRestDocumentationWrapper.document;
 import static com.epages.restdocs.apispec.RestAssuredRestDocumentationWrapper.resourceDetails;
 import static com.epages.restdocs.apispec.Schema.schema;
 import static io.restassured.RestAssured.given;
 import static io.restassured.http.ContentType.JSON;
-import static org.hamcrest.Matchers.equalTo;
-import static org.hamcrest.Matchers.is;
-import static org.hamcrest.Matchers.lessThan;
+import static org.hamcrest.Matchers.*;
 import static org.springframework.http.HttpHeaders.AUTHORIZATION;
-import static org.springframework.http.HttpStatus.BAD_REQUEST;
-import static org.springframework.http.HttpStatus.CREATED;
-import static org.springframework.http.HttpStatus.FORBIDDEN;
-import static org.springframework.http.HttpStatus.NOT_FOUND;
-import static org.springframework.http.HttpStatus.NO_CONTENT;
-import static org.springframework.http.HttpStatus.OK;
+import static org.springframework.http.HttpStatus.*;
 import static org.springframework.restdocs.headers.HeaderDocumentation.headerWithName;
 import static org.springframework.restdocs.headers.HeaderDocumentation.requestHeaders;
-import static org.springframework.restdocs.payload.PayloadDocumentation.fieldWithPath;
-import static org.springframework.restdocs.payload.PayloadDocumentation.requestFields;
-import static org.springframework.restdocs.payload.PayloadDocumentation.responseFields;
-import static org.springframework.restdocs.request.RequestDocumentation.parameterWithName;
-import static org.springframework.restdocs.request.RequestDocumentation.pathParameters;
-import static org.springframework.restdocs.request.RequestDocumentation.queryParameters;
+import static org.springframework.restdocs.payload.PayloadDocumentation.*;
+import static org.springframework.restdocs.request.RequestDocumentation.*;
 import static zipgo.pet.domain.fixture.BreedFixture.견종;
 import static zipgo.pet.domain.fixture.PetFixture.반려동물;
 import static zipgo.pet.domain.fixture.PetSizeFixture.소형견;
 import static zipgo.petfood.domain.fixture.PetFoodFixture.모든_영양기준_만족_식품;
 import static zipgo.review.fixture.MemberFixture.무민;
-import static zipgo.review.fixture.ReviewFixture.극찬_리뷰_생성;
-import static zipgo.review.fixture.ReviewFixture.리뷰_생성_요청;
-import static zipgo.review.fixture.ReviewFixture.리뷰_수정_요청;
+import static zipgo.review.fixture.ReviewFixture.*;
 
 
 public class ReviewControllerTest extends AcceptanceTest {
@@ -572,7 +560,7 @@ public class ReviewControllerTest extends AcceptanceTest {
                     queryParameters(parameterWithName("petFoodId").description("식품 id")),
                     responseFields(
                             fieldWithPath("rating.average").description("리뷰 총 평점").type(JsonFieldType.NUMBER),
-                            fieldWithPath("rating.rating[].rating").description("rating 이름").type(JsonFieldType.STRING),
+                            fieldWithPath("rating.rating[].name").description("rating 이름").type(JsonFieldType.STRING),
                             fieldWithPath("rating.rating[].percentage").description("rating 해당 백분율")
                                     .type(JsonFieldType.NUMBER),
                             fieldWithPath("tastePreference[].name").description("tastePreference 이름")

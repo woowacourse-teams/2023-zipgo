@@ -5,24 +5,17 @@ import java.util.List;
 import com.epages.restdocs.apispec.MockMvcRestDocumentationWrapper;
 import com.epages.restdocs.apispec.ResourceSnippetDetails;
 import com.epages.restdocs.apispec.Schema;
-import org.junit.jupiter.api.DisplayNameGeneration;
-import org.junit.jupiter.api.DisplayNameGenerator;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.restdocs.AutoConfigureRestDocs;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.ResponseCookie;
 import org.springframework.restdocs.mockmvc.RestDocumentationResultHandler;
 import org.springframework.restdocs.payload.JsonFieldType;
-import org.springframework.test.context.junit.jupiter.SpringExtension;
-import org.springframework.test.web.servlet.MockMvc;
 import zipgo.auth.application.AuthService;
 import zipgo.auth.dto.TokenDto;
 import zipgo.auth.exception.OAuthTokenNotBringException;
-import zipgo.auth.support.JwtProvider;
 import zipgo.auth.support.RefreshTokenCookieProvider;
+import zipgo.common.acceptance.MockMvcTest;
 import zipgo.member.application.MemberQueryService;
 import zipgo.pet.application.PetQueryService;
 import zipgo.pet.domain.fixture.PetFixture;
@@ -38,29 +31,19 @@ import static org.springframework.restdocs.request.RequestDocumentation.queryPar
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import static zipgo.member.domain.fixture.MemberFixture.식별자_있는_멤버;
 
-@AutoConfigureRestDocs
-@ExtendWith(SpringExtension.class)
-@SuppressWarnings("NonAsciiCharacters")
 @WebMvcTest(controllers = AuthController.class)
-@DisplayNameGeneration(DisplayNameGenerator.ReplaceUnderscores.class)
-class AuthControllerMockTest {
+class AuthControllerMockTest extends MockMvcTest {
 
     private static final Schema 응답_형식 = Schema.schema("TokenResponse");
     private static final ResourceSnippetDetails 문서_정보 = resourceDetails().summary("로그인")
             .description("로그인 합니다.")
             .responseSchema(응답_형식);
 
-    @Autowired
-    private MockMvc mockMvc;
-
     @MockBean
     private MemberQueryService memberQueryService;
 
     @MockBean
     private PetQueryService petQueryService;
-
-    @MockBean
-    private JwtProvider jwtProvider;
 
     @MockBean
     private RefreshTokenCookieProvider refreshTokenCookieProvider;

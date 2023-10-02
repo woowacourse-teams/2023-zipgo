@@ -11,6 +11,7 @@ import zipgo.auth.presentation.AuthInterceptor;
 import zipgo.auth.presentation.JwtMandatoryArgumentResolver;
 import zipgo.auth.presentation.OptionalJwtArgumentResolver;
 import zipgo.auth.support.JwtProvider;
+import zipgo.common.interceptor.LoggingInterceptor;
 
 import static org.springframework.http.HttpHeaders.LOCATION;
 
@@ -25,6 +26,7 @@ public class WebConfig implements WebMvcConfigurer {
     private static final String FRONTEND_LOCALHOST = "http://localhost:3000";
 
     private final AuthInterceptor authInterceptor;
+    private final LoggingInterceptor loggingInterceptor;
     private final JwtProvider jwtProvider;
 
     @Override
@@ -39,6 +41,8 @@ public class WebConfig implements WebMvcConfigurer {
     public void addInterceptors(InterceptorRegistry registry) {
         registry.addInterceptor(authInterceptor)
                 .addPathPatterns("/auth");
+
+        registry.addInterceptor(loggingInterceptor);
     }
 
     @Override

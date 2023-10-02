@@ -1,7 +1,7 @@
 package zipgo.review.dto.response.type;
 
 public record RatingInfoResponse(
-        String rating,
+        String name,
         int percentage
 ) {
 
