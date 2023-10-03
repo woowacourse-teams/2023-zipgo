@@ -24,7 +24,7 @@ type ZipgoErrorOptions<T extends ErrorCode> = {
   cause: { code: T; value?: unknown };
 };
 
-class ZipgoError<Code extends ErrorCode> extends Error {
+class ZipgoError<Code extends ErrorCode = 'UNEXPECTED_ERROR'> extends Error {
   cause: ZipgoErrorOptions<Code>['cause'];
 
   [IGNORE_KEY]: boolean;
@@ -70,7 +70,7 @@ class UnexpectedError extends ZipgoError<'UNEXPECTED_ERROR'> {
   }
 }
 
-class APIError<T, D> extends ZipgoError<APIErrorCode> {
+class APIError<T = unknown, D = unknown> extends ZipgoError<APIErrorCode> {
   status;
 
   constructor(error: ManageableAxiosError<AxiosError<WithAPIErrorCode<T>, D>>) {
