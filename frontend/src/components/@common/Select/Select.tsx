@@ -4,7 +4,7 @@ import styled from 'styled-components';
 
 import SelectProvider, { useSelectContext } from '@/context/Select/SelectContext';
 import { AsChild, getValidProps, PropsWithAsChild, PropsWithRenderProps } from '@/utils/compound';
-import { composeEventHandlers } from '@/utils/dom';
+import { composeFunctions } from '@/utils/dom';
 
 export interface SelectProps {
   defaultValue?: string;
@@ -53,7 +53,7 @@ const Trigger = (
       ...restProps,
       ...triggerA11y,
       id,
-      onClick: composeEventHandlers(onClickProps, openHandler),
+      onClick: composeFunctions(onClickProps, openHandler),
     })
   ) : (
     <button
@@ -61,7 +61,7 @@ const Trigger = (
       {...triggerA11y}
       id={id}
       type="button"
-      onClick={composeEventHandlers(onClickProps, openHandler)}
+      onClick={composeFunctions(onClickProps, openHandler)}
     >
       {resolved.children || 'Tab'}
     </button>
@@ -151,7 +151,7 @@ const Item = (props: PropsWithRenderProps<ItemProps, { selected: boolean }>) => 
 
   const { selectedValue, changeValue, openHandler } = useSelectContext();
 
-  const onClick = composeEventHandlers(onClickProps, () => {
+  const onClick = composeFunctions(onClickProps, () => {
     changeValue(value);
     openHandler();
   });
