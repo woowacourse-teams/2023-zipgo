@@ -10,6 +10,8 @@ import {
 import { createPortal } from 'react-dom';
 import { styled } from 'styled-components';
 
+import ToastWarningIcon from '@/assets/svg/toast_warning_icon.svg';
+import PrefetchImg from '@/components/@common/PrefetchImg/PrefetchImg';
 import Toast from '@/components/@common/Toast/Toast';
 import { Type } from '@/constants/toast';
 import { Toast as ToastInterface, ToastContent, ToastId, ToastOption } from '@/types/toast/client';
@@ -149,6 +151,7 @@ const ToastProvider = (props: PropsWithChildren) => {
 
   return (
     <ToastContext.Provider value={memoizedValue}>
+      <PrefetchImg srcList={[ToastWarningIcon]} />
       {children}
       <Portal>
         <ToastContainerWrapper>
