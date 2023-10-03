@@ -1,7 +1,7 @@
 import { QueryErrorResetBoundary } from '@tanstack/react-query';
 import { ComponentProps, PropsWithChildren, Suspense } from 'react';
 
-import { composeFunctions } from '@/utils/composeFunctions';
+import { composeFunctions } from '@/utils/dom';
 
 import LoadingSpinner from '../../LoadingSpinner';
 import APIBoundary from '../APIBoundary/APIBoundary';
@@ -25,7 +25,7 @@ const QueryBoundary = (props: PropsWithChildren<QueryBoundaryProps>) => {
       {({ reset }) => (
         <APIBoundary
           fallback={errorFallback}
-          onReset={composeFunctions(reset, onReset)}
+          onReset={composeFunctions<void>(reset, onReset)}
           {...restProps}
         >
           <Suspense fallback={loadingFallback}>{children}</Suspense>
