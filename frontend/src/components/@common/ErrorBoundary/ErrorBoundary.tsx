@@ -30,7 +30,7 @@ class ErrorBoundary extends Component<PropsWithChildren<ErrorBoundaryProps>, Err
 
     return {
       hasError: true,
-      error,
+      error: ZipgoError.convertToError(error),
     };
   }
 
@@ -69,7 +69,7 @@ class EndOfErrorBoundary extends ErrorBoundary {
   static getDerivedStateFromError(error: Error) {
     return {
       hasError: true,
-      error,
+      error: ZipgoError.convertToError(error),
     };
   }
 }
