@@ -1,12 +1,12 @@
-export interface ErrorBoundaryValue {
+export interface ErrorBoundaryValue<E extends Error = Error> {
   reset: VoidFunction;
-  error: Error;
+  error: E;
 }
 
-export type ErrorBoundaryState =
+export type ErrorBoundaryState<E extends Error = Error> =
   | {
       hasError: true;
-      error: Error;
+      error: E;
     }
   | {
       hasError: false;

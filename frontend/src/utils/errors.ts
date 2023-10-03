@@ -101,6 +101,10 @@ const createErrorParams = <Code extends ErrorCode>(
   return [message, options];
 };
 
-export { APIError, RuntimeError, UnexpectedError, ZipgoError };
+const shouldIgnore = (error: Error, ignoreKey = IGNORE_KEY) =>
+  Object.prototype.hasOwnProperty.call(error, ignoreKey) &&
+  (error as Error & { [key in typeof ignoreKey]: boolean })[ignoreKey];
+
+export { APIError, RuntimeError, shouldIgnore, UnexpectedError, ZipgoError };
 
 export type { ManageableAxiosError };

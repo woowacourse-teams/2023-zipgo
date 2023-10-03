@@ -1,24 +1,31 @@
 /* eslint-disable max-classes-per-file */
-import { Component, ErrorInfo, PropsWithChildren, ReactNode } from 'react';
+import { Component, ComponentProps, ErrorInfo, PropsWithChildren, ReactNode } from 'react';
+import { useLocation } from 'react-router-dom';
 
-import { IGNORE_KEY } from '@/constants/errors';
 import { ErrorBoundaryState, ErrorBoundaryValue } from '@/types/common/errorBoundary';
 import { RenderProps } from '@/types/common/utility';
+import { resolveRenderProps } from '@/utils/compound';
+import { shouldIgnore, ZipgoError } from '@/utils/errors';
+import { isDifferentArray } from '@/utils/isDifferentArray';
 
-const initialState: ErrorBoundaryState = {
+const initialState = {
   hasError: false,
   error: null,
-};
+} as const;
 
-interface ErrorBoundaryProps {
-  fallback?: ReactNode | RenderProps<ErrorBoundaryValue>;
-  ignore?: <E extends Error>(props: E) => boolean;
+interface ErrorBoundaryProps<E extends Error> {
+  resetKeys?: unknown[];
+  fallback?: ReactNode | RenderProps<ErrorBoundaryValue<E>>;
+  ignore?<E extends Error>(props: E): boolean;
+  onError?(error: E, errorInfo: ErrorInfo): void;
   onReset?: VoidFunction;
-  onError?(error: Error, errorInfo: ErrorInfo): void;
 }
 
-class ErrorBoundary extends Component<PropsWithChildren<ErrorBoundaryProps>, ErrorBoundaryState> {
-  constructor(props: ErrorBoundaryProps) {
+class BaseErrorBoundary<E extends Error = Error> extends Component<
+  PropsWithChildren<ErrorBoundaryProps<E>>,
+  ErrorBoundaryState<E>
+> {
+  constructor(props: PropsWithChildren<ErrorBoundaryProps<E>>) {
     super(props);
     this.state = initialState;
 
@@ -34,7 +41,13 @@ class ErrorBoundary extends Component<PropsWithChildren<ErrorBoundaryProps>, Err
     };
   }
 
-  componentDidCatch(error: Error, errorInfo: ErrorInfo): void {
+  componentDidUpdate(prevProps: ErrorBoundaryProps<E>) {
+    if (isDifferentArray(this.props.resetKeys, prevProps.resetKeys)) {
+      this.reset();
+    }
+  }
+
+  componentDidCatch(error: E, errorInfo: ErrorInfo): void {
     const { onError, ignore } = this.props;
 
     if (ignore?.(error)) {
@@ -65,7 +78,7 @@ class ErrorBoundary extends Component<PropsWithChildren<ErrorBoundaryProps>, Err
   }
 }
 
-class EndOfErrorBoundary extends ErrorBoundary {
+class BaseEndOfErrorBoundary<E extends Error = Error> extends BaseErrorBoundary<E> {
   static getDerivedStateFromError(error: Error) {
     return {
       hasError: true,
@@ -74,7 +87,22 @@ class EndOfErrorBoundary extends ErrorBoundary {
   }
 }
 
-const shouldIgnore = (error: Error, ignoreKey = IGNORE_KEY) =>
-  Object.prototype.hasOwnProperty.call(error, ignoreKey);
+const resetOnNavigate = (ErrorBoundary: typeof BaseErrorBoundary) => {
+  const ErrorBoundaryWithResetKeys = <E extends Error>(
+    props: ComponentProps<typeof ErrorBoundary<E>>,
+  ) => {
+    const location = useLocation();
+
+    const resetKeys = [location.key, ...(('resetKeys' in props && props.resetKeys) || [])];
+
+    return <ErrorBoundary<E> {...props} resetKeys={resetKeys} />;
+  };
+
+  return ErrorBoundaryWithResetKeys;
+};
+
+const ErrorBoundary = resetOnNavigate(BaseErrorBoundary);
+
+const EndOfErrorBoundary = resetOnNavigate(BaseEndOfErrorBoundary);
 
 export { EndOfErrorBoundary, ErrorBoundary };
