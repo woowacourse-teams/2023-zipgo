@@ -3,7 +3,6 @@ import { useEffect } from 'react';
 import { Outlet } from 'react-router-dom';
 import { ThemeProvider } from 'styled-components';
 
-import AxiosInterceptors from './components/@common/AxiosInterceptors/AxiosInterceptors';
 import { EndOfErrorBoundary } from './components/@common/ErrorBoundary/ErrorBoundary';
 import QueryBoundary from './components/@common/ErrorBoundary/QueryBoundary/QueryBoundary';
 import GlobalStyle from './components/@common/GlobalStyle';
@@ -40,10 +39,8 @@ const App = () => (
       <EndOfErrorBoundary fallback={errorFallback}>
         <QueryBoundary errorFallback={errorFallback}>
           <ToastProvider>
-            <AxiosInterceptors>
-              <GlobalEvent />
-              <Outlet />
-            </AxiosInterceptors>
+            <GlobalEvent />
+            <Outlet />
           </ToastProvider>
         </QueryBoundary>
       </EndOfErrorBoundary>
