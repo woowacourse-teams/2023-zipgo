@@ -29,15 +29,15 @@ const getValidChild = <P>(children: ReactNode) => {
   return isValidElement<P>(child) ? child : null;
 };
 
-export function getValidProps<P, R extends object>(
+export const getValidProps = <P, R extends object>(
   props: PropsWithRenderProps<P, R> | PropsWithAsChild<P>,
 ): Omit<typeof props, 'asChild' | 'children'> & {
   resolveChildren: (payload: R) => WithAsChild<P> | WithoutAsChild;
-} {
+} => {
   const { asChild, children, ...restProps } = props;
 
   const resolveChildren = (payload: R): WithAsChild<P> | WithoutAsChild => {
-    const resolvedChildren = typeof children === 'function' ? children(payload) : children;
+    const resolvedChildren = resolveRenderProps(children, payload);
 
     if (asChild) {
       const child = getValidChild<P>(resolvedChildren);
@@ -49,4 +49,9 @@ export function getValidProps<P, R extends object>(
   };
 
   return { resolveChildren, ...restProps };
-}
+};
+
+export const resolveRenderProps = <P extends object>(
+  renderProps: ReactNode | RenderProps<P>,
+  payload: P,
+) => (typeof renderProps === 'function' ? renderProps(payload) : renderProps);

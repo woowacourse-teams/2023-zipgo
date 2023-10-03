@@ -61,9 +61,7 @@ class ErrorBoundary extends Component<PropsWithChildren<ErrorBoundaryProps>, Err
 
     if (!fallback) return null;
 
-    if (typeof fallback === 'function') return fallback({ reset: this.reset, error });
-
-    return fallback;
+    return resolveRenderProps(fallback, { reset: this.reset, error });
   }
 }
 
