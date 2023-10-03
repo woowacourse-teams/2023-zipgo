@@ -17,7 +17,7 @@ interface ErrorBoundaryProps<E extends Error> {
   resetKeys?: unknown[];
   fallback?: ReactNode | RenderProps<ErrorBoundaryValue<E>>;
   ignore?<E extends Error>(props: E): boolean;
-  onError?(error: E, errorInfo: ErrorInfo): void;
+  onError?(payload: { error: E; errorInfo: ErrorInfo }): void;
   onReset?: VoidFunction;
 }
 
@@ -54,7 +54,7 @@ class BaseErrorBoundary<E extends Error = Error> extends Component<
       throw error;
     }
 
-    onError?.(error, errorInfo);
+    onError?.({ error, errorInfo });
   }
 
   reset() {
