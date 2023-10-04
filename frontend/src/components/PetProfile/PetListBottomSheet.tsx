@@ -1,8 +1,8 @@
 import { styled } from 'styled-components';
 
 import { Dialog } from '../@common/Dialog/Dialog';
+import QueryBoundary from '../@common/ErrorBoundary/QueryBoundary/QueryBoundary';
 import UserProfile from '../@common/Header/UserProfile';
-import QueryBoundary from '../@common/QueryBoundary';
 import PetList from './PetList';
 
 const PetListBottomSheet = () => (

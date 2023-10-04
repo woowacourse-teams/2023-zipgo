@@ -1,21 +1,21 @@
 import { styled } from 'styled-components';
 
-import { Food } from '@/types/food/client';
+import { useInfiniteFoodListScroll } from '@/hooks/food';
 
 import FoodItem from '../FoodItem/FoodItem';
 
-interface FoodListProps {
-  foodListData: Food[];
-}
+const FoodList = () => {
+  const { foodList, hasNextPage, targetRef } = useInfiniteFoodListScroll();
 
-const FoodList = (foodListProps: FoodListProps) => {
-  const { foodListData } = foodListProps;
+  if (!foodList) return null;
+
+  const hasResult = Boolean(foodList.length);
 
   return (
     <FoodListWrapper>
-      {Boolean(foodListData.length) ? (
+      {hasResult ? (
         <FoodListContainer>
-          {foodListData.map(food => (
+          {foodList.map(food => (
             <FoodItem key={food.id} {...food} />
           ))}
         </FoodListContainer>
@@ -27,6 +27,10 @@ const FoodList = (foodListProps: FoodListProps) => {
           </NoResultText>
         </NoResultContainer>
       )}
+      <ObserverTarget
+        ref={targetRef}
+        aria-label={hasNextPage ? '' : '모든 식품 목록을 불러왔습니다'}
+      />
     </FoodListWrapper>
   );
 };
@@ -61,6 +65,12 @@ const NoResultText = styled.h3`
   font-size: 1.2rem;
   font-weight: 600;
   line-height: 1.6rem;
+  color: ${({ theme }) => theme.color.grey400};
+  text-align: center;
+`;
+
+const ObserverTarget = styled.p`
+  font-size: 1.4rem;
   color: ${({ theme }) => theme.color.grey400};
   text-align: center;
 `;

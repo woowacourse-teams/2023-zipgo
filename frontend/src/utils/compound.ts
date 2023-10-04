@@ -1,5 +1,7 @@
 import { Children, isValidElement, PropsWithChildren, ReactElement, ReactNode } from 'react';
 
+import { RenderProps } from '@/types/common/utility';
+
 export type AsChild = {
   asChild?: boolean;
 };
@@ -7,7 +9,7 @@ export type AsChild = {
 export type PropsWithAsChild<P = unknown> = PropsWithChildren<P> & AsChild;
 
 export type PropsWithRenderProps<P = unknown, R extends object = object> = Omit<P, 'children'> & {
-  children?: ReactNode | ((payload: R) => JSX.Element);
+  children?: ReactNode | RenderProps<R>;
 } & AsChild;
 
 type WithAsChild<P> = PropsWithChildren<{
@@ -27,15 +29,15 @@ const getValidChild = <P>(children: ReactNode) => {
   return isValidElement<P>(child) ? child : null;
 };
 
-export function getValidProps<P, R extends object>(
+export const getValidProps = <P, R extends object>(
   props: PropsWithRenderProps<P, R> | PropsWithAsChild<P>,
 ): Omit<typeof props, 'asChild' | 'children'> & {
   resolveChildren: (payload: R) => WithAsChild<P> | WithoutAsChild;
-} {
+} => {
   const { asChild, children, ...restProps } = props;
 
   const resolveChildren = (payload: R): WithAsChild<P> | WithoutAsChild => {
-    const resolvedChildren = typeof children === 'function' ? children(payload) : children;
+    const resolvedChildren = resolveRenderProps(children, payload);
 
     if (asChild) {
       const child = getValidChild<P>(resolvedChildren);
@@ -47,4 +49,9 @@ export function getValidProps<P, R extends object>(
   };
 
   return { resolveChildren, ...restProps };
-}
+};
+
+export const resolveRenderProps = <P extends object>(
+  renderProps: ReactNode | RenderProps<P>,
+  payload: P,
+) => (typeof renderProps === 'function' ? renderProps(payload) : renderProps);

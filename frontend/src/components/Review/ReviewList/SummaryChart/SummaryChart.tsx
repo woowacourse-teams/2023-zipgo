@@ -1,7 +1,7 @@
 import { PropsWithChildren } from 'react';
 import styled, { css } from 'styled-components';
 
-import QueryBoundary from '@/components/@common/QueryBoundary';
+import QueryBoundary from '@/components/@common/ErrorBoundary/QueryBoundary/QueryBoundary';
 import StarRatingDisplay from '@/components/@common/StarRating/StarRatingDisplay/StartRatingDisplay';
 import Tabs from '@/components/@common/Tabs/Tabs';
 import { REVIEW_SUMMARY_KEYWORDS } from '@/constants/review';

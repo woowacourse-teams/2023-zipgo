@@ -1,15 +1,15 @@
-interface EventHandler<E> {
-  (e: E): void;
-}
-interface ComposeEventHandlers {
-  <E>(externalEventHandler?: EventHandler<E>, innerEventHandler?: EventHandler<E>): EventHandler<E>;
+interface Func<E> {
+  (arg: E): void;
 }
 
-export const composeEventHandlers: ComposeEventHandlers =
-  (externalEventHandler, innerEventHandler) => event => {
-    externalEventHandler?.(event);
-    innerEventHandler?.(event);
-  };
+interface ComposeFunctions {
+  <T>(externalFunction?: Func<T>, innerFunction?: Func<T>): Func<T>;
+}
+
+export const composeFunctions: ComposeFunctions = (externalFunction, innerFunction) => arg => {
+  externalFunction?.(arg);
+  innerFunction?.(arg);
+};
 
 export const preventScroll = (opened: boolean) => {
   document.body.style.overflow = opened ? 'hidden' : 'auto';

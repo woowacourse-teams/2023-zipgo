@@ -3,7 +3,7 @@ import { cloneElement, ComponentPropsWithoutRef, useId } from 'react';
 import TabsProvider, { useTabsContext } from '@/context/Tabs/TabsContext';
 import type { AsChild, PropsWithAsChild, PropsWithRenderProps } from '@/utils/compound';
 import { getValidProps } from '@/utils/compound';
-import { composeEventHandlers } from '@/utils/dom';
+import { composeFunctions } from '@/utils/dom';
 
 export interface TabProps {
   defaultValue: string;
@@ -59,7 +59,7 @@ const Trigger = (props: PropsWithRenderProps<TriggerProps & AsChild, { selected:
 
   const { selectedValue, changeTab } = useTabsContext();
 
-  const onClick = composeEventHandlers(onClickProps, () => changeTab(value));
+  const onClick = composeFunctions(onClickProps, () => changeTab(value));
 
   const selected = value === selectedValue;
 

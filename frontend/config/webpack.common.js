@@ -17,6 +17,7 @@ const isProduction = process.env.NODE_ENV === 'production';
 
 const env = getClientEnvironment(PUBLIC_PATH);
 
+/** @type {import('webpack').Configuration} */
 module.exports = {
   context: __dirname,
   entry: paths.appIndex,

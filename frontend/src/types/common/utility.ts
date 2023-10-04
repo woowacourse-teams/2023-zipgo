@@ -1,3 +1,7 @@
+import { ReactNode } from 'react';
+
+export type RenderProps<P extends object = object> = (payload: P) => ReactNode;
+
 export type Unpack<T> = T extends (infer U)[] ? U : T extends Set<infer U> ? U : T;
 
 export type Parameter<T extends (arg: never) => unknown> = Parameters<T>[0];

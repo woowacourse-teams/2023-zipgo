@@ -12,6 +12,7 @@ const STATIC: Record<Uppercase<CamelToSnake<keyof typeof generateStaticPath>>, s
   PET_PROFILE_GENDER_ADDITION: '/pets/write/gender',
   PET_PROFILE_WEIGHT_ADDITION: '/pets/write/weight',
   PET_PROFILE_IMAGE_FILE_ADDITION: '/pets/write/imageFile',
+  EXCEPTION: '/*',
 };
 
 const DYNAMIC: Omit<
@@ -40,6 +41,7 @@ export const generateStaticPath = {
   petProfileGenderAddition: () => STATIC.PET_PROFILE_GENDER_ADDITION,
   petProfileWeightAddition: () => STATIC.PET_PROFILE_WEIGHT_ADDITION,
   petProfileImageFileAddition: () => STATIC.PET_PROFILE_IMAGE_FILE_ADDITION,
+  exception: () => STATIC.EXCEPTION,
 };
 
 export const generateDynamicPath = {
