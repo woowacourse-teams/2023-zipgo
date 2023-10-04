@@ -7,10 +7,10 @@ const FilterSelectionDisplay = () => {
   const { filterListQueryString, removeFilter } = useFilterSelectionDisplay();
 
   return (
-    <FilterSelectionDisplayWrapper>
+    <SelectedFilterList>
       {Object.entries(filterListQueryString).map(([category, values]) =>
         values.split(',').map(value => (
-          <FilterSelectionItem key={value}>
+          <SelectedFilterItem key={value}>
             {value}
             <FilterToggleButton
               type="button"
@@ -19,16 +19,16 @@ const FilterSelectionDisplay = () => {
             >
               x
             </FilterToggleButton>
-          </FilterSelectionItem>
+          </SelectedFilterItem>
         )),
       )}
-    </FilterSelectionDisplayWrapper>
+    </SelectedFilterList>
   );
 };
 
 export default FilterSelectionDisplay;
 
-const FilterSelectionDisplayWrapper = styled.div`
+const SelectedFilterList = styled.ul`
   scrollbar-width: none;
 
   overflow-x: scroll;
@@ -45,7 +45,7 @@ const FilterSelectionDisplayWrapper = styled.div`
   }
 `;
 
-const FilterSelectionItem = styled.div`
+const SelectedFilterItem = styled.li`
   overflow: hidden;
   flex-shrink: 0;
 
