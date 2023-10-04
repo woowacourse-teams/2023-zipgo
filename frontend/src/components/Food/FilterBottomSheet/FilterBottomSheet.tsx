@@ -12,6 +12,7 @@ import type { KeywordEn } from '@/types/food/client';
 import { translateKeyword } from '@/utils/food';
 import { getComputedStyleOfSC } from '@/utils/styled-components';
 
+import FilterSelectionDisplay from '../FilterSelectionDisplay/FilterSelectionDisplay';
 import BrandFilterList from './BrandFilterList/BrandFilterList';
 import FunctionalityFilterList from './FunctionalityFilterList/FunctionalityFilterList';
 import MainIngredientsFilterList from './MainIngredientsFilterList/MainIngredientsFilterList';
@@ -19,22 +20,25 @@ import NutritionStandardsFilterList from './NutritionStandardsFilterList/Nutriti
 
 const FilterBottomSheet = () => (
   <FoodFilterProvider>
-    <Dialog>
-      <Dialog.Trigger asChild>
-        <DialogTrigger type="button">
-          <FilterTriggerIcon src={SettingsIcon} alt="필터 버튼 아이콘" />
-          <span>필터</span>
-        </DialogTrigger>
-      </Dialog.Trigger>
-      <Dialog.Portal>
-        <QueryBoundary>
-          <Dialog.BackDrop />
-          <Dialog.Content asChild>
-            {({ openHandler }) => <KeywordContent toggleDialog={openHandler} />}
-          </Dialog.Content>
-        </QueryBoundary>
-      </Dialog.Portal>
-    </Dialog>
+    <BottomSheetAndFilterDisplayContainer>
+      <Dialog>
+        <Dialog.Trigger asChild>
+          <DialogTrigger type="button">
+            <FilterTriggerIcon src={SettingsIcon} alt="필터 버튼 아이콘" />
+            <span>필터</span>
+          </DialogTrigger>
+        </Dialog.Trigger>
+        <Dialog.Portal>
+          <QueryBoundary>
+            <Dialog.BackDrop />
+            <Dialog.Content asChild>
+              {({ openHandler }) => <KeywordContent toggleDialog={openHandler} />}
+            </Dialog.Content>
+          </QueryBoundary>
+        </Dialog.Portal>
+      </Dialog>
+      <FilterSelectionDisplay />
+    </BottomSheetAndFilterDisplayContainer>
   </FoodFilterProvider>
 );
 
@@ -117,6 +121,10 @@ const KeywordContent = (props: KeywordContentProps) => {
 
 export default FilterBottomSheet;
 
+const BottomSheetAndFilterDisplayContainer = styled.div`
+  display: flex;
+`;
+
 const Layout = styled.div`
   position: fixed;
   z-index: 1001;
@@ -141,6 +149,7 @@ const DialogTrigger = styled.button`
   gap: 0.4rem;
   align-items: center;
 
+  width: 8.8rem;
   padding: 1rem 1.6rem;
 
   background-color: transparent;
