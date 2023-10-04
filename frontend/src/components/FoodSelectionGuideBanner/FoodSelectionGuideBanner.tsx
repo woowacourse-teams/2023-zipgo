@@ -110,33 +110,7 @@ const BannerWrapper = styled.div`
     opacity: 0;
     background-color: ${({ theme }) => theme.color.white};
 
-    animation: shiny 2.5s ease-in-out infinite;
-
-    @keyframes shiny {
-      0% {
-        transform: scale(0) rotate(45deg);
-
-        opacity: 0;
-      }
-
-      80% {
-        transform: scale(0) rotate(45deg);
-
-        opacity: 0.5;
-      }
-
-      81% {
-        transform: scale(4) rotate(45deg);
-
-        opacity: 1;
-      }
-
-      100% {
-        transform: scale(50) rotate(45deg);
-
-        opacity: 0;
-      }
-    }
+    animation: ${({ theme }) => theme.animation.shiny} 2.5s ease-in-out infinite;
   }
 
   &:active {
