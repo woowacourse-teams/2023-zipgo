@@ -13,6 +13,7 @@ import {
   postReview,
   putReview,
 } from '@/apis/review';
+import { ONE_MINUTE } from '@/constants/time';
 import { routerPath } from '@/router/routes';
 import { Parameter } from '@/types/common/utility';
 import { GetReviewsRes } from '@/types/review/remote';
@@ -41,6 +42,7 @@ export const useReviewListQuery = (payload: Parameter<typeof getReviews>) => {
   const { data, ...restQuery } = useQuery({
     queryKey: [QUERY_KEY.reviewList, payload.petFoodId],
     queryFn: () => getReviews(payload),
+    staleTime: ONE_MINUTE,
   });
 
   return {

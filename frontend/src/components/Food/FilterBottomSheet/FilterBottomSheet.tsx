@@ -3,7 +3,7 @@ import styled, { css } from 'styled-components';
 
 import SettingsIcon from '@/assets/svg/settings_outline_icon.svg';
 import { Dialog } from '@/components/@common/Dialog/Dialog';
-import QueryBoundary from '@/components/@common/QueryBoundary';
+import QueryBoundary from '@/components/@common/ErrorBoundary/QueryBoundary/QueryBoundary';
 import Tabs from '@/components/@common/Tabs/Tabs';
 import { FoodFilterProvider, useFoodFilterContext } from '@/context/food';
 import { useFoodListFilterMetaQuery } from '@/hooks/query/food';

@@ -8,16 +8,11 @@ import FilterBottomSheet from '@/components/Food/FilterBottomSheet/FilterBottomS
 import FoodList from '@/components/Food/FoodList/FoodList';
 import FoodSelectionGuideBanner from '@/components/FoodSelectionGuideBanner/FoodSelectionGuideBanner';
 import { useToast } from '@/context/Toast/ToastContext';
-import { useInfiniteFoodListScroll } from '@/hooks/food';
 
 const Landing = () => {
-  const { foodList, hasNextPage, targetRef } = useInfiniteFoodListScroll();
-
   const { toast } = useToast();
 
   const [dogTouchCount, setDogTouchCount] = useState<number>(1);
-
-  if (!foodList) return null;
 
   const onTouchDog = () => {
     if (dogTouchCount % 10 === 0) {
@@ -47,11 +42,7 @@ const Landing = () => {
         </BannerSection>
         <ListSection>
           <FilterBottomSheet />
-          <FoodList foodListData={foodList} />
-          <ObserverTarget
-            ref={targetRef}
-            aria-label={hasNextPage ? '' : '모든 식품 목록을 불러왔습니다'}
-          />
+          <FoodList />
         </ListSection>
       </Layout>
     </Template>
@@ -126,10 +117,4 @@ const BannerImg = styled.img`
 
 const ListSection = styled.section`
   padding: 2rem;
-`;
-
-const ObserverTarget = styled.p`
-  font-size: 1.4rem;
-  color: ${({ theme }) => theme.color.grey400};
-  text-align: center;
 `;
