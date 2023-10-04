@@ -1,7 +1,7 @@
 import styled from 'styled-components';
 
 import CloseSquareIcon from '@/assets/svg/close_square_icon_light.svg';
-import WidthPetIcon from '@/assets/svg/with_pet_icon.svg';
+import WidthPetIcon from '@/assets/webp/with_pet_icon.webp';
 import useBoolean from '@/hooks/@common/useBoolean';
 
 const FoodSelectionGuideBanner = () => {
@@ -55,6 +55,14 @@ const BannerWrapper = styled.div`
 
   transition: all 0.3s ease-out;
 
+  & img {
+    transform: translateY(12%);
+
+    margin-right: 1.2rem;
+
+    -webkit-user-drag: none;
+  }
+
   & a {
     display: flex;
     align-items: center;
@@ -67,12 +75,11 @@ const BannerWrapper = styled.div`
     font-weight: 500;
     line-height: 2.4rem;
     color: ${({ theme }) => theme.color.white};
-  }
 
-  & img {
-    transform: translateY(12%);
-
-    margin-right: 1.2rem;
+    img {
+      width: 100px;
+      height: 100px;
+    }
   }
 
   & span {
