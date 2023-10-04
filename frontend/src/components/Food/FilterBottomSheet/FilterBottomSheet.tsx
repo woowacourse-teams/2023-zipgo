@@ -20,7 +20,7 @@ import NutritionStandardsFilterList from './NutritionStandardsFilterList/Nutriti
 
 const FilterBottomSheet = () => (
   <FoodFilterProvider>
-    <BottomSheetAndFilterDisplayContainer>
+    <FilterDialogAndFilterDisplayContainer>
       <Dialog>
         <Dialog.Trigger asChild>
           <DialogTrigger type="button">
@@ -38,7 +38,7 @@ const FilterBottomSheet = () => (
         </Dialog.Portal>
       </Dialog>
       <FilterSelectionDisplay />
-    </BottomSheetAndFilterDisplayContainer>
+    </FilterDialogAndFilterDisplayContainer>
   </FoodFilterProvider>
 );
 
@@ -121,7 +121,7 @@ const KeywordContent = (props: KeywordContentProps) => {
 
 export default FilterBottomSheet;
 
-const BottomSheetAndFilterDisplayContainer = styled.div`
+const FilterDialogAndFilterDisplayContainer = styled.div`
   display: flex;
 `;
 
