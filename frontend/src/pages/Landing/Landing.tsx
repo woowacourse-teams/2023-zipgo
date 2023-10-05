@@ -6,6 +6,7 @@ import Header from '@/components/@common/Header/Header';
 import Template from '@/components/@common/Template';
 import FilterBottomSheet from '@/components/Food/FilterBottomSheet/FilterBottomSheet';
 import FoodList from '@/components/Food/FoodList/FoodList';
+import FoodSelectionGuideBanner from '@/components/FoodSelectionGuideBanner/FoodSelectionGuideBanner';
 import { useToast } from '@/context/Toast/ToastContext';
 
 const Landing = () => {
@@ -24,6 +25,7 @@ const Landing = () => {
 
   return (
     <Template staticHeader={Header}>
+      <FoodSelectionGuideBanner />
       <Layout>
         <BannerSection>
           <BannerText>
