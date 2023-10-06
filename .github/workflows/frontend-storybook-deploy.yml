@@ -30,7 +30,7 @@ jobs:
       - name: Cache Yarn global cache
         uses: actions/cache@v3
         with:
-          path: ./.yarn
+          path: '**/.yarn'
           key: ${{ runner.os }}-yarn-${{ hashFiles('**/yarn.lock') }}
           restore-keys: |
             ${{ runner.os }}-yarn-
@@ -38,7 +38,7 @@ jobs:
       - name: Cache Yarn project cache
         uses: actions/cache@v3
         with:
-          path: ./.yarn/cache
+          path: '**/.yarn/cache'
           key: ${{ runner.os }}-yarn-project-${{ hashFiles('**/yarn.lock') }}
           restore-keys: |
             ${{ runner.os }}-yarn-project-
