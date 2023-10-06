@@ -1,0 +1,78 @@
+name: Frontend Storybook Deploy To S3
+
+on:
+  push:
+    branches:
+      - develop
+    paths:
+      - frontend/**
+      - .github/**
+
+jobs:
+  build:
+    runs-on: ubuntu-22.04
+    defaults:
+      run:
+        working-directory: ./frontend
+    concurrency:
+      group: ${{ github.workflow }}
+      cancel-in-progress: true
+
+    steps:
+      - name: Use repository source
+        uses: actions/checkout@v3
+
+      - name: Use node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: 18.x
+
+      - name: Cache Yarn global cache
+        uses: actions/cache@v3
+        with:
+          path: ./.yarn
+          key: ${{ runner.os }}-yarn-${{ hashFiles('**/yarn.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-yarn-
+
+      - name: Cache Yarn project cache
+        uses: actions/cache@v3
+        with:
+          path: ./.yarn/cache
+          key: ${{ runner.os }}-yarn-project-${{ hashFiles('**/yarn.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-yarn-project-
+
+      - name: Install dependencies
+        run: yarn install --immutable
+
+      - name: Build Storybook
+        run: yarn build:sb
+
+      - name: Upload storybook build files to temp artifact
+        uses: actions/upload-artifact@v3
+        with:
+          name: Storybook
+          path: frontend/storybook-static
+  deploy:
+    needs: build
+    runs-on: front-dev-server
+    steps:
+      - name: Remove previous version app
+        working-directory: .
+        run: rm -rf frontend/storybook
+
+      - name: Download the built file to AWS EC2
+        uses: actions/download-artifact@v3
+        with:
+          name: Storybook
+          path: frontend/storybook
+
+      - name: Upload to S3
+        run: |
+          aws s3 sync frontend/storybook s3://2023-team-project/2023-zipgo/storybook --delete
+      - name: Cloudfront invalidation
+        run: |
+          aws cloudfront create-invalidation \
+            --distribution-id ${{ secrets.AWS_DISTRIBUTION_ID }} \
+            --paths "/storybook/*"
