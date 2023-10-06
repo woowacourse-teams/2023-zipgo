@@ -8,7 +8,18 @@ import { initialize, mswDecorator } from 'msw-storybook-addon';
 import { withRouter } from 'storybook-addon-react-router-v6';
 import handlers from '../src/mocks/handlers';
 
-initialize(); // msw-storybook-addon
+let options = {};
+
+if (location.hostname.includes('cloudfront')) {
+  options = {
+    serviceWorker: {
+      url: '/storybook/mockServiceWorker.js',
+    },
+  };
+}
+
+// Initialize MSW
+initialize(options);
 
 const queryClient = new QueryClient({
   defaultOptions: {
