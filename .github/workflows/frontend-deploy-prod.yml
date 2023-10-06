@@ -2,8 +2,11 @@ name: Frontend Deploy to Prod
 
 on:
   push:
-    branches: [main]
-    paths: frontend/**
+    branches:
+      - main
+    paths:
+      - frontend/**
+      - .github/**
 
 jobs:
   build-dockerfile:
