@@ -71,8 +71,3 @@ jobs:
       - name: Upload to S3
         run: |
           aws s3 sync frontend/storybook s3://2023-team-project/2023-zipgo/storybook --delete
-      - name: Cloudfront invalidation
-        run: |
-          aws cloudfront create-invalidation \
-            --distribution-id ${{ secrets.AWS_DISTRIBUTION_ID }} \
-            --paths "/storybook/*"
