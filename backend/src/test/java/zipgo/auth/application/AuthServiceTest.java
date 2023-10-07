@@ -40,7 +40,7 @@ class AuthServiceTest extends ServiceTest {
         memberRepository.save(Member.builder().email("이메일").name("이름").build());
 
         // when
-        TokenDto 생성된_토큰 = authService.login(외부_인프라_응답_생성());
+        TokenDto 생성된_토큰 = authService.login(외부_인프라_사용자_응답_생성());
 
         // then
         assertThat(생성된_토큰).isNotNull();
@@ -49,14 +49,14 @@ class AuthServiceTest extends ServiceTest {
     @Test
     void 로그인시_새_회원은_가입_후_토큰을_발급한다() {
         // given
-        OAuthMemberResponse 외부_인프라_서비스_응답 = 외부_인프라_응답_생성();
+        OAuthMemberResponse 외부_인프라_사용자_응답 = 외부_인프라_사용자_응답_생성();
 
         // when
-        TokenDto 생성된_토큰 = authService.login(외부_인프라_서비스_응답);
+        TokenDto 생성된_토큰 = authService.login(외부_인프라_사용자_응답);
 
         // then
         assertAll(
-                () -> assertThat(memberRepository.findByEmail(외부_인프라_서비스_응답.getEmail())).isNotEmpty(),
+                () -> assertThat(memberRepository.findByEmail(외부_인프라_사용자_응답.getEmail())).isNotEmpty(),
                 () -> assertThat(생성된_토큰).isNotNull()
         );
     }
@@ -113,7 +113,7 @@ class AuthServiceTest extends ServiceTest {
         assertThat(refreshTokenRepository.findByToken("저장시킨 토큰")).isEmpty();
     }
 
-    private OAuthMemberResponse 외부_인프라_응답_생성() {
+    private OAuthMemberResponse 외부_인프라_사용자_응답_생성() {
         return KakaoMemberResponse.builder().kakaoAccount(KakaoMemberResponse.KakaoAccount.builder()
                 .email("이메일")
                 .profile(KakaoMemberResponse.Profile.builder()

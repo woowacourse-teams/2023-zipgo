@@ -40,7 +40,7 @@ class AuthServiceFacadeTest {
         // given
         when(oAuthClient.getAccessToken("인가 코드"))
                 .thenReturn("엑세스 토큰");
-        OAuthMemberResponse 서드파티_사용자_응답 = 외부_인프라_호출_생성();
+        OAuthMemberResponse 서드파티_사용자_응답 = 외부_인프라_사용자_응답_생성();
         when(oAuthClient.getMember("엑세스 토큰"))
                 .thenReturn(서드파티_사용자_응답);
         when(authService.login(서드파티_사용자_응답))
@@ -118,7 +118,7 @@ class AuthServiceFacadeTest {
         verify(authService, times(1)).logout(memberId);
     }
 
-    private OAuthMemberResponse 외부_인프라_호출_생성() {
+    private OAuthMemberResponse 외부_인프라_사용자_응답_생성() {
         return KakaoMemberResponse.builder().kakaoAccount(KakaoMemberResponse.KakaoAccount.builder()
                 .email("이메일")
                 .profile(KakaoMemberResponse.Profile.builder()
