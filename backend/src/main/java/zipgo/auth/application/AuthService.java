@@ -16,18 +16,13 @@ import zipgo.member.domain.repository.MemberRepository;
 @RequiredArgsConstructor
 public class AuthService {
 
-    private final OAuthClient oAuthClient;
     private final JwtProvider jwtProvider;
     private final MemberRepository memberRepository;
     private final RefreshTokenRepository refreshTokenRepository;
 
-    public TokenDto login(String authCode) {
-        String accessToken = oAuthClient.getAccessToken(authCode);
-        OAuthMemberResponse oAuthMemberResponse = oAuthClient.getMember(accessToken);
-
+    public TokenDto login(OAuthMemberResponse oAuthMemberResponse) {
         Member member = memberRepository.findByEmail(oAuthMemberResponse.getEmail())
                 .orElseGet(() -> memberRepository.save(oAuthMemberResponse.toMember()));
-
         return createTokens(member.getId());
     }
 
