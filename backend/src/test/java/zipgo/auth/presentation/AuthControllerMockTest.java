@@ -11,7 +11,7 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.ResponseCookie;
 import org.springframework.restdocs.mockmvc.RestDocumentationResultHandler;
 import org.springframework.restdocs.payload.JsonFieldType;
-import zipgo.auth.application.AuthService;
+import zipgo.auth.application.AuthServiceFacade;
 import zipgo.auth.dto.TokenDto;
 import zipgo.auth.exception.OAuthTokenNotBringException;
 import zipgo.auth.support.RefreshTokenCookieProvider;
@@ -49,13 +49,13 @@ class AuthControllerMockTest extends MockMvcTest {
     private RefreshTokenCookieProvider refreshTokenCookieProvider;
 
     @MockBean
-    private AuthService authService;
+    private AuthServiceFacade authServiceFacade;
 
     @Test
     void 로그인_성공() throws Exception {
         // given
         var 토큰 = TokenDto.of("accessTokenValue", "refreshTokenValue");
-        when(authService.login("인가_코드"))
+        when(authServiceFacade.login("인가_코드"))
                 .thenReturn(토큰);
         var 리프레시_토큰_쿠키 = ResponseCookie.from("refreshToken", 토큰.refreshToken()).build();
         when(refreshTokenCookieProvider.createCookie(토큰.refreshToken()))
@@ -80,7 +80,7 @@ class AuthControllerMockTest extends MockMvcTest {
     void 로그인_성공_후_사용자의_반려동물이_없다면_pets는_빈_배열이다() throws Exception {
         // given
         var 토큰 = TokenDto.of("accessTokenValue", "refreshTokenValue");
-        when(authService.login("인가_코드"))
+        when(authServiceFacade.login("인가_코드"))
                 .thenReturn(토큰);
         var 리프레시_토큰_쿠키 = ResponseCookie.from("refreshToken", 토큰.refreshToken()).build();
         when(refreshTokenCookieProvider.createCookie(토큰.refreshToken()))
@@ -104,7 +104,7 @@ class AuthControllerMockTest extends MockMvcTest {
     @Test
     void 자원_서버의_토큰을_가져오는데_실패하면_예외가_발생한다() throws Exception {
         // given
-        when(authService.login("인가_코드"))
+        when(authServiceFacade.login("인가_코드"))
                 .thenThrow(new OAuthTokenNotBringException());
 
         // when
