@@ -4,12 +4,12 @@ package zipgo.auth.application;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import zipgo.auth.application.dto.OAuthMemberResponse;
+import zipgo.auth.application.fixture.MemberResponseSuccessFixture;
 import zipgo.auth.domain.RefreshToken;
 import zipgo.auth.domain.repository.RefreshTokenRepository;
 import zipgo.auth.dto.TokenDto;
 import zipgo.auth.exception.TokenExpiredException;
 import zipgo.auth.exception.TokenInvalidException;
-import zipgo.auth.infra.kakao.dto.KakaoMemberResponse;
 import zipgo.auth.support.JwtProvider;
 import zipgo.common.config.JwtCredentials;
 import zipgo.common.service.ServiceTest;
@@ -40,7 +40,7 @@ class AuthServiceTest extends ServiceTest {
         memberRepository.save(Member.builder().email("이메일").name("이름").build());
 
         // when
-        TokenDto 생성된_토큰 = authService.login(외부_인프라_사용자_응답_생성());
+        TokenDto 생성된_토큰 = authService.login(new MemberResponseSuccessFixture());
 
         // then
         assertThat(생성된_토큰).isNotNull();
@@ -49,7 +49,7 @@ class AuthServiceTest extends ServiceTest {
     @Test
     void 로그인시_새_회원은_가입_후_토큰을_발급한다() {
         // given
-        OAuthMemberResponse 외부_인프라_사용자_응답 = 외부_인프라_사용자_응답_생성();
+        OAuthMemberResponse 외부_인프라_사용자_응답 = new MemberResponseSuccessFixture();
 
         // when
         TokenDto 생성된_토큰 = authService.login(외부_인프라_사용자_응답);
@@ -111,16 +111,6 @@ class AuthServiceTest extends ServiceTest {
 
         // then
         assertThat(refreshTokenRepository.findByToken("저장시킨 토큰")).isEmpty();
-    }
-
-    private OAuthMemberResponse 외부_인프라_사용자_응답_생성() {
-        return KakaoMemberResponse.builder().kakaoAccount(KakaoMemberResponse.KakaoAccount.builder()
-                .email("이메일")
-                .profile(KakaoMemberResponse.Profile.builder()
-                        .nickname("이름")
-                        .picture("사진")
-                        .build())
-                .build()).build();
     }
 
 }

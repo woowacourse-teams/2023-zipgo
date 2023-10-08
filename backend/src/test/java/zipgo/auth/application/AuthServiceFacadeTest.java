@@ -8,11 +8,11 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import zipgo.auth.application.dto.OAuthMemberResponse;
+import zipgo.auth.application.fixture.MemberResponseSuccessFixture;
 import zipgo.auth.dto.TokenDto;
 import zipgo.auth.exception.OAuthResourceNotBringException;
 import zipgo.auth.exception.OAuthTokenNotBringException;
 import zipgo.auth.exception.TokenExpiredException;
-import zipgo.auth.infra.kakao.dto.KakaoMemberResponse;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
@@ -40,7 +40,7 @@ class AuthServiceFacadeTest {
         // given
         when(oAuthClient.getAccessToken("인가 코드"))
                 .thenReturn("엑세스 토큰");
-        OAuthMemberResponse 서드파티_사용자_응답 = 외부_인프라_사용자_응답_생성();
+        OAuthMemberResponse 서드파티_사용자_응답 = new MemberResponseSuccessFixture();
         when(oAuthClient.getMember("엑세스 토큰"))
                 .thenReturn(서드파티_사용자_응답);
         when(authService.login(서드파티_사용자_응답))
@@ -116,16 +116,6 @@ class AuthServiceFacadeTest {
 
         // then
         verify(authService, times(1)).logout(memberId);
-    }
-
-    private OAuthMemberResponse 외부_인프라_사용자_응답_생성() {
-        return KakaoMemberResponse.builder().kakaoAccount(KakaoMemberResponse.KakaoAccount.builder()
-                .email("이메일")
-                .profile(KakaoMemberResponse.Profile.builder()
-                        .nickname("이름")
-                        .picture("사진")
-                        .build())
-                .build()).build();
     }
 
 }

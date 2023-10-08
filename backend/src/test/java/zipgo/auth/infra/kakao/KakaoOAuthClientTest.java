@@ -6,6 +6,7 @@ import org.junit.jupiter.api.DisplayNameGenerator;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.http.HttpEntity;
@@ -41,6 +42,7 @@ class KakaoOAuthClientTest {
     @Mock
     private RestTemplate restTemplate;
 
+    @InjectMocks
     private KakaoOAuthClient kakaoOAuthClient;
 
     @BeforeEach
