@@ -1,5 +1,4 @@
 import { KEYWORD_EN } from '@/constants/food';
-import { useFoodFilterContext } from '@/context/food';
 import { generateQueryString } from '@/router/routes';
 import { KeywordEn } from '@/types/food/client';
 
@@ -8,7 +7,6 @@ import useValidQueryString from '../common/useValidQueryString';
 
 export const useFilterSelectionDisplay = () => {
   const { replaceQueryString } = useEasyNavigate();
-  const { toggleFilter } = useFoodFilterContext();
   const filterListQueryString = useValidQueryString(KEYWORD_EN);
 
   const removeFilter = (keyword: KeywordEn, value: string) => {
@@ -24,8 +22,6 @@ export const useFilterSelectionDisplay = () => {
         ...filterListQueryString,
         [keyword]: updatedQueryString,
       });
-
-      toggleFilter(keyword, value);
 
       replaceQueryString(newQueryString, { exclude: [] });
     }
