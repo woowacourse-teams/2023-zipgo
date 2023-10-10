@@ -56,7 +56,7 @@ class ZipgoError<Code extends ErrorCode = 'UNEXPECTED_ERROR'> extends Error {
 
 class RuntimeError<Code extends RuntimeErrorCode> extends ZipgoError<Code> {
   constructor(info: ErrorInfo<Code>, value?: unknown) {
-    super(info, JSON.stringify(value));
+    super(info, value);
 
     this.ignore = true;
   }
