@@ -25,9 +25,9 @@ export const useFilterSelectionDisplay = () => {
         [category]: updatedQueryString,
       });
 
-      replaceQueryString(newQueryString, { exclude: [] });
-
       toggleFilter(category, value);
+
+      replaceQueryString(newQueryString, { exclude: [] });
     }
   };
 

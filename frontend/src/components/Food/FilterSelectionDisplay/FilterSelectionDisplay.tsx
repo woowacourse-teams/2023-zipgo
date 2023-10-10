@@ -10,13 +10,12 @@ const FilterSelectionDisplay = () => {
     <SelectedFilterList>
       {Object.entries(filterListQueryString).map(([category, values]) =>
         values.split(',').map(value => (
-          <SelectedFilterItem key={value}>
+          <SelectedFilterItem
+            key={value}
+            onClick={() => removeFilter(category as KeywordEn, value)}
+          >
             {value}
-            <FilterToggleButton
-              type="button"
-              aria-label={`${value}필터 선택 해제`}
-              onClick={() => removeFilter(category as KeywordEn, value)}
-            >
+            <FilterToggleButton type="button" aria-label={`${value}필터 선택 해제`}>
               x
             </FilterToggleButton>
           </SelectedFilterItem>
@@ -46,6 +45,8 @@ const SelectedFilterList = styled.ul`
 `;
 
 const SelectedFilterItem = styled.li`
+  cursor: pointer;
+
   overflow: hidden;
   flex-shrink: 0;
 
