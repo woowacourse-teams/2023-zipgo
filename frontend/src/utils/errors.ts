@@ -80,6 +80,8 @@ class APIError<T = unknown, D = unknown> extends ZipgoError<APIErrorCode> {
     super({ code });
 
     this.status = error.response.status;
+
+    this[IGNORE_KEY] = error.config.method !== 'get';
   }
 
   /**
