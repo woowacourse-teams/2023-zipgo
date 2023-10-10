@@ -4,7 +4,7 @@ import { useLocation } from 'react-router-dom';
 
 import { ErrorBoundaryState, ErrorBoundaryValue } from '@/types/common/errorBoundary';
 import { RenderProps } from '@/types/common/utility';
-import { resolveRenderProps } from '@/utils/compound';
+import { resolveFunctionOrPrimitive, resolveRenderProps } from '@/utils/compound';
 import { shouldIgnore, ZipgoError } from '@/utils/errors';
 import { isDifferentArray } from '@/utils/isDifferentArray';
 
@@ -16,7 +16,7 @@ const initialState = {
 interface ErrorBoundaryProps<E extends Error> {
   resetKeys?: unknown[];
   fallback?: ReactNode | RenderProps<ErrorBoundaryValue<E>>;
-  ignore?<E extends Error>(props: E): boolean;
+  ignore?: boolean | ((payload: { error: E }) => boolean);
   onError?(payload: { error: E; errorInfo: ErrorInfo }): void;
   onReset?: VoidFunction;
 }
@@ -47,12 +47,15 @@ class BaseErrorBoundary<E extends Error = Error> extends Component<
     }
   }
 
-  componentDidCatch(error: E, errorInfo: ErrorInfo): void {
+  componentDidCatch(_: E, errorInfo: ErrorInfo): void {
     const { onError, ignore } = this.props;
 
-    if (ignore?.(error)) {
-      throw error;
-    }
+    const { error, hasError } = this.state;
+
+    if (!hasError) return;
+
+    // error.;
+    if (resolveFunctionOrPrimitive(ignore, { error })) throw error;
 
     onError?.({ error, errorInfo });
   }
@@ -71,8 +74,6 @@ class BaseErrorBoundary<E extends Error = Error> extends Component<
     const { children, fallback } = this.props;
 
     if (!hasError) return children;
-
-    if (!fallback) return null;
 
     return resolveRenderProps(fallback, { reset: this.reset, error });
   }
