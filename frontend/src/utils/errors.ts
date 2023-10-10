@@ -101,9 +101,9 @@ const createErrorParams = <Code extends ErrorCode>(
   return [message, options];
 };
 
-const shouldIgnore = (error: Error, ignoreKey = IGNORE_KEY) =>
+const shouldIgnore = <E extends Error>(error: E, ignoreKey = IGNORE_KEY) =>
   Object.prototype.hasOwnProperty.call(error, ignoreKey) &&
-  (error as Error & { [key in typeof ignoreKey]: boolean })[ignoreKey];
+  (error as E & { [key in typeof ignoreKey]: boolean })[ignoreKey];
 
 export { APIError, RuntimeError, shouldIgnore, UnexpectedError, ZipgoError };
 
