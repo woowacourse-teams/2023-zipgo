@@ -75,6 +75,7 @@ const BannerWrapper = styled.div`
     font-weight: 500;
     line-height: 2.4rem;
     color: ${({ theme }) => theme.color.white};
+    letter-spacing: -0.7px;
 
     img {
       width: 100px;

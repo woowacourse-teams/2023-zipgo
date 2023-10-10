@@ -95,7 +95,7 @@ const BrandBlock = (brandBlockProps: BrandBlockProps) => {
             {onResearchCenterTip && (
               <ToolTip
                 showBubbleOnly
-                content="반려동물 업계는 사료 품질과 판매량간의 상관관계가 없는데요, 마케팅 만으로는 살아남을 수 없기 때문에 역사가 오래됐는지가 중요한 지표랍니다!"
+                content="브랜드에 전용 연구센터가 있다는 것은 사후 AS에서도 단순히 교환 처리나 보상 처리를 하는 것이 아니라 안전성 검사, 독성 검사, 영양소 분석을 통해 문제의 원인까지 면밀히 파악해서 재발을 방지할 수 있는 능력까지 갖췄다는 것을 의미해요!"
                 title="왜 연구센터 여부가 중요한가요?"
                 left="-24.5rem"
                 edgeLeft="23.5rem"

@@ -1,7 +1,7 @@
 import { getArrayMutationMethod } from './getArrayMutationMethod';
 
 export const getValidQueries = <T extends string>(search: string, queryKeys: Readonly<T[]>) =>
-  search
+  decodeURIComponent(search)
     .replace(/^\?/, '')
     .split('&')
     .reduce<Partial<Record<T, string>>>((queries, keyValue, _, search) => {
