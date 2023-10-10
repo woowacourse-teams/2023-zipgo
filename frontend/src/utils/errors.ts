@@ -71,7 +71,7 @@ class UnexpectedError extends ZipgoError<'UNEXPECTED_ERROR'> {
 }
 
 class APIError<T = unknown, D = unknown> extends ZipgoError<APIErrorCode> {
-  status;
+  status: number;
 
   constructor(error: ManageableAxiosError<AxiosError<WithAPIErrorCode<T>, D>>) {
     /** @description 서버의 코드 미제공 방지 */
