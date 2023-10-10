@@ -1,16 +1,16 @@
 import { styled } from 'styled-components';
 
 import { useFilterSelectionDisplay } from '@/hooks/food/useFilterSelectionDisplay';
-import { KeywordEn } from '@/types/food/client';
+import { invariantOf } from '@/utils/invariantOf';
 
 const FilterSelectionDisplay = () => {
   const { filterListQueryString, removeFilter } = useFilterSelectionDisplay();
 
   return (
     <SelectedFilterList>
-      {Object.entries(filterListQueryString).map(([keyword, values]) =>
-        values.split(',').map(value => (
-          <SelectedFilterItem key={value} onClick={() => removeFilter(keyword as KeywordEn, value)}>
+      {Object.entries(invariantOf(filterListQueryString)).map(([keyword, values]) =>
+        values?.split(',').map(value => (
+          <SelectedFilterItem key={value} onClick={() => removeFilter(keyword, value)}>
             {value}
             <FilterToggleButton type="button" aria-label={`${value}필터 선택 해제`}>
               x
