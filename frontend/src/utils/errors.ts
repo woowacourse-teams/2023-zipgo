@@ -40,7 +40,7 @@ class ZipgoError<Code extends ErrorCode = 'UNEXPECTED_ERROR'> extends Error {
 
     this.cause = options.cause;
 
-    this.ignore = false;
+    this[IGNORE_KEY] = false;
   }
 
   static convertToError(error: unknown) {
@@ -58,7 +58,7 @@ class RuntimeError<Code extends RuntimeErrorCode> extends ZipgoError<Code> {
   constructor(info: ErrorInfo<Code>, value?: unknown) {
     super(info, value);
 
-    this.ignore = true;
+    this[IGNORE_KEY] = true;
   }
 }
 
@@ -66,7 +66,7 @@ class UnexpectedError extends ZipgoError<'UNEXPECTED_ERROR'> {
   constructor(value?: unknown) {
     super({ code: 'UNEXPECTED_ERROR' }, value);
 
-    this.ignore = true;
+    this[IGNORE_KEY] = true;
   }
 }
 
