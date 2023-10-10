@@ -12,21 +12,23 @@ export const useFilterSelectionDisplay = () => {
   const filterListQueryString = useValidQueryString(KEYWORD_EN);
 
   const removeFilter = (category: KeywordEn, value: string) => {
-    let newFilterString;
+    const filterList = filterListQueryString[category]?.split(',');
 
-    if (filterListQueryString[category]?.includes(`,${value}`)) {
-      newFilterString = filterListQueryString[category]?.replace(`,${value}`, '');
-    } else if (filterListQueryString[category]?.includes(`${value},`)) {
-      newFilterString = filterListQueryString[category]?.replace(`${value},`, '');
-    } else newFilterString = filterListQueryString[category]?.replace(value, '');
+    if (!filterList) return;
 
-    const newQueryString = generateQueryString({
-      ...filterListQueryString,
-      [category]: newFilterString,
-    });
+    if (filterList.includes(value)) {
+      filterList.splice(filterList.indexOf(value), 1);
 
-    toggleFilter(category, value);
-    replaceQueryString(newQueryString, { exclude: [] });
+      const updatedQueryString = filterList.join(',');
+      const newQueryString = generateQueryString({
+        ...filterListQueryString,
+        [category]: updatedQueryString,
+      });
+
+      replaceQueryString(newQueryString, { exclude: [] });
+
+      toggleFilter(category, value);
+    }
   };
 
   return { filterListQueryString, removeFilter };
