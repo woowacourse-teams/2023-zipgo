@@ -12,7 +12,8 @@ type APIBoundaryProps = ComponentProps<typeof ErrorBoundary<APIError>>;
 const APIBoundary = (props: PropsWithChildren<APIBoundaryProps>) => {
   const { fallback, ...restProps } = props;
 
-  const handleIgnore: APIBoundaryProps['ignore'] = ({ error }) => !(error instanceof APIError);
+  const handleIgnore: APIBoundaryProps['shouldIgnore'] = ({ error }) =>
+    !(error instanceof APIError);
 
   const handleAPIFallback: APIBoundaryProps['fallback'] = ({ error, reset }) =>
     /** @todo 추후 에러 코드 상의 후 변경 */
@@ -24,7 +25,11 @@ const APIBoundary = (props: PropsWithChildren<APIBoundaryProps>) => {
 
   return (
     /** @description ignore는 사용하는 쪽에서 재정의 할 수 있다 */
-    <ErrorBoundary<APIError> ignore={handleIgnore} fallback={handleAPIFallback} {...restProps} />
+    <ErrorBoundary<APIError>
+      shouldIgnore={handleIgnore}
+      fallback={handleAPIFallback}
+      {...restProps}
+    />
   );
 };
 
