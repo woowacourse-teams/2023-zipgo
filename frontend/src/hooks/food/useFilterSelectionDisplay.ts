@@ -11,8 +11,8 @@ export const useFilterSelectionDisplay = () => {
   const { toggleFilter } = useFoodFilterContext();
   const filterListQueryString = useValidQueryString(KEYWORD_EN);
 
-  const removeFilter = (category: KeywordEn, value: string) => {
-    const filterList = filterListQueryString[category]?.split(',');
+  const removeFilter = (keyword: KeywordEn, value: string) => {
+    const filterList = filterListQueryString[keyword]?.split(',');
 
     if (!filterList) return;
 
@@ -22,10 +22,10 @@ export const useFilterSelectionDisplay = () => {
       const updatedQueryString = filterList.join(',');
       const newQueryString = generateQueryString({
         ...filterListQueryString,
-        [category]: updatedQueryString,
+        [keyword]: updatedQueryString,
       });
 
-      toggleFilter(category, value);
+      toggleFilter(keyword, value);
 
       replaceQueryString(newQueryString, { exclude: [] });
     }

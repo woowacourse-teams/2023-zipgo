@@ -8,12 +8,9 @@ const FilterSelectionDisplay = () => {
 
   return (
     <SelectedFilterList>
-      {Object.entries(filterListQueryString).map(([category, values]) =>
+      {Object.entries(filterListQueryString).map(([keyword, values]) =>
         values.split(',').map(value => (
-          <SelectedFilterItem
-            key={value}
-            onClick={() => removeFilter(category as KeywordEn, value)}
-          >
+          <SelectedFilterItem key={value} onClick={() => removeFilter(keyword as KeywordEn, value)}>
             {value}
             <FilterToggleButton type="button" aria-label={`${value}필터 선택 해제`}>
               x
