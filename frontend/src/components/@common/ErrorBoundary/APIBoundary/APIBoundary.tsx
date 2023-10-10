@@ -3,23 +3,16 @@ import { Navigate } from 'react-router-dom';
 
 import { PATH } from '@/router/routes';
 import { resolveRenderProps } from '@/utils/compound';
-import { composeFunctions } from '@/utils/dom';
-import { APIError, UnexpectedError } from '@/utils/errors';
+import { APIError } from '@/utils/errors';
 
 import { ErrorBoundary } from '../ErrorBoundary';
 
 type APIBoundaryProps = ComponentProps<typeof ErrorBoundary<APIError>>;
 
 const APIBoundary = (props: PropsWithChildren<APIBoundaryProps>) => {
-  const { fallback, onError, ...restProps } = props;
+  const { fallback, ...restProps } = props;
 
-  const handleAPIError: APIBoundaryProps['onError'] = ({
-    error,
-  }: {
-    error: APIError | UnexpectedError;
-  }) => {
-    if (!(error instanceof APIError)) throw error;
-  };
+  const handleIgnore: APIBoundaryProps['ignore'] = ({ error }) => !(error instanceof APIError);
 
   const handleAPIFallback: APIBoundaryProps['fallback'] = ({ error, reset }) =>
     /** @todo 추후 에러 코드 상의 후 변경 */
@@ -30,11 +23,8 @@ const APIBoundary = (props: PropsWithChildren<APIBoundaryProps>) => {
     );
 
   return (
-    <ErrorBoundary<APIError>
-      onError={composeFunctions(handleAPIError, onError)}
-      fallback={handleAPIFallback}
-      {...restProps}
-    />
+    /** @description ignore는 사용하는 쪽에서 재정의 할 수 있다 */
+    <ErrorBoundary<APIError> ignore={handleIgnore} fallback={handleAPIFallback} {...restProps} />
   );
 };
 
