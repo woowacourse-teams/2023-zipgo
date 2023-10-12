@@ -1,7 +1,6 @@
-import { PropsWithChildren } from 'react';
+import { PropsWithChildren, Suspense } from 'react';
 import styled, { css } from 'styled-components';
 
-import QueryBoundary from '@/components/@common/ErrorBoundary/QueryBoundary/QueryBoundary';
 import StarRatingDisplay from '@/components/@common/StarRating/StarRatingDisplay/StartRatingDisplay';
 import Tabs from '@/components/@common/Tabs/Tabs';
 import { REVIEW_SUMMARY_KEYWORDS } from '@/constants/review';
@@ -31,9 +30,9 @@ const SummaryChart = () => {
         {summaryKeywords.map(keyword => (
           <Tabs.Content key={keyword} value={keyword} asChild>
             <SummaryChartContentWrapper>
-              <QueryBoundary loadingFallback={<SummaryChartContent.Skeleton />}>
+              <Suspense fallback={<SummaryChartContent.Skeleton />}>
                 <SummaryChartContent keyword={keyword} />
-              </QueryBoundary>
+              </Suspense>
             </SummaryChartContentWrapper>
           </Tabs.Content>
         ))}

@@ -40,7 +40,7 @@ class ZipgoError<Code extends ErrorCode = 'UNEXPECTED_ERROR'> extends Error {
 
     this.cause = options.cause;
 
-    this.ignore = false;
+    this[IGNORE_KEY] = false;
   }
 
   static convertToError(error: unknown) {
@@ -56,9 +56,9 @@ class ZipgoError<Code extends ErrorCode = 'UNEXPECTED_ERROR'> extends Error {
 
 class RuntimeError<Code extends RuntimeErrorCode> extends ZipgoError<Code> {
   constructor(info: ErrorInfo<Code>, value?: unknown) {
-    super(info, JSON.stringify(value));
+    super(info, value);
 
-    this.ignore = true;
+    this[IGNORE_KEY] = true;
   }
 }
 
@@ -66,12 +66,12 @@ class UnexpectedError extends ZipgoError<'UNEXPECTED_ERROR'> {
   constructor(value?: unknown) {
     super({ code: 'UNEXPECTED_ERROR' }, value);
 
-    this.ignore = true;
+    this[IGNORE_KEY] = true;
   }
 }
 
 class APIError<T = unknown, D = unknown> extends ZipgoError<APIErrorCode> {
-  status;
+  status: number;
 
   constructor(error: ManageableAxiosError<AxiosError<WithAPIErrorCode<T>, D>>) {
     /** @description 서버의 코드 미제공 방지 */
@@ -80,6 +80,8 @@ class APIError<T = unknown, D = unknown> extends ZipgoError<APIErrorCode> {
     super({ code });
 
     this.status = error.response.status;
+
+    this[IGNORE_KEY] = error.config.method !== 'get';
   }
 
   /**
@@ -101,10 +103,10 @@ const createErrorParams = <Code extends ErrorCode>(
   return [message, options];
 };
 
-const shouldIgnore = (error: Error, ignoreKey = IGNORE_KEY) =>
+const isIgnored = <E extends Error>(error: E, ignoreKey = IGNORE_KEY) =>
   Object.prototype.hasOwnProperty.call(error, ignoreKey) &&
-  (error as Error & { [key in typeof ignoreKey]: boolean })[ignoreKey];
+  (error as E & { [key in typeof ignoreKey]: boolean })[ignoreKey];
 
-export { APIError, RuntimeError, shouldIgnore, UnexpectedError, ZipgoError };
+export { APIError, isIgnored, RuntimeError, UnexpectedError, ZipgoError };
 
 export type { ManageableAxiosError };

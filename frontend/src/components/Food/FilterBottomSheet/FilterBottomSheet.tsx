@@ -3,7 +3,7 @@ import styled, { css } from 'styled-components';
 
 import SettingsIcon from '@/assets/svg/settings_outline_icon.svg';
 import { Dialog } from '@/components/@common/Dialog/Dialog';
-import QueryBoundary from '@/components/@common/ErrorBoundary/QueryBoundary/QueryBoundary';
+import Loading from '@/components/@common/Loading/Loading';
 import Tabs from '@/components/@common/Tabs/Tabs';
 import { FoodFilterProvider, useFoodFilterContext } from '@/context/food';
 import { useFoodListFilterMetaQuery } from '@/hooks/query/food';
@@ -20,25 +20,22 @@ import NutritionStandardsFilterList from './NutritionStandardsFilterList/Nutriti
 
 const FilterBottomSheet = () => (
   <FoodFilterProvider>
-    <FilterDialogAndFilterDisplayContainer>
-      <Dialog>
-        <Dialog.Trigger asChild>
-          <DialogTrigger type="button">
-            <FilterTriggerIcon src={SettingsIcon} alt="필터 버튼 아이콘" />
-            <span>필터</span>
-          </DialogTrigger>
-        </Dialog.Trigger>
-        <Dialog.Portal>
-          <QueryBoundary>
-            <Dialog.BackDrop />
-            <Dialog.Content asChild>
-              {({ openHandler }) => <KeywordContent toggleDialog={openHandler} />}
-            </Dialog.Content>
-          </QueryBoundary>
-        </Dialog.Portal>
-      </Dialog>
-      <FilterSelectionDisplay />
-    </FilterDialogAndFilterDisplayContainer>
+    <Dialog>
+      <Dialog.Trigger asChild>
+        <DialogTrigger type="button">
+          <FilterTriggerIcon src={SettingsIcon} alt="필터 버튼 아이콘" />
+          <span>필터</span>
+        </DialogTrigger>
+      </Dialog.Trigger>
+      <Dialog.Portal>
+        <Loading>
+          <Dialog.BackDrop />
+          <Dialog.Content asChild>
+            {({ openHandler }) => <KeywordContent toggleDialog={openHandler} />}
+          </Dialog.Content>
+        </Loading>
+      </Dialog.Portal>
+    </Dialog>
   </FoodFilterProvider>
 );
 
