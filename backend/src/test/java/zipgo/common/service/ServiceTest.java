@@ -9,6 +9,6 @@ import org.springframework.transaction.annotation.Transactional;
 @SuppressWarnings("NonAsciiCharacters")
 @SpringBootTest(properties = {"spring.sql.init.mode=never"})
 @DisplayNameGeneration(DisplayNameGenerator.ReplaceUnderscores.class)
-public class ServiceTest {
+public abstract class ServiceTest {
 
 }

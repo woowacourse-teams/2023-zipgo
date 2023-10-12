@@ -1,10 +1,9 @@
 package zipgo.pet.application;
 
-import java.util.List;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import zipgo.common.service.QueryServiceTest;
+import zipgo.common.service.ServiceTest;
 import zipgo.member.domain.Member;
 import zipgo.member.domain.repository.MemberRepository;
 import zipgo.pet.domain.Breed;
@@ -15,11 +14,13 @@ import zipgo.pet.domain.repository.BreedRepository;
 import zipgo.pet.domain.repository.PetRepository;
 import zipgo.pet.domain.repository.PetSizeRepository;
 
+import java.util.List;
+
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertAll;
 import static zipgo.review.fixture.MemberFixture.멤버_이름;
 
-class PetQueryServiceTest extends QueryServiceTest {
+class PetQueryServiceTest extends ServiceTest {
 
     @Autowired
     private BreedRepository breedRepository;

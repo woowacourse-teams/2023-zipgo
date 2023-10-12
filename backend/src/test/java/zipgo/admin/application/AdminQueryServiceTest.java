@@ -1,15 +1,14 @@
 package zipgo.admin.application;
 
-import java.util.List;
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import zipgo.admin.dto.FunctionalitySelectResponse;
 import zipgo.admin.dto.PetFoodReadResponse;
+import zipgo.admin.dto.PrimaryIngredientSelectResponse;
 import zipgo.brand.domain.Brand;
 import zipgo.brand.domain.fixture.BrandFixture;
 import zipgo.brand.domain.repository.BrandRepository;
-import zipgo.common.service.QueryServiceTest;
+import zipgo.common.service.ServiceTest;
 import zipgo.petfood.domain.PetFood;
 import zipgo.petfood.domain.fixture.FunctionalityFixture;
 import zipgo.petfood.domain.fixture.PetFoodFixture;
@@ -17,12 +16,13 @@ import zipgo.petfood.domain.fixture.PrimaryIngredientFixture;
 import zipgo.petfood.domain.repository.FunctionalityRepository;
 import zipgo.petfood.domain.repository.PetFoodRepository;
 import zipgo.petfood.domain.repository.PrimaryIngredientRepository;
-import zipgo.admin.dto.PrimaryIngredientSelectResponse;
+
+import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertAll;
 
-class AdminQueryServiceTest extends QueryServiceTest {
+class AdminQueryServiceTest extends ServiceTest {
 
     @Autowired
     private FunctionalityRepository functionalityRepository;

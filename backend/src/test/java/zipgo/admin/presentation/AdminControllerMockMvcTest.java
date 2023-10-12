@@ -1,26 +1,19 @@
 package zipgo.admin.presentation;
 
 import com.epages.restdocs.apispec.MockMvcRestDocumentationWrapper;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import org.junit.jupiter.api.Nested;
-import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
-import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.http.MediaType;
-import org.springframework.mock.web.MockMultipartFile;
-import org.springframework.restdocs.mockmvc.RestDocumentationResultHandler;
-import zipgo.admin.application.AdminQueryService;
-import zipgo.admin.application.AdminService;
-import zipgo.admin.dto.BrandCreateRequest;
-import zipgo.admin.dto.PetFoodCreateRequest;
-import zipgo.auth.presentation.JwtMandatoryArgumentResolver;
-import zipgo.common.acceptance.MockMvcTest;
-import zipgo.image.application.ImageService;
-import zipgo.petfood.domain.fixture.PetFoodFixture;
 
 import java.nio.charset.StandardCharsets;
 import java.util.List;
+
+import org.junit.jupiter.api.Nested;
+import org.junit.jupiter.api.Test;
+import org.springframework.http.MediaType;
+import org.springframework.mock.web.MockMultipartFile;
+import org.springframework.restdocs.mockmvc.RestDocumentationResultHandler;
+import zipgo.common.acceptance.MockMvcTest;
+import zipgo.admin.dto.BrandCreateRequest;
+import zipgo.admin.dto.PetFoodCreateRequest;
+import zipgo.petfood.domain.fixture.PetFoodFixture;
 
 import static com.epages.restdocs.apispec.RestAssuredRestDocumentationWrapper.resourceDetails;
 import static org.mockito.Mockito.when;
@@ -31,23 +24,7 @@ import static org.springframework.restdocs.snippet.Attributes.key;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import static zipgo.brand.domain.fixture.BrandFixture.무민_브랜드_생성_요청;
 
-@WebMvcTest(controllers = AdminController.class)
-class AdminControllerMockTest extends MockMvcTest {
-
-    @Autowired
-    private ObjectMapper objectMapper;
-
-    @MockBean
-    private ImageService imageService;
-
-    @MockBean
-    private AdminService adminService;
-
-    @MockBean
-    private AdminQueryService adminQueryService;
-
-    @MockBean
-    private JwtMandatoryArgumentResolver argumentResolver;
+class AdminControllerMockMvcTest extends MockMvcTest {
 
     @Test
     void 브랜드를_생성하면_201이_반환된다() throws Exception {
