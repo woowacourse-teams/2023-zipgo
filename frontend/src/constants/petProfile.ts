@@ -1,7 +1,5 @@
 import { Options } from 'browser-image-compression';
 
-import { PATH } from '@/router/routes';
-
 export const PET_AGE_MIN = 0;
 export const PET_AGE_MAX = 20;
 export const PET_AGE_ADULT = 6;
@@ -19,25 +17,15 @@ export const AGE_GROUP_ID = {
   SENIOR: 3,
 } as const;
 
-export const PET_PROFILE_ADDITION_STEP = {
-  NAME: 1,
-  AGE: 2,
-  BREED: 3,
-  PET_SIZE: 4,
-  GENDER: 5,
-  WEIGHT: 6,
-  IMAGE_FILE: 7,
-} as const;
-
-export const STEP_PATH: Record<number, string> = {
-  [PET_PROFILE_ADDITION_STEP.NAME]: PATH.PET_PROFILE_NAME_ADDITION,
-  [PET_PROFILE_ADDITION_STEP.AGE]: PATH.PET_PROFILE_AGE_ADDITION,
-  [PET_PROFILE_ADDITION_STEP.BREED]: PATH.PET_PROFILE_BREED_ADDITION,
-  [PET_PROFILE_ADDITION_STEP.PET_SIZE]: PATH.PET_PROFILE_PET_SIZE_ADDITION,
-  [PET_PROFILE_ADDITION_STEP.GENDER]: PATH.PET_PROFILE_GENDER_ADDITION,
-  [PET_PROFILE_ADDITION_STEP.WEIGHT]: PATH.PET_PROFILE_WEIGHT_ADDITION,
-  [PET_PROFILE_ADDITION_STEP.IMAGE_FILE]: PATH.PET_PROFILE_IMAGE_FILE_ADDITION,
-} as const;
+export const PET_PROFILE_ADDITION_STEP = [
+  'NAME',
+  'AGE',
+  'BREED',
+  'PET_SIZE',
+  'GENDER',
+  'WEIGHT',
+  'IMAGE_FILE',
+] as const;
 
 export const PET_ERROR_MESSAGE = {
   INVALID_NAME: '아이의 이름은 1~10글자 사이의 한글, 영어, 숫자만 입력 가능합니다.',

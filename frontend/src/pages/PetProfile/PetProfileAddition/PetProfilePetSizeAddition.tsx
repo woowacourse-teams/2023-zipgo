@@ -1,21 +1,18 @@
-import { useEffect } from 'react';
-import { useOutletContext } from 'react-router-dom';
 import { styled } from 'styled-components';
 
 import Label from '@/components/@common/Label/Label';
-import { PET_PROFILE_ADDITION_STEP, PET_SIZES } from '@/constants/petProfile';
+import { PET_SIZES } from '@/constants/petProfile';
 import { usePetProfileAddition } from '@/hooks/petProfile/usePetProfileAddition';
-import { PetAdditionOutletContextProps } from '@/types/petProfile/client';
 
-const PetProfilePetSizeAddition = () => {
+import { NextButton } from './PetProfileNameAddition';
+
+interface PetProfilePetSizeProps {
+  onNext: VoidFunction;
+}
+
+const PetProfilePetSizeAddition = (props: PetProfilePetSizeProps) => {
+  const { onNext } = props;
   const { petProfile, onClickPetSize } = usePetProfileAddition();
-  const { updateCurrentStep, updateIsValidStep } =
-    useOutletContext<PetAdditionOutletContextProps>();
-
-  useEffect(() => {
-    updateIsValidStep(false);
-    updateCurrentStep(PET_PROFILE_ADDITION_STEP.PET_SIZE);
-  }, []);
 
   return (
     <Container>
@@ -33,6 +30,9 @@ const PetProfilePetSizeAddition = () => {
           />
         ))}
       </PetSizeContainer>
+      <NextButton type="button" onClick={onNext}>
+        다음
+      </NextButton>
     </Container>
   );
 };
