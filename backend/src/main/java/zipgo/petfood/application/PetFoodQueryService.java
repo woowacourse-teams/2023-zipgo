@@ -1,5 +1,6 @@
 package zipgo.petfood.application;
 
+import datadog.trace.api.Trace;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -37,6 +38,7 @@ public class PetFoodQueryService {
         );
     }
 
+    @Trace(resourceName = "식품 페이징 조회")
     private List<GetPetFoodQueryResponse> getPagingPetFoods(FilterRequest filterDto, Long lastPetFoodId, int size) {
         return petFoodQueryRepository.findPagingPetFoods(
                 filterDto.brands(),
@@ -48,6 +50,7 @@ public class PetFoodQueryService {
         );
     }
 
+    @Trace(resourceName = "식품 페이징 카운트 조회")
     private Long getPetFoodsCount(FilterRequest filterDto) {
         return petFoodQueryRepository.findPetFoodsCount(
                 filterDto.brands(),
