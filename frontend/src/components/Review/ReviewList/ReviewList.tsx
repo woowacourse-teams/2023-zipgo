@@ -28,7 +28,7 @@ const ReviewList = () => {
 
   const userInfo = zipgoLocalStorage.getUserInfo();
 
-  const goReviewWrite = () => navigate(routerPath.reviewStarRating({ petFoodId }));
+  const goReviewWrite = () => navigate(routerPath.reviewAddition({ petFoodId }));
 
   useEffect(() => {
     refetch();

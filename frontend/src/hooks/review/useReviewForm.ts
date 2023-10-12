@@ -12,7 +12,7 @@ import { PostReviewReq } from '@/types/review/remote';
 
 import { useAddReviewMutation, useEditReviewMutation, useReviewItemQuery } from '../query/review';
 
-export const ACTION_TYPES = {
+export const REVIEW_ACTION_TYPES = {
   SET_PET_FOOD_ID: 'setPetFoodId',
   SET_RATING: 'setRating',
   SET_COMMENT: 'setComment',
@@ -22,7 +22,7 @@ export const ACTION_TYPES = {
   SET_ADVERSE_REACTIONS_DEFAULT: 'setAdverseReactionsDefault',
 } as const;
 
-type Action =
+export type ReviewSetAction =
   | { type: 'setPetFoodId'; petFoodId: number }
   | { type: 'setRating'; rating: number }
   | { type: 'setComment'; comment: string }
@@ -31,27 +31,27 @@ type Action =
   | { type: 'setAdverseReactionsDefault'; adverseReactions: AdverseReaction[] }
   | { type: 'setAdverseReactions'; adverseReaction: AdverseReaction };
 
-const reducer = (state: PostReviewReq, action: Action): PostReviewReq => {
-  if (action.type === ACTION_TYPES.SET_PET_FOOD_ID) {
+const reducer = (state: PostReviewReq, action: ReviewSetAction): PostReviewReq => {
+  if (action.type === REVIEW_ACTION_TYPES.SET_PET_FOOD_ID) {
     return { ...state, petFoodId: action.petFoodId };
   }
 
-  if (action.type === ACTION_TYPES.SET_RATING) return { ...state, rating: action.rating };
-  if (action.type === ACTION_TYPES.SET_COMMENT) return { ...state, comment: action.comment };
+  if (action.type === REVIEW_ACTION_TYPES.SET_RATING) return { ...state, rating: action.rating };
+  if (action.type === REVIEW_ACTION_TYPES.SET_COMMENT) return { ...state, comment: action.comment };
 
-  if (action.type === ACTION_TYPES.SET_TASTE_PREFERENCE) {
+  if (action.type === REVIEW_ACTION_TYPES.SET_TASTE_PREFERENCE) {
     return { ...state, tastePreference: action.tastePreference };
   }
 
-  if (action.type === ACTION_TYPES.SET_STOOL_CONDITION) {
+  if (action.type === REVIEW_ACTION_TYPES.SET_STOOL_CONDITION) {
     return { ...state, stoolCondition: action.stoolCondition };
   }
 
-  if (action.type === ACTION_TYPES.SET_ADVERSE_REACTIONS_DEFAULT) {
+  if (action.type === REVIEW_ACTION_TYPES.SET_ADVERSE_REACTIONS_DEFAULT) {
     return { ...state, adverseReactions: action.adverseReactions };
   }
 
-  if (action.type === ACTION_TYPES.SET_ADVERSE_REACTIONS) {
+  if (action.type === REVIEW_ACTION_TYPES.SET_ADVERSE_REACTIONS) {
     const NO_ADVERSE_REACTION = '없어요';
     const adverseReactionsSet = new Set(state.adverseReactions);
     const hasAdverseReaction = adverseReactionsSet.has(action.adverseReaction);
@@ -129,21 +129,21 @@ export const useReviewForm = (useReviewFormProps: UseReviewFormProps) => {
   useEffect(() => {
     if (isEditMode && reviewItem) {
       reviewDispatch({
-        type: ACTION_TYPES.SET_TASTE_PREFERENCE,
+        type: REVIEW_ACTION_TYPES.SET_TASTE_PREFERENCE,
         tastePreference: reviewItem.tastePreference,
       });
 
       reviewDispatch({
-        type: ACTION_TYPES.SET_STOOL_CONDITION,
+        type: REVIEW_ACTION_TYPES.SET_STOOL_CONDITION,
         stoolCondition: reviewItem.stoolCondition,
       });
 
       reviewDispatch({
-        type: ACTION_TYPES.SET_ADVERSE_REACTIONS_DEFAULT,
+        type: REVIEW_ACTION_TYPES.SET_ADVERSE_REACTIONS_DEFAULT,
         adverseReactions: reviewItem.adverseReactions,
       });
 
-      reviewDispatch({ type: ACTION_TYPES.SET_COMMENT, comment: reviewItem.comment });
+      reviewDispatch({ type: REVIEW_ACTION_TYPES.SET_COMMENT, comment: reviewItem.comment });
     }
   }, [isEditMode, reviewItem, reviewDispatch]);
 

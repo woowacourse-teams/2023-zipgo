@@ -20,8 +20,7 @@ import { PATH } from './routes';
 const Landing = lazy(() => import('@/pages/Landing/Landing'));
 const Login = lazy(() => import('@/pages/Login/Login'));
 const FoodDetail = lazy(() => import('@/pages/FoodDetail/FoodDetail'));
-const ReviewAddition = lazy(() => import('@/pages/ReviewAddition/ReviewAddition'));
-const ReviewStarRating = lazy(() => import('@/pages/ReviewStarRating/ReviewStarRating'));
+const ReviewFormFunnel = lazy(() => import('@/pages/ReviewFormFunnel/ReviewFormFunnel'));
 
 export const router = createBrowserRouter([
   {
@@ -41,12 +40,8 @@ export const router = createBrowserRouter([
         element: <FoodDetail />,
       },
       {
-        path: PATH.REVIEW_STAR_RATING,
-        element: <ReviewStarRating />,
-      },
-      {
         path: PATH.REVIEW_ADDITION,
-        element: <ReviewAddition />,
+        element: <ReviewFormFunnel />,
       },
       {
         path: PATH.PET_PROFILE_EDITION,

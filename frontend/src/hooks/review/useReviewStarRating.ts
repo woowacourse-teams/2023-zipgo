@@ -1,44 +1,34 @@
-import { useState } from 'react';
-import { useLocation, useNavigate } from 'react-router-dom';
+import { FORM_EXIT_CONFIRMATION_MESSAGE } from '@/constants/common';
+import { ReviewStarRatingProps } from '@/pages/ReviewStarRating/ReviewStarRating';
 
-import { routerPath } from '@/router/routes';
-
-import { useValidParams } from '../@common/useValidParams';
+import useEasyNavigate from '../@common/useEasyNavigate';
 import { useFoodDetailQuery } from '../query/food';
+import { REVIEW_ACTION_TYPES } from './useReviewForm';
 
-interface LocationState {
-  state: {
-    selectedRating?: number;
-    isEditMode?: boolean;
-    reviewId?: number;
+export const useReviewStarRating = (props: ReviewStarRatingProps) => {
+  const {
+    reviewData: {
+      review: { petFoodId },
+      reviewDispatch,
+    },
+  } = props;
+  const { goBack } = useEasyNavigate();
+  const { foodData } = useFoodDetailQuery({ petFoodId: petFoodId.toString() });
+
+  const goBackSafely = () => {
+    confirm(FORM_EXIT_CONFIRMATION_MESSAGE) && goBack();
   };
-}
 
-// export const useReviewStarRating = (location: LocationState) => {
-export const useReviewStarRating = () => {
-  const navigate = useNavigate();
-  const location: LocationState = useLocation();
-  const { selectedRating = 0, isEditMode = false, reviewId = -1 } = { ...location.state };
-  const { petFoodId } = useValidParams(['petFoodId']);
-  const { foodData } = useFoodDetailQuery({ petFoodId });
-  const [rating, setRating] = useState(selectedRating);
-
-  const onClickStar = (selectedRating: number) => {
-    navigate(routerPath.reviewAddition({ petFoodId }), {
-      state: { selectedRating, isEditMode, reviewId },
+  const updateRating = (selectedRating: number) => {
+    reviewDispatch({
+      type: REVIEW_ACTION_TYPES.SET_RATING,
+      rating: selectedRating,
     });
   };
 
-  const goBack = () => navigate(routerPath.back);
-
   return {
-    petFoodId,
     foodData,
-    isEditMode,
-    reviewId,
-    rating,
-    setRating,
-    onClickStar,
-    goBack,
+    goBackSafely,
+    updateRating,
   };
 };

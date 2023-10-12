@@ -5,16 +5,25 @@ import StarRatingInput from '@/components/@common/StarRating/StarRatingInput/Sta
 import Template from '@/components/@common/Template';
 import { useReviewStarRating } from '@/hooks/review/useReviewStarRating';
 
-const ReviewStarRating = () => {
-  const { foodData, rating, setRating, onClickStar, goBack } = useReviewStarRating();
+import { ReviewData } from '../ReviewFormFunnel/ReviewFormFunnel';
 
-  const onMouseDownStar = (selectedRating: number) => setRating(selectedRating);
+export interface ReviewStarRatingProps {
+  reviewData: ReviewData;
+  onNext: VoidFunction;
+}
+
+const ReviewStarRating = (props: ReviewStarRatingProps) => {
+  const { foodData, updateRating, goBackSafely } = useReviewStarRating(props);
+  const {
+    reviewData: { review },
+    onNext,
+  } = props;
 
   if (!foodData) throw new Error('죄송합니다, 해당 식품 정보를 찾을 수 없습니다.');
 
   return (
     <Template.WithoutHeader footer={false}>
-      <PageHeader onClick={goBack} />
+      <PageHeader onClick={goBackSafely} />
       <Container>
         <FoodImageWrapper>
           <FoodImage src={foodData.imageUrl} alt={`${foodData.name}`} />
@@ -22,9 +31,9 @@ const ReviewStarRating = () => {
         <FoodName>{foodData.name}</FoodName>
         <Label>이 사료 어땠어요?</Label>
         <StarRatingInput
-          rating={rating}
-          onClickStar={onClickStar}
-          onMouseDownStar={onMouseDownStar}
+          rating={review.rating}
+          onClickStar={onNext}
+          onMouseDownStar={updateRating}
           size="extra-large"
         />
         <Caption>별점을 매겨주세요!</Caption>
