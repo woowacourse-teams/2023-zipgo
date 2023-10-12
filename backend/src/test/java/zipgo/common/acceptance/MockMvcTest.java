@@ -36,7 +36,7 @@ import zipgo.pet.application.PetQueryService;
         }
 )
 @DisplayNameGeneration(DisplayNameGenerator.ReplaceUnderscores.class)
-public class MockMvcTest {
+public abstract class MockMvcTest {
 
     @Autowired
     protected ObjectMapper objectMapper;
