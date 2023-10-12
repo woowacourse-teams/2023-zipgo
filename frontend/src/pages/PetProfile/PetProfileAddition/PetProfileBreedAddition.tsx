@@ -16,18 +16,22 @@ interface PetProfileBreedAdditionProps {
 const PetProfileBreedAddition = (props: PetProfileBreedAdditionProps) => {
   const { onNext, setIsMixedBreed } = props;
   const { isMixedBreed } = usePetProfileValidation();
-  const { petProfile, isValidInput, onChangeBreed } = usePetProfileAddition();
+  const { petProfile, isValidInput, setIsValidInput, onChangeBreed } = usePetProfileAddition();
 
   useEffect(() => {
     setIsMixedBreed(isMixedBreed(petProfile.breed));
   }, [petProfile.breed]);
+
+  useEffect(() => {
+    if (petProfile.breed) setIsValidInput(true);
+  }, []);
 
   return (
     <Container>
       <PetName>{petProfile.name}</PetName>
       <Title>{`${getTopicParticle(petProfile.name)} 어떤 아이인가요?`}</Title>
       <InputLabel htmlFor="pet-breed">견종 선택</InputLabel>
-      <PetBreedSelect id="pet-breed" onChange={onChangeBreed} />
+      <PetBreedSelect id="pet-breed" defaultBreed={petProfile.breed} onChange={onChangeBreed} />
       <NextButton type="button" onClick={() => onNext(petProfile.breed)} disabled={!isValidInput}>
         다음
       </NextButton>

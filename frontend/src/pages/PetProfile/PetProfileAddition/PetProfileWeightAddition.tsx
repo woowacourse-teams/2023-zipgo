@@ -1,3 +1,4 @@
+import { useEffect } from 'react';
 import { styled } from 'styled-components';
 
 import Input from '@/components/@common/Input/Input';
@@ -11,7 +12,12 @@ interface PetProfileWeightAddition {
 
 const PetProfileWeightAddition = (props: PetProfileWeightAddition) => {
   const { onNext } = props;
-  const { petProfile, isFirstRendered, isValidInput, onChangeWeight } = usePetProfileAddition();
+  const { petProfile, isFirstRendered, isValidInput, setIsValidInput, onChangeWeight } =
+    usePetProfileAddition();
+
+  useEffect(() => {
+    if (petProfile.weight) setIsValidInput(true);
+  }, []);
 
   return (
     <Container>
@@ -26,6 +32,7 @@ const PetProfileWeightAddition = (props: PetProfileWeightAddition) => {
           minLength={1}
           placeholder="예) 7.5"
           maxLength={5}
+          value={petProfile.weight}
           isValid={isFirstRendered || isValidInput}
           onChange={onChangeWeight}
           design="underline"

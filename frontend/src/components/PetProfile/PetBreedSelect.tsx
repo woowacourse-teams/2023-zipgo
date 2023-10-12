@@ -3,19 +3,21 @@ import { styled } from 'styled-components';
 
 import { useBreedListQuery } from '@/hooks/query/petProfile';
 
-interface PetBreedSelectProps extends SelectHTMLAttributes<HTMLSelectElement> {}
+interface PetBreedSelectProps extends SelectHTMLAttributes<HTMLSelectElement> {
+  defaultBreed?: string;
+}
 
 const PetBreedSelect = (petBreedSelectProps: PetBreedSelectProps) => {
-  const { ...restProps } = petBreedSelectProps;
+  const { defaultBreed, ...restProps } = petBreedSelectProps;
   const { breedList } = useBreedListQuery();
 
   return (
     <BreedSelect name="pet-breed" aria-label="견종 선택" {...restProps}>
-      <option disabled selected value={undefined}>
+      <option disabled selected={!defaultBreed} value={undefined}>
         여기를 눌러 아이의 견종을 선택해주세요.
       </option>
       {breedList?.map(breed => (
-        <option key={breed.name} value={breed.name}>
+        <option key={breed.name} value={breed.name} selected={defaultBreed === breed.name}>
           {breed.name}
         </option>
       ))}

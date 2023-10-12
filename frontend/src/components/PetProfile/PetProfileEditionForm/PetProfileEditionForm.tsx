@@ -59,7 +59,7 @@ const PetProfileEditionForm = () => {
             </div>
             <div>
               <InputLabel htmlFor="pet-age">나이 선택</InputLabel>
-              <PetAgeSelect id="pet-age" onChange={onChangeAge} initialAge={pet.age} />
+              <PetAgeSelect id="pet-age" onChange={onChangeAge} defaultAge={pet.age} />
               <ErrorCaption>{isValidAgeSelect ? '' : '나이를 선택해주세요!'} </ErrorCaption>
             </div>
             <div>

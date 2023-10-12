@@ -1,3 +1,4 @@
+import { useEffect } from 'react';
 import { styled } from 'styled-components';
 
 import Input from '@/components/@common/Input/Input';
@@ -9,7 +10,12 @@ interface PetProfileNameAdditionProps {
 
 const PetProfileNameAddition = (props: PetProfileNameAdditionProps) => {
   const { onNext } = props;
-  const { isFirstRendered, isValidInput, onChangeName } = usePetProfileAddition();
+  const { petProfile, isFirstRendered, isValidInput, setIsValidInput, onChangeName } =
+    usePetProfileAddition();
+
+  useEffect(() => {
+    if (petProfile.name) setIsValidInput(true);
+  }, []);
 
   return (
     <Container>
@@ -22,6 +28,7 @@ const PetProfileNameAddition = (props: PetProfileNameAdditionProps) => {
         minLength={1}
         placeholder="여기를 눌러 아이의 이름을 입력해주세요."
         maxLength={10}
+        value={petProfile.name}
         isValid={isFirstRendered || isValidInput}
         onChange={onChangeName}
         design="underline"

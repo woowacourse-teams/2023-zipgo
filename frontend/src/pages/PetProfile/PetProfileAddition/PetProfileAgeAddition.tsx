@@ -1,3 +1,4 @@
+import { useEffect } from 'react';
 import { styled } from 'styled-components';
 
 import PetAgeSelect from '@/components/PetProfile/PetAgeSelect';
@@ -11,7 +12,11 @@ interface PetProfileAgeAdditionProps {
 
 const PetProfileAgeAddition = (props: PetProfileAgeAdditionProps) => {
   const { onNext } = props;
-  const { petProfile, isValidInput, onChangeAge } = usePetProfileAddition();
+  const { petProfile, isValidInput, setIsValidInput, onChangeAge } = usePetProfileAddition();
+
+  useEffect(() => {
+    if (petProfile.age) setIsValidInput(true);
+  }, []);
 
   return (
     <Container>
@@ -20,7 +25,7 @@ const PetProfileAgeAddition = (props: PetProfileAgeAdditionProps) => {
         귀여운 이름이에요. 나이는요?
       </Title>
       <InputLabel htmlFor="pet-age">나이 선택</InputLabel>
-      <PetAgeSelect id="pet-age" onChange={onChangeAge} />
+      <PetAgeSelect id="pet-age" defaultAge={petProfile.age} onChange={onChangeAge} />
       <NextButton type="button" onClick={onNext} disabled={!isValidInput}>
         다음
       </NextButton>

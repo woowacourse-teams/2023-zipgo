@@ -19,6 +19,15 @@ export const usePetProfileAddition = () => {
   const [isValidInput, setIsValidInput] = useState(false);
   const [isFirstRendered, setIsFirstRendered] = useState(true);
 
+  const onChangeName = (e: ChangeEvent<HTMLInputElement>) => {
+    const petName = e.target.value;
+
+    setIsFirstRendered(false);
+    updatePetProfile({ name: petName });
+
+    setIsValidInput(isValidName(petName));
+  };
+
   const onChangeAge = (e: ChangeEvent<HTMLSelectElement>) => {
     const selectedAge = Number(e.target.value);
 
@@ -46,6 +55,10 @@ export const usePetProfileAddition = () => {
     updatePetProfile({ breed: selectedBreed });
   };
 
+  const onClickPetSize = (petSize: PetSize) => {
+    updatePetProfile({ petSize });
+  };
+
   const onChangeGender = (e: ChangeEvent<HTMLInputElement>) => {
     const gender = e.target.value;
 
@@ -54,42 +67,17 @@ export const usePetProfileAddition = () => {
     }
   };
 
-  const onChangeName = (e: ChangeEvent<HTMLInputElement>) => {
-    const petName = e.target.value;
-
-    setIsFirstRendered(false);
-
-    if (isValidName(petName)) {
-      setIsValidInput(true);
-      updatePetProfile({ name: petName });
-
-      return;
-    }
-
-    setIsValidInput(false);
-  };
-
-  const onClickPetSize = (petSize: PetSize) => {
-    updatePetProfile({ petSize });
-  };
-
   const onChangeWeight = (e: ChangeEvent<HTMLInputElement>) => {
     const petWeight = e.target.value;
 
     setIsFirstRendered(false);
+    updatePetProfile({ weight: petWeight });
 
-    if (isValidWeight(petWeight)) {
-      setIsValidInput(true);
-      updatePetProfile({ weight: Number(petWeight) });
-
-      return;
-    }
-
-    setIsValidInput(false);
+    setIsValidInput(isValidWeight(petWeight));
   };
 
   const onSubmitPetProfile = () => {
-    addPetMutation.addPet(petProfile);
+    addPetMutation.addPet({ ...petProfile, weight: Number(petProfile.weight) });
 
     goHome();
   };
@@ -98,6 +86,7 @@ export const usePetProfileAddition = () => {
     isFirstRendered,
     isValidInput,
     petProfile,
+    setIsValidInput,
     onChangeAge,
     onChangeBreed,
     onChangeGender,
