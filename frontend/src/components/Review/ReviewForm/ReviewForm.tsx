@@ -8,7 +8,7 @@ import {
   TASTE_PREFERENCES,
 } from '@/constants/review';
 import { REVIEW_ACTION_TYPES } from '@/hooks/review/useReviewForm';
-import { ReviewData } from '@/pages/ReviewFormFunnel/ReviewFormFunnel';
+import { ReviewData } from '@/pages/Review/ReviewFormFunnel';
 
 interface ReviewFormProps {
   reviewData: ReviewData;

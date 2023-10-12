@@ -1,5 +1,5 @@
 import { FORM_EXIT_CONFIRMATION_MESSAGE } from '@/constants/common';
-import { ReviewStarRatingProps } from '@/pages/ReviewStarRating/ReviewStarRating';
+import { ReviewStarRatingProps } from '@/pages/Review/ReviewStarRating';
 
 import useEasyNavigate from '../@common/useEasyNavigate';
 import { useFoodDetailQuery } from '../query/food';

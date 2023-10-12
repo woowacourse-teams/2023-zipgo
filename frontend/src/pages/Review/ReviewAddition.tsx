@@ -5,7 +5,7 @@ import Template from '@/components/@common/Template';
 import FoodInfoInReviewForm from '@/components/Review/ReviewForm/FoodInfoInReviewForm/FoodInfoInReviewForm';
 import ReviewForm from '@/components/Review/ReviewForm/ReviewForm';
 
-import { ReviewData } from '../ReviewFormFunnel/ReviewFormFunnel';
+import { ReviewData } from './ReviewFormFunnel';
 
 interface ReviewAdditionProps {
   reviewData: ReviewData;

@@ -20,7 +20,7 @@ import { PATH } from './routes';
 const Landing = lazy(() => import('@/pages/Landing/Landing'));
 const Login = lazy(() => import('@/pages/Login/Login'));
 const FoodDetail = lazy(() => import('@/pages/FoodDetail/FoodDetail'));
-const ReviewFormFunnel = lazy(() => import('@/pages/ReviewFormFunnel/ReviewFormFunnel'));
+const ReviewFormFunnel = lazy(() => import('@/pages/Review/ReviewFormFunnel'));
 
 export const router = createBrowserRouter([
   {

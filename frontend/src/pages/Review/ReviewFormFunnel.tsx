@@ -5,8 +5,8 @@ import { useValidParams } from '@/hooks/@common/useValidParams';
 import { ReviewSetAction, useReviewForm } from '@/hooks/review/useReviewForm';
 import { PostReviewReq } from '@/types/review/remote';
 
-import ReviewAddition from '../ReviewAddition/ReviewAddition';
-import ReviewStarRating from '../ReviewStarRating/ReviewStarRating';
+import ReviewAddition from './ReviewAddition';
+import ReviewStarRating from './ReviewStarRating';
 
 interface LocationState {
   state: {

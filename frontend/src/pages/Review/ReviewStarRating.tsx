@@ -5,7 +5,7 @@ import StarRatingInput from '@/components/@common/StarRating/StarRatingInput/Sta
 import Template from '@/components/@common/Template';
 import { useReviewStarRating } from '@/hooks/review/useReviewStarRating';
 
-import { ReviewData } from '../ReviewFormFunnel/ReviewFormFunnel';
+import { ReviewData } from './ReviewFormFunnel';
 
 export interface ReviewStarRatingProps {
   reviewData: ReviewData;
