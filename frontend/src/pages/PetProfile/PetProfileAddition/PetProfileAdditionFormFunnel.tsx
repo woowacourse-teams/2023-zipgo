@@ -3,7 +3,6 @@ import { styled } from 'styled-components';
 
 import BackBtnIcon from '@/assets/svg/back_btn.svg';
 import Template from '@/components/@common/Template';
-import { FORM_EXIT_CONFIRMATION_MESSAGE } from '@/constants/common';
 import { PET_PROFILE_ADDITION_STEP } from '@/constants/petProfile';
 import useEasyNavigate from '@/hooks/@common/useEasyNavigate';
 import { useFunnel } from '@/hooks/@common/useFunnel';
@@ -17,21 +16,17 @@ import PetProfilePetSizeAddition from './PetProfilePetSizeAddition';
 import PetProfileWeightAddition from './PetProfileWeightAddition';
 
 const PetProfileAdditionFormFunnel = () => {
-  const { goHome } = useEasyNavigate();
+  const { goBackSafely } = useEasyNavigate();
   const [isMixedBreed, setIsMixedBreed] = useState(false);
   const { Funnel, step, setStep } = useFunnel(
     PET_PROFILE_ADDITION_STEP,
     PET_PROFILE_ADDITION_STEP[0],
   );
 
-  const goHomeSafely = () => {
-    confirm(FORM_EXIT_CONFIRMATION_MESSAGE) && goHome();
-  };
-
   const onClickBackButton = (stepNum: number) => {
     const stepIndex = stepNum - 1;
 
-    if (stepIndex === 0) goHomeSafely();
+    if (stepIndex === 0) goBackSafely();
     else if (PET_PROFILE_ADDITION_STEP[stepIndex] === 'GENDER' && !isMixedBreed) {
       setStep(prev => PET_PROFILE_ADDITION_STEP[stepIndex - 2]);
     } else setStep(prev => PET_PROFILE_ADDITION_STEP[stepIndex - 1]);

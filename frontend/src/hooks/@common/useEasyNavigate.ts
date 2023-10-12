@@ -1,5 +1,6 @@
 import { useNavigate } from 'react-router-dom';
 
+import { FORM_EXIT_CONFIRMATION_MESSAGE } from '@/constants/common';
 import {
   replaceQueryString as replaceQuery,
   routerPath,
@@ -12,6 +13,10 @@ const useEasyNavigate = () => {
   const goHome = () => navigate(routerPath.home());
 
   const goBack = () => navigate(routerPath.back);
+
+  const goBackSafely = () => {
+    confirm(FORM_EXIT_CONFIRMATION_MESSAGE) && goBack();
+  };
 
   const updateQueryString = (
     queryString: string,
@@ -27,7 +32,7 @@ const useEasyNavigate = () => {
     navigate(`${path}${replaceQuery(queryString, exclude)}`);
   };
 
-  return { navigate, goHome, goBack, updateQueryString, replaceQueryString };
+  return { navigate, goHome, goBack, goBackSafely, updateQueryString, replaceQueryString };
 };
 
 export default useEasyNavigate;

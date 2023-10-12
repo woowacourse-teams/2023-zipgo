@@ -1,4 +1,3 @@
-import { FORM_EXIT_CONFIRMATION_MESSAGE } from '@/constants/common';
 import { ReviewStarRatingProps } from '@/pages/Review/ReviewStarRating';
 
 import useEasyNavigate from '../@common/useEasyNavigate';
@@ -12,12 +11,8 @@ export const useReviewStarRating = (props: ReviewStarRatingProps) => {
       reviewDispatch,
     },
   } = props;
-  const { goBack } = useEasyNavigate();
+  const { goBackSafely } = useEasyNavigate();
   const { foodData } = useFoodDetailQuery({ petFoodId: petFoodId.toString() });
-
-  const goBackSafely = () => {
-    confirm(FORM_EXIT_CONFIRMATION_MESSAGE) && goBack();
-  };
 
   const updateRating = (selectedRating: number) => {
     reviewDispatch({
