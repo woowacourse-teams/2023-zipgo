@@ -11,7 +11,8 @@ import { usePetProfileValidation } from './usePetProfileValidation';
 export const usePetProfileAddition = () => {
   const { goHome } = useEasyNavigate();
   const { addPetMutation } = useAddPetMutation();
-  const { isValidAgeRange, isValidGender, isValidName, isValidWeight } = usePetProfileValidation();
+  const { isValidAgeRange, isValidGender, isValidName, isValidWeight, isMixedBreed } =
+    usePetProfileValidation();
 
   const { petProfile, updatePetProfile } = usePetAdditionContext();
 
@@ -35,7 +36,14 @@ export const usePetProfileAddition = () => {
     const selectedBreed = e.target.value;
 
     setIsValidInput(true);
-    updatePetProfile({ breed: selectedBreed, petSize: PET_SIZES[0] });
+
+    if (isMixedBreed(selectedBreed)) {
+      updatePetProfile({ breed: selectedBreed, petSize: PET_SIZES[0] });
+
+      return;
+    }
+
+    updatePetProfile({ breed: selectedBreed });
   };
 
   const onChangeGender = (e: ChangeEvent<HTMLInputElement>) => {
