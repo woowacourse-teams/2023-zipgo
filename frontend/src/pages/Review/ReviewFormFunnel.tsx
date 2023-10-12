@@ -34,7 +34,7 @@ const ReviewFormFunnel = () => {
     reviewId,
   });
 
-  const [Funnel, setStep] = useFunnel(['별점선택', '리뷰작성'], '별점선택');
+  const { Funnel, setStep } = useFunnel(['별점선택', '리뷰작성'], '별점선택');
 
   return (
     <Funnel>

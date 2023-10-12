@@ -20,5 +20,5 @@ export const useFunnel = <Steps extends NonEmptyArray<string>>(
     [step],
   );
 
-  return [FunnelComponent, setStep] as const;
+  return { Funnel: FunnelComponent, step, setStep };
 };
