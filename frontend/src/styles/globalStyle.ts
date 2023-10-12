@@ -15,9 +15,16 @@ const globalStyle = css`
   }
 
   * {
+    scrollbar-width: none;
+
     box-sizing: border-box;
 
     font-size: 62.5%;
+
+    &::-webkit-scrollbar {
+      width: 0;
+      height: 0;
+    }
   }
 
   body {
