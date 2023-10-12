@@ -5,6 +5,7 @@ import org.junit.jupiter.api.DisplayNameGenerator;
 import org.junit.jupiter.api.Test;
 import org.springframework.mock.web.MockHttpServletRequest;
 import zipgo.auth.exception.TokenInvalidException;
+import zipgo.auth.exception.TokenMissingException;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
@@ -60,6 +61,16 @@ class BearerTokenExtractorTest {
         assertThatThrownBy(() -> BearerTokenExtractor.extract(요청))
                 .isInstanceOf(TokenInvalidException.class)
                 .hasMessageContaining("잘못된 토큰입니다. 올바른 토큰으로 다시 시도해주세요.");
+    }
+
+    @Test
+    void 토큰이_없으면_MissingException이_발생한다() {
+        //given
+        var 요청 = new MockHttpServletRequest();
+
+        //expect
+        assertThatThrownBy(() -> BearerTokenExtractor.extract(요청))
+                .isInstanceOf(TokenMissingException.class);
     }
 
 }

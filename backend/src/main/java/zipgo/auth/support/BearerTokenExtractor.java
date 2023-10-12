@@ -3,6 +3,7 @@ package zipgo.auth.support;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.NoArgsConstructor;
 import zipgo.auth.exception.TokenInvalidException;
+import zipgo.auth.exception.TokenMissingException;
 
 import static lombok.AccessLevel.PRIVATE;
 import static org.springframework.http.HttpHeaders.AUTHORIZATION;
@@ -21,7 +22,7 @@ public class BearerTokenExtractor {
 
     private static void validate(String authorization) {
         if (authorization == null) {
-            throw new TokenInvalidException();
+            throw new TokenMissingException();
         }
         if (!authorization.matches(BEARER_JWT_REGEX)) {
             throw new TokenInvalidException();
