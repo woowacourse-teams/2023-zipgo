@@ -7,6 +7,7 @@ import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { initialize, mswDecorator } from 'msw-storybook-addon';
 import { withRouter } from 'storybook-addon-react-router-v6';
 import handlers from '../src/mocks/handlers';
+import Loading from '../src/components/@common/Loading/Loading';
 
 let options = {};
 
@@ -96,9 +97,9 @@ const preview: Preview = {
       <QueryClientProvider client={queryClient}>
         <ThemeProvider theme={theme}>
           <GlobalStyle />
-          <Suspense fallback={<div>Loading...</div>}>
+          <Loading>
             <Story />
-          </Suspense>
+          </Loading>
         </ThemeProvider>
       </QueryClientProvider>
     ),

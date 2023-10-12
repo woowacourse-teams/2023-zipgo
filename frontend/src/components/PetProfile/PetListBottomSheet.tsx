@@ -1,20 +1,20 @@
 import { styled } from 'styled-components';
 
 import { Dialog } from '../@common/Dialog/Dialog';
-import QueryBoundary from '../@common/ErrorBoundary/QueryBoundary/QueryBoundary';
 import UserProfile from '../@common/Header/UserProfile';
+import Loading from '../@common/Loading/Loading';
 import PetList from './PetList';
 
 const PetListBottomSheet = () => (
   <Dialog>
     <UserProfile />
     <Dialog.Portal>
-      <QueryBoundary>
+      <Loading>
         <Dialog.BackDrop />
         <Dialog.Content asChild>
           {({ openHandler }) => <PetListContainer toggleDialog={openHandler} />}
         </Dialog.Content>
-      </QueryBoundary>
+      </Loading>
     </Dialog.Portal>
   </Dialog>
 );
