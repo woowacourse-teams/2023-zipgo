@@ -1,5 +1,6 @@
 import { useLocation } from 'react-router-dom';
 
+import { REVIEW_FORM_STEP } from '@/constants/review';
 import { useFunnel } from '@/hooks/@common/useFunnel';
 import { useValidParams } from '@/hooks/@common/useValidParams';
 import { ReviewSetAction, useReviewForm } from '@/hooks/review/useReviewForm';
@@ -34,20 +35,20 @@ const ReviewFormFunnel = () => {
     reviewId,
   });
 
-  const { Funnel, setStep } = useFunnel(['별점선택', '리뷰작성'], '별점선택');
+  const { Funnel, setStep } = useFunnel(REVIEW_FORM_STEP, REVIEW_FORM_STEP[0]);
 
   return (
     <Funnel>
-      <Funnel.Step name="별점선택">
+      <Funnel.Step name="STAR_RATING">
         <ReviewStarRating
           reviewData={reviewData}
           onNext={() => {
-            setStep(prev => '리뷰작성');
+            setStep(prev => 'REVIEW_SUBMISSION');
           }}
         />
       </Funnel.Step>
-      <Funnel.Step name="리뷰작성">
-        <ReviewAddition reviewData={reviewData} onPrev={() => setStep(prev => '별점선택')} />
+      <Funnel.Step name="REVIEW_SUBMISSION">
+        <ReviewAddition reviewData={reviewData} onPrev={() => setStep(prev => 'STAR_RATING')} />
       </Funnel.Step>
     </Funnel>
   );

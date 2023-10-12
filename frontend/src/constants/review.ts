@@ -52,3 +52,5 @@ export const COMMENT_LIMIT = 255;
 export const REVIEW_ERROR_MESSAGE = {
   INVALID_COMMENT: `리뷰는 ${COMMENT_LIMIT}자 이하로 작성해주세요!`,
 } as const;
+
+export const REVIEW_FORM_STEP = ['STAR_RATING', 'REVIEW_SUBMISSION'] as const;
