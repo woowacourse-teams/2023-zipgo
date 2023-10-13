@@ -43,4 +43,6 @@ module.exports = {
   moduleFileExtensions,
   'alias@': resolveApp('src/'),
   resolveLib,
+  localhostKey: resolveApp('config/localhost+1-key.pem'),
+  cert: resolveApp('config/localhost+1.pem'),
 };
