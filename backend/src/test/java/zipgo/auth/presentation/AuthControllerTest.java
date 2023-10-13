@@ -1,6 +1,5 @@
 package zipgo.auth.presentation;
 
-import com.epages.restdocs.apispec.ResourceSnippetDetails;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,11 +26,6 @@ import static org.springframework.restdocs.payload.PayloadDocumentation.response
 class AuthControllerTest extends AcceptanceTest {
 
     private static final String TEST_SECRET_KEY = "this1-is2-zipgo3-test4-secret5-key6";
-
-    private ResourceSnippetDetails API_정보 = resourceDetails()
-            .summary("토큰 갱신 및 로그아웃")
-            .description("access token을 갱신하고 로그아웃을 합니다");
-
 
     @Autowired
     private RefreshTokenRepository refreshTokenRepository;
@@ -127,18 +121,20 @@ class AuthControllerTest extends AcceptanceTest {
 
     private RestDocumentationFilter 토큰_갱신_성공_문서_생성() {
         return document("access token 갱신 성공",
-                API_정보,
+                resourceDetails().summary("토큰 갱신").description("access token을 갱신합니다"),
                 responseFields(
                         fieldWithPath("accessToken").description("갱신된 accessToken").type(JsonFieldType.STRING)
                 ));
     }
 
     private RestDocumentationFilter 토큰_갱신_실패_문서_생성() {
-        return document("access token 갱신 실패 (유효하지 않은 인증 형식)", API_정보.responseSchema(에러_응답_형식));
+        return document("access token 갱신 실패 (유효하지 않은 인증 형식)", resourceDetails()
+                .summary("토큰 갱신").responseSchema(에러_응답_형식));
     }
 
     private RestDocumentationFilter 로그아웃_성공_문서_생성() {
-        return document("로그아웃 성공", API_정보,
+        return document("로그아웃 성공", resourceDetails()
+                .summary("로그아웃"),
                 responseHeaders(
                         headerWithName(SET_COOKIE).description("로그아웃 리프레시 토큰 쿠키")
                 )
@@ -146,7 +142,7 @@ class AuthControllerTest extends AcceptanceTest {
     }
 
     private RestDocumentationFilter 로그아웃_실패_문서_생성() {
-        return document("로그아웃 실패 (유효하지 않은 인증 형식)", API_정보.responseSchema(에러_응답_형식));
+        return document("로그아웃 실패 (유효하지 않은 인증 형식)", resourceDetails().summary("로그아웃").responseSchema(에러_응답_형식));
     }
 
 }
