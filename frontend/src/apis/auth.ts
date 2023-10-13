@@ -3,6 +3,7 @@ import {
   LoginKakaoAuthRes,
   LoginZipgoAuthReq,
   LoginZipgoAuthRes,
+  RefreshZipgoAuthRes,
 } from '@/types/auth/remote';
 import { zipgoLocalStorage } from '@/utils/localStorage';
 
@@ -14,6 +15,12 @@ export const loginZipgoAuth = async ({ code }: LoginZipgoAuthReq) => {
       code,
     },
   });
+
+  return data;
+};
+
+export const refreshZipgoAuth = async () => {
+  const { data } = await clientBasic<RefreshZipgoAuthRes>('/auth/refresh');
 
   return data;
 };
@@ -42,10 +49,7 @@ export const logoutKaKaoAuth = async () => {
 export const authenticateUser = async () => {
   const tokens = zipgoLocalStorage.getTokens();
 
-  const { data } = await clientBasic.get<AuthenticateUserRes>(
-    '/auth',
-    createConfigWithAuth(tokens),
-  );
+  const { data } = await client<AuthenticateUserRes>('/auth', createConfigWithAuth(tokens));
 
   return data;
 };

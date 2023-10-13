@@ -24,6 +24,10 @@ export interface LoginZipgoAuthRes {
   authResponse: User;
 }
 
+export interface RefreshZipgoAuthRes {
+  accessToken: string;
+}
+
 export interface LoginKakaoAuthReq {
   code: string;
 }
