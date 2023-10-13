@@ -17,7 +17,7 @@ const PetProfileAgeAddition = (props: PetProfileAgeAdditionProps) => {
   const { petProfile, isValidInput, setIsValidInput, onChangeAge } = usePetProfileAddition();
 
   useEffect(() => {
-    if (isValidAgeRange(petProfile.age)) setIsValidInput(true);
+    setIsValidInput(isValidAgeRange(petProfile.age));
   }, []);
 
   return (

@@ -1,7 +1,7 @@
-import { SelectHTMLAttributes } from 'react';
+import { ComponentPropsWithoutRef } from 'react';
 import { styled } from 'styled-components';
 
-interface PetAgeSelectProps extends SelectHTMLAttributes<HTMLSelectElement> {
+interface PetAgeSelectProps extends ComponentPropsWithoutRef<'select'> {
   defaultAge?: number;
 }
 
@@ -10,7 +10,7 @@ const PetAgeSelect = (petAgeSelectProps: PetAgeSelectProps) => {
 
   return (
     <AgeSelect name="pet-age" aria-label="반려동물 나이 선택" {...restProps}>
-      <option disabled value={undefined} selected={!defaultAge || Boolean(defaultAge < 0)}>
+      <option disabled selected={!defaultAge || Boolean(defaultAge < 0)}>
         여기를 눌러 아이의 나이를 선택해주세요.
       </option>
       <option value={0} selected={defaultAge === 0}>

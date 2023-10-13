@@ -1,7 +1,7 @@
-import { Children, isValidElement, ReactElement, ReactNode, useEffect } from 'react';
+import { Children, isValidElement, PropsWithChildren, ReactElement, useEffect } from 'react';
 
-import { useToast } from '@/context/Toast/ToastContext';
 import { NonEmptyArray } from '@/types/common/utility';
+import { RuntimeError } from '@/utils/errors';
 
 export interface FunnelProps<Steps extends NonEmptyArray<string>> {
   steps: Steps;
@@ -9,26 +9,24 @@ export interface FunnelProps<Steps extends NonEmptyArray<string>> {
   children: Array<ReactElement<StepProps<Steps>>> | ReactElement<StepProps<Steps>>;
 }
 
-export interface StepProps<Steps extends NonEmptyArray<string>> {
+export interface StepProps<Steps extends NonEmptyArray<string>> extends PropsWithChildren {
   name: Steps[number];
-  onNext?: () => void;
-  children?: ReactNode;
+  onNext?: VoidFunction;
 }
 
-export const Funnel = <Steps extends NonEmptyArray<string>>(funnelProps: FunnelProps<Steps>) => {
-  const { steps, step, children } = funnelProps;
-  const { toast } = useToast();
+export const Funnel = <Steps extends NonEmptyArray<string>>(props: FunnelProps<Steps>) => {
+  const { steps, step, children } = props;
   const validChildren = Children.toArray(children)
-    .filter(isValidElement)
-    .filter(i => steps.includes((i.props as Partial<StepProps<Steps>>).name ?? '')) as Array<
-    ReactElement<StepProps<Steps>>
-  >;
+    .filter(isValidElement<StepProps<Steps>>)
+    .filter(({ props }) => steps.includes(props.name));
 
   const targetStep = validChildren.find(child => child.props.name === step);
 
   if (!targetStep) {
-    toast.warning(`${step} 스텝 컴포넌트를 찾지 못했습니다.`);
-    return null;
+    throw new RuntimeError(
+      { code: 'WRONG_URL_FORMAT' },
+      `${step} 스텝 컴포넌트를 찾지 못했습니다.`,
+    );
   }
 
   return targetStep;

@@ -14,10 +14,10 @@ interface ReviewFormProps {
   reviewData: ReviewData;
 }
 
-const ReviewForm = (reviewFormProps: ReviewFormProps) => {
+const ReviewForm = (props: ReviewFormProps) => {
   const {
     reviewData: { review, isValidComment, reviewDispatch, onSubmitReview },
-  } = reviewFormProps;
+  } = props;
 
   return (
     <ReviewFormContainer onSubmit={onSubmitReview}>
