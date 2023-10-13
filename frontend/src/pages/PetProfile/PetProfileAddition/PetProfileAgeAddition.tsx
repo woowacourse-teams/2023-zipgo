@@ -3,6 +3,7 @@ import { styled } from 'styled-components';
 
 import PetAgeSelect from '@/components/PetProfile/PetAgeSelect';
 import { usePetProfileAddition } from '@/hooks/petProfile/usePetProfileAddition';
+import { usePetProfileValidation } from '@/hooks/petProfile/usePetProfileValidation';
 
 import { NextButton } from './PetProfileNameAddition';
 
@@ -12,10 +13,11 @@ interface PetProfileAgeAdditionProps {
 
 const PetProfileAgeAddition = (props: PetProfileAgeAdditionProps) => {
   const { onNext } = props;
+  const { isValidAgeRange } = usePetProfileValidation();
   const { petProfile, isValidInput, setIsValidInput, onChangeAge } = usePetProfileAddition();
 
   useEffect(() => {
-    if (petProfile.age) setIsValidInput(true);
+    if (isValidAgeRange(petProfile.age)) setIsValidInput(true);
   }, []);
 
   return (
