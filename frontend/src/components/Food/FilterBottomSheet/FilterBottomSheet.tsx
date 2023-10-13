@@ -3,7 +3,7 @@ import styled, { css } from 'styled-components';
 
 import SettingsIcon from '@/assets/svg/settings_outline_icon.svg';
 import { Dialog } from '@/components/@common/Dialog/Dialog';
-import QueryBoundary from '@/components/@common/ErrorBoundary/QueryBoundary/QueryBoundary';
+import Loading from '@/components/@common/Loading/Loading';
 import Tabs from '@/components/@common/Tabs/Tabs';
 import { FoodFilterProvider, useFoodFilterContext } from '@/context/food';
 import { useFoodListFilterMetaQuery } from '@/hooks/query/food';
@@ -12,6 +12,7 @@ import type { KeywordEn } from '@/types/food/client';
 import { translateKeyword } from '@/utils/food';
 import { getComputedStyleOfSC } from '@/utils/styled-components';
 
+import FilterSelectionDisplay from '../FilterSelectionDisplay/FilterSelectionDisplay';
 import BrandFilterList from './BrandFilterList/BrandFilterList';
 import FunctionalityFilterList from './FunctionalityFilterList/FunctionalityFilterList';
 import MainIngredientsFilterList from './MainIngredientsFilterList/MainIngredientsFilterList';
@@ -27,12 +28,12 @@ const FilterBottomSheet = () => (
         </DialogTrigger>
       </Dialog.Trigger>
       <Dialog.Portal>
-        <QueryBoundary>
+        <Loading>
           <Dialog.BackDrop />
           <Dialog.Content asChild>
             {({ openHandler }) => <KeywordContent toggleDialog={openHandler} />}
           </Dialog.Content>
-        </QueryBoundary>
+        </Loading>
       </Dialog.Portal>
     </Dialog>
   </FoodFilterProvider>
@@ -117,6 +118,10 @@ const KeywordContent = (props: KeywordContentProps) => {
 
 export default FilterBottomSheet;
 
+const FilterDialogAndFilterDisplayContainer = styled.div`
+  display: flex;
+`;
+
 const Layout = styled.div`
   position: fixed;
   z-index: 1001;
@@ -141,6 +146,7 @@ const DialogTrigger = styled.button`
   gap: 0.4rem;
   align-items: center;
 
+  width: 8.8rem;
   padding: 1rem 1.6rem;
 
   background-color: transparent;

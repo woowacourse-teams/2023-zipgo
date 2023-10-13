@@ -1,11 +1,10 @@
-/* eslint-disable max-classes-per-file */
-import { Component, ComponentProps, ErrorInfo, PropsWithChildren, ReactNode } from 'react';
+import { Component, ErrorInfo, PropsWithChildren, ReactNode } from 'react';
 import { useLocation } from 'react-router-dom';
 
 import { ErrorBoundaryState, ErrorBoundaryValue } from '@/types/common/errorBoundary';
 import { RenderProps } from '@/types/common/utility';
-import { resolveRenderProps } from '@/utils/compound';
-import { shouldIgnore, ZipgoError } from '@/utils/errors';
+import { resolveFunctionOrPrimitive, resolveRenderProps } from '@/utils/compound';
+import { isIgnored, ZipgoError } from '@/utils/errors';
 import { isDifferentArray } from '@/utils/isDifferentArray';
 
 const initialState = {
@@ -14,9 +13,10 @@ const initialState = {
 } as const;
 
 interface ErrorBoundaryProps<E extends Error> {
+  mustCatch?: boolean;
   resetKeys?: unknown[];
   fallback?: ReactNode | RenderProps<ErrorBoundaryValue<E>>;
-  ignore?<E extends Error>(props: E): boolean;
+  shouldIgnore?: boolean | ((payload: { error: E }) => boolean);
   onError?(payload: { error: E; errorInfo: ErrorInfo }): void;
   onReset?: VoidFunction;
 }
@@ -33,8 +33,6 @@ class BaseErrorBoundary<E extends Error = Error> extends Component<
   }
 
   static getDerivedStateFromError(error: Error) {
-    if (shouldIgnore(error)) throw error;
-
     return {
       hasError: true,
       error: ZipgoError.convertToError(error),
@@ -47,12 +45,16 @@ class BaseErrorBoundary<E extends Error = Error> extends Component<
     }
   }
 
-  componentDidCatch(error: E, errorInfo: ErrorInfo): void {
-    const { onError, ignore } = this.props;
+  componentDidCatch(_: E, errorInfo: ErrorInfo): void {
+    const { onError, shouldIgnore, mustCatch } = this.props;
 
-    if (ignore?.(error)) {
-      throw error;
-    }
+    const { error, hasError } = this.state;
+
+    if (!hasError) return;
+
+    const willIgnore = isIgnored(error) || resolveFunctionOrPrimitive(shouldIgnore, { error });
+
+    if (!mustCatch && willIgnore) throw error;
 
     onError?.({ error, errorInfo });
   }
@@ -72,37 +74,20 @@ class BaseErrorBoundary<E extends Error = Error> extends Component<
 
     if (!hasError) return children;
 
-    if (!fallback) return null;
-
     return resolveRenderProps(fallback, { reset: this.reset, error });
   }
 }
 
-class BaseEndOfErrorBoundary<E extends Error = Error> extends BaseErrorBoundary<E> {
-  static getDerivedStateFromError(error: Error) {
-    return {
-      hasError: true,
-      error: ZipgoError.convertToError(error),
-    };
-  }
-}
+const ErrorBoundary = <E extends Error>(props: PropsWithChildren<ErrorBoundaryProps<E>>) => {
+  const location = useLocation();
 
-const resetOnNavigate = (ErrorBoundary: typeof BaseErrorBoundary) => {
-  const ErrorBoundaryWithResetKeys = <E extends Error>(
-    props: ComponentProps<typeof ErrorBoundary<E>>,
-  ) => {
-    const location = useLocation();
+  const resetKeys = [location.key, ...(props.resetKeys || [])];
 
-    const resetKeys = [location.key, ...(('resetKeys' in props && props.resetKeys) || [])];
-
-    return <ErrorBoundary<E> {...props} resetKeys={resetKeys} />;
-  };
-
-  return ErrorBoundaryWithResetKeys;
+  return <BaseErrorBoundary<E> {...props} resetKeys={resetKeys} />;
 };
 
-const ErrorBoundary = resetOnNavigate(BaseErrorBoundary);
+const CriticalBoundary = <E extends Error>(props: PropsWithChildren<ErrorBoundaryProps<E>>) => (
+  <ErrorBoundary<E> {...props} mustCatch />
+);
 
-const EndOfErrorBoundary = resetOnNavigate(BaseEndOfErrorBoundary);
-
-export { EndOfErrorBoundary, ErrorBoundary };
+export { CriticalBoundary, ErrorBoundary };

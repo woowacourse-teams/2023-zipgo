@@ -1,6 +1,6 @@
 import { styled } from 'styled-components';
 
-import { useInfiniteFoodListScroll } from '@/hooks/food';
+import { useInfiniteFoodListScroll } from '@/hooks/food/useInfiniteFoodListScroll';
 
 import FoodItem from '../FoodItem/FoodItem';
 

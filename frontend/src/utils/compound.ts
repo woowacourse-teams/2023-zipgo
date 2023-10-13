@@ -1,6 +1,6 @@
 import { Children, isValidElement, PropsWithChildren, ReactElement, ReactNode } from 'react';
 
-import { RenderProps } from '@/types/common/utility';
+import type { BaseFunction, RenderProps } from '@/types/common/utility';
 
 export type AsChild = {
   asChild?: boolean;
@@ -54,4 +54,10 @@ export const getValidProps = <P, R extends object>(
 export const resolveRenderProps = <P extends object>(
   renderProps: ReactNode | RenderProps<P>,
   payload: P,
-) => (typeof renderProps === 'function' ? renderProps(payload) : renderProps);
+) => resolveFunctionOrPrimitive(renderProps, payload);
+
+export const resolveFunctionOrPrimitive = <T>(
+  functionOrPrimitive: T,
+  ...payload: T extends BaseFunction ? Parameters<T> : never[]
+): T extends BaseFunction ? ReturnType<T> : T =>
+  typeof functionOrPrimitive === 'function' ? functionOrPrimitive(...payload) : functionOrPrimitive;

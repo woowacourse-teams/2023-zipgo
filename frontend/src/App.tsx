@@ -3,7 +3,7 @@ import { useEffect } from 'react';
 import { Outlet } from 'react-router-dom';
 import { ThemeProvider } from 'styled-components';
 
-import { EndOfErrorBoundary } from './components/@common/ErrorBoundary/ErrorBoundary';
+import { CriticalBoundary } from './components/@common/ErrorBoundary/ErrorBoundary';
 import QueryBoundary from './components/@common/ErrorBoundary/QueryBoundary/QueryBoundary';
 import GlobalStyle from './components/@common/GlobalStyle';
 import { ERROR_MESSAGE_KIT } from './constants/errors';
@@ -17,7 +17,7 @@ import { UnexpectedError } from './utils/errors';
 import { setScreenSize } from './utils/setScreenSize';
 
 const errorFallback = ({ reset, error }: ErrorBoundaryValue) => (
-  <ErrorPage reset={reset} error={error} />
+  <ErrorPage reset={reset} error={error} refresh />
 );
 
 const queryClient = new QueryClient({
@@ -36,14 +36,14 @@ const App = () => (
   <ThemeProvider theme={theme}>
     <GlobalStyle />
     <QueryClientProvider client={queryClient}>
-      <EndOfErrorBoundary fallback={errorFallback}>
+      <CriticalBoundary fallback={errorFallback}>
         <QueryBoundary errorFallback={errorFallback}>
           <ToastProvider>
             <GlobalEvent />
             <Outlet />
           </ToastProvider>
         </QueryBoundary>
-      </EndOfErrorBoundary>
+      </CriticalBoundary>
     </QueryClientProvider>
   </ThemeProvider>
 );

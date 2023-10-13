@@ -2,7 +2,7 @@
 /* eslint-disable no-spaced-func */
 import { createContext, useContext, useMemo } from 'react';
 
-import { useFoodListFilter } from '@/hooks/food';
+import { useFoodListFilter } from '@/hooks/food/useFoodListFilter';
 import type { KeywordEn } from '@/types/food/client';
 import { getValidProps, PropsWithRenderProps } from '@/utils/compound';
 

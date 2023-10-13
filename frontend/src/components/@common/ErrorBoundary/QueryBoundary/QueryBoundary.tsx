@@ -3,7 +3,7 @@ import { ComponentProps, PropsWithChildren, Suspense } from 'react';
 
 import { composeFunctions } from '@/utils/dom';
 
-import LoadingSpinner from '../../LoadingSpinner';
+import LoadingSpinner from '../../LoadingSpinner/LoadingSpinner';
 import APIBoundary from '../APIBoundary/APIBoundary';
 
 interface QueryBoundaryProps extends Omit<ComponentProps<typeof APIBoundary>, 'fallback'> {
