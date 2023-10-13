@@ -1,14 +1,17 @@
-import axios from 'axios';
+import axios, { AxiosError, AxiosRequestConfig } from 'axios';
 
 import { Tokens } from '@/types/auth/client';
 import { zipgoLocalStorage } from '@/utils/localStorage';
+
+import { refreshZipgoAuth } from './auth';
 
 export const { BASE_URL } = process.env;
 
 const tokens = zipgoLocalStorage.getTokens();
 
-const defaultConfig = {
+const defaultConfig: AxiosRequestConfig = {
   baseURL: BASE_URL,
+  withCredentials: true,
 };
 
 export const createConfigWithAuth = (tokens: Tokens | null) =>
@@ -38,11 +41,27 @@ client.interceptors.request.use(config => {
 
 client.interceptors.response.use(
   response => response,
-  async error => {
-    if (error.response.status === 401) {
-      alert('세션이 만료되었습니다.');
+  async (error: AxiosError) => {
+    const config = error.config;
 
-      zipgoLocalStorage.clearAuth();
+    if (error?.response?.status === 401) {
+      if (!config?.headers.Authorization) {
+        alert('로그인 후 이용해 주세요');
+      } else {
+        try {
+          const { accessToken } = await refreshZipgoAuth();
+
+          zipgoLocalStorage.setTokens({ accessToken });
+
+          config.headers.Authorization = `Bearer ${accessToken}`;
+
+          return client(config);
+        } catch (error) {
+          alert('세션이 만료되었습니다.');
+
+          zipgoLocalStorage.clearAuth();
+        }
+      }
     }
 
     return Promise.reject(error);
