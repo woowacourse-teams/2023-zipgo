@@ -1,89 +1,58 @@
+import { ChangeEvent } from 'react';
 import styled from 'styled-components';
 
-import AlignControlsIcon from '@/assets/svg/align_controls.svg';
-import Select from '@/components/@common/Select/Select';
 import useEasyNavigate from '@/hooks/@common/useEasyNavigate';
+import useValidQueryString from '@/hooks/common/useValidQueryString';
 import { useReviewListAlignMeta } from '@/hooks/query/review';
 import { generateQueryString } from '@/router/routes';
+import { RuntimeError } from '@/utils/errors';
+
+const ALIGN_QUERY = 'sortBy';
 
 const AlignSelect = () => {
   const { metaData } = useReviewListAlignMeta();
   const { updateQueryString } = useEasyNavigate();
+  const { sortBy } = useValidQueryString([ALIGN_QUERY]);
 
   if (!metaData) return null;
 
-  const onValueChange = (value: string) => {
+  const alignReviewList = ({ target: { value } }: ChangeEvent<HTMLSelectElement>) => {
     const valueId = metaData.find(({ name }) => name === value)?.id;
 
-    if (!valueId) throw new Error('Invalid align value');
+    if (!valueId) throw new RuntimeError({ code: 'WRONG_QUERY_STRING' }, valueId);
 
-    updateQueryString(generateQueryString({ sortBy: valueId }));
+    updateQueryString(generateQueryString({ [ALIGN_QUERY]: valueId }));
   };
 
   return (
-    <Select defaultValue={metaData[0].name} onValueChange={onValueChange}>
-      <Select.Trigger asChild>
-        {({ selectedValue }) => (
-          <Trigger>
-            <TriggerIcon src={AlignControlsIcon} alt="리뷰 정렬 아이콘" />
-            <span>{selectedValue || '정렬'}</span>
-          </Trigger>
-        )}
-      </Select.Trigger>
-      <Select.Content asChild>
-        <Content>
-          {metaData.map(({ id, name }) => (
-            <Select.Item key={id} value={name} asChild>
-              {({ selected }) => (
-                <Item>
-                  {selected && <Indicator>✔</Indicator>}
-                  {name}
-                </Item>
-              )}
-            </Select.Item>
-          ))}
-        </Content>
-      </Select.Content>
+    <Select onChange={alignReviewList}>
+      {metaData.map(({ id, name }) => (
+        <Item key={id} value={name} selected={id === Number(sortBy)}>
+          {name}
+        </Item>
+      ))}
     </Select>
   );
 };
 
 export default AlignSelect;
 
-const Trigger = styled.button`
-  display: flex;
-  gap: 0.4rem;
-  align-items: center;
-  justify-content: center;
-
+const Select = styled.select`
   min-height: 1.4rem;
   padding: 0.8rem;
 
-  background: ${({ theme }) => theme.color.grey200};
+  font-size: 1.3rem;
+  font-weight: 500;
+  font-style: normal;
+  color: ${({ theme }) => theme.color.grey400};
+  text-align: center;
+
+  background-color: ${({ theme }) => theme.color.grey200};
   border: none;
   border-radius: 4px;
-
-  & > span {
-    padding-top: 0.2rem;
-
-    font-size: 1.3rem;
-    font-weight: 500;
-    font-style: normal;
-    color: ${({ theme }) => theme.color.grey400};
-  }
 `;
 
-const Content = styled.div`
-  position: absolute;
-  z-index: 10000;
-  transform: translateY(35px);
-
-  filter: drop-shadow(0 4px 34px rgb(0 0 0 / 15%));
-  backdrop-filter: blur(5px);
-  border-radius: 8px;
-`;
-
-const Item = styled.div`
+const Item = styled.option`
   cursor: pointer;
 
   position: relative;
@@ -101,24 +70,4 @@ const Item = styled.div`
   color: ${({ theme }) => theme.color.grey600};
 
   background-color: ${({ theme }) => theme.color.white};
-
-  &:hover {
-    background-color: #ebebeb;
-  }
-
-  &:not(:last-child) {
-    border-bottom: 1px solid ${({ theme }) => theme.color.grey250};
-  }
-`;
-
-const TriggerIcon = styled.img`
-  width: 1.4rem;
-  height: 1.4rem;
-`;
-
-const Indicator = styled.span`
-  position: absolute;
-  left: 0.6rem;
-
-  font-size: 1rem;
 `;
