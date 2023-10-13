@@ -12,7 +12,7 @@ interface PetProfileWeightAddition {
 
 const PetProfileWeightAddition = (props: PetProfileWeightAddition) => {
   const { onNext } = props;
-  const { petProfile, isFirstRendered, isValidInput, setIsValidInput, onChangeWeight } =
+  const { petProfile, isValidInput, isFirstRenderedOrValidInput, setIsValidInput, onChangeWeight } =
     usePetProfileAddition();
 
   useEffect(() => {
@@ -33,7 +33,7 @@ const PetProfileWeightAddition = (props: PetProfileWeightAddition) => {
           placeholder="예) 7.5"
           maxLength={5}
           value={petProfile.weight}
-          isValid={isFirstRendered || isValidInput}
+          isValid={isFirstRenderedOrValidInput}
           onChange={onChangeWeight}
           design="underline"
           fontSize="1.3rem"
@@ -42,9 +42,8 @@ const PetProfileWeightAddition = (props: PetProfileWeightAddition) => {
         <Kg>kg</Kg>
       </WeightInputContainer>
       <ErrorCaption>
-        {isFirstRendered || isValidInput
-          ? ''
-          : '몸무게는 0kg초과, 100kg이하 소수점 첫째짜리까지 입력이 가능합니다.'}
+        {!isFirstRenderedOrValidInput &&
+          '몸무게는 0kg초과, 100kg이하 소수점 첫째짜리까지 입력이 가능합니다.'}
       </ErrorCaption>
       <NextButton type="button" onClick={onNext} disabled={!isValidInput}>
         다음

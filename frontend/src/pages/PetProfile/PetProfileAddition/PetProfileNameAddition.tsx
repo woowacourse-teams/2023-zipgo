@@ -10,7 +10,7 @@ interface PetProfileNameAdditionProps {
 
 const PetProfileNameAddition = (props: PetProfileNameAdditionProps) => {
   const { onNext } = props;
-  const { petProfile, isFirstRendered, isValidInput, setIsValidInput, onChangeName } =
+  const { petProfile, isValidInput, isFirstRenderedOrValidInput, setIsValidInput, onChangeName } =
     usePetProfileAddition();
 
   useEffect(() => {
@@ -29,15 +29,14 @@ const PetProfileNameAddition = (props: PetProfileNameAdditionProps) => {
         placeholder="여기를 눌러 아이의 이름을 입력해주세요."
         maxLength={10}
         value={petProfile.name}
-        isValid={isFirstRendered || isValidInput}
+        isValid={isFirstRenderedOrValidInput}
         onChange={onChangeName}
         design="underline"
         fontSize="1.3rem"
       />
       <ErrorCaption>
-        {isFirstRendered || isValidInput
-          ? ''
-          : '아이의 이름은 1~10글자 사이의 한글, 영어, 숫자만 입력 가능합니다.'}
+        {!isFirstRenderedOrValidInput &&
+          '아이의 이름은 1~10글자 사이의 한글, 영어, 숫자만 입력 가능합니다.'}
       </ErrorCaption>
       <NextButton type="button" onClick={onNext} disabled={!isValidInput}>
         다음

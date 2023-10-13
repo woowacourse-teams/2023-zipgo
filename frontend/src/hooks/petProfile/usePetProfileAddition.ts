@@ -18,6 +18,7 @@ export const usePetProfileAddition = () => {
 
   const [isValidInput, setIsValidInput] = useState(false);
   const [isFirstRendered, setIsFirstRendered] = useState(true);
+  const isFirstRenderedOrValidInput = isFirstRendered || isValidInput;
 
   const onChangeName = (e: ChangeEvent<HTMLInputElement>) => {
     const petName = e.target.value;
@@ -83,9 +84,10 @@ export const usePetProfileAddition = () => {
   };
 
   return {
+    petProfile,
     isFirstRendered,
     isValidInput,
-    petProfile,
+    isFirstRenderedOrValidInput,
     setIsValidInput,
     onChangeAge,
     onChangeBreed,
