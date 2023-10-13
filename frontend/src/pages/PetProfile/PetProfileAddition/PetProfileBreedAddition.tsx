@@ -1,21 +1,29 @@
 import { useEffect } from 'react';
-import { useOutletContext } from 'react-router-dom';
 import { styled } from 'styled-components';
 
 import PetBreedSelect from '@/components/PetProfile/PetBreedSelect';
-import { PET_PROFILE_ADDITION_STEP } from '@/constants/petProfile';
 import { usePetProfileAddition } from '@/hooks/petProfile/usePetProfileAddition';
-import { PetAdditionOutletContextProps } from '@/types/petProfile/client';
+import { usePetProfileValidation } from '@/hooks/petProfile/usePetProfileValidation';
 import { getTopicParticle } from '@/utils/getTopicParticle';
 
-const PetProfileBreedAddition = () => {
-  const { petProfile, onChangeBreed } = usePetProfileAddition();
-  const { updateCurrentStep, updateIsValidStep } =
-    useOutletContext<PetAdditionOutletContextProps>();
+import { NextButton } from './PetProfileNameAddition';
+
+interface PetProfileBreedAdditionProps {
+  onNext: (breed: string) => void;
+  setIsMixedBreed: React.Dispatch<React.SetStateAction<boolean>>;
+}
+
+const PetProfileBreedAddition = (props: PetProfileBreedAdditionProps) => {
+  const { onNext, setIsMixedBreed } = props;
+  const { isMixedBreed } = usePetProfileValidation();
+  const { petProfile, isValidInput, setIsValidInput, onChangeBreed } = usePetProfileAddition();
 
   useEffect(() => {
-    updateIsValidStep(false);
-    updateCurrentStep(PET_PROFILE_ADDITION_STEP.BREED);
+    setIsMixedBreed(isMixedBreed(petProfile.breed));
+  }, [petProfile.breed]);
+
+  useEffect(() => {
+    if (petProfile.breed) setIsValidInput(true);
   }, []);
 
   return (
@@ -23,7 +31,10 @@ const PetProfileBreedAddition = () => {
       <PetName>{petProfile.name}</PetName>
       <Title>{`${getTopicParticle(petProfile.name)} 어떤 아이인가요?`}</Title>
       <InputLabel htmlFor="pet-breed">견종 선택</InputLabel>
-      <PetBreedSelect id="pet-breed" onChange={onChangeBreed} />
+      <PetBreedSelect id="pet-breed" defaultBreed={petProfile.breed} onChange={onChangeBreed} />
+      <NextButton type="button" onClick={() => onNext(petProfile.breed)} disabled={!isValidInput}>
+        다음
+      </NextButton>
     </Container>
   );
 };

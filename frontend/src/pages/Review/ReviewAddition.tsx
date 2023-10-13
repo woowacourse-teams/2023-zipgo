@@ -1,42 +1,29 @@
-import { useLocation, useNavigate } from 'react-router-dom';
 import { styled } from 'styled-components';
 
 import PageHeader from '@/components/@common/PageHeader/PageHeader';
 import Template from '@/components/@common/Template';
 import FoodInfoInReviewForm from '@/components/Review/ReviewForm/FoodInfoInReviewForm/FoodInfoInReviewForm';
 import ReviewForm from '@/components/Review/ReviewForm/ReviewForm';
-import { useValidParams } from '@/hooks/@common/useValidParams';
-import { routerPath } from '@/router/routes';
 
-interface LocationState {
-  state: {
-    selectedRating: number;
-    isEditMode: boolean;
-    reviewId: number;
-  };
+import { ReviewData } from './ReviewFormFunnel';
+
+interface ReviewAdditionProps {
+  reviewData: ReviewData;
+  onPrev: VoidFunction;
 }
 
-const ReviewAddition = () => {
-  const navigate = useNavigate();
-  const { petFoodId } = useValidParams(['petFoodId']);
-  const location = useLocation() as LocationState;
-  const { selectedRating, isEditMode, reviewId } = { ...location.state };
-
-  const goBack = () => navigate(routerPath.back);
+const ReviewAddition = (props: ReviewAdditionProps) => {
+  const { reviewData, onPrev } = props;
+  const { review } = reviewData;
 
   return (
     <Template.WithoutHeader footer={false}>
-      <PageHeader onClick={goBack} />
+      <PageHeader onClick={onPrev} />
       <Container>
         <FoodInfoWrapper>
-          <FoodInfoInReviewForm petFoodId={Number(petFoodId)} rating={selectedRating} />
+          <FoodInfoInReviewForm petFoodId={review.petFoodId} rating={review.rating} />
         </FoodInfoWrapper>
-        <ReviewForm
-          petFoodId={Number(petFoodId)}
-          rating={selectedRating}
-          isEditMode={isEditMode}
-          reviewId={reviewId}
-        />
+        <ReviewForm reviewData={reviewData} />
       </Container>
     </Template.WithoutHeader>
   );

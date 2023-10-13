@@ -2,7 +2,9 @@ import { createContext, PropsWithChildren, useContext, useMemo, useState } from 
 
 import { PostPetReq } from '@/types/petProfile/remote';
 
-export interface PetProfileValue extends PostPetReq {}
+export interface PetProfileValue extends Omit<PostPetReq, 'weight'> {
+  weight: string;
+}
 
 interface PetAdditionContext {
   petProfile: PetProfileValue;
@@ -11,10 +13,10 @@ interface PetAdditionContext {
 
 const initialPetProfile: PetProfileValue = {
   name: '',
-  age: 0,
-  breed: '믹스견',
+  age: -1,
+  breed: '',
   gender: '남',
-  weight: 1,
+  weight: '',
   imageUrl: '',
 };
 

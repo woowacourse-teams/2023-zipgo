@@ -20,8 +20,7 @@ const DYNAMIC: Omit<
   'BASE_URL'
 > = {
   FOOD_DETAIL: '/pet-food/:petFoodId',
-  REVIEW_STAR_RATING: '/pet-food/:petFoodId/reviews/write',
-  REVIEW_ADDITION: '/pet-food/:petFoodId/reviews/write/detail',
+  REVIEW_ADDITION: '/pet-food/:petFoodId/reviews/write',
   PET_PROFILE_EDITION: '/pets/:petId/edit/',
 };
 
@@ -47,10 +46,8 @@ export const generateStaticPath = {
 export const generateDynamicPath = {
   baseUrl: () => location.pathname,
   foodDetail: ({ petFoodId }: PathParams<'petFoodId'>) => `/pet-food/${petFoodId}`,
-  reviewStarRating: ({ petFoodId }: PathParams<'petFoodId'>) =>
-    `/pet-food/${petFoodId}/reviews/write`,
   reviewAddition: ({ petFoodId }: PathParams<'petFoodId'>) =>
-    `/pet-food/${petFoodId}/reviews/write/detail`,
+    `/pet-food/${petFoodId}/reviews/write`,
   petProfileEdition: ({ petId }: PathParams<'petId'>) => `/pets/${petId}/edit`,
 };
 

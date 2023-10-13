@@ -1,20 +1,23 @@
 import { useEffect } from 'react';
-import { useOutletContext } from 'react-router-dom';
 import { styled } from 'styled-components';
 
 import PetAgeSelect from '@/components/PetProfile/PetAgeSelect';
-import { PET_PROFILE_ADDITION_STEP } from '@/constants/petProfile';
 import { usePetProfileAddition } from '@/hooks/petProfile/usePetProfileAddition';
-import { PetAdditionOutletContextProps } from '@/types/petProfile/client';
+import { usePetProfileValidation } from '@/hooks/petProfile/usePetProfileValidation';
 
-const PetProfileAgeAddition = () => {
-  const { petProfile, onChangeAge } = usePetProfileAddition();
-  const { updateIsValidStep, updateCurrentStep } =
-    useOutletContext<PetAdditionOutletContextProps>();
+import { NextButton } from './PetProfileNameAddition';
+
+interface PetProfileAgeAdditionProps {
+  onNext: VoidFunction;
+}
+
+const PetProfileAgeAddition = (props: PetProfileAgeAdditionProps) => {
+  const { onNext } = props;
+  const { isValidAgeRange } = usePetProfileValidation();
+  const { petProfile, isValidInput, setIsValidInput, onChangeAge } = usePetProfileAddition();
 
   useEffect(() => {
-    updateIsValidStep(false);
-    updateCurrentStep(PET_PROFILE_ADDITION_STEP.AGE);
+    setIsValidInput(isValidAgeRange(petProfile.age));
   }, []);
 
   return (
@@ -24,7 +27,10 @@ const PetProfileAgeAddition = () => {
         귀여운 이름이에요. 나이는요?
       </Title>
       <InputLabel htmlFor="pet-age">나이 선택</InputLabel>
-      <PetAgeSelect id="pet-age" onChange={onChangeAge} />
+      <PetAgeSelect id="pet-age" defaultAge={petProfile.age} onChange={onChangeAge} />
+      <NextButton type="button" onClick={onNext} disabled={!isValidInput}>
+        다음
+      </NextButton>
     </Container>
   );
 };

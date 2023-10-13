@@ -63,7 +63,7 @@ export default Template;
 const Layout = styled.div`
   position: relative;
 
-  overflow-y: scroll;
+  overflow-y: auto;
 
   width: 100vw;
   min-height: calc(var(--vh, 1vh) * 100);

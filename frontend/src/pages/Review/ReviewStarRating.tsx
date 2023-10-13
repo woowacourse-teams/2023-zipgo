@@ -1,33 +1,29 @@
-import { useLocation, useNavigate } from 'react-router-dom';
 import { styled } from 'styled-components';
 
 import PageHeader from '@/components/@common/PageHeader/PageHeader';
 import StarRatingInput from '@/components/@common/StarRating/StarRatingInput/StarRatingInput';
 import Template from '@/components/@common/Template';
 import { useReviewStarRating } from '@/hooks/review/useReviewStarRating';
-import { routerPath } from '@/router/routes';
 
-const ReviewStarRating = () => {
-  const navigate = useNavigate();
-  const location = useLocation();
-  const { petFoodId, foodData, isEditMode, reviewId, rating, setRating } =
-    useReviewStarRating(location);
+import { ReviewData } from './ReviewFormFunnel';
 
-  const onMouseDownStar = (selectedRating: number) => setRating(selectedRating);
+export interface ReviewStarRatingProps {
+  reviewData: ReviewData;
+  onNext: VoidFunction;
+}
 
-  const onClickStar = (selectedRating: number) => {
-    navigate(routerPath.reviewAddition({ petFoodId }), {
-      state: { selectedRating, isEditMode, reviewId },
-    });
-  };
-
-  const goBack = () => navigate(routerPath.back);
+const ReviewStarRating = (props: ReviewStarRatingProps) => {
+  const { foodData, updateRating, goBackSafely } = useReviewStarRating(props);
+  const {
+    reviewData: { review },
+    onNext,
+  } = props;
 
   if (!foodData) throw new Error('죄송합니다, 해당 식품 정보를 찾을 수 없습니다.');
 
   return (
     <Template.WithoutHeader footer={false}>
-      <PageHeader onClick={goBack} />
+      <PageHeader onClick={goBackSafely} />
       <Container>
         <FoodImageWrapper>
           <FoodImage src={foodData.imageUrl} alt={`${foodData.name}`} />
@@ -35,9 +31,9 @@ const ReviewStarRating = () => {
         <FoodName>{foodData.name}</FoodName>
         <Label>이 사료 어땠어요?</Label>
         <StarRatingInput
-          rating={rating}
-          onClickStar={onClickStar}
-          onMouseDownStar={onMouseDownStar}
+          rating={review.rating}
+          onClickStar={onNext}
+          onMouseDownStar={updateRating}
           size="extra-large"
         />
         <Caption>별점을 매겨주세요!</Caption>

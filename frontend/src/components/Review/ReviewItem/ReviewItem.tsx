@@ -52,7 +52,7 @@ const ReviewItem = (reviewItemProps: ReviewItemProps) => {
   const { toggleHelpfulReaction } = useToggleHelpfulReactionMutation(reacted);
 
   const onClickEditButton = () => {
-    navigate(routerPath.reviewStarRating({ petFoodId }), {
+    navigate(routerPath.reviewAddition({ petFoodId }), {
       state: {
         selectedRating: rating,
         isEditMode: true,

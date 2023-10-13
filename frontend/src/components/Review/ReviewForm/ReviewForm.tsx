@@ -7,24 +7,17 @@ import {
   STOOL_CONDITIONS,
   TASTE_PREFERENCES,
 } from '@/constants/review';
-import { ACTION_TYPES, useReviewForm } from '@/hooks/review/useReviewForm';
+import { REVIEW_ACTION_TYPES } from '@/hooks/review/useReviewForm';
+import { ReviewData } from '@/pages/Review/ReviewFormFunnel';
 
 interface ReviewFormProps {
-  petFoodId: number;
-  rating: number;
-  isEditMode?: boolean;
-  reviewId?: number;
+  reviewData: ReviewData;
 }
 
-const ReviewForm = (reviewFormProps: ReviewFormProps) => {
-  const { petFoodId, rating, isEditMode = false, reviewId = -1 } = reviewFormProps;
-
-  const { review, reviewDispatch, onSubmitReview, isValidComment } = useReviewForm({
-    petFoodId,
-    rating,
-    isEditMode,
-    reviewId,
-  });
+const ReviewForm = (props: ReviewFormProps) => {
+  const {
+    reviewData: { review, isValidComment, reviewDispatch, onSubmitReview },
+  } = props;
 
   return (
     <ReviewFormContainer onSubmit={onSubmitReview}>
@@ -41,7 +34,7 @@ const ReviewForm = (reviewFormProps: ReviewFormProps) => {
               aria-checked={review.tastePreference === text}
               onClick={() => {
                 reviewDispatch({
-                  type: ACTION_TYPES.SET_TASTE_PREFERENCE,
+                  type: REVIEW_ACTION_TYPES.SET_TASTE_PREFERENCE,
                   tastePreference: text,
                 });
               }}
@@ -62,7 +55,7 @@ const ReviewForm = (reviewFormProps: ReviewFormProps) => {
               aria-checked={review.stoolCondition === text}
               onClick={() => {
                 reviewDispatch({
-                  type: ACTION_TYPES.SET_STOOL_CONDITION,
+                  type: REVIEW_ACTION_TYPES.SET_STOOL_CONDITION,
                   stoolCondition: text,
                 });
               }}
@@ -83,7 +76,7 @@ const ReviewForm = (reviewFormProps: ReviewFormProps) => {
               aria-checked={review.adverseReactions.includes(text)}
               onClick={() => {
                 reviewDispatch({
-                  type: ACTION_TYPES.SET_ADVERSE_REACTIONS,
+                  type: REVIEW_ACTION_TYPES.SET_ADVERSE_REACTIONS,
                   adverseReaction: text,
                 });
               }}
@@ -99,7 +92,7 @@ const ReviewForm = (reviewFormProps: ReviewFormProps) => {
           value={review.comment}
           $isValid={isValidComment}
           onChange={e => {
-            reviewDispatch({ type: ACTION_TYPES.SET_COMMENT, comment: e.target.value });
+            reviewDispatch({ type: REVIEW_ACTION_TYPES.SET_COMMENT, comment: e.target.value });
           }}
         />
         <ErrorCaption aria-live="assertive">

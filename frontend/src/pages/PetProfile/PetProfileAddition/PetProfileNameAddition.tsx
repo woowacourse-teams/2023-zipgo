@@ -1,20 +1,20 @@
 import { useEffect } from 'react';
-import { useOutletContext } from 'react-router-dom';
 import { styled } from 'styled-components';
 
 import Input from '@/components/@common/Input/Input';
-import { PET_PROFILE_ADDITION_STEP } from '@/constants/petProfile';
 import { usePetProfileAddition } from '@/hooks/petProfile/usePetProfileAddition';
-import { PetAdditionOutletContextProps } from '@/types/petProfile/client';
 
-const PetProfileNameAddition = () => {
-  const { isValidInput, onChangeName } = usePetProfileAddition();
-  const { updateCurrentStep, updateIsValidStep } =
-    useOutletContext<PetAdditionOutletContextProps>();
+interface PetProfileNameAdditionProps {
+  onNext: VoidFunction;
+}
+
+const PetProfileNameAddition = (props: PetProfileNameAdditionProps) => {
+  const { onNext } = props;
+  const { petProfile, isValidInput, isFirstRenderedOrValidInput, setIsValidInput, onChangeName } =
+    usePetProfileAddition();
 
   useEffect(() => {
-    updateIsValidStep(false);
-    updateCurrentStep(PET_PROFILE_ADDITION_STEP.NAME);
+    if (petProfile.name) setIsValidInput(true);
   }, []);
 
   return (
@@ -28,14 +28,19 @@ const PetProfileNameAddition = () => {
         minLength={1}
         placeholder="여기를 눌러 아이의 이름을 입력해주세요."
         maxLength={10}
-        isValid={isValidInput}
+        value={petProfile.name}
+        isValid={isFirstRenderedOrValidInput}
         onChange={onChangeName}
         design="underline"
         fontSize="1.3rem"
       />
       <ErrorCaption>
-        {isValidInput ? '' : '아이의 이름은 1~10글자 사이의 한글, 영어, 숫자만 입력 가능합니다.'}
+        {!isFirstRenderedOrValidInput &&
+          '아이의 이름은 1~10글자 사이의 한글, 영어, 숫자만 입력 가능합니다.'}
       </ErrorCaption>
+      <NextButton type="button" onClick={onNext} disabled={!isValidInput}>
+        다음
+      </NextButton>
     </Container>
   );
 };
@@ -75,4 +80,38 @@ const ErrorCaption = styled.p`
   line-height: 1.7rem;
   color: ${({ theme }) => theme.color.warning};
   letter-spacing: -0.5px;
+`;
+
+export const NextButton = styled.button`
+  cursor: pointer;
+
+  position: fixed;
+  bottom: 4rem;
+  left: 2rem;
+
+  width: calc(100% - 4rem);
+  height: 5.1rem;
+
+  font-size: 1.6rem;
+  font-weight: 700;
+  line-height: 2.4rem;
+  color: ${({ theme }) => theme.color.white};
+  letter-spacing: 0.02rem;
+
+  background-color: ${({ theme }) => theme.color.primary};
+  border: none;
+  border-radius: 16px;
+  box-shadow: 0 -8px 20px #fff;
+
+  transition: all 100ms ease-in-out;
+
+  &:active {
+    scale: 0.98;
+  }
+
+  &:disabled {
+    cursor: not-allowed;
+
+    background-color: ${({ theme }) => theme.color.grey300};
+  }
 `;

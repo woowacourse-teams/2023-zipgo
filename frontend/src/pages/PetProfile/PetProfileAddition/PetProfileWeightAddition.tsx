@@ -1,20 +1,22 @@
 import { useEffect } from 'react';
-import { useOutletContext } from 'react-router-dom';
 import { styled } from 'styled-components';
 
 import Input from '@/components/@common/Input/Input';
-import { PET_PROFILE_ADDITION_STEP } from '@/constants/petProfile';
 import { usePetProfileAddition } from '@/hooks/petProfile/usePetProfileAddition';
-import { PetAdditionOutletContextProps } from '@/types/petProfile/client';
 
-const PetProfileWeightAddition = () => {
-  const { petProfile, isValidInput, onChangeWeight } = usePetProfileAddition();
-  const { updateCurrentStep, updateIsValidStep } =
-    useOutletContext<PetAdditionOutletContextProps>();
+import { NextButton } from './PetProfileNameAddition';
+
+interface PetProfileWeightAddition {
+  onNext: VoidFunction;
+}
+
+const PetProfileWeightAddition = (props: PetProfileWeightAddition) => {
+  const { onNext } = props;
+  const { petProfile, isValidInput, isFirstRenderedOrValidInput, setIsValidInput, onChangeWeight } =
+    usePetProfileAddition();
 
   useEffect(() => {
-    updateIsValidStep(false);
-    updateCurrentStep(PET_PROFILE_ADDITION_STEP.WEIGHT);
+    if (petProfile.weight) setIsValidInput(true);
   }, []);
 
   return (
@@ -30,7 +32,8 @@ const PetProfileWeightAddition = () => {
           minLength={1}
           placeholder="예) 7.5"
           maxLength={5}
-          isValid={isValidInput}
+          value={petProfile.weight}
+          isValid={isFirstRenderedOrValidInput}
           onChange={onChangeWeight}
           design="underline"
           fontSize="1.3rem"
@@ -39,8 +42,12 @@ const PetProfileWeightAddition = () => {
         <Kg>kg</Kg>
       </WeightInputContainer>
       <ErrorCaption>
-        {isValidInput ? '' : '몸무게는 0kg초과, 100kg이하 소수점 첫째짜리까지 입력이 가능합니다.'}
+        {!isFirstRenderedOrValidInput &&
+          '몸무게는 0kg초과, 100kg이하 소수점 첫째짜리까지 입력이 가능합니다.'}
       </ErrorCaption>
+      <NextButton type="button" onClick={onNext} disabled={!isValidInput}>
+        다음
+      </NextButton>
     </Container>
   );
 };

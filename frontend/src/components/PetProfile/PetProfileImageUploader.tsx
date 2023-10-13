@@ -2,22 +2,23 @@ import { useEffect } from 'react';
 import { styled } from 'styled-components';
 
 import CameraIcon from '@/assets/svg/camera_icon.svg';
+import DefaultDogIcon from '@/assets/svg/dog_icon.svg';
 import { usePetAdditionContext } from '@/context/petProfile/PetAdditionContext';
 import { useImageUpload } from '@/hooks/common/useImageUpload';
 
 const PetProfileImageUploader = () => {
-  const { updatePetProfile } = usePetAdditionContext();
+  const { petProfile, updatePetProfile } = usePetAdditionContext();
   const { previewImage, imageUrl, uploadImage } = useImageUpload();
 
   useEffect(() => {
-    updatePetProfile({ imageUrl });
+    if (imageUrl) updatePetProfile({ imageUrl });
   }, [imageUrl]);
 
   return (
     <ImageUploadLabel aria-label="사진 업로드하기">
       <input type="file" accept="image/*" onChange={uploadImage} />
       <PreviewImageWrapper>
-        {previewImage && <PreviewImage src={previewImage} alt="" />}
+        <PreviewImage src={petProfile.imageUrl || previewImage || DefaultDogIcon} alt="" />
       </PreviewImageWrapper>
       <CameraIconWrapper>
         <img src={CameraIcon} alt="" />

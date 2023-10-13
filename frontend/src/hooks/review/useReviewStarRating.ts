@@ -1,28 +1,29 @@
-import { useState } from 'react';
+import { ReviewStarRatingProps } from '@/pages/Review/ReviewStarRating';
 
-import { useValidParams } from '../@common/useValidParams';
+import useEasyNavigate from '../@common/useEasyNavigate';
 import { useFoodDetailQuery } from '../query/food';
+import { REVIEW_ACTION_TYPES } from './useReviewForm';
 
-interface LocationState {
-  state: {
-    selectedRating?: number;
-    isEditMode?: boolean;
-    reviewId?: number;
+export const useReviewStarRating = (props: ReviewStarRatingProps) => {
+  const {
+    reviewData: {
+      review: { petFoodId },
+      reviewDispatch,
+    },
+  } = props;
+  const { goBackSafely } = useEasyNavigate();
+  const { foodData } = useFoodDetailQuery({ petFoodId: petFoodId.toString() });
+
+  const updateRating = (selectedRating: number) => {
+    reviewDispatch({
+      type: REVIEW_ACTION_TYPES.SET_RATING,
+      rating: selectedRating,
+    });
   };
-}
-
-export const useReviewStarRating = (location: LocationState) => {
-  const { selectedRating = 0, isEditMode = false, reviewId = -1 } = { ...location.state };
-  const { petFoodId } = useValidParams(['petFoodId']);
-  const { foodData } = useFoodDetailQuery({ petFoodId });
-  const [rating, setRating] = useState(selectedRating);
 
   return {
-    petFoodId,
     foodData,
-    isEditMode,
-    reviewId,
-    rating,
-    setRating,
+    goBackSafely,
+    updateRating,
   };
 };

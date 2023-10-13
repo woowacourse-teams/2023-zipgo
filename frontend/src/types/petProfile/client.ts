@@ -25,9 +25,4 @@ type PetSize = (typeof PET_SIZES)[number];
 
 type Gender = (typeof GENDERS)[number];
 
-interface PetAdditionOutletContextProps {
-  updateCurrentStep: (step: number) => void;
-  updateIsValidStep: (isValid: boolean) => void;
-}
-
-export type { Breed, Gender, PetAdditionOutletContextProps, PetProfile, PetSize };
+export type { Breed, Gender, PetProfile, PetSize };

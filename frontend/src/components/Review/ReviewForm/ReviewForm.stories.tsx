@@ -5,6 +5,7 @@ import userEvent from '@testing-library/user-event';
 import React from 'react';
 
 import { COMMENT_LIMIT } from '../../../constants/review';
+import { useReviewForm } from '../../../hooks/review/useReviewForm';
 import ReviewForm from './ReviewForm';
 
 const meta = {
@@ -17,16 +18,32 @@ export default meta;
 type Story = StoryObj<typeof ReviewForm>;
 
 export const Basic: Story = {
-  args: {
-    petFoodId: 1,
-    rating: 5,
+  args: {},
+
+  render: args => {
+    const reviewData = useReviewForm({
+      petFoodId: 1,
+      rating: 5,
+      isEditMode: false,
+      reviewId: 1,
+    });
+
+    return <ReviewForm reviewData={reviewData} />;
   },
 };
 
 export const ValidForm: Story = {
-  args: {
-    petFoodId: 1,
-    rating: 5,
+  args: {},
+
+  render: args => {
+    const reviewData = useReviewForm({
+      petFoodId: 1,
+      rating: 5,
+      isEditMode: false,
+      reviewId: 1,
+    });
+
+    return <ReviewForm reviewData={reviewData} />;
   },
 
   play: async ({ canvasElement }) => {
@@ -48,9 +65,17 @@ export const ValidForm: Story = {
 };
 
 export const InvalidForm: Story = {
-  args: {
-    petFoodId: 1,
-    rating: 5,
+  args: {},
+
+  render: args => {
+    const reviewData = useReviewForm({
+      petFoodId: 1,
+      rating: 5,
+      isEditMode: false,
+      reviewId: 1,
+    });
+
+    return <ReviewForm reviewData={reviewData} />;
   },
 
   play: async ({ canvasElement }) => {
@@ -72,9 +97,17 @@ export const InvalidForm: Story = {
 };
 
 export const SingleSelectionTestForTastePreference: Story = {
-  args: {
-    petFoodId: 1,
-    rating: 5,
+  args: {},
+
+  render: args => {
+    const reviewData = useReviewForm({
+      petFoodId: 1,
+      rating: 5,
+      isEditMode: false,
+      reviewId: 1,
+    });
+
+    return <ReviewForm reviewData={reviewData} />;
   },
 
   play: async ({ canvasElement }) => {
@@ -101,9 +134,17 @@ export const SingleSelectionTestForTastePreference: Story = {
 };
 
 export const SingleSelectionTestForStoolCondition: Story = {
-  args: {
-    petFoodId: 1,
-    rating: 5,
+  args: {},
+
+  render: args => {
+    const reviewData = useReviewForm({
+      petFoodId: 1,
+      rating: 5,
+      isEditMode: false,
+      reviewId: 1,
+    });
+
+    return <ReviewForm reviewData={reviewData} />;
   },
 
   play: async ({ canvasElement }) => {
@@ -130,9 +171,17 @@ export const SingleSelectionTestForStoolCondition: Story = {
 };
 
 export const MultipleSelectionTestForAdverseReaction: Story = {
-  args: {
-    petFoodId: 1,
-    rating: 5,
+  args: {},
+
+  render: args => {
+    const reviewData = useReviewForm({
+      petFoodId: 1,
+      rating: 5,
+      isEditMode: false,
+      reviewId: 1,
+    });
+
+    return <ReviewForm reviewData={reviewData} />;
   },
 
   play: async ({ canvasElement }) => {
@@ -163,9 +212,17 @@ export const MultipleSelectionTestForAdverseReaction: Story = {
 };
 
 export const NoneButtonDeselectOthersTestForAdverseReaction: Story = {
-  args: {
-    petFoodId: 1,
-    rating: 5,
+  args: {},
+
+  render: args => {
+    const reviewData = useReviewForm({
+      petFoodId: 1,
+      rating: 5,
+      isEditMode: false,
+      reviewId: 1,
+    });
+
+    return <ReviewForm reviewData={reviewData} />;
   },
 
   play: async ({ canvasElement }) => {
