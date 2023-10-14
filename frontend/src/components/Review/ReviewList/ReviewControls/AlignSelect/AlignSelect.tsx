@@ -1,18 +1,17 @@
 import { ChangeEvent } from 'react';
 import styled from 'styled-components';
 
+import { REVIEW_ALIGN_QUERY } from '@/constants/review';
 import useEasyNavigate from '@/hooks/@common/useEasyNavigate';
 import useValidQueryString from '@/hooks/common/useValidQueryString';
 import { useReviewListAlignMeta } from '@/hooks/query/review';
 import { generateQueryString } from '@/router/routes';
 import { RuntimeError } from '@/utils/errors';
 
-const ALIGN_QUERY = 'sortBy';
-
 const AlignSelect = () => {
   const { metaData } = useReviewListAlignMeta();
   const { updateQueryString } = useEasyNavigate();
-  const { sortBy } = useValidQueryString([ALIGN_QUERY]);
+  const { sortBy } = useValidQueryString([REVIEW_ALIGN_QUERY]);
 
   if (!metaData) return null;
 
@@ -21,7 +20,7 @@ const AlignSelect = () => {
 
     if (!valueId) throw new RuntimeError({ code: 'WRONG_QUERY_STRING' }, valueId);
 
-    updateQueryString(generateQueryString({ [ALIGN_QUERY]: valueId }));
+    updateQueryString(generateQueryString({ [REVIEW_ALIGN_QUERY]: valueId }));
   };
 
   return (

@@ -1,3 +1,4 @@
+export const REVIEW_ALIGN_QUERY = 'sortBy';
 export const REVIEW_SUMMARY_KEYWORDS = {
   rating: '평점',
   tastePreference: '기호성',
