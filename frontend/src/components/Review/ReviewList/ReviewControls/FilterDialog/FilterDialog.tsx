@@ -1,8 +1,8 @@
-import { useEffect } from 'react';
 import styled, { css } from 'styled-components';
 
 import FilterControlsIcon from '@/assets/svg/filter_controls.svg';
 import { Dialog } from '@/components/@common/Dialog/Dialog';
+import { REVIEW_ALIGN_QUERY } from '@/constants/review';
 import useEasyNavigate from '@/hooks/@common/useEasyNavigate';
 import { useReviewListFilterMeta } from '@/hooks/query/review';
 import useReviewFilterList from '@/hooks/review/useReviewFilterList';
@@ -22,9 +22,7 @@ const FilterDialog = () => {
 
   const queryString = generateQueryString(parsedFilterList);
 
-  const confirm = () => replaceQueryString(queryString, { exclude: ['sortBy'] });
-
-  useEffect(() => () => resetFilterList(), []);
+  const confirm = () => replaceQueryString(queryString, { exclude: [REVIEW_ALIGN_QUERY] });
 
   if (!metaData) return null;
 
