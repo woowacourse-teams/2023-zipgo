@@ -138,7 +138,7 @@ const Layout = styled.div`
   background: ${({ theme }) => theme.color.grey200};
   border-radius: 20px 20px 0 0;
 
-  animation: ${({ theme }) => theme.animation.bottomSheetAppear} 0.5s cubic-bezier(0.2, 0.6, 0.3, 1);
+  animation: ${({ theme }) => theme.keyframes.bottomSheetAppear} 0.5s cubic-bezier(0.2, 0.6, 0.3, 1);
 `;
 
 const DialogTrigger = styled.button`

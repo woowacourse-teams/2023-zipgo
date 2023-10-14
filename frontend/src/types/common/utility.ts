@@ -6,13 +6,13 @@ type Unpack<T> = T extends (infer U)[] ? U : T extends Set<infer U> ? U : T;
 
 type Parameter<T extends (arg: never) => unknown> = Parameters<T>[0];
 
-type StyledProps<T> = {
+type StyledProps<T extends object = object> = {
   [K in keyof T as K extends string
     ? isLowercase<K> extends true
       ? K
       : `$${string & K}`
     : K]: T[K];
-};
+} & { skeleton?: boolean };
 
 type Values<T extends object> = T[keyof T];
 

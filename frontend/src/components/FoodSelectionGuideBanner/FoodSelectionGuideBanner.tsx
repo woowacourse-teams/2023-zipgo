@@ -118,7 +118,7 @@ const BannerWrapper = styled.div`
     opacity: 0;
     background-color: ${({ theme }) => theme.color.white};
 
-    animation: ${({ theme }) => theme.animation.shiny} 2.5s ease-in-out infinite;
+    animation: ${({ theme }) => theme.keyframes.shiny} 2.5s ease-in-out infinite;
   }
 
   &:active {
