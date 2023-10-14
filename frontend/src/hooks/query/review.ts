@@ -40,7 +40,7 @@ export const useReviewItemQuery = (payload: Parameter<typeof getReview>) => {
 
 export const useReviewListQuery = (payload: Parameter<typeof getReviews>) => {
   const { data, ...restQuery } = useQuery({
-    queryKey: [QUERY_KEY.reviewList, payload.petFoodId],
+    queryKey: [QUERY_KEY.reviewList, Object.values(payload).join()],
     queryFn: () => getReviews(payload),
     staleTime: ONE_MINUTE,
   });
