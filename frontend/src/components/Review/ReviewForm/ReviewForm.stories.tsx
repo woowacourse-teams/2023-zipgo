@@ -55,7 +55,7 @@ export const ValidForm: Story = {
 
     const commentTextarea = canvas.getByRole('textbox');
     const validText = '저희집 에디가 너무 잘먹어요^^';
-    await userEvent.type(commentTextarea, validText, { delay: 100 });
+    await userEvent.type(commentTextarea, validText);
 
     const completeButton = canvas.getByText('작성 완료');
 
@@ -87,7 +87,7 @@ export const InvalidForm: Story = {
 
     const commentTextarea = canvas.getByRole('textbox');
     const longText = new Array(COMMENT_LIMIT + 1).fill(1).join('');
-    await userEvent.type(commentTextarea, longText, { delay: 5 });
+    await userEvent.type(commentTextarea, longText);
 
     const completeButton = canvas.getByText('작성 완료');
 
@@ -120,7 +120,7 @@ export const SingleSelectionTestForTastePreference: Story = {
     const tastePreferences = canvas.getAllByTestId('tastePreference');
     const checkedTastePreference = tastePreferences[1];
 
-    await userEvent.click(checkedTastePreference, { delay: 100 });
+    await userEvent.click(checkedTastePreference);
 
     expect(checkedTastePreference).toHaveAttribute('aria-checked', 'true');
 
@@ -157,7 +157,7 @@ export const SingleSelectionTestForStoolCondition: Story = {
     const stoolConditions = canvas.getAllByTestId('stoolCondition');
     const checkedStoolCondition = stoolConditions[1];
 
-    await userEvent.click(checkedStoolCondition, { delay: 100 });
+    await userEvent.click(checkedStoolCondition);
 
     expect(checkedStoolCondition).toHaveAttribute('aria-checked', 'true');
 
@@ -193,8 +193,8 @@ export const MultipleSelectionTestForAdverseReaction: Story = {
 
     const adverseReactions = canvas.getAllByTestId('adverseReaction');
 
-    await userEvent.click(adverseReactions[1], { delay: 100 });
-    await userEvent.click(adverseReactions[2], { delay: 100 });
+    await userEvent.click(adverseReactions[1]);
+    await userEvent.click(adverseReactions[2]);
 
     const checkedAdverseReactions = [adverseReactions[1], adverseReactions[2]];
 
@@ -235,8 +235,8 @@ export const NoneButtonDeselectOthersTestForAdverseReaction: Story = {
     const adverseReactions = canvas.getAllByTestId('adverseReaction');
     const noneAdverseReaction = adverseReactions[0];
 
-    await userEvent.click(adverseReactions[1], { delay: 100 });
-    await userEvent.click(noneAdverseReaction, { delay: 100 });
+    await userEvent.click(adverseReactions[1]);
+    await userEvent.click(noneAdverseReaction);
 
     adverseReactions.forEach(adverseReaction => {
       if (noneAdverseReaction === adverseReaction) {
