@@ -250,6 +250,7 @@ const Select = styled.select`
   color: ${({ theme }) => theme.color.grey400};
   text-align: center;
 
+  appearance: none;
   border: 1px solid ${({ theme }) => theme.color.grey400};
   border-radius: 16px;
 `;
