@@ -1,4 +1,6 @@
 export const REVIEW_ALIGN_QUERY = 'sortBy';
+export const REVIEW_FILTER_QUERY_STRINGS = ['ageGroups', 'breeds', 'petSizes'] as const;
+
 export const REVIEW_SUMMARY_KEYWORDS = {
   rating: '평점',
   tastePreference: '기호성',
