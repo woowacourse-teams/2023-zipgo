@@ -32,8 +32,8 @@ const FilterDialog = () => {
     <Dialog>
       <Dialog.Trigger asChild>
         <DialogTrigger type="button">
-          <TriggerIcon src={FilterControlsIcon} alt="리뷰 필터 아이콘" />
           <span>필터</span>
+          <TriggerIcon src={FilterControlsIcon} alt="리뷰 필터 아이콘" />
         </DialogTrigger>
       </Dialog.Trigger>
       <Dialog.Portal>
