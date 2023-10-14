@@ -37,7 +37,7 @@ export const useFoodListInfiniteQuery = (payload: Parameter<typeof getFoodList>)
 
 export const useFoodDetailQuery = (payload: Parameter<typeof getFoodDetail>) => {
   const { data, ...restQuery } = useQuery({
-    queryKey: [`${QUERY_KEY.foodDetail}${payload.petFoodId}`],
+    queryKey: [QUERY_KEY.foodDetail, payload.petFoodId],
     queryFn: () => getFoodDetail(payload),
   });
 
