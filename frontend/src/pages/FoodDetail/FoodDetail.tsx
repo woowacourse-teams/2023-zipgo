@@ -14,7 +14,7 @@ import FoodProfile from '@/components/Food/FoodProfile/FoodProfile';
 import NutritionStandardBlock, {
   State,
 } from '@/components/Food/NutritionStandardBlock/NutritionStandardBlock';
-import ReviewList from '@/components/Review/ReviewList/ReviewList';
+import ReviewListAndChart from '@/components/Review/ReviewListAndChart/ReviewListAndChart';
 import usePageTitle from '@/hooks/@common/usePageTitle';
 import { useValidParams } from '@/hooks/@common/useValidParams';
 import { useFoodDetailQuery } from '@/hooks/query/food';
@@ -114,7 +114,7 @@ const FoodDetail = () => {
             </InfoBlock>
           </FoodDetailInfoWrapper>
         )}
-        {pageIndex === 1 && <ReviewList />}
+        {pageIndex === 1 && <ReviewListAndChart />}
       </FoodDetailWrapper>
       <Button text="구매하러 가기" onClick={onClickPurchaseButton} fixed />
     </>
