@@ -2,6 +2,7 @@ import styled from 'styled-components';
 
 import QueryBoundary from '@/components/@common/ErrorBoundary/QueryBoundary/QueryBoundary';
 import FilterSwitch from '@/components/@common/FilterSwitch/FilterSwitch';
+import SkeletonBar from '@/components/@common/Skeleton/SkeletonBar/SkeletonBar';
 import { useCustomReview } from '@/hooks/review/useCustomReview';
 
 import AlignSelect from './AlignSelect/AlignSelect';
@@ -17,14 +18,24 @@ const ReviewControls = () => {
         <FilterSwitch checked={checked} onClick={onClickCustomReviewButton} filterSize="small" />
       </Description>
       <ControlsContainer>
-        <QueryBoundary loadingFallback={null}>
-          <AlignSelect />
-          <FilterDialog />
-        </QueryBoundary>
+        <AlignSelect />
+        <FilterDialog />
       </ControlsContainer>
     </Layout>
   );
 };
+
+const Skeleton = () => (
+  <Layout>
+    <SkeletonBar width="13.2rem" />
+    <ControlsContainer>
+      <SkeletonBar width="11rem" />
+      <SkeletonBar width="5.7rem" />
+    </ControlsContainer>
+  </Layout>
+);
+
+ReviewControls.Skeleton = Skeleton;
 
 export default ReviewControls;
 
@@ -53,4 +64,6 @@ const Description = styled.label`
 const ControlsContainer = styled.div`
   display: flex;
   gap: 2rem;
+
+  height: 100%;
 `;

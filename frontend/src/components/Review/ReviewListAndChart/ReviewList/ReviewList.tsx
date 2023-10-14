@@ -1,4 +1,3 @@
-import { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { styled } from 'styled-components';
 
@@ -9,15 +8,13 @@ import { useReviewListQuery } from '@/hooks/query/review';
 import { routerPath } from '@/router/routes';
 import { zipgoLocalStorage } from '@/utils/localStorage';
 
-import ReviewItem from '../ReviewItem/ReviewItem';
-import ReviewControls from './ReviewControls/ReviewControls';
-import SummaryChart from './SummaryChart/SummaryChart';
+import ReviewItem from '../../ReviewItem/ReviewItem';
 
 const ReviewList = () => {
   const navigate = useNavigate();
   const { petFoodId } = useValidParams(['petFoodId']);
   const queryString = useValidQueryString(['petSizes', 'ageGroups', 'breeds', 'sortBy']);
-  const { reviewList, refetch } = useReviewListQuery({
+  const { reviewList } = useReviewListQuery({
     petFoodId,
     size: 100,
     petSizeId: queryString.petSizes,
@@ -26,21 +23,17 @@ const ReviewList = () => {
     sortById: queryString.sortBy,
   });
 
+  const hasReview = Boolean(reviewList?.length);
+
   const userInfo = zipgoLocalStorage.getUserInfo();
 
   const goReviewWrite = () => navigate(routerPath.reviewAddition({ petFoodId }));
 
-  useEffect(() => {
-    refetch();
-  }, [Object.values(queryString).join()]);
-
   if (!reviewList) return null;
 
   return (
-    <ReviewListContainer>
-      <SummaryChart />
-      <ReviewControls />
-      {Boolean(reviewList.length) ? (
+    <Layout>
+      {hasReview ? (
         reviewList.map(review => (
           <ReviewItemWrapper key={review.id}>
             <ReviewItem {...review} />
@@ -58,11 +51,37 @@ const ReviewList = () => {
           <WriteIconImage src={WriteIcon} alt="" />
         </ReviewAddButton>
       )}
-    </ReviewListContainer>
+    </Layout>
   );
 };
 
+const Skeleton = () => (
+  <Layout>
+    {Array(5)
+      .fill('')
+      .map((_, i) => (
+        <ReviewItemWrapper key={i}>
+          <ReviewItem.Skeleton />
+        </ReviewItemWrapper>
+      ))}
+  </Layout>
+);
+
+ReviewList.Skeleton = Skeleton;
+
 export default ReviewList;
+
+const Layout = styled.ul`
+  & > li {
+    border-bottom: 1px solid ${({ theme }) => theme.color.grey200};
+  }
+`;
+
+const ReviewItemWrapper = styled.li`
+  padding: 2rem;
+
+  list-style: none;
+`;
 
 const NoReviewText = styled.p`
   margin-top: 6rem;
@@ -73,20 +92,6 @@ const NoReviewText = styled.p`
   color: ${({ theme }) => theme.color.grey300};
   text-align: center;
   letter-spacing: -0.05rem;
-`;
-
-const ReviewListContainer = styled.ul`
-  all: unset;
-
-  width: 100%;
-`;
-
-const ReviewItemWrapper = styled.li`
-  padding: 2rem;
-
-  list-style: none;
-
-  border-bottom: 1px solid ${({ theme }) => theme.color.grey200};
 `;
 
 const ReviewAddButton = styled.button`
