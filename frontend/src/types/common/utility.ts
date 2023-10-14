@@ -6,7 +6,13 @@ type Unpack<T> = T extends (infer U)[] ? U : T extends Set<infer U> ? U : T;
 
 type Parameter<T extends (arg: never) => unknown> = Parameters<T>[0];
 
-type StyledProps<T> = { [K in keyof T as `$${string & K}`]: T[K] };
+type StyledProps<T> = {
+  [K in keyof T as K extends string
+    ? isLowercase<K> extends true
+      ? K
+      : `$${string & K}`
+    : K]: T[K];
+};
 
 type Values<T extends object> = T[keyof T];
 
@@ -24,6 +30,8 @@ type IsCapitalized<Char extends string> = IsChar<Char> extends true
     : false
   : false;
 
+type isLowercase<T extends string> = T extends Lowercase<T> ? true : false;
+
 type Replace<Char extends string> = IsCapitalized<Char> extends true
   ? `${Separator}${Lowercase<Char>}`
   : Char;
@@ -33,4 +41,13 @@ type CamelToSnake<
   Acc extends string = '',
 > = Str extends `${infer Char}${infer Rest}` ? CamelToSnake<Rest, `${Acc}${Replace<Char>}`> : Acc;
 
-export type { BaseFunction, CamelToSnake, Parameter, RenderProps, StyledProps, Unpack, Values };
+export type {
+  BaseFunction,
+  CamelToSnake,
+  isLowercase,
+  Parameter,
+  RenderProps,
+  StyledProps,
+  Unpack,
+  Values,
+};

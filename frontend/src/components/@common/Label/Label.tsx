@@ -94,8 +94,8 @@ const Label = (labelProps: LabelProps) => {
       $borderColor={'borderColor' in labelProps ? labelProps.borderColor : theme.color.primary}
       $backgroundColor={backgroundColor}
       $textColor={textColor}
-      $width={width}
-      $clicked={clicked}
+      width={width}
+      clicked={clicked}
       onClick={onClick}
       {...restProps}
     >
@@ -129,17 +129,17 @@ const LabelWrapper = styled.div<LabelStyleProps>`
   width: fit-content;
   height: 3rem;
 
-  ${({ $width }) => ($width ? `width: ${$width}rem` : 'padding: 0 1.6rem')};
+  ${({ width }) => (width ? `width: ${width}rem` : 'padding: 0 1.6rem')};
 
   color: ${({ $textColor }) => $textColor};
 
-  background-color: ${({ $clicked, theme, $backgroundColor }) =>
-    $clicked ? theme.color.blue : $backgroundColor};
+  background-color: ${({ clicked, theme, $backgroundColor }) =>
+    clicked ? theme.color.blue : $backgroundColor};
   border-radius: 20px;
 
-  ${({ $hasBorder, $clicked, $borderColor }) =>
+  ${({ $hasBorder, clicked, $borderColor }) =>
     $hasBorder &&
-    !$clicked &&
+    !clicked &&
     `
         outline: 1px solid ${$borderColor};
         outline-offset: -1px;

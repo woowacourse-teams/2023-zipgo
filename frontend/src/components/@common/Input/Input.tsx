@@ -11,7 +11,7 @@ interface InputProps extends InputHTMLAttributes<HTMLInputElement> {
 const Input = (inputProps: InputProps) => {
   const { design, fontSize, isValid = true, ...restProps } = inputProps;
 
-  return <InputWrapper $design={design} $fontSize={fontSize} $isValid={isValid} {...restProps} />;
+  return <InputWrapper design={design} $fontSize={fontSize} $isValid={isValid} {...restProps} />;
 };
 
 export default Input;
@@ -28,8 +28,8 @@ const InputWrapper = styled.input<InputStyleProps>`
   border: none;
   outline: none;
 
-  ${({ $design }) => {
-    if ($design === 'underline') {
+  ${({ design }) => {
+    if (design === 'underline') {
       return css`
         border-bottom: 1px solid ${({ theme }) => theme.color.grey400};
       `;
