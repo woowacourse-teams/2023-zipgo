@@ -15,7 +15,7 @@ export const REACTIONS = {
   NONE: '없어요',
 } as const;
 
-export const COMMENT_VISIABLE_LINE_LIMIT = 180;
+export const COMMENT_VISIBLE_LINE_LIMIT = 180;
 export const PROFILE_DEFAULT_IMG_URL =
   'https://github.com/woowacourse-teams/2023-zipgo/assets/24777828/936f3f87-8c5c-4b0f-acc4-f260f3311659';
 

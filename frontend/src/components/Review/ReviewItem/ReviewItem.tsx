@@ -6,7 +6,7 @@ import DogIcon from '@/assets/svg/dog_icon.svg';
 import ReactedIcon from '@/assets/svg/reacted_icon.svg';
 import UnReactedIcon from '@/assets/svg/un_reacted_icon.svg';
 import StarRatingDisplay from '@/components/@common/StarRating/StarRatingDisplay/StartRatingDisplay';
-import { COMMENT_VISIABLE_LINE_LIMIT, REACTIONS } from '@/constants/review';
+import { COMMENT_VISIBLE_LINE_LIMIT, REACTIONS } from '@/constants/review';
 import { useValidParams } from '@/hooks/@common/useValidParams';
 import { useAuth } from '@/hooks/auth';
 import { useRemoveReviewMutation, useToggleHelpfulReactionMutation } from '@/hooks/query/review';
@@ -118,7 +118,7 @@ const ReviewItem = (reviewItemProps: ReviewItemProps) => {
         </Reaction>
       </Reactions>
       <Comment isExpanded={isCommentExpanded}>{comment}</Comment>
-      {!isCommentExpanded && comment.length > COMMENT_VISIABLE_LINE_LIMIT && (
+      {!isCommentExpanded && comment.length > COMMENT_VISIBLE_LINE_LIMIT && (
         <ShowMoreButton
           onClick={() => setIsCommentExpanded(prevIsExpanded => !prevIsExpanded)}
           type="button"
