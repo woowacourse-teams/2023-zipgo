@@ -1,11 +1,12 @@
 import { ChangeEvent } from 'react';
-import styled from 'styled-components';
+import styled, { css } from 'styled-components';
 
 import { REVIEW_ALIGN_QUERY } from '@/constants/review';
 import useEasyNavigate from '@/hooks/@common/useEasyNavigate';
 import useValidQueryString from '@/hooks/common/useValidQueryString';
 import { useReviewListAlignMeta } from '@/hooks/query/review';
 import { generateQueryString } from '@/router/routes';
+import { StyledProps } from '@/types/common/utility';
 import { RuntimeError } from '@/utils/errors';
 
 const AlignSelect = () => {
@@ -34,9 +35,14 @@ const AlignSelect = () => {
   );
 };
 
+const Skeleton = () => <Select skeleton />;
+
+AlignSelect.Skeleton = Skeleton;
+
 export default AlignSelect;
 
-const Select = styled.select`
+const Select = styled.select<StyledProps>`
+  width: 12rem;
   min-height: 1.4rem;
   padding: 0.8rem;
 
@@ -49,6 +55,14 @@ const Select = styled.select`
   background-color: ${({ theme }) => theme.color.grey200};
   border: none;
   border-radius: 4px;
+
+  ${({ theme, skeleton }) =>
+    skeleton &&
+    css`
+      ${theme.animation.skeleton}
+      appearance: none;
+      border-radius: 4px;
+    `};
 `;
 
 const Item = styled.option`

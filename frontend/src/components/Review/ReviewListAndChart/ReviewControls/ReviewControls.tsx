@@ -1,9 +1,8 @@
-import styled from 'styled-components';
+import styled, { css } from 'styled-components';
 
-import QueryBoundary from '@/components/@common/ErrorBoundary/QueryBoundary/QueryBoundary';
 import FilterSwitch from '@/components/@common/FilterSwitch/FilterSwitch';
-import SkeletonBar from '@/components/@common/Skeleton/SkeletonBar/SkeletonBar';
 import { useCustomReview } from '@/hooks/review/useCustomReview';
+import { StyledProps } from '@/types/common/utility';
 
 import AlignSelect from './AlignSelect/AlignSelect';
 import FilterDialog from './FilterDialog/FilterDialog';
@@ -27,10 +26,10 @@ const ReviewControls = () => {
 
 const Skeleton = () => (
   <Layout>
-    <SkeletonBar width="13.2rem" />
+    <Description skeleton />
     <ControlsContainer>
-      <SkeletonBar width="11rem" />
-      <SkeletonBar width="5.7rem" />
+      <AlignSelect.Skeleton />
+      <FilterDialog.Skeleton />
     </ControlsContainer>
   </Layout>
 );
@@ -49,16 +48,25 @@ const Layout = styled.div`
   padding: 0 2rem;
 `;
 
-const Description = styled.label`
+const Description = styled.label<StyledProps>`
   display: flex;
   gap: 0.8rem;
   align-items: center;
   justify-content: center;
 
+  width: 13.2rem;
+  height: 100%;
+
   font-size: 1.3rem;
   font-weight: 500;
   font-style: normal;
   color: ${({ theme }) => theme.color.grey400};
+
+  ${({ theme, skeleton }) =>
+    skeleton &&
+    css`
+      ${theme.animation.skeleton}
+    `}
 `;
 
 const ControlsContainer = styled.div`

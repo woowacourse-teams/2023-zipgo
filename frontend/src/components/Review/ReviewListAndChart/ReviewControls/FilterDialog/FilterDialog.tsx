@@ -7,6 +7,7 @@ import useEasyNavigate from '@/hooks/@common/useEasyNavigate';
 import { useReviewListFilterMeta } from '@/hooks/query/review';
 import useReviewFilterList from '@/hooks/review/useReviewFilterList';
 import { generateQueryString } from '@/router/routes';
+import { StyledProps } from '@/types/common/utility';
 
 const FilterDialog = () => {
   const { metaData } = useReviewListFilterMeta();
@@ -106,20 +107,32 @@ const FilterDialog = () => {
   );
 };
 
+const Skeleton = () => <DialogTrigger skeleton />;
+
+FilterDialog.Skeleton = Skeleton;
+
 export default FilterDialog;
 
-const DialogTrigger = styled.button`
+const DialogTrigger = styled.button<StyledProps>`
   display: flex;
   gap: 0.4rem;
   align-items: center;
   justify-content: center;
 
+  width: 5.7rem;
   min-height: 1.4rem;
   padding: 0.8rem;
 
   background: ${({ theme }) => theme.color.grey200};
   border: none;
   border-radius: 4px;
+
+  ${({ theme, skeleton }) =>
+    skeleton &&
+    css`
+      ${theme.animation.skeleton}
+      border-radius: 4px;
+    `};
 
   & > span {
     padding-top: 0.2rem;
