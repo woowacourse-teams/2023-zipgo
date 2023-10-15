@@ -2,7 +2,6 @@ import { useQuery } from '@tanstack/react-query';
 import { ComponentPropsWithoutRef } from 'react';
 
 interface SuspendedImgProps extends ComponentPropsWithoutRef<'img'> {
-  src: string;
   staleTime?: number;
   cacheTime?: number;
 }
@@ -18,10 +17,11 @@ const SuspendedImg = (props: SuspendedImgProps) => {
       new Promise(resolve => {
         img.onload = resolve;
 
-        img.src = src;
+        img.src = src!;
       }),
     ...(staleTime == null ? {} : { staleTime }),
     ...(cacheTime == null ? {} : { cacheTime }),
+    enabled: Boolean(src),
   });
 
   // eslint-disable-next-line jsx-a11y/alt-text
