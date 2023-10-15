@@ -20,22 +20,25 @@ import NutritionStandardsFilterList from './NutritionStandardsFilterList/Nutriti
 
 const FilterBottomSheet = () => (
   <FoodFilterProvider>
-    <Dialog>
-      <Dialog.Trigger asChild>
-        <DialogTrigger type="button">
-          <FilterTriggerIcon src={SettingsIcon} alt="필터 버튼 아이콘" />
-          <span>필터</span>
-        </DialogTrigger>
-      </Dialog.Trigger>
-      <Dialog.Portal>
-        <Loading>
-          <Dialog.BackDrop />
-          <Dialog.Content asChild>
-            {({ openHandler }) => <KeywordContent toggleDialog={openHandler} />}
-          </Dialog.Content>
-        </Loading>
-      </Dialog.Portal>
-    </Dialog>
+    <FilterDialogAndFilterDisplayContainer>
+      <Dialog>
+        <Dialog.Trigger asChild>
+          <DialogTrigger type="button">
+            <FilterTriggerIcon src={SettingsIcon} alt="필터 버튼 아이콘" />
+            <span>필터</span>
+          </DialogTrigger>
+        </Dialog.Trigger>
+        <Dialog.Portal>
+          <Loading>
+            <Dialog.BackDrop />
+            <Dialog.Content asChild>
+              {({ openHandler }) => <KeywordContent toggleDialog={openHandler} />}
+            </Dialog.Content>
+          </Loading>
+        </Dialog.Portal>
+      </Dialog>
+      <FilterSelectionDisplay />
+    </FilterDialogAndFilterDisplayContainer>
   </FoodFilterProvider>
 );
 
