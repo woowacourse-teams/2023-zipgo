@@ -6,6 +6,7 @@ import DogIcon from '@/assets/svg/dog_icon.svg';
 import ReactedIcon from '@/assets/svg/reacted_icon.svg';
 import UnReactedIcon from '@/assets/svg/un_reacted_icon.svg';
 import StarRatingDisplay from '@/components/@common/StarRating/StarRatingDisplay/StartRatingDisplay';
+import SuspendedImg from '@/components/@common/SuspendedImg/SuspendedImg';
 import { COMMENT_VISIBLE_LINE_LIMIT, REACTIONS } from '@/constants/review';
 import { useValidParams } from '@/hooks/@common/useValidParams';
 import { useAuth } from '@/hooks/auth';
@@ -178,7 +179,7 @@ const ReviewImageAndNameContainer = styled.div`
   align-items: center;
 `;
 
-const ReviewerImage = styled.img<StyledProps>`
+const ReviewerImage = styled(SuspendedImg)<StyledProps>`
   flex-shrink: 0;
 
   box-sizing: border-box;
