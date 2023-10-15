@@ -2,10 +2,10 @@ import styled from 'styled-components';
 
 import CloseSquareIcon from '@/assets/svg/close_square_icon_light.svg';
 import WidthPetIcon from '@/assets/webp/with_pet_icon.webp';
-import useBoolean from '@/hooks/@common/useBoolean';
+import { useFoodSelectionGuideBanner } from '@/hooks/food/useFoodSelectionGuideBanner';
 
 const FoodSelectionGuideBanner = () => {
-  const [isOpen, , closeBanner] = useBoolean(true);
+  const { isOpen, closeBanner } = useFoodSelectionGuideBanner();
 
   if (!isOpen) return null;
 
