@@ -14,7 +14,7 @@ const SIZE_PER_PAGE = 20;
 
 export const useFoodListInfiniteQuery = (payload: Parameter<typeof getFoodList>) => {
   const { data, ...restQuery } = useInfiniteQuery({
-    queryKey: [QUERY_KEY.petFoods],
+    queryKey: [QUERY_KEY.petFoods, Object.values(payload).join()],
     queryFn: ({ pageParam = { ...payload, size: String(SIZE_PER_PAGE) } }) =>
       getFoodList(pageParam),
     getNextPageParam: (lastFoodListRes, allFoodListRes) => {
