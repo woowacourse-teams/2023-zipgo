@@ -40,11 +40,13 @@ const ReviewList = () => {
           </ReviewItemWrapper>
         ))
       ) : (
-        <NoReviewText>
-          아직 리뷰가 없어요.
-          <br />
-          해당 식품의 첫 번째 리뷰어가 되어보세요!
-        </NoReviewText>
+        <NoReviewContainer>
+          <NoReviewText>
+            아직 리뷰가 없어요.
+            <br />
+            해당 식품의 첫 번째 리뷰어가 되어보세요!
+          </NoReviewText>
+        </NoReviewContainer>
       )}
       {userInfo?.hasPet && (
         <ReviewAddButton type="button" aria-label="리뷰 작성" onClick={goReviewWrite}>
@@ -83,15 +85,25 @@ const ReviewItemWrapper = styled.li`
   list-style: none;
 `;
 
-const NoReviewText = styled.p`
-  margin-top: 6rem;
+const NoReviewContainer = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: center;
 
-  font-size: 1.3rem;
-  font-weight: 400;
-  line-height: 1.7rem;
-  color: ${({ theme }) => theme.color.grey300};
+  height: 13rem;
+  margin: 1.6rem;
+
+  background-color: ${({ theme }) => theme.color.grey200};
+  border-radius: 20px;
+`;
+
+const NoReviewText = styled.p`
+  font-family: Pretendard, sans-serif;
+  font-size: 1.2rem;
+  font-weight: 600;
+  line-height: 1.6rem;
+  color: ${({ theme }) => theme.color.grey400};
   text-align: center;
-  letter-spacing: -0.05rem;
 `;
 
 const ReviewAddButton = styled.button`
