@@ -264,6 +264,11 @@ const Select = styled.select`
   text-align: center;
 
   appearance: none;
+  /* stylelint-disable-next-line CssSyntaxError */
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  padding: 0 0.8rem;
+
   border: 1px solid ${({ theme }) => theme.color.grey400};
   border-radius: 16px;
 `;

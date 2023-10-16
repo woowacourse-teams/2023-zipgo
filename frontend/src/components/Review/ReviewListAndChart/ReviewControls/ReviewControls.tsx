@@ -44,7 +44,6 @@ const Layout = styled.div`
   justify-content: space-between;
 
   width: 100%;
-  height: 3.5rem;
   padding: 0 2rem;
 `;
 
@@ -54,8 +53,9 @@ const Description = styled.label<StyledProps>`
   align-items: center;
   justify-content: center;
 
-  width: 13.2rem;
+  min-width: 14.5rem;
   height: 100%;
+  height: 3.5rem;
 
   font-size: 1.3rem;
   font-weight: 500;

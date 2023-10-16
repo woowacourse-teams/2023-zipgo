@@ -42,8 +42,8 @@ AlignSelect.Skeleton = Skeleton;
 export default AlignSelect;
 
 const Select = styled.select<StyledProps>`
-  width: 12rem;
-  min-height: 1.4rem;
+  min-width: 9.5rem;
+  min-height: 3.5rem;
   padding: 0.8rem;
 
   font-size: 1.3rem;
@@ -52,6 +52,10 @@ const Select = styled.select<StyledProps>`
   color: ${({ theme }) => theme.color.grey400};
   text-align: center;
 
+  /* stylelint-disable-next-line CssSyntaxError */
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
   background-color: ${({ theme }) => theme.color.grey200};
   border: none;
   border-radius: 4px;
