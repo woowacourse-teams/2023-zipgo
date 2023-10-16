@@ -137,6 +137,7 @@ const Layout = styled.div`
 
   width: 100vw;
   height: 57.4rem;
+  max-height: 85vh;
 
   background: ${({ theme }) => theme.color.grey200};
   border-radius: 20px 20px 0 0;
@@ -183,6 +184,7 @@ const NavWrapper = styled.div`
 
 const NavList = styled.nav`
   display: flex;
+  flex-shrink: 0;
   gap: 2rem;
   align-items: center;
 
