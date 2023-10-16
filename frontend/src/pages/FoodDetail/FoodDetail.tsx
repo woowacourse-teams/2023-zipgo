@@ -11,13 +11,12 @@ import PageHeader from '@/components/@common/PageHeader/PageHeader';
 import ToolTip from '@/components/@common/ToolTip/ToolTip';
 import BrandBlock from '@/components/Food/BrandBlock/BrandBlock';
 import FoodProfile from '@/components/Food/FoodProfile/FoodProfile';
-import NutritionStandardBlock, {
-  State,
-} from '@/components/Food/NutritionStandardBlock/NutritionStandardBlock';
+import NutritionStandardBlock from '@/components/Food/NutritionStandardBlock/NutritionStandardBlock';
 import ReviewListAndChart from '@/components/Review/ReviewListAndChart/ReviewListAndChart';
 import usePageTitle from '@/hooks/@common/usePageTitle';
 import { useValidParams } from '@/hooks/@common/useValidParams';
 import { useFoodDetailQuery } from '@/hooks/query/food';
+import { State } from '@/types/food/client';
 
 const FoodDetail = () => {
   const { petFoodId } = useValidParams(['petFoodId']);
