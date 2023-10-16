@@ -1,7 +1,8 @@
 import { Link } from 'react-router-dom';
-import styled from 'styled-components';
+import styled, { css } from 'styled-components';
 
-import LazyImage from '@/components/@common/LazyImage/LazyImage';
+import SuspendedImg from '@/components/@common/SuspendedImg/SuspendedImg';
+import { StyledProps } from '@/types/common/utility';
 import { Food } from '@/types/food/client';
 
 interface FoodItemProps extends Food {}
@@ -20,9 +21,19 @@ const FoodItem = (foodItemProps: FoodItemProps) => {
   );
 };
 
+const Skeleton = () => (
+  <FoodItemWrapperSkeleton>
+    <FoodImageWrapper skeleton />
+    <BrandName skeleton />
+    <FoodName skeleton />
+  </FoodItemWrapperSkeleton>
+);
+
+FoodItem.Skeleton = Skeleton;
+
 export default FoodItem;
 
-const FoodImage = styled(LazyImage)`
+const FoodImage = styled(SuspendedImg)`
   position: absolute;
   top: 0;
   left: 0;
@@ -35,7 +46,7 @@ const FoodImage = styled(LazyImage)`
   transition: all 200ms ease;
 `;
 
-const FoodItemWrapper = styled(Link)`
+const FoodItemWrapperStyle = css`
   display: flex;
   flex-direction: column;
   align-items: flex-start;
@@ -52,7 +63,15 @@ const FoodItemWrapper = styled(Link)`
   }
 `;
 
-const FoodImageWrapper = styled.div`
+const FoodItemWrapper = styled(Link)`
+  ${FoodItemWrapperStyle}
+`;
+
+const FoodItemWrapperSkeleton = styled.div`
+  ${FoodItemWrapperStyle}
+`;
+
+const FoodImageWrapper = styled.div<StyledProps>`
   position: relative;
 
   overflow: hidden;
@@ -63,9 +82,12 @@ const FoodImageWrapper = styled.div`
 
   border: 1px solid ${({ theme }) => theme.color.grey200};
   border-radius: 14%;
+
+  ${({ theme, skeleton }) => skeleton && theme.animation.skeleton}
 `;
 
-const BrandName = styled.span`
+const BrandName = styled.span<StyledProps>`
+  height: 1.7rem;
   margin-top: 1.6rem;
 
   font-size: 1.4rem;
@@ -74,12 +96,21 @@ const BrandName = styled.span`
   line-height: 17px;
   color: ${({ theme }) => theme.color.grey400};
   letter-spacing: -0.5px;
+
+  ${({ theme, skeleton }) =>
+    skeleton &&
+    css`
+      width: 50%;
+      ${theme.animation.skeleton}
+    `}
 `;
 
-const FoodName = styled.p`
+const FoodName = styled.p<StyledProps>`
   overflow: hidden;
   display: -webkit-box;
 
+  width: 100%;
+  height: 1.7rem;
   margin: 1rem 0;
 
   font-family: Pretendard, sans-serif;
@@ -93,4 +124,10 @@ const FoodName = styled.p`
 
   -webkit-box-orient: vertical;
   -webkit-line-clamp: 2;
+
+  ${({ theme, skeleton }) =>
+    skeleton &&
+    css`
+      ${theme.animation.skeleton}
+    `}
 `;
