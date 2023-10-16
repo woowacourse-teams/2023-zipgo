@@ -40,7 +40,7 @@ const ToolTip = (props: ToolTipProps) => {
         </ToolTipContainer>
       )}
       {showBubble && (
-        <BubbleWrapper width={width} direction={direction} left={left} $edgeLeft={edgeLeft}>
+        <BubbleWrapper $width={width} $direction={direction} $left={left} $edgeLeft={edgeLeft}>
           <BubbleTitle>{title}</BubbleTitle>
           <BubbleContent>{content}</BubbleContent>
         </BubbleWrapper>
@@ -82,7 +82,7 @@ const ToolTipContainer = styled.button`
 const BubbleWrapper = styled.div<BubbleWrapperProps>`
   position: absolute;
   z-index: 2;
-  ${({ left }) => (left ? `left: ${left};` : 'left: 50%; transform: translateX(-50%);')}
+  ${({ $left }) => ($left ? `left: ${$left};` : 'left: 50%; transform: translateX(-50%);')}
 
   display: flex;
   flex-direction: column;
@@ -90,38 +90,39 @@ const BubbleWrapper = styled.div<BubbleWrapperProps>`
   align-items: flex-start;
   justify-content: center;
 
-  ${({ direction }) => {
-    if (direction === 'top') {
+  ${({ $direction }) => {
+    if ($direction === 'top') {
       return 'margin-bottom: 2rem';
     }
 
     return 'margin-top: 2rem';
   }};
 
-  ${({ direction }) => direction === 'top' && 'bottom: 0'};
+  ${({ $direction }) => $direction === 'top' && 'bottom: 0'};
 
   padding: 2.4rem;
 
   background-color: ${({ theme }) => theme.color.grey600};
   border-radius: 20px;
 
-  ${({ width }) => `width: ${width}`};
+  ${({ $width }) => `width: ${$width}`};
 
   &::before {
     content: '';
 
     position: absolute;
-    ${({ direction }) => (direction === 'top' ? 'bottom: -3rem' : 'top: -1rem; margin-top: 2rem')};
+    ${({ $direction }) =>
+      $direction === 'top' ? 'bottom: -3rem' : 'top: -1rem; margin-top: 2rem'};
     ${({ $edgeLeft }) =>
       $edgeLeft ? `left: ${$edgeLeft};` : 'left: 50%; transform: translateX(-50%);'}
 
     margin-top: -2rem;
 
     border-top: 15px solid
-      ${({ direction, theme }) => (direction === 'top' ? theme.color.grey800 : 'transparent')};
+      ${({ $direction, theme }) => ($direction === 'top' ? theme.color.grey800 : 'transparent')};
     border-right: 10px solid transparent;
     border-bottom: 15px solid
-      ${({ direction, theme }) => (direction === 'bottom' ? theme.color.grey800 : 'transparent')};
+      ${({ $direction, theme }) => ($direction === 'bottom' ? theme.color.grey800 : 'transparent')};
     border-left: 10px solid transparent;
   }
 `;

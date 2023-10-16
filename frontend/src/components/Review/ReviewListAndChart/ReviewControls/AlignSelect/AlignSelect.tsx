@@ -35,7 +35,7 @@ const AlignSelect = () => {
   );
 };
 
-const Skeleton = () => <Select skeleton />;
+const Skeleton = () => <Select $skeleton />;
 
 AlignSelect.Skeleton = Skeleton;
 
@@ -60,8 +60,8 @@ const Select = styled.select<StyledProps>`
   border: none;
   border-radius: 4px;
 
-  ${({ theme, skeleton }) =>
-    skeleton &&
+  ${({ theme, $skeleton }) =>
+    $skeleton &&
     css`
       ${theme.animation.skeleton}
       appearance: none;

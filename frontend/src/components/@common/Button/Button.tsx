@@ -25,11 +25,11 @@ const Button = (buttonProps: ButtonProps) => {
   } = buttonProps;
 
   return (
-    <ButtonOuter fixed={fixed}>
+    <ButtonOuter $fixed={fixed}>
       <ButtonWrapper
         onClick={onClick}
-        kind={kind}
-        fixed={fixed}
+        $kind={kind}
+        $fixed={fixed}
         style={style}
         disabled={disabled}
         {...restProps}
@@ -46,10 +46,10 @@ export default Button;
 interface ButtonStyleProps extends StyledProps<Omit<ButtonProps, 'onClick' | 'text'>> {}
 
 const ButtonOuter = styled.div<ButtonStyleProps>`
-  position: ${({ fixed }) => (fixed ? 'fixed' : 'inherit')};
+  position: ${({ $fixed }) => ($fixed ? 'fixed' : 'inherit')};
 
-  ${({ fixed, theme }) =>
-    fixed &&
+  ${({ $fixed, theme }) =>
+    $fixed &&
     `
     z-index: 10;
     width: 100%;
@@ -79,12 +79,12 @@ const ButtonWrapper = styled.button<ButtonStyleProps>`
   color: ${({ theme }) => theme.color.white};
   letter-spacing: 0.02rem;
 
-  background-color: ${({ kind, theme, disabled }) => {
+  background-color: ${({ $kind, theme, disabled }) => {
     if (disabled) {
       return theme.color.grey300;
     }
 
-    if (kind === 'primary') {
+    if ($kind === 'primary') {
       return theme.color.primary;
     }
 
@@ -101,8 +101,8 @@ const ButtonWrapper = styled.button<ButtonStyleProps>`
     }
   }
 
-  ${({ fixed }) =>
-    fixed &&
+  ${({ $fixed }) =>
+    $fixed &&
     `
     margin-bottom: 4rem;
     box-shadow: 0 -8px 20px #fff;

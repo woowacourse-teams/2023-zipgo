@@ -107,7 +107,7 @@ const FilterDialog = () => {
   );
 };
 
-const Skeleton = () => <DialogTrigger skeleton />;
+const Skeleton = () => <DialogTrigger $skeleton />;
 
 FilterDialog.Skeleton = Skeleton;
 
@@ -127,8 +127,8 @@ const DialogTrigger = styled.button<StyledProps>`
   border: none;
   border-radius: 4px;
 
-  ${({ theme, skeleton }) =>
-    skeleton &&
+  ${({ theme, $skeleton }) =>
+    $skeleton &&
     css`
       ${theme.animation.skeleton}
       border-radius: 4px;
@@ -256,6 +256,7 @@ const FilterItem = styled.li<{
 const Select = styled.select`
   width: 100%;
   height: 4.1rem;
+  padding: 0 0.8rem;
 
   font-size: 1.8rem;
   font-weight: 500;
@@ -263,12 +264,10 @@ const Select = styled.select`
   color: ${({ theme }) => theme.color.grey400};
   text-align: center;
 
-  appearance: none;
   /* stylelint-disable-next-line CssSyntaxError */
   -webkit-appearance: none;
   -moz-appearance: none;
-  padding: 0 0.8rem;
-
+  appearance: none;
   border: 1px solid ${({ theme }) => theme.color.grey400};
   border-radius: 16px;
 `;

@@ -76,7 +76,7 @@ const SummaryChartContent = (props: SummaryChartContentProps) => {
   );
 };
 
-const Skeleton = () => <ChartContentLayout skeleton />;
+const Skeleton = () => <ChartContentLayout $skeleton />;
 
 SummaryChartContent.Skeleton = Skeleton;
 
@@ -202,7 +202,7 @@ const ChartContentLayout = styled.div<StyledProps>`
   background: ${({ theme }) => theme.color.grey200};
   border-radius: 15px;
 
-  ${({ theme, skeleton }) => skeleton && theme.animation.skeleton}
+  ${({ theme, $skeleton }) => $skeleton && theme.animation.skeleton}
 `;
 
 const ChartContainer = styled.div`

@@ -23,9 +23,9 @@ const FoodItem = (foodItemProps: FoodItemProps) => {
 
 const Skeleton = () => (
   <FoodItemWrapperSkeleton>
-    <FoodImageWrapper skeleton />
-    <BrandName skeleton />
-    <FoodName skeleton />
+    <FoodImageWrapper $skeleton />
+    <BrandName $skeleton />
+    <FoodName $skeleton />
   </FoodItemWrapperSkeleton>
 );
 
@@ -83,7 +83,7 @@ const FoodImageWrapper = styled.div<StyledProps>`
   border: 1px solid ${({ theme }) => theme.color.grey200};
   border-radius: 14%;
 
-  ${({ theme, skeleton }) => skeleton && theme.animation.skeleton}
+  ${({ theme, $skeleton }) => $skeleton && theme.animation.skeleton}
 `;
 
 const BrandName = styled.span<StyledProps>`
@@ -97,8 +97,8 @@ const BrandName = styled.span<StyledProps>`
   color: ${({ theme }) => theme.color.grey400};
   letter-spacing: -0.5px;
 
-  ${({ theme, skeleton }) =>
-    skeleton &&
+  ${({ theme, $skeleton }) =>
+    $skeleton &&
     css`
       width: 50%;
       ${theme.animation.skeleton}
@@ -125,8 +125,8 @@ const FoodName = styled.p<StyledProps>`
   -webkit-box-orient: vertical;
   -webkit-line-clamp: 2;
 
-  ${({ theme, skeleton }) =>
-    skeleton &&
+  ${({ theme, $skeleton }) =>
+    $skeleton &&
     css`
       ${theme.animation.skeleton}
     `}

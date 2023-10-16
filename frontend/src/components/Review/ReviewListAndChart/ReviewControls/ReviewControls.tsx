@@ -26,7 +26,7 @@ const ReviewControls = () => {
 
 const Skeleton = () => (
   <Layout>
-    <Description skeleton />
+    <Description $skeleton />
     <ControlsContainer>
       <AlignSelect.Skeleton />
       <FilterDialog.Skeleton />
@@ -62,8 +62,8 @@ const Description = styled.label<StyledProps>`
   font-style: normal;
   color: ${({ theme }) => theme.color.grey400};
 
-  ${({ theme, skeleton }) =>
-    skeleton &&
+  ${({ theme, $skeleton }) =>
+    $skeleton &&
     css`
       ${theme.animation.skeleton}
     `}

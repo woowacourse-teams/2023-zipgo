@@ -141,13 +141,13 @@ const Skeleton = () => (
   <Layout>
     <ReviewHeader>
       <ReviewImageAndNameContainer>
-        <ReviewerImage skeleton />
-        <InfoContainer skeleton />
+        <ReviewerImage $skeleton />
+        <InfoContainer $skeleton />
       </ReviewImageAndNameContainer>
     </ReviewHeader>
-    <RatingContainer skeleton />
-    <Reactions skeleton />
-    <Comment $isExpanded={false} skeleton />
+    <RatingContainer $skeleton />
+    <Reactions $skeleton />
+    <Comment $isExpanded={false} $skeleton />
   </Layout>
 );
 
@@ -187,7 +187,7 @@ const ReviewerImage = styled(SuspendedImg)<StyledProps>`
   width: 5rem;
 
   object-fit: cover;
-  ${({ theme, skeleton }) => skeleton && theme.animation.skeleton}
+  ${({ theme, $skeleton }) => $skeleton && theme.animation.skeleton}
   border-radius: 50%;
 `;
 
@@ -221,8 +221,8 @@ const RatingContainer = styled.div<StyledProps>`
   height: 1.6rem;
   margin-bottom: 1.2rem;
 
-  ${({ theme, skeleton }) =>
-    skeleton &&
+  ${({ theme, $skeleton }) =>
+    $skeleton &&
     css`
       width: 20rem;
 
@@ -245,8 +245,8 @@ const Reactions = styled.ul<StyledProps>`
   height: 5.7rem;
   margin-bottom: 1.6rem;
 
-  ${({ theme, skeleton }) =>
-    skeleton &&
+  ${({ theme, $skeleton }) =>
+    $skeleton &&
     css`
       width: 15rem;
 
@@ -297,8 +297,8 @@ const Comment = styled.p<StyledProps<{ isExpanded: boolean }>>`
     `;
   }};
 
-  ${({ theme, skeleton }) =>
-    skeleton &&
+  ${({ theme, $skeleton }) =>
+    $skeleton &&
     css`
       height: 10rem;
 
@@ -374,8 +374,8 @@ const InfoContainer = styled.div<StyledProps>`
 
   height: 5.5rem;
 
-  ${({ theme, skeleton }) =>
-    skeleton &&
+  ${({ theme, $skeleton }) =>
+    $skeleton &&
     css`
       width: 7rem;
 

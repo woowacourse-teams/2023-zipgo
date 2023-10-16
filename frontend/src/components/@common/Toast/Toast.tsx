@@ -30,12 +30,12 @@ const Toast = (props: ToastProps) => {
   }, [deleted, timer]);
 
   return (
-    <ToastWrapper type={type} $isShow={isShow}>
+    <ToastWrapper $type={type} $isShow={isShow}>
       <IconWrapper>
         <ToastIcon type={type} />
       </IconWrapper>
       {typeof content === 'string' ? (
-        <ToastText type={type}>{content}</ToastText>
+        <ToastText $type={type}>{content}</ToastText>
       ) : (
         <ToastContent>content</ToastContent>
       )}
@@ -79,22 +79,22 @@ const ToastWrapper = styled.div<ToastStyleProps & { $isShow: boolean }>`
   margin-bottom: 1.2rem;
   padding: 1.2rem 2rem;
 
-  background-color: ${({ theme, type }) => {
-    if (type === 'success') {
+  background-color: ${({ theme, $type }) => {
+    if ($type === 'success') {
       return theme.color.primary;
     }
-    if (type === 'warning') {
+    if ($type === 'warning') {
       return theme.color.warning;
     }
     return theme.color.white;
   }};
   border-radius: 20px;
   box-shadow: 0 2px 8px 0
-    ${({ theme, type }) => {
-      if (type === 'success') {
+    ${({ $type }) => {
+      if ($type === 'success') {
         return 'rgb(62 94 142 / 50%);';
       }
-      if (type === 'warning') {
+      if ($type === 'warning') {
         return 'rgb(231 56 70 / 50%);';
       }
       return 'rgb(0 0 0 / 15%);';
@@ -120,8 +120,8 @@ const IconWrapper = styled.div`
 const ToastText = styled.p<ToastStyleProps>`
   font-size: 1.5rem;
   font-weight: 400;
-  color: ${({ theme, type }) => {
-    if (type === 'info') {
+  color: ${({ theme, $type }) => {
+    if ($type === 'info') {
       return theme.color.grey600;
     }
     return theme.color.white;

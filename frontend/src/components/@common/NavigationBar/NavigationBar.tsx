@@ -102,7 +102,7 @@ const NavigationBarComponent = forwardRef<NavigationBarMethod, NavigationBarProp
               onClick={() => onClickNavItem(nav, index)}
               $fixedWidth={fixedWidth}
             >
-              <NavItemTitle clicked={currentIndex === index}>{nav.title}</NavItemTitle>
+              <NavItemTitle $clicked={currentIndex === index}>{nav.title}</NavItemTitle>
             </NavItem>
           ))}
         </NavList>
@@ -110,8 +110,8 @@ const NavigationBarComponent = forwardRef<NavigationBarMethod, NavigationBarProp
           $fixedWidth={fixedWidth}
           $indicatorColor={indicatorColor}
           $dataLength={navData.length}
-          left={currentItemLeft}
-          width={currentItemWidth}
+          $left={currentItemLeft}
+          $width={currentItemWidth}
         />
       </NavWrapper>
     );
@@ -153,10 +153,10 @@ const NavWrapper = styled.nav<PropsWithFixedWith>`
 const CurrentNavIndicator = styled.div<NavIndicatorProps>`
   position: absolute;
   bottom: ${({ $fixedWidth }) => ($fixedWidth ? '-0.3rem' : '-0.1rem')};
-  ${({ left }) => `left: ${left}px`};
+  ${({ $left }) => `left: ${$left}px`};
 
-  width: ${({ $dataLength, width, $fixedWidth }) =>
-    $fixedWidth || width === 0 ? `calc(100% / ${$dataLength})` : `${width}px`};
+  width: ${({ $dataLength, $width, $fixedWidth }) =>
+    $fixedWidth || $width === 0 ? `calc(100% / ${$dataLength})` : `${$width}px`};
   height: 0.3rem;
 
   background-color: ${({ $indicatorColor }) => $indicatorColor};
@@ -193,9 +193,9 @@ const NavItem = styled.button<PropsWithFixedWith>`
 
 const NavItemTitle = styled.h3<PropsWithClicked>`
   font-size: 1.8rem;
-  font-weight: ${({ theme, clicked }) => (clicked ? 500 : 400)};
+  font-weight: ${({ $clicked }) => ($clicked ? 500 : 400)};
   line-height: 1.8rem;
-  color: ${({ theme, clicked }) => (clicked ? theme.color.grey700 : theme.color.grey400)};
+  color: ${({ theme, $clicked }) => ($clicked ? theme.color.grey700 : theme.color.grey400)};
   letter-spacing: -0.05rem;
 
   outline: none;
