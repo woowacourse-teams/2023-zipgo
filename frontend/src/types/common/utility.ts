@@ -18,7 +18,7 @@ type Values<T extends object> = T[keyof T];
 
 type BaseFunction = (...args: never[]) => unknown;
 
-export type NonEmptyArray<T> = readonly [T, ...T[]];
+type NonEmptyArray<T> = readonly [T, ...T[]];
 
 type Separator = '_';
 
@@ -45,6 +45,7 @@ export type {
   BaseFunction,
   CamelToSnake,
   isLowercase,
+  NonEmptyArray,
   Parameter,
   RenderProps,
   StyledProps,
