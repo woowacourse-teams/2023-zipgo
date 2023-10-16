@@ -25,6 +25,10 @@ const globalStyle = css`
       width: 0;
       height: 0;
     }
+    /* stylelint-disable-next-line media-feature-range-notation */
+    @media (max-width: 380px) {
+      font-size: 50%;
+    }
   }
 
   body {
