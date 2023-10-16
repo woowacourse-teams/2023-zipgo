@@ -81,6 +81,11 @@ const BannerWrapper = styled.div`
       width: 100px;
       height: 100px;
     }
+
+    /* stylelint-disable-next-line media-feature-range-notation */
+    @media (max-width: 380px) {
+      font-size: 2.8rem;
+    }
   }
 
   & span {
