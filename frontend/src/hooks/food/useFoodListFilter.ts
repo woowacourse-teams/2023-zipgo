@@ -34,7 +34,7 @@ export const useFoodListFilter = () => {
       initialSelectedFilterList,
     );
 
-    setSelectedFilterList(prev => newFilterList);
+    setSelectedFilterList(newFilterList);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [Object.values(filterListQueryString).join()]);
 

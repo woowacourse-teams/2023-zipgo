@@ -1,4 +1,4 @@
-import { keyframes } from 'styled-components';
+import { css, keyframes as styledKeyframes } from 'styled-components';
 
 // 색상 팔레트
 const color = {
@@ -62,8 +62,8 @@ const componentStyle = {
   },
 } as const;
 
-const animation = {
-  bottomSheetAppear: keyframes`
+const keyframes = {
+  bottomSheetAppear: styledKeyframes`
    from {
       transform: translateY(100%);
     }
@@ -73,7 +73,7 @@ const animation = {
     }
   `,
 
-  shiny: keyframes`
+  shiny: styledKeyframes`
     0% {
         transform: scale(0) rotate(45deg);
         opacity: 0;
@@ -94,6 +94,22 @@ const animation = {
       opacity: 0;
     }
   `,
+
+  shimmer: styledKeyframes`
+    to {
+        background-position: 200% 0;
+      }
+  `,
+} as const;
+
+const animation = {
+  skeleton: css`
+    background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%);
+    background-size: 200% 100%;
+    border-radius: 8px;
+
+    animation: ${keyframes.shimmer} 1.5s infinite;
+  `,
 } as const;
 
 // 테마 객체
@@ -102,6 +118,7 @@ const theme = {
   font,
   shadow,
   componentStyle,
+  keyframes,
   animation,
 };
 

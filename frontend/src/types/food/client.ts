@@ -1,3 +1,8 @@
+export enum State {
+  us = '미국',
+  eu = '유럽',
+}
+
 export type Food = {
   id: number;
   brandName: string;

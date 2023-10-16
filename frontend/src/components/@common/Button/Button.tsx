@@ -31,7 +31,6 @@ const Button = (buttonProps: ButtonProps) => {
         $kind={kind}
         $fixed={fixed}
         style={style}
-        $disabled={disabled}
         disabled={disabled}
         {...restProps}
       >
@@ -64,7 +63,7 @@ const ButtonOuter = styled.div<ButtonStyleProps>`
 `;
 
 const ButtonWrapper = styled.button<ButtonStyleProps>`
-  cursor: ${({ $disabled }) => ($disabled ? 'not-allowed' : 'pointer')};
+  cursor: ${({ disabled }) => (disabled ? 'not-allowed' : 'pointer')};
 
   display: flex;
   gap: 0.4rem;
@@ -80,8 +79,8 @@ const ButtonWrapper = styled.button<ButtonStyleProps>`
   color: ${({ theme }) => theme.color.white};
   letter-spacing: 0.02rem;
 
-  background-color: ${({ $kind, theme, $disabled }) => {
-    if ($disabled) {
+  background-color: ${({ $kind, theme, disabled }) => {
+    if (disabled) {
       return theme.color.grey300;
     }
 
@@ -96,12 +95,11 @@ const ButtonWrapper = styled.button<ButtonStyleProps>`
 
   transition: all 100ms ease-in-out;
 
-  ${({ $disabled }) =>
-    !$disabled &&
-    ` &:active {
-            scale: 0.98;
-        }
-    `}
+  &:not(:disabled) {
+    &:active {
+      scale: 0.98;
+    }
+  }
 
   ${({ $fixed }) =>
     $fixed &&

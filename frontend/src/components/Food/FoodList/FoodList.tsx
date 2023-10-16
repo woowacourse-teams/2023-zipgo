@@ -35,6 +35,20 @@ const FoodList = () => {
   );
 };
 
+const Skeleton = () => (
+  <FoodListWrapper>
+    <FoodListContainer>
+      {Array(6)
+        .fill('')
+        .map((_, i) => (
+          <FoodItem.Skeleton key={i} />
+        ))}
+    </FoodListContainer>
+  </FoodListWrapper>
+);
+
+FoodList.Skeleton = Skeleton;
+
 export default FoodList;
 
 const FoodListWrapper = styled.div`

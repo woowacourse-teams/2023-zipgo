@@ -193,7 +193,7 @@ const NavItem = styled.button<PropsWithFixedWith>`
 
 const NavItemTitle = styled.h3<PropsWithClicked>`
   font-size: 1.8rem;
-  font-weight: ${({ theme, $clicked }) => ($clicked ? 500 : 400)};
+  font-weight: ${({ $clicked }) => ($clicked ? 500 : 400)};
   line-height: 1.8rem;
   color: ${({ theme, $clicked }) => ($clicked ? theme.color.grey700 : theme.color.grey400)};
   letter-spacing: -0.05rem;

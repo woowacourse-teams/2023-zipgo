@@ -6,6 +6,7 @@ import Tabs from '@/components/@common/Tabs/Tabs';
 import { REVIEW_SUMMARY_KEYWORDS } from '@/constants/review';
 import { useValidParams } from '@/hooks/@common/useValidParams';
 import { useReviewSummaryQuery } from '@/hooks/query/review';
+import { StyledProps } from '@/types/common/utility';
 import { ChartInfo, SummaryKeywordsEn } from '@/types/review/client';
 import { invariantOf } from '@/utils/invariantOf';
 import { translateSummaryKeyword } from '@/utils/review';
@@ -75,7 +76,7 @@ const SummaryChartContent = (props: SummaryChartContentProps) => {
   );
 };
 
-const Skeleton = () => <ChartContentLayout skeleton />;
+const Skeleton = () => <ChartContentLayout $skeleton />;
 
 SummaryChartContent.Skeleton = Skeleton;
 
@@ -188,9 +189,7 @@ const SummaryChartContentWrapper = styled.div`
   padding: 2rem;
 `;
 
-const ChartContentLayout = styled.div<{
-  skeleton?: boolean;
-}>`
+const ChartContentLayout = styled.div<StyledProps>`
   display: flex;
   align-items: center;
   justify-content: center;
@@ -203,20 +202,7 @@ const ChartContentLayout = styled.div<{
   background: ${({ theme }) => theme.color.grey200};
   border-radius: 15px;
 
-  ${({ skeleton }) =>
-    skeleton &&
-    css`
-      background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%);
-      background-size: 200% 100%;
-
-      animation: shimmer 1.5s infinite;
-    `}
-
-  @keyframes shimmer {
-    to {
-      background-position: 200% 0;
-    }
-  }
+  ${({ theme, $skeleton }) => $skeleton && theme.animation.skeleton}
 `;
 
 const ChartContainer = styled.div`

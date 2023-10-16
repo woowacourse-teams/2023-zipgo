@@ -90,7 +90,7 @@ const ToastWrapper = styled.div<ToastStyleProps & { $isShow: boolean }>`
   }};
   border-radius: 20px;
   box-shadow: 0 2px 8px 0
-    ${({ theme, $type }) => {
+    ${({ $type }) => {
       if ($type === 'success') {
         return 'rgb(62 94 142 / 50%);';
       }

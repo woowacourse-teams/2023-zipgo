@@ -8,8 +8,6 @@ import type { KeywordEn } from '@/types/food/client';
 export const useInfiniteFoodListScroll = () => {
   const queries = useValidQueryString<KeywordEn>(KEYWORD_EN);
 
-  const queriesString = Object.values(queries).join();
-
   const {
     foodList,
     fetchNextPage,
@@ -40,11 +38,6 @@ export const useInfiniteFoodListScroll = () => {
 
     return () => observer.disconnect();
   }, [executeFoodListInfiniteQuery]);
-
-  useEffect(() => {
-    remove();
-    refetch();
-  }, [queriesString, refetch, remove]);
 
   return { foodList, hasNextPage, refetch, targetRef, ...restQuery };
 };

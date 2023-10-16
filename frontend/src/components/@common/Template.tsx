@@ -2,6 +2,7 @@
 import { createElement, isValidElement, PropsWithChildren, ReactNode } from 'react';
 import styled, { css, isStyledComponent } from 'styled-components';
 
+import { StyledProps } from '@/types/common/utility';
 import { getComputedStyleOfSC } from '@/utils/styled-components';
 
 import Footer from './Footer/Footer';
@@ -35,7 +36,7 @@ const Template = <T extends React.FC>(
   return (
     <Layout>
       {createElement(fixedHeader ?? staticHeader!)}
-      <Container isFixedHeader={Boolean(fixedHeader)} headerHeight={headerHeight}>
+      <Container $isFixedHeader={Boolean(fixedHeader)} $headerHeight={headerHeight}>
         {children}
       </Container>
       {footer && <Footer />}
@@ -70,26 +71,28 @@ const Layout = styled.div`
 `;
 
 const Container = styled.div<
-  | {
-      isFixedHeader: boolean;
-      headerHeight?: string;
-    }
-  | { isFixedHeader?: never; headerHeight?: never }
+  StyledProps<
+    | {
+        isFixedHeader: boolean;
+        headerHeight?: string;
+      }
+    | { isFixedHeader?: never; headerHeight?: never }
+  >
 >`
   width: 100%;
   height: 100%;
   min-height: calc((var(--vh, 1vh) * 100));
 
-  ${({ isFixedHeader, headerHeight }) => {
-    if (isFixedHeader === true) {
+  ${({ $isFixedHeader, $headerHeight }) => {
+    if ($isFixedHeader === true) {
       return css`
-        padding-top: ${headerHeight};
+        padding-top: ${$headerHeight};
       `;
     }
 
-    if (isFixedHeader === false) {
+    if ($isFixedHeader === false) {
       return css`
-        min-height: calc((var(--vh, 1vh) * 100) - ${headerHeight});
+        min-height: calc((var(--vh, 1vh) * 100) - ${$headerHeight});
       `;
     }
   }}

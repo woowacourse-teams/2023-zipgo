@@ -3,6 +3,8 @@ import { css, styled } from 'styled-components';
 import EmptyStarIcon from '@/assets/svg/empty_star_icon.svg';
 import FilledStarIcon from '@/assets/svg/filled_star_icon.svg';
 
+import SuspendedImg from '../../SuspendedImg/SuspendedImg';
+
 interface StarRatingDisplayProps {
   rating: number;
   size?: 'small' | 'medium' | 'large';
@@ -37,7 +39,7 @@ const StarContainer = styled.div`
   align-items: center;
 `;
 
-const Star = styled.img<{ size: 'small' | 'medium' | 'large' }>`
+const Star = styled(SuspendedImg)<{ size: 'small' | 'medium' | 'large' }>`
   ${({ size }) => {
     if (size === 'small') {
       return css`

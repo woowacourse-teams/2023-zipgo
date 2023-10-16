@@ -1,4 +1,3 @@
-import { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { styled } from 'styled-components';
 
@@ -9,15 +8,13 @@ import { useReviewListQuery } from '@/hooks/query/review';
 import { routerPath } from '@/router/routes';
 import { zipgoLocalStorage } from '@/utils/localStorage';
 
-import ReviewItem from '../ReviewItem/ReviewItem';
-import ReviewControls from './ReviewControls/ReviewControls';
-import SummaryChart from './SummaryChart/SummaryChart';
+import ReviewItem from '../../ReviewItem/ReviewItem';
 
 const ReviewList = () => {
   const navigate = useNavigate();
   const { petFoodId } = useValidParams(['petFoodId']);
   const queryString = useValidQueryString(['petSizes', 'ageGroups', 'breeds', 'sortBy']);
-  const { reviewList, refetch } = useReviewListQuery({
+  const { reviewList } = useReviewListQuery({
     petFoodId,
     size: 100,
     petSizeId: queryString.petSizes,
@@ -26,67 +23,87 @@ const ReviewList = () => {
     sortById: queryString.sortBy,
   });
 
+  const hasReview = Boolean(reviewList?.length);
+
   const userInfo = zipgoLocalStorage.getUserInfo();
 
   const goReviewWrite = () => navigate(routerPath.reviewAddition({ petFoodId }));
 
-  useEffect(() => {
-    refetch();
-  }, [Object.values(queryString).join()]);
-
   if (!reviewList) return null;
 
   return (
-    <ReviewListContainer>
-      <SummaryChart />
-      <ReviewControls />
-      {Boolean(reviewList.length) ? (
+    <Layout>
+      {hasReview ? (
         reviewList.map(review => (
           <ReviewItemWrapper key={review.id}>
             <ReviewItem {...review} />
           </ReviewItemWrapper>
         ))
       ) : (
-        <NoReviewText>
-          아직 리뷰가 없어요.
-          <br />
-          해당 식품의 첫 번째 리뷰어가 되어보세요!
-        </NoReviewText>
+        <NoReviewContainer>
+          <NoReviewText>
+            아직 리뷰가 없어요.
+            <br />
+            해당 식품의 첫 번째 리뷰어가 되어보세요!
+          </NoReviewText>
+        </NoReviewContainer>
       )}
       {userInfo?.hasPet && (
         <ReviewAddButton type="button" aria-label="리뷰 작성" onClick={goReviewWrite}>
           <WriteIconImage src={WriteIcon} alt="" />
         </ReviewAddButton>
       )}
-    </ReviewListContainer>
+    </Layout>
   );
 };
 
+const Skeleton = () => (
+  <Layout>
+    {Array(5)
+      .fill('')
+      .map((_, i) => (
+        <ReviewItemWrapper key={i}>
+          <ReviewItem.Skeleton />
+        </ReviewItemWrapper>
+      ))}
+  </Layout>
+);
+
+ReviewList.Skeleton = Skeleton;
+
 export default ReviewList;
 
-const NoReviewText = styled.p`
-  margin-top: 6rem;
-
-  font-size: 1.3rem;
-  font-weight: 400;
-  line-height: 1.7rem;
-  color: ${({ theme }) => theme.color.grey300};
-  text-align: center;
-  letter-spacing: -0.05rem;
-`;
-
-const ReviewListContainer = styled.ul`
-  all: unset;
-
-  width: 100%;
+const Layout = styled.ul`
+  & > li {
+    border-bottom: 1px solid ${({ theme }) => theme.color.grey200};
+  }
 `;
 
 const ReviewItemWrapper = styled.li`
   padding: 2rem;
 
   list-style: none;
+`;
 
-  border-bottom: 1px solid ${({ theme }) => theme.color.grey200};
+const NoReviewContainer = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  height: 13rem;
+  margin: 1.6rem;
+
+  background-color: ${({ theme }) => theme.color.grey200};
+  border-radius: 20px;
+`;
+
+const NoReviewText = styled.p`
+  font-family: Pretendard, sans-serif;
+  font-size: 1.2rem;
+  font-weight: 600;
+  line-height: 1.6rem;
+  color: ${({ theme }) => theme.color.grey400};
+  text-align: center;
 `;
 
 const ReviewAddButton = styled.button`

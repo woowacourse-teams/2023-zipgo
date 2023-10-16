@@ -1,8 +1,10 @@
 import styled from 'styled-components';
 
+import EUFlag from '@/assets/svg/flag_eu.svg';
+import USFlag from '@/assets/svg/flag_us.svg';
 import { NUTRITION_STANDARD } from '@/constants/food';
 import { useFoodFilterContext } from '@/context/food';
-import type { NutritionStandardsFilter } from '@/types/food/client';
+import { NutritionStandardsFilter, State } from '@/types/food/client';
 
 interface NutritionStandardsFilterListProps {
   filterList: NutritionStandardsFilter[];
@@ -17,6 +19,8 @@ const NutritionStandardsFilterList = (props: NutritionStandardsFilterListProps) 
       {filterList.map(({ id, nation }) => {
         const selected = selectedFilterList[NUTRITION_STANDARD].has(nation);
 
+        const isUs = State.us === nation;
+
         return (
           <NutritionStandardsFilterItem
             key={id}
@@ -25,7 +29,7 @@ const NutritionStandardsFilterList = (props: NutritionStandardsFilterListProps) 
             aria-checked={selected}
             $selected={selected}
           >
-            <span>{nation === '미국' ? '🇺🇸' : '🇪🇺'}</span>
+            <CountryFlag src={isUs ? USFlag : EUFlag} alt={isUs ? State.us : State.eu} />
             <span>{nation}</span>
             {selected && <span>✔</span>}
           </NutritionStandardsFilterItem>
@@ -68,6 +72,11 @@ const NutritionStandardsFilterItem = styled.li<{
     color: ${({ theme }) => theme.color.primary};
     letter-spacing: -0.5px;
   }
+`;
+
+const CountryFlag = styled.img`
+  width: 4rem;
+  height: 4rem;
 `;
 
 export default NutritionStandardsFilterList;

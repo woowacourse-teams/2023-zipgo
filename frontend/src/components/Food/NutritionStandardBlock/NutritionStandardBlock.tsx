@@ -4,11 +4,7 @@ import EUFlag from '@/assets/svg/flag_eu.svg';
 import USFlag from '@/assets/svg/flag_us.svg';
 import Label from '@/components/@common/Label/Label';
 import theme from '@/styles/theme';
-
-export enum State {
-  us = '미국 기준',
-  eu = '유럽 기준',
-}
+import { State } from '@/types/food/client';
 
 interface NutritionStandardBlockProps {
   state: State;
@@ -23,7 +19,7 @@ const NutritionStandardBlock = (nutritionStandardBlockProps: NutritionStandardBl
   return (
     <NutritionStandardBlockWrapper>
       <StandardInfo>
-        <CountryFlag src={isUs ? USFlag : EUFlag} alt={isUs ? '미국' : '유럽'} />
+        <CountryFlag src={isUs ? USFlag : EUFlag} alt={isUs ? State.us : State.eu} />
         <CountryName>{state}</CountryName>
       </StandardInfo>
       <Label

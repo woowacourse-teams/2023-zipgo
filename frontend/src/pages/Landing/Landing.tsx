@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { Suspense, useState } from 'react';
 import styled from 'styled-components';
 
 import ZipgoBannerPng from '@/assets/webp/landing_banner.webp';
@@ -42,7 +42,9 @@ const Landing = () => {
         </BannerSection>
         <ListSection>
           <FilterBottomSheet />
-          <FoodList />
+          <Suspense fallback={<FoodList.Skeleton />}>
+            <FoodList />
+          </Suspense>
         </ListSection>
       </Layout>
     </Template>

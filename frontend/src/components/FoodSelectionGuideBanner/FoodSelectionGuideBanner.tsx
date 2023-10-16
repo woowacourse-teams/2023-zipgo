@@ -81,6 +81,11 @@ const BannerWrapper = styled.div`
       width: 100px;
       height: 100px;
     }
+
+    /* stylelint-disable-next-line media-feature-range-notation */
+    @media (max-width: 380px) {
+      font-size: 2.8rem;
+    }
   }
 
   & span {
@@ -118,7 +123,7 @@ const BannerWrapper = styled.div`
     opacity: 0;
     background-color: ${({ theme }) => theme.color.white};
 
-    animation: ${({ theme }) => theme.animation.shiny} 2.5s ease-in-out infinite;
+    animation: ${({ theme }) => theme.keyframes.shiny} 2.5s ease-in-out infinite;
   }
 
   &:active {

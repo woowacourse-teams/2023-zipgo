@@ -20,22 +20,25 @@ import NutritionStandardsFilterList from './NutritionStandardsFilterList/Nutriti
 
 const FilterBottomSheet = () => (
   <FoodFilterProvider>
-    <Dialog>
-      <Dialog.Trigger asChild>
-        <DialogTrigger type="button">
-          <FilterTriggerIcon src={SettingsIcon} alt="필터 버튼 아이콘" />
-          <span>필터</span>
-        </DialogTrigger>
-      </Dialog.Trigger>
-      <Dialog.Portal>
-        <Loading>
-          <Dialog.BackDrop />
-          <Dialog.Content asChild>
-            {({ openHandler }) => <KeywordContent toggleDialog={openHandler} />}
-          </Dialog.Content>
-        </Loading>
-      </Dialog.Portal>
-    </Dialog>
+    <FilterDialogAndFilterDisplayContainer>
+      <Dialog>
+        <Dialog.Trigger asChild>
+          <DialogTrigger type="button">
+            <FilterTriggerIcon src={SettingsIcon} alt="필터 버튼 아이콘" />
+            <span>필터</span>
+          </DialogTrigger>
+        </Dialog.Trigger>
+        <Dialog.Portal>
+          <Loading>
+            <Dialog.BackDrop />
+            <Dialog.Content asChild>
+              {({ openHandler }) => <KeywordContent toggleDialog={openHandler} />}
+            </Dialog.Content>
+          </Loading>
+        </Dialog.Portal>
+      </Dialog>
+      <FilterSelectionDisplay />
+    </FilterDialogAndFilterDisplayContainer>
   </FoodFilterProvider>
 );
 
@@ -134,11 +137,12 @@ const Layout = styled.div`
 
   width: 100vw;
   height: 57.4rem;
+  max-height: 85vh;
 
   background: ${({ theme }) => theme.color.grey200};
   border-radius: 20px 20px 0 0;
 
-  animation: ${({ theme }) => theme.animation.bottomSheetAppear} 0.5s cubic-bezier(0.2, 0.6, 0.3, 1);
+  animation: ${({ theme }) => theme.keyframes.bottomSheetAppear} 0.5s cubic-bezier(0.2, 0.6, 0.3, 1);
 `;
 
 const DialogTrigger = styled.button`
@@ -180,6 +184,7 @@ const NavWrapper = styled.div`
 
 const NavList = styled.nav`
   display: flex;
+  flex-shrink: 0;
   gap: 2rem;
   align-items: center;
 

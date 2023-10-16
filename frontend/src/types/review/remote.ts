@@ -64,12 +64,7 @@ interface GetReviewSummaryRes {
   adverseReaction: ChartInfo;
 }
 
-interface GetReviewsMetaRes {
-  petSizes: FilterControlsMeta;
-  sortBy: AlignControlsMeta;
-  ageGroups: FilterControlsMeta;
-  breeds: FilterControlsMeta;
-}
+type GetReviewsMetaRes = FilterControlsMeta & AlignControlsMeta;
 
 interface PostHelpfulReactionsReq {
   petFoodId: string;

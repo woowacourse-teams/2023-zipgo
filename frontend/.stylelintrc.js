@@ -34,5 +34,7 @@ module.exports = {
         severity: 'error',
       },
     ],
+
+    'property-no-vendor-prefix': null,
   },
 };
