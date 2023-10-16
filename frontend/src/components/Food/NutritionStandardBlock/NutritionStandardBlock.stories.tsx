@@ -1,7 +1,7 @@
 import type { Meta, StoryObj } from '@storybook/react';
 import React from 'react';
 
-import NutritionStandardBlock, { State } from './NutritionStandardBlock';
+import NutritionStandardBlock from './NutritionStandardBlock';
 
 const meta = {
   title: 'Food/NutritionStandardBlock',
@@ -21,14 +21,14 @@ type Story = StoryObj<typeof NutritionStandardBlock>;
 
 export const EU: Story = {
   args: {
-    state: State.eu,
+    state: '유럽',
     satisfied: false,
   },
 };
 
 export const US: Story = {
   args: {
-    state: State.us,
+    state: '미국',
     satisfied: false,
   },
 };
