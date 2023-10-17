@@ -72,6 +72,8 @@ const globalStyle = css`
     -webkit-appearance: none;
     appearance: none;
     background-color: transparent;
+    -webkit-border-radius: 0;
+    border-radius: 0;
     outline: none;
   }
 `;
