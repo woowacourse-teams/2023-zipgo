@@ -14,7 +14,7 @@ import zipgo.admin.application.AdminQueryService;
 import zipgo.admin.application.AdminService;
 import zipgo.admin.presentation.AdminController;
 import zipgo.aspect.QueryCounter;
-import zipgo.auth.application.AuthService;
+import zipgo.auth.application.AuthServiceFacade;
 import zipgo.auth.presentation.AuthController;
 import zipgo.auth.presentation.AuthInterceptor;
 import zipgo.auth.presentation.JwtMandatoryArgumentResolver;
@@ -69,7 +69,7 @@ public abstract class MockMvcTest {
     protected PetQueryService petQueryService;
 
     @MockBean
-    protected AuthService authService;
+    protected AuthServiceFacade authServiceFacade;
 
     @MockBean
     protected RefreshTokenCookieProvider refreshTokenCookieProvider;

@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
-import zipgo.auth.application.AuthService;
+import zipgo.auth.application.AuthServiceFacade;
 import zipgo.auth.dto.AccessTokenResponse;
 import zipgo.auth.dto.AuthCredentials;
 import zipgo.auth.dto.AuthResponse;
@@ -32,7 +32,7 @@ import static zipgo.auth.support.RefreshTokenCookieProvider.REFRESH_TOKEN;
 @RequiredArgsConstructor
 public class AuthController {
 
-    private final AuthService authService;
+    private final AuthServiceFacade authServiceFacade;
     private final JwtProvider jwtProvider;
     private final RefreshTokenCookieProvider refreshTokenCookieProvider;
     private final MemberQueryService memberQueryService;
@@ -40,7 +40,7 @@ public class AuthController {
 
     @PostMapping("/login")
     public ResponseEntity<LoginResponse> login(@RequestParam("code") String authCode) {
-        TokenDto tokenDto = authService.login(authCode);
+        TokenDto tokenDto = authServiceFacade.login(authCode);
         ResponseCookie cookie = refreshTokenCookieProvider.createCookie(tokenDto.refreshToken());
 
         String memberId = jwtProvider.getPayload(tokenDto.accessToken());
@@ -54,13 +54,13 @@ public class AuthController {
 
     @GetMapping("/refresh")
     public ResponseEntity<AccessTokenResponse> renewTokens(@CookieValue(value = REFRESH_TOKEN) String refreshToken) {
-        String accessToken = authService.renewAccessTokenBy(refreshToken);
+        String accessToken = authServiceFacade.renewAccessTokenBy(refreshToken);
         return ResponseEntity.ok(AccessTokenResponse.from(accessToken));
     }
 
     @PostMapping("/logout")
     public ResponseEntity<Void> logout(@Auth AuthCredentials authCredentials) {
-        authService.logout(authCredentials.id());
+        authServiceFacade.logout(authCredentials.id());
         ResponseCookie logoutCookie = refreshTokenCookieProvider.createLogoutCookie();
         return ResponseEntity.ok()
                 .header(SET_COOKIE, logoutCookie.toString())
