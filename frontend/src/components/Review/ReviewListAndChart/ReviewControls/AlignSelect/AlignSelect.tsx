@@ -52,10 +52,6 @@ const Select = styled.select<StyledProps>`
   color: ${({ theme }) => theme.color.grey400};
   text-align: center;
 
-  /* stylelint-disable-next-line CssSyntaxError */
-  -webkit-appearance: none;
-  -moz-appearance: none;
-  appearance: none;
   background-color: ${({ theme }) => theme.color.grey200};
   border: none;
   border-radius: 4px;
@@ -64,7 +60,6 @@ const Select = styled.select<StyledProps>`
     $skeleton &&
     css`
       ${theme.animation.skeleton}
-      appearance: none;
       border-radius: 4px;
     `};
 `;
