@@ -53,6 +53,27 @@ const globalStyle = css`
   button {
     cursor: pointer;
   }
+
+  input,
+  textarea {
+    /* stylelint-disable-next-line declaration-property-unit-allowed-list */
+    font-size: 16px;
+
+    -webkit-appearance: none;
+    appearance: none;
+    -webkit-border-radius: 0;
+    border-radius: 0;
+  }
+
+  select {
+    /* stylelint-disable-next-line declaration-property-unit-allowed-list */
+    font-size: 16px;
+
+    -webkit-appearance: none;
+    appearance: none;
+    background-color: transparent;
+    outline: none;
+  }
 `;
 
 export default globalStyle;
