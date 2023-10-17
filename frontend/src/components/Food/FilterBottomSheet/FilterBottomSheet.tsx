@@ -132,10 +132,10 @@ const Layout = styled.div`
 
   display: flex;
   flex-direction: column;
-  flex-shrink: 0;
   align-items: flex-start;
 
-  width: 100vw;
+  width: 100%;
+  max-width: ${({ theme }) => theme.maxWidth.mobile};
   height: 57.4rem;
   max-height: 85vh;
 

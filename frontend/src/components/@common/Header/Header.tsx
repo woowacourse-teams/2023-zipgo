@@ -33,7 +33,7 @@ const HeaderContainer = styled.header`
   align-items: center;
   justify-content: space-between;
 
-  width: 100vw;
+  width: 100%;
   padding: 2rem;
 
   background: transparent;

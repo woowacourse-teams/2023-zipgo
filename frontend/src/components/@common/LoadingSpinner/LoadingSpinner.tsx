@@ -22,13 +22,15 @@ const rotate = keyframes`
 const SpinnerWrapper = styled.div`
   position: fixed;
   z-index: 10;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
+  bottom: 50%;
+  transform: translateY(-50%);
 
-  background-color: #fff;
-  border-radius: 50%;
-  box-shadow: 0 0.1rem 0.4rem 0 rgb(0 0 0 / 15%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  width: 100%;
+  max-width: ${({ theme }) => theme.maxWidth.mobile};
 `;
 
 const AnimatedSpinner = styled.img`

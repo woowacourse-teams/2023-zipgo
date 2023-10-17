@@ -19,7 +19,9 @@ const PageHeader = (pageHeaderProps: PageHeaderProps) => {
     onClick ? onClick() : navigate(routerPath.home());
   };
 
-  const scrollPosition = useCurrentScroll();
+  const scrollPosition = useCurrentScroll({
+    element: document.getElementById('mobile') ?? document.body,
+  });
 
   return (
     <HeaderWrapper $scrollPosition={scrollPosition}>
@@ -56,6 +58,7 @@ const HeaderWrapper = styled.header<BackButtonStyleProps>`
   justify-content: center;
 
   width: 100%;
+  max-width: ${({ theme }) => theme.maxWidth.mobile};
   height: 8rem;
   padding: 1.6rem;
 

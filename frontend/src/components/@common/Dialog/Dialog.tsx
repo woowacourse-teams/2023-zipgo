@@ -73,7 +73,10 @@ const Trigger = (props: PropsWithChildren<TriggerProps>) => {
   return trigger;
 };
 
-const Portal = ({ children, container = document.body }: PropsWithChildren<PortalProps>) => {
+const Portal = ({
+  children,
+  container = document.getElementById('mobile') ?? document.body,
+}: PropsWithChildren<PortalProps>) => {
   const { isOpened } = useDialogContext();
 
   return isOpened ? createPortal(children, container) : null;
