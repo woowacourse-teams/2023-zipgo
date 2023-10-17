@@ -33,7 +33,7 @@ const BreedSelect = styled.select`
   width: 100%;
   padding: 1.2rem;
 
-  font-size: 1.3rem;
+  font-size: 1.6rem;
   color: ${({ theme }) => theme.color.grey600};
 
   border: none;

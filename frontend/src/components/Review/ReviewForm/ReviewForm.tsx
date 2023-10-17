@@ -141,7 +141,6 @@ const DetailReviewText = styled.textarea<{ $isValid: boolean }>`
   min-height: 12rem;
   padding: 1.2rem;
 
-  font-size: 1.6rem;
   line-height: 2.4rem;
   color: ${({ theme }) => theme.color.grey500};
 
@@ -168,7 +167,7 @@ const SubmitButton = styled.button`
   width: 100vw;
   height: 9rem;
 
-  font-size: 1.6rem;
+  font-size: 2rem;
   font-weight: 700;
   line-height: 2.4rem;
   color: ${({ theme }) => theme.color.white};

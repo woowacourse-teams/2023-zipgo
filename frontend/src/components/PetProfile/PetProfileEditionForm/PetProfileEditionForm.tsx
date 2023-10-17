@@ -176,7 +176,7 @@ const Kg = styled.p`
   top: 1.2rem;
   right: 1.2rem;
 
-  font-size: 1.3rem;
+  font-size: 1.6rem;
   font-weight: 500;
   line-height: 1.7rem;
   color: ${({ theme }) => theme.color.grey600};
