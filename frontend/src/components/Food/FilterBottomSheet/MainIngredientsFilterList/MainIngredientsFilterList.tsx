@@ -15,27 +15,21 @@ const MainIngredientsFilterList = (props: MainIngredientsFilterListProps) => {
 
   return (
     <MainIngredientsFilterListLayout>
-      {filterList
-        .concat(filterList)
-        .concat(filterList)
-        .concat(filterList)
-        .concat(filterList)
-        .concat(filterList)
-        .map(({ id, ingredients }) => {
-          const selected = selectedFilterList[MAIN_INGREDIENTS].has(ingredients);
+      {filterList.map(({ id, ingredients }) => {
+        const selected = selectedFilterList[MAIN_INGREDIENTS].has(ingredients);
 
-          return (
-            <IngredientFilterItem
-              role="checkbox"
-              key={id}
-              aria-checked={selected}
-              $selected={selected}
-              onClick={() => toggleFilter(MAIN_INGREDIENTS, ingredients)}
-            >
-              {ingredients}
-            </IngredientFilterItem>
-          );
-        })}
+        return (
+          <IngredientFilterItem
+            role="checkbox"
+            key={id}
+            aria-checked={selected}
+            $selected={selected}
+            onClick={() => toggleFilter(MAIN_INGREDIENTS, ingredients)}
+          >
+            {ingredients}
+          </IngredientFilterItem>
+        );
+      })}
     </MainIngredientsFilterListLayout>
   );
 };
