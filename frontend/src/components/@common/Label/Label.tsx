@@ -135,15 +135,11 @@ const LabelWrapper = styled.div<LabelStyleProps>`
 
   background-color: ${({ $clicked, theme, $backgroundColor }) =>
     $clicked ? theme.color.blue : $backgroundColor};
+  border: 1px solid ${({ theme }) => theme.color.blue};
   border-radius: 20px;
 
   ${({ $hasBorder, $clicked, $borderColor }) =>
-    $hasBorder &&
-    !$clicked &&
-    `
-        outline: 1px solid ${$borderColor};
-        outline-offset: -1px;
-    `}
+    $hasBorder && !$clicked && `border-color: ${$borderColor};`}
 
   ${({ onClick }) => onClick && 'cursor: pointer'};
 `;
