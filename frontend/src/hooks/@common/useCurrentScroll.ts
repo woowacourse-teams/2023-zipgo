@@ -1,18 +1,33 @@
-import { useEffect, useState } from 'react';
+import { RefObject, useEffect, useState } from 'react';
 
-const useCurrentScroll = (): number => {
+const useCurrentScroll = ({
+  ref,
+  element,
+}: {
+  ref?: RefObject<HTMLDivElement>;
+  element?: HTMLElement;
+}): number => {
   const [scrollPosition, setScrollPosition] = useState<number>(0);
 
-  const onScroll = () => {
-    setScrollPosition(window.scrollY);
-  };
-
   useEffect(() => {
-    window.addEventListener('scroll', onScroll);
-    return () => {
-      window.removeEventListener('scroll', onScroll);
+    const onScroll = () => {
+      if (ref?.current) {
+        const absoluteTop = ref.current.scrollTop;
+        setScrollPosition(absoluteTop);
+      }
+      if (element) {
+        const absoluteTop = element.scrollTop;
+        setScrollPosition(absoluteTop);
+      }
     };
-  }, []);
+
+    if (ref) {
+      ref.current?.addEventListener('scroll', onScroll);
+    }
+    if (element) {
+      element.addEventListener('scroll', onScroll);
+    }
+  }, [ref, element]);
 
   return scrollPosition;
 };

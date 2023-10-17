@@ -53,7 +53,7 @@ const Layout = styled.div`
   flex-shrink: 0;
   align-items: flex-start;
 
-  width: 100vw;
+  width: 100%;
   height: 57.4rem;
 
   background: ${({ theme }) => theme.color.grey200};

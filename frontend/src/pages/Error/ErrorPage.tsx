@@ -117,7 +117,7 @@ const BannerSection = styled.section`
   align-items: center;
   justify-content: center;
 
-  width: 100vw;
+  width: 100%;
   height: 100vh;
 
   background: linear-gradient(45deg, #3e5e8e 0%, #6992c3 100%);
@@ -133,7 +133,7 @@ const HeaderContainer = styled.header`
   align-items: center;
   justify-content: space-between;
 
-  width: 100vw;
+  width: 100%;
   height: 8rem;
   padding: 2rem;
 

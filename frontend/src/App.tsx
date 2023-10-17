@@ -7,6 +7,7 @@ import { ThemeProvider } from 'styled-components';
 import { CriticalBoundary } from './components/@common/ErrorBoundary/ErrorBoundary';
 import QueryBoundary from './components/@common/ErrorBoundary/QueryBoundary/QueryBoundary';
 import GlobalStyle from './components/@common/GlobalStyle';
+import MobileToDesktop from './components/@common/MobileToDesktop/MobileToDesktop';
 import { ERROR_MESSAGE_KIT } from './constants/errors';
 import { ONE_HOUR } from './constants/time';
 import ToastProvider, { useToast } from './context/Toast/ToastContext';
@@ -37,15 +38,17 @@ const App = () => (
   <ThemeProvider theme={theme}>
     <GlobalStyle />
     <QueryClientProvider client={queryClient}>
-      <CriticalBoundary fallback={errorFallback}>
-        <QueryBoundary errorFallback={errorFallback}>
-          <ToastProvider>
-            <GlobalEvent />
-            <Outlet />
-            {isDevelopment && <ReactQueryDevtools initialIsOpen={false} />}
-          </ToastProvider>
-        </QueryBoundary>
-      </CriticalBoundary>
+      <MobileToDesktop>
+        <CriticalBoundary fallback={errorFallback}>
+          <QueryBoundary errorFallback={errorFallback}>
+            <ToastProvider>
+              <GlobalEvent />
+              <Outlet />
+              {isDevelopment && <ReactQueryDevtools initialIsOpen={false} />}
+            </ToastProvider>
+          </QueryBoundary>
+        </CriticalBoundary>
+      </MobileToDesktop>
     </QueryClientProvider>
   </ThemeProvider>
 );

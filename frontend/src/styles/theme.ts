@@ -21,6 +21,10 @@ const color = {
   black: '#1C1D20',
 } as const;
 
+const maxWidth = {
+  mobile: '42rem',
+} as const;
+
 // 폰트
 const font = {
   heading:
@@ -53,9 +57,9 @@ const componentStyle = {
   backDrop: {
     position: 'fixed',
     top: 0,
-    left: 0,
 
-    width: '100vw',
+    width: '100%',
+    maxWidth: maxWidth.mobile,
     height: 'calc(var(--vh, 1vh) * 100)',
 
     background: 'rgba(0, 0, 0, 0.50)',
@@ -115,6 +119,7 @@ const animation = {
 // 테마 객체
 const theme = {
   color,
+  maxWidth,
   font,
   shadow,
   componentStyle,
