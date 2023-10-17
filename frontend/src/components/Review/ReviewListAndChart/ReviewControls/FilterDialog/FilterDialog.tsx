@@ -264,10 +264,6 @@ const Select = styled.select`
   color: ${({ theme }) => theme.color.grey400};
   text-align: center;
 
-  /* stylelint-disable-next-line CssSyntaxError */
-  -webkit-appearance: none;
-  -moz-appearance: none;
-  appearance: none;
   border: 1px solid ${({ theme }) => theme.color.grey400};
   border-radius: 16px;
 `;

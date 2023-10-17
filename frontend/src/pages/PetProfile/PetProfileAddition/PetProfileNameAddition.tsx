@@ -32,7 +32,6 @@ const PetProfileNameAddition = (props: PetProfileNameAdditionProps) => {
         isValid={isFirstRenderedOrValidInput}
         onChange={onChangeName}
         design="underline"
-        fontSize="1.3rem"
       />
       <ErrorCaption>
         {!isFirstRenderedOrValidInput &&
