@@ -3,6 +3,7 @@ package zipgo.auth.application;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import zipgo.auth.application.dto.OAuthMemberResponse;
+import zipgo.auth.domain.OAuthClient;
 import zipgo.auth.dto.TokenDto;
 
 @Service
@@ -12,9 +13,8 @@ public class AuthServiceFacade {
     private final AuthService authService;
     private final OAuthClient oAuthClient;
 
-    public TokenDto login(String authCode) {
-        String accessToken = oAuthClient.getAccessToken(authCode);
-        OAuthMemberResponse oAuthMemberResponse = oAuthClient.getMember(accessToken);
+    public TokenDto login(String authCode, String redirectUri) {
+        OAuthMemberResponse oAuthMemberResponse = oAuthClient.request(authCode, redirectUri);
         return authService.login(oAuthMemberResponse);
     }
 

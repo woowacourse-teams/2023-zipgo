@@ -32,15 +32,18 @@ import static zipgo.auth.support.RefreshTokenCookieProvider.REFRESH_TOKEN;
 @RequiredArgsConstructor
 public class AuthController {
 
-    private final AuthServiceFacade authServiceFacade;
     private final JwtProvider jwtProvider;
     private final RefreshTokenCookieProvider refreshTokenCookieProvider;
+    private final AuthServiceFacade authServiceFacade;
     private final MemberQueryService memberQueryService;
     private final PetQueryService petQueryService;
 
     @PostMapping("/login")
-    public ResponseEntity<LoginResponse> login(@RequestParam("code") String authCode) {
-        TokenDto tokenDto = authServiceFacade.login(authCode);
+    public ResponseEntity<LoginResponse> login(
+            @RequestParam("code") String authCode,
+            @RequestParam("redirect-uri") String redirectUri
+    ) {
+        TokenDto tokenDto = authServiceFacade.login(authCode, redirectUri);
         ResponseCookie cookie = refreshTokenCookieProvider.createCookie(tokenDto.refreshToken());
 
         String memberId = jwtProvider.getPayload(tokenDto.accessToken());
