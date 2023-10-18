@@ -1,6 +1,7 @@
 package zipgo.common.config;
 
 import java.util.List;
+
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.method.support.HandlerMethodArgumentResolver;
@@ -14,6 +15,7 @@ import zipgo.auth.support.JwtProvider;
 import zipgo.common.interceptor.LoggingInterceptor;
 
 import static org.springframework.http.HttpHeaders.LOCATION;
+import static org.springframework.http.HttpHeaders.SET_COOKIE;
 
 @Configuration
 @RequiredArgsConstructor
@@ -34,8 +36,14 @@ public class WebConfig implements WebMvcConfigurer {
     public void addCorsMappings(CorsRegistry registry) {
         registry.addMapping(ALLOW_ALL_PATH)
                 .allowedMethods(ALLOWED_METHODS)
-                .allowedOrigins(MAIN_SERVER_DOMAIN, DEV_SERVER_DOMAIN, FRONTEND_LOCALHOST, HTTPS_FRONTEND_LOCALHOST)
-                .exposedHeaders(LOCATION);
+                .allowedOrigins(
+                        MAIN_SERVER_DOMAIN,
+                        DEV_SERVER_DOMAIN,
+                        FRONTEND_LOCALHOST,
+                        HTTPS_FRONTEND_LOCALHOST
+                )
+                .allowCredentials(true)
+                .exposedHeaders(LOCATION, SET_COOKIE);
     }
 
     @Override
