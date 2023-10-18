@@ -157,5 +157,8 @@ const ErrorCodeText = styled.h1`
 const ErrorSubText = styled.p`
   font-size: 1.6rem;
   font-weight: 500;
+  line-height: 3rem;
   color: ${({ theme }) => theme.color.white};
+  text-align: center;
+  white-space: pre-line;
 `;
