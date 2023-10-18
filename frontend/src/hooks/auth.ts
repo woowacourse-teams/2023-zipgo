@@ -13,8 +13,6 @@ export const useAuth = () => {
   } = useAuthMutation();
   const queryClient = useQueryClient();
 
-  const { isLoggedIn } = useAuthQuery();
-
   const logout = () => {
     const isLogout = confirm('로그아웃하시겠어요?');
 
@@ -26,5 +24,7 @@ export const useAuth = () => {
     }
   };
 
-  return { isLoggedIn, loginZipgo, logout };
+  return { loginZipgo, logout };
 };
+
+export const useCheckAuth = () => useAuthQuery();

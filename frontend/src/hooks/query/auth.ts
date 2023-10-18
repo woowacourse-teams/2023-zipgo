@@ -1,10 +1,10 @@
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
-import { useNavigate } from 'react-router-dom';
 
 import { authenticateUser, loginZipgoAuth, logoutKaKaoAuth } from '@/apis/auth';
 import { usePetProfile } from '@/context/petProfile/PetProfileContext';
-import { routerPath } from '@/router/routes';
 import { zipgoLocalStorage } from '@/utils/localStorage';
+
+import useEasyNavigate from '../@common/useEasyNavigate';
 
 const QUERY_KEY = { authenticateUser: 'authenticateUser' };
 
@@ -22,8 +22,8 @@ export const useAuthQuery = () => {
 };
 
 export const useAuthMutation = () => {
-  const navigate = useNavigate();
   const queryClient = useQueryClient();
+  const { goHome } = useEasyNavigate();
   const { updatePetProfile } = usePetProfile();
 
   const { mutate: loginZipgo, ...loginRestMutation } = useMutation({
@@ -40,7 +40,7 @@ export const useAuthMutation = () => {
 
       queryClient.invalidateQueries([QUERY_KEY.authenticateUser]);
 
-      navigate(routerPath.home());
+      goHome();
     },
   });
 

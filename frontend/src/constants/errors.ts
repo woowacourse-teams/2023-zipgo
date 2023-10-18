@@ -12,6 +12,7 @@ const ONLINE = '네트워크가 연결되었습니다!';
 
 const UNEXPECTED_ERROR = '서비스에 문제가 발생했어요';
 const NOT_FOUND = '존재하지 않는 페이지예요';
+const KAKAO_LOGIN_ERROR = '카카오 서버에 문제가 발생했어요\n잠시 뒤 다시 시도해 주세요';
 const WRONG_URL_FORMAT = NOT_FOUND;
 const WRONG_QUERY_STRING = NOT_FOUND;
 
@@ -20,6 +21,7 @@ const API_ERROR_CODE_MISSING = UNEXPECTED_ERROR;
 const RUNTIME_ERROR_CODE_KIT = {
   WRONG_URL_FORMAT: 'WRONG_URL_FORMAT',
   WRONG_QUERY_STRING: 'WRONG_QUERY_STRING',
+  KAKAO_LOGIN_ERROR: 'KAKAO_LOGIN_ERROR',
 } as const;
 
 const API_ERROR_CODE_KIT = {
@@ -38,6 +40,7 @@ const ERROR_CODE_KIT: Record<keyof ErrorMessageKit, keyof ErrorMessageKit> = {
 const RUNTIME_ERROR_MESSAGE_KIT = {
   WRONG_URL_FORMAT,
   WRONG_QUERY_STRING,
+  KAKAO_LOGIN_ERROR,
 } as const;
 
 const API_ERROR_MESSAGE_KIT = {

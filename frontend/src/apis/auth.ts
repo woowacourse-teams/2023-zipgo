@@ -1,18 +1,28 @@
+import { KAKAO_REDIRECT_URI } from '@/constants/auth';
 import {
   AuthenticateUserRes,
   LoginKakaoAuthRes,
   LoginZipgoAuthReq,
   LoginZipgoAuthRes,
+  RefreshZipgoAuthRes,
 } from '@/types/auth/remote';
-import { zipgoLocalStorage } from '@/utils/localStorage';
 
-import { client, clientBasic, createConfigWithAuth } from '.';
+import { client, clientBasic } from '.';
 
 export const loginZipgoAuth = async ({ code }: LoginZipgoAuthReq) => {
   const { data } = await client.post<LoginZipgoAuthRes>('/auth/login', null, {
     params: {
       code,
+      'redirect-uri': KAKAO_REDIRECT_URI,
     },
+  });
+
+  return data;
+};
+
+export const refreshZipgoAuth = async () => {
+  const { data } = await clientBasic<RefreshZipgoAuthRes>('/auth/refresh', {
+    withCredentials: true,
   });
 
   return data;
@@ -40,12 +50,7 @@ export const logoutKaKaoAuth = async () => {
 };
 
 export const authenticateUser = async () => {
-  const tokens = zipgoLocalStorage.getTokens();
-
-  const { data } = await clientBasic.get<AuthenticateUserRes>(
-    '/auth',
-    createConfigWithAuth(tokens),
-  );
+  const { data } = await client<AuthenticateUserRes>('/auth');
 
   return data;
 };

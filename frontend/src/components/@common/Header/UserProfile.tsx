@@ -2,13 +2,13 @@ import { styled } from 'styled-components';
 
 import ZipgoLogo from '@/assets/svg/zipgo_logo_light.svg';
 import { usePetProfile } from '@/context/petProfile/PetProfileContext';
-import { useAuth } from '@/hooks/auth';
+import { useCheckAuth } from '@/hooks/auth';
 
 import { Dialog } from '../Dialog/Dialog';
 
 const UserProfile = () => {
   const { petProfile } = usePetProfile();
-  const { isLoggedIn } = useAuth();
+  const { isLoggedIn } = useCheckAuth();
 
   return isLoggedIn ? (
     <Dialog.Trigger asChild>
