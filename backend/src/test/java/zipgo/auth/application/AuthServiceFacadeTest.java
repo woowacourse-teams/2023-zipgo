@@ -9,6 +9,7 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import zipgo.auth.application.dto.OAuthMemberResponse;
 import zipgo.auth.application.fixture.MemberResponseSuccessFixture;
+import zipgo.auth.domain.OAuthClient;
 import zipgo.auth.dto.TokenDto;
 import zipgo.auth.exception.OAuthResourceNotBringException;
 import zipgo.auth.exception.OAuthTokenNotBringException;
@@ -38,16 +39,14 @@ class AuthServiceFacadeTest {
     @Test
     void 로그인에_성공하면_토큰을_발급한다() {
         // given
-        when(oAuthClient.getAccessToken("인가 코드"))
-                .thenReturn("엑세스 토큰");
-        OAuthMemberResponse 서드파티_사용자_응답 = new MemberResponseSuccessFixture();
-        when(oAuthClient.getMember("엑세스 토큰"))
-                .thenReturn(서드파티_사용자_응답);
-        when(authService.login(서드파티_사용자_응답))
+        OAuthMemberResponse oAuthMemberResponse = new MemberResponseSuccessFixture();
+        when(oAuthClient.request("인가 코드", "리다이렉트 유알아이"))
+                .thenReturn(oAuthMemberResponse);
+        when(authService.login(oAuthMemberResponse))
                 .thenReturn(TokenDto.of("생성된 엑세스 토큰", "생성된 리프레시 토큰"));
 
         // when
-        TokenDto 토큰 = authServiceFacade.login("인가 코드");
+        TokenDto 토큰 = authServiceFacade.login("인가 코드", "리다이렉트 유알아이");
 
         // then
         assertAll(
@@ -59,11 +58,11 @@ class AuthServiceFacadeTest {
     @Test
     void 엑세스_토큰을_가져오지_못하면_예외가_발생한다() {
         // given
-        when(oAuthClient.getAccessToken("인가 코드"))
+        when(oAuthClient.request("인가 코드", "리다이렉트 유알아이"))
                 .thenThrow(new OAuthTokenNotBringException());
 
         // expect
-        assertThatThrownBy(() -> authServiceFacade.login("인가 코드"))
+        assertThatThrownBy(() -> authServiceFacade.login("인가 코드", "리다이렉트 유알아이"))
                 .isInstanceOf(OAuthTokenNotBringException.class)
                 .hasMessageContaining("서드파티 서비스에서 토큰을 받아오지 못했습니다. 잠시후 다시 시도해주세요.");
     }
@@ -71,13 +70,11 @@ class AuthServiceFacadeTest {
     @Test
     void 사용자_정보를_가져오지_못하면_예외가_발생한다() {
         // given
-        when(oAuthClient.getAccessToken("인가 코드"))
-                .thenReturn("엑세스 토큰");
-        when(oAuthClient.getMember("엑세스 토큰"))
+        when(oAuthClient.request("인가 코드", "리다이렉트 유알아이"))
                 .thenThrow(new OAuthResourceNotBringException());
 
         // expect
-        assertThatThrownBy(() -> authServiceFacade.login("인가 코드"))
+        assertThatThrownBy(() -> authServiceFacade.login("인가 코드", "리다이렉트 유알아이"))
                 .isInstanceOf(OAuthResourceNotBringException.class)
                 .hasMessageContaining("서드파티 서비스에서 정보를 받아오지 못했습니다. 잠시후 다시 시도해주세요");
     }
