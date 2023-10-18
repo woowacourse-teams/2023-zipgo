@@ -21,6 +21,7 @@ export interface LoginZipgoAuthReq {
 
 export interface LoginZipgoAuthRes {
   accessToken: string;
+  refreshToken: string;
   authResponse: User;
 }
 
