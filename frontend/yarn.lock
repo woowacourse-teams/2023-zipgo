@@ -9870,7 +9870,7 @@ __metadata:
     webpack-cli: ^5.1.4
     webpack-dev-server: ^4.15.1
     webpack-merge: ^5.9.0
-    zipgo-layout: ^0.3.0
+    zipgo-layout: 0.4.0
   languageName: unknown
   linkType: soft
 
@@ -18070,12 +18070,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"zipgo-layout@npm:^0.3.0":
-  version: 0.3.0
-  resolution: "zipgo-layout@npm:0.3.0"
+"zipgo-layout@npm:0.4.0":
+  version: 0.4.0
+  resolution: "zipgo-layout@npm:0.4.0"
   dependencies:
     react: ^18.2.0
     styled-components: ^6.0.8
-  checksum: dc91581cd7ba0fa3aea340a9b381b228a6d6aaa7aca963482ba1fe54976d5684f143c07b3d16e4647b331f5027509a9c1a504b33fa481a078bddb7341e4a1fa7
+  checksum: 0a6852d01832c9d6c47d4e2ddbe0311108bebf3a8fc83eb39d78cae8f96a559f155cc11accd08ea81f1675ecd098b6932b72f1ea393d270b2bae9c41617e1eed
   languageName: node
   linkType: hard

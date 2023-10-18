@@ -139,6 +139,7 @@ const DetailReviewText = styled.textarea<{ $isValid: boolean }>`
 
   width: 100%;
   min-height: 12rem;
+  margin-bottom: 15rem;
   padding: 1.2rem;
 
   line-height: 2.4rem;
@@ -162,10 +163,11 @@ const SubmitButton = styled.button`
 
   position: fixed;
   bottom: 0;
-  left: 0;
 
   width: 100%;
+  max-width: ${({ theme }) => theme.maxWidth.mobile};
   height: 9rem;
+  margin-left: -2rem;
 
   font-size: 2rem;
   font-weight: 700;

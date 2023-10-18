@@ -84,11 +84,12 @@ const ErrorCaption = styled.p`
 export const NextButton = styled.button`
   cursor: pointer;
 
-  position: fixed;
-  bottom: 4rem;
+  position: absolute;
+  bottom: 6rem;
   left: 2rem;
 
   width: calc(100% - 4rem);
+  max-width: ${({ theme }) => theme.maxWidth.mobile};
   height: 5.1rem;
 
   font-size: 1.6rem;

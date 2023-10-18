@@ -49,9 +49,11 @@ const ReviewList = () => {
         </NoReviewContainer>
       )}
       {userInfo?.hasPet && (
-        <ReviewAddButton type="button" aria-label="리뷰 작성" onClick={goReviewWrite}>
-          <WriteIconImage src={WriteIcon} alt="" />
-        </ReviewAddButton>
+        <ButtonWrapper>
+          <ReviewAddButton type="button" aria-label="리뷰 작성" onClick={goReviewWrite}>
+            <WriteIconImage src={WriteIcon} alt="" />
+          </ReviewAddButton>
+        </ButtonWrapper>
       )}
     </Layout>
   );
@@ -106,15 +108,21 @@ const NoReviewText = styled.p`
   text-align: center;
 `;
 
+const ButtonWrapper = styled.div`
+  position: fixed;
+  bottom: 12rem;
+
+  width: 100%;
+  max-width: ${({ theme }) => theme.maxWidth.mobile};
+  padding: 1.6rem;
+`;
+
 const ReviewAddButton = styled.button`
   all: unset;
 
   cursor: pointer;
 
-  position: fixed;
-  right: 1.6rem;
-  bottom: 12rem;
-
+  float: right;
   display: flex;
   justify-content: center;
 

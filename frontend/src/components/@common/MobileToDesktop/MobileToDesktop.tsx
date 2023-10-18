@@ -1,10 +1,11 @@
 import { PropsWithChildren } from 'react';
 import { styled } from 'styled-components';
-import { DesktopView } from 'zipgo-layout';
+import { DesktopView, useDesktopView } from 'zipgo-layout';
 
 import BackgroundImg from '@/assets/svg/background_img.svg';
 import ZipgoLogo from '@/assets/svg/zipgo_logo_light.svg';
 import ZipgoTextLogo from '@/assets/svg/zipgo_text_logo.svg';
+import theme from '@/styles/theme';
 
 const RenderSub = () => (
   <SupporterWrapper>
@@ -31,7 +32,11 @@ const MobileToDesktop = (props: DesktopViewProps) => {
   const { children } = props;
 
   return (
-    <DesktopView backgroundImage={BackgroundImg} renderSub={RenderSub()}>
+    <DesktopView
+      backgroundImage={BackgroundImg}
+      renderSub={RenderSub()}
+      maxWidth={theme.maxWidth.mobile}
+    >
       {children}
     </DesktopView>
   );

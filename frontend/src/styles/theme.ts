@@ -22,7 +22,7 @@ const color = {
 } as const;
 
 const maxWidth = {
-  mobile: '42rem',
+  mobile: '49rem',
 } as const;
 
 // 폰트

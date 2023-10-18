@@ -38,13 +38,12 @@ const Container = styled.div`
   justify-content: center;
 
   width: 100%;
-  height: 100vh;
   padding: 2rem;
 `;
 
 const FoodInfoWrapper = styled.div`
   width: 100%;
-  margin-top: 24rem;
+  margin-top: 4rem;
   margin-bottom: 2.4rem;
   padding: 2.4rem 0;
 

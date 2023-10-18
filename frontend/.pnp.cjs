@@ -111,7 +111,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["webpack-cli", "virtual:d9650954c7f1725ea712d2e40695de9ea5d1c0fa9b89379134c62909d440d91b03d6c37e2823804a3404472b90a5bec73c82193190dd3c4db4c9e9edd75db91e#npm:5.1.4"],\
             ["webpack-dev-server", "virtual:d9650954c7f1725ea712d2e40695de9ea5d1c0fa9b89379134c62909d440d91b03d6c37e2823804a3404472b90a5bec73c82193190dd3c4db4c9e9edd75db91e#npm:4.15.1"],\
             ["webpack-merge", "npm:5.9.0"],\
-            ["zipgo-layout", "npm:0.3.0"]\
+            ["zipgo-layout", "npm:0.4.0"]\
           ],\
           "linkType": "SOFT"\
         }]\
@@ -15790,7 +15790,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["webpack-cli", "virtual:d9650954c7f1725ea712d2e40695de9ea5d1c0fa9b89379134c62909d440d91b03d6c37e2823804a3404472b90a5bec73c82193190dd3c4db4c9e9edd75db91e#npm:5.1.4"],\
             ["webpack-dev-server", "virtual:d9650954c7f1725ea712d2e40695de9ea5d1c0fa9b89379134c62909d440d91b03d6c37e2823804a3404472b90a5bec73c82193190dd3c4db4c9e9edd75db91e#npm:4.15.1"],\
             ["webpack-merge", "npm:5.9.0"],\
-            ["zipgo-layout", "npm:0.3.0"]\
+            ["zipgo-layout", "npm:0.4.0"]\
           ],\
           "linkType": "SOFT"\
         }]\
@@ -23254,10 +23254,10 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           ],\
           "linkType": "SOFT"\
         }],\
-        ["virtual:7cfca6820b112207e5a66637f85efe37e399868f94187407df833f6abb65d9e240cc01b1dcec90932f795db413a3f5ff0f22c3aa79a288a1eba886c0f73ae1e0#npm:6.1.0", {\
-          "packageLocation": "./.yarn/__virtual__/styled-components-virtual-616de57d8b/0/cache/styled-components-npm-6.1.0-309a24863e-989262a2be.zip/node_modules/styled-components/",\
+        ["virtual:bfdb260d66a67fb440a36b5e7d3099e1ef4c2420a265088f95a491b65c807b3174254c5223a22dfffa2ffb3757ec70f7fe49b5722e37e17babd81cd44d32cf56#npm:6.1.0", {\
+          "packageLocation": "./.yarn/__virtual__/styled-components-virtual-b27e270236/0/cache/styled-components-npm-6.1.0-309a24863e-989262a2be.zip/node_modules/styled-components/",\
           "packageDependencies": [\
-            ["styled-components", "virtual:7cfca6820b112207e5a66637f85efe37e399868f94187407df833f6abb65d9e240cc01b1dcec90932f795db413a3f5ff0f22c3aa79a288a1eba886c0f73ae1e0#npm:6.1.0"],\
+            ["styled-components", "virtual:bfdb260d66a67fb440a36b5e7d3099e1ef4c2420a265088f95a491b65c807b3174254c5223a22dfffa2ffb3757ec70f7fe49b5722e37e17babd81cd44d32cf56#npm:6.1.0"],\
             ["@emotion/is-prop-valid", "npm:1.2.1"],\
             ["@emotion/unitless", "npm:0.8.1"],\
             ["@types/react", null],\
@@ -25517,12 +25517,12 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
         }]\
       ]],\
       ["zipgo-layout", [\
-        ["npm:0.3.0", {\
-          "packageLocation": "./.yarn/cache/zipgo-layout-npm-0.3.0-7cfca6820b-dc91581cd7.zip/node_modules/zipgo-layout/",\
+        ["npm:0.4.0", {\
+          "packageLocation": "./.yarn/cache/zipgo-layout-npm-0.4.0-bfdb260d66-0a6852d018.zip/node_modules/zipgo-layout/",\
           "packageDependencies": [\
-            ["zipgo-layout", "npm:0.3.0"],\
+            ["zipgo-layout", "npm:0.4.0"],\
             ["react", "npm:18.2.0"],\
-            ["styled-components", "virtual:7cfca6820b112207e5a66637f85efe37e399868f94187407df833f6abb65d9e240cc01b1dcec90932f795db413a3f5ff0f22c3aa79a288a1eba886c0f73ae1e0#npm:6.1.0"]\
+            ["styled-components", "virtual:bfdb260d66a67fb440a36b5e7d3099e1ef4c2420a265088f95a491b65c807b3174254c5223a22dfffa2ffb3757ec70f7fe49b5722e37e17babd81cd44d32cf56#npm:6.1.0"]\
           ],\
           "linkType": "HARD"\
         }]\
