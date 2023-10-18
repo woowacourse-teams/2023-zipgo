@@ -1,6 +1,7 @@
 import { PATH } from '@/router/routes';
 
-const { KAKAO_REST_API_KEY, HOMEPAGE } = process.env;
+const HOMEPAGE = process.env.HOMEPAGE;
+const KAKAO_REST_API_KEY = process.env.KAKAO_REST_API_KEY;
 
 export const KAKAO_REDIRECT_URI = `${HOMEPAGE}${PATH.LOGIN}`;
 
