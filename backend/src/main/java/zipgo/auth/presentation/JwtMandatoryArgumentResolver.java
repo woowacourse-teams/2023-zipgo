@@ -12,6 +12,7 @@ import org.springframework.web.method.support.ModelAndViewContainer;
 import zipgo.auth.dto.AuthCredentials;
 import zipgo.auth.support.BearerTokenExtractor;
 import zipgo.auth.support.JwtProvider;
+import zipgo.auth.support.ZipgoTokenExtractor;
 
 @Component
 @RequiredArgsConstructor
@@ -33,10 +34,11 @@ public class JwtMandatoryArgumentResolver implements HandlerMethodArgumentResolv
             WebDataBinderFactory binderFactory
     ) {
         HttpServletRequest request = webRequest.getNativeRequest(HttpServletRequest.class);
-        String token = BearerTokenExtractor.extract(Objects.requireNonNull(request));
-        String id = jwtProvider.getPayload(token);
+        String accessToken = BearerTokenExtractor.extract(Objects.requireNonNull(request));
+        String refreshToken = ZipgoTokenExtractor.extract(Objects.requireNonNull(request));
 
-        return new AuthCredentials(Long.valueOf(id));
+        String id = jwtProvider.getPayload(accessToken);
+        return new AuthCredentials(Long.valueOf(id), refreshToken);
     }
 
 }
