@@ -6,12 +6,14 @@ import zipgo.pet.domain.Pet;
 
 public record LoginResponse(
         String accessToken,
+        String refreshToken,
         AuthResponse authResponse
 ) {
 
-    public static LoginResponse of(String token, Member member, List<Pet> pets) {
+    public static LoginResponse of(TokenDto tokenDto, Member member, List<Pet> pets) {
         return new LoginResponse(
-                token,
+                tokenDto.accessToken(),
+                tokenDto.refreshToken(),
                 AuthResponse.of(member, pets)
         );
     }

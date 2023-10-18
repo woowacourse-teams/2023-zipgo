@@ -3,9 +3,7 @@ package zipgo.auth.presentation;
 import java.util.List;
 
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.ResponseCookie;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.CookieValue;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -18,14 +16,10 @@ import zipgo.auth.dto.AuthResponse;
 import zipgo.auth.dto.LoginResponse;
 import zipgo.auth.dto.TokenDto;
 import zipgo.auth.support.JwtProvider;
-import zipgo.auth.support.RefreshTokenCookieProvider;
 import zipgo.member.application.MemberQueryService;
 import zipgo.member.domain.Member;
 import zipgo.pet.application.PetQueryService;
 import zipgo.pet.domain.Pet;
-
-import static org.springframework.http.HttpHeaders.SET_COOKIE;
-import static zipgo.auth.support.RefreshTokenCookieProvider.REFRESH_TOKEN;
 
 @RestController
 @RequestMapping("/auth")
@@ -33,7 +27,6 @@ import static zipgo.auth.support.RefreshTokenCookieProvider.REFRESH_TOKEN;
 public class AuthController {
 
     private final JwtProvider jwtProvider;
-    private final RefreshTokenCookieProvider refreshTokenCookieProvider;
     private final AuthServiceFacade authServiceFacade;
     private final MemberQueryService memberQueryService;
     private final PetQueryService petQueryService;
@@ -44,30 +37,26 @@ public class AuthController {
             @RequestParam("redirect-uri") String redirectUri
     ) {
         TokenDto tokenDto = authServiceFacade.login(authCode, redirectUri);
-        ResponseCookie cookie = refreshTokenCookieProvider.createCookie(tokenDto.refreshToken());
 
         String memberId = jwtProvider.getPayload(tokenDto.accessToken());
         Member member = memberQueryService.findById(Long.valueOf(memberId));
         List<Pet> pets = petQueryService.readMemberPets(member.getId());
 
-        return ResponseEntity.ok()
-                .header(SET_COOKIE, cookie.toString())
-                .body(LoginResponse.of(tokenDto.accessToken(), member, pets));
+        return ResponseEntity.ok(LoginResponse.of(tokenDto, member, pets));
     }
 
     @GetMapping("/refresh")
-    public ResponseEntity<AccessTokenResponse> renewTokens(@CookieValue(value = REFRESH_TOKEN) String refreshToken) {
-        String accessToken = authServiceFacade.renewAccessTokenBy(refreshToken);
+    public ResponseEntity<AccessTokenResponse> renewTokens(
+            @Auth AuthCredentials authCredentials
+    ) {
+        String accessToken = authServiceFacade.renewAccessTokenBy(authCredentials.refreshToken());
         return ResponseEntity.ok(AccessTokenResponse.from(accessToken));
     }
 
     @PostMapping("/logout")
     public ResponseEntity<Void> logout(@Auth AuthCredentials authCredentials) {
         authServiceFacade.logout(authCredentials.id());
-        ResponseCookie logoutCookie = refreshTokenCookieProvider.createLogoutCookie();
-        return ResponseEntity.ok()
-                .header(SET_COOKIE, logoutCookie.toString())
-                .build();
+        return ResponseEntity.noContent().build();
     }
 
     @GetMapping

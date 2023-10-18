@@ -38,9 +38,6 @@ class AuthControllerMockTest extends MockMvcTest {
         var 토큰 = TokenDto.of("accessTokenValue", "refreshTokenValue");
         when(authServiceFacade.login("인가_코드", "리다이렉트 유알아이"))
                 .thenReturn(토큰);
-        var 리프레시_토큰_쿠키 = ResponseCookie.from("refreshToken", 토큰.refreshToken()).build();
-        when(refreshTokenCookieProvider.createCookie(토큰.refreshToken()))
-                .thenReturn(리프레시_토큰_쿠키);
         when(jwtProvider.getPayload(토큰.accessToken()))
                 .thenReturn("1");
         when(memberQueryService.findById(1L))
@@ -64,9 +61,6 @@ class AuthControllerMockTest extends MockMvcTest {
         var 토큰 = TokenDto.of("accessTokenValue", "refreshTokenValue");
         when(authServiceFacade.login("인가_코드", "리다이렉트 유알아이"))
                 .thenReturn(토큰);
-        var 리프레시_토큰_쿠키 = ResponseCookie.from("refreshToken", 토큰.refreshToken()).build();
-        when(refreshTokenCookieProvider.createCookie(토큰.refreshToken()))
-                .thenReturn(리프레시_토큰_쿠키);
         when(jwtProvider.getPayload(토큰.accessToken()))
                 .thenReturn("1");
         when(memberQueryService.findById(1L))
@@ -107,6 +101,7 @@ class AuthControllerMockTest extends MockMvcTest {
                 ),
                 responseFields(
                         fieldWithPath("accessToken").description("accessToken").type(JsonFieldType.STRING),
+                        fieldWithPath("refreshToken").description("refreshToken").type(JsonFieldType.STRING),
                         fieldWithPath("authResponse.id").description("사용자 식별자").type(JsonFieldType.NUMBER),
                         fieldWithPath("authResponse.name").description("사용자 이름").type(JsonFieldType.STRING),
                         fieldWithPath("authResponse.email").description("사용자 이메일").type(JsonFieldType.STRING),
@@ -134,6 +129,7 @@ class AuthControllerMockTest extends MockMvcTest {
                 ),
                 responseFields(
                         fieldWithPath("accessToken").description("accessToken").type(JsonFieldType.STRING),
+                        fieldWithPath("refreshToken").description("accessToken").type(JsonFieldType.STRING),
                         fieldWithPath("authResponse.id").description("사용자 식별자").type(JsonFieldType.NUMBER),
                         fieldWithPath("authResponse.name").description("사용자 이름").type(JsonFieldType.STRING),
                         fieldWithPath("authResponse.email").description("사용자 이메일").type(JsonFieldType.STRING),

@@ -46,6 +46,8 @@ import static zipgo.pet.domain.fixture.PetSizeFixture.대형견;
 @ExtendWith({MockitoExtension.class, RestDocumentationExtension.class})
 class AuthControllerMockArgumentResolverTest {
 
+    private static final String REFRESH_HEADER = "Refresh";
+
     private MockMvc mockMvc;
     private HandlerMethodArgumentResolver mockArgumentResolver = mock(JwtMandatoryArgumentResolver.class);
 
@@ -73,7 +75,7 @@ class AuthControllerMockArgumentResolverTest {
         when(mockArgumentResolver.supportsParameter(any()))
                 .thenReturn(true);
         when(mockArgumentResolver.resolveArgument(any(), any(), any(), any()))
-                .thenReturn(new AuthCredentials(1L));
+                .thenReturn(new AuthCredentials(1L, "asd1.asd2.asd3"));
         when(memberQueryService.findById(1L))
                 .thenReturn(식별자_있는_멤버());
         when(petQueryService.readMemberPets(1L))
@@ -81,7 +83,8 @@ class AuthControllerMockArgumentResolverTest {
 
         // when
         var 요청 = mockMvc.perform(get("/auth")
-                        .header(AUTHORIZATION, "Bearer 1a.2a.3b"))
+                        .header(AUTHORIZATION, "Bearer 1a.2a.3b")
+                        .header("Refresh", "Zipgo asd1.asd2.asd3"))
                 .andDo(문서_생성());
 
         // then
@@ -97,7 +100,8 @@ class AuthControllerMockArgumentResolverTest {
         return MockMvcRestDocumentationWrapper.document("사용자 정보 확인",
                 문서_정보,
                 requestHeaders(
-                        headerWithName(AUTHORIZATION).description("Bearer + accessToken")
+                        headerWithName(AUTHORIZATION).description("Bearer + accessToken"),
+                        headerWithName(REFRESH_HEADER).description("Zipgo + refreshToken")
                 ),
                 responseFields(
                         fieldWithPath("id").description("사용자 식별자").type(JsonFieldType.NUMBER),

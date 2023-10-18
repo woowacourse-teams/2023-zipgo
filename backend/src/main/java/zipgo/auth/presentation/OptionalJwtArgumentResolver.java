@@ -1,7 +1,8 @@
 package zipgo.auth.presentation;
 
-import jakarta.servlet.http.HttpServletRequest;
 import java.util.Objects;
+
+import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.core.MethodParameter;
 import org.springframework.stereotype.Component;
@@ -13,6 +14,7 @@ import zipgo.auth.dto.AuthCredentials;
 import zipgo.auth.exception.TokenInvalidException;
 import zipgo.auth.support.BearerTokenExtractor;
 import zipgo.auth.support.JwtProvider;
+import zipgo.auth.support.ZipgoTokenExtractor;
 import zipgo.common.logging.LoggingUtils;
 
 import static org.springframework.http.HttpHeaders.AUTHORIZATION;
@@ -20,6 +22,8 @@ import static org.springframework.http.HttpHeaders.AUTHORIZATION;
 @Component
 @RequiredArgsConstructor
 public class OptionalJwtArgumentResolver implements HandlerMethodArgumentResolver {
+
+    private static final String ZIPGO_HEADER = "Refresh";
 
     private final JwtProvider jwtProvider;
 
@@ -40,10 +44,14 @@ public class OptionalJwtArgumentResolver implements HandlerMethodArgumentResolve
         if (request.getHeader(AUTHORIZATION) == null) {
             return null;
         }
+        if (request.getHeader(ZIPGO_HEADER) == null) {
+            return null;
+        }
         try {
-            String token = BearerTokenExtractor.extract(Objects.requireNonNull(request));
-            String id = jwtProvider.getPayload(token);
-            return new AuthCredentials(Long.valueOf(id));
+            String accessToken = BearerTokenExtractor.extract(Objects.requireNonNull(request));
+            String refreshToken = ZipgoTokenExtractor.extract(Objects.requireNonNull(request));
+            String id = jwtProvider.getPayload(accessToken);
+            return new AuthCredentials(Long.valueOf(id), refreshToken);
         } catch (TokenInvalidException e) {
             LoggingUtils.warn(e);
             return null;

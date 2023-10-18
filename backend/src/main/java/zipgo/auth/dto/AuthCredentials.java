@@ -1,7 +1,8 @@
 package zipgo.auth.dto;
 
 public record AuthCredentials(
-        Long id
+        Long id,
+        String refreshToken
 ) {
 
 }
