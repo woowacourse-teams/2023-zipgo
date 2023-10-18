@@ -1,12 +1,11 @@
 const paths = require('./paths.js');
+const { HTTPS } = require('./env.js');
 const { merge } = require('webpack-merge');
 const common = require('./webpack.common.js');
 const CopyPlugin = require('copy-webpack-plugin');
 
 const fs = require('fs');
 const ReactRefreshWebpackPlugin = require('@pmmmwh/react-refresh-webpack-plugin');
-
-const HTTPS = process.env.HTTPS === 'on';
 
 module.exports = merge(common, {
   mode: 'development',
