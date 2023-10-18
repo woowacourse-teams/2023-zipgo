@@ -7,6 +7,7 @@ import PetProfileProvider from '@/context/petProfile/PetProfileContext';
 import ErrorPage from '@/pages/Error/ErrorPage';
 import PetProfileEdition from '@/pages/PetProfile/PetProfileEdition/PetProfileEdition';
 
+import Private from './Private';
 import { PATH } from './routes';
 
 const Landing = lazy(() => import('@/pages/Landing/Landing'));
@@ -36,18 +37,28 @@ export const router = createBrowserRouter([
       },
       {
         path: PATH.REVIEW_ADDITION,
-        element: <ReviewFormFunnel />,
+        element: (
+          <Private>
+            <ReviewFormFunnel />
+          </Private>
+        ),
       },
       {
         path: PATH.PET_PROFILE_EDITION,
-        element: <PetProfileEdition />,
+        element: (
+          <Private>
+            <PetProfileEdition />
+          </Private>
+        ),
       },
       {
         path: PATH.PET_PROFILE_ADDITION,
         element: (
-          <PetAdditionProvider>
-            <PetProfileAdditionFormFunnel />
-          </PetAdditionProvider>
+          <Private>
+            <PetAdditionProvider>
+              <PetProfileAdditionFormFunnel />
+            </PetAdditionProvider>
+          </Private>
         ),
       },
       {
