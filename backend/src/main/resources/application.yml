@@ -2,7 +2,7 @@
 # application
 spring:
   profiles:
-    active: dev
+    active: local
 
 ---
 #metric, log monitoring

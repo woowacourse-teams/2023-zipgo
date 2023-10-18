@@ -2,6 +2,7 @@
 # port
 server:
   port: 8080
+  shutdown: graceful
 
 ---
 # database
@@ -26,14 +27,10 @@ spring:
         format_sql: true
         show_sql: true
         default_batch_fetch_size: 30
-    defer-datasource-initialization: true
-
-  sql:
-    init:
-      mode: never
+#    open-in-view: false
 
 ---
-# OAUTH
+# OAuth
 oauth:
   kakao:
     client-id: ${CLIENT_ID}
@@ -48,7 +45,14 @@ jwt:
   refresh-token-expiration-time: ${REFRESH_TOKEN_EXPIRATION_TIME}
 
 ---
-# aws
+# log
+logging:
+  level:
+    org.hibernate.SQL: error
+    org.hibernate.type: error
+
+---
+# cloud
 cloud:
   aws:
     s3:
