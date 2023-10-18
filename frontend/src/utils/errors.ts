@@ -90,6 +90,10 @@ class APIError<T = unknown, D = unknown> extends ZipgoError<APIErrorCode> {
   static canManage<T, D>(error: AxiosError<T, D>): error is ManageableAxiosError<typeof error> {
     return error.config && error.request && error.response;
   }
+
+  static isAuthError<T, D>(error: AxiosError<T, D>): error is ManageableAxiosError<typeof error> {
+    return error.response?.status === 401 || error.response?.status === 403;
+  }
 }
 
 const createErrorParams = <Code extends ErrorCode>(
