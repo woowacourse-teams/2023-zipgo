@@ -23,6 +23,7 @@ public class RefreshTokenCookieProvider {
     public ResponseCookie createCookie(String refreshToken) {
         return ResponseCookie.from(REFRESH_TOKEN, refreshToken)
                 .sameSite("None")
+                .domain(".zipgo.pet")
                 .maxAge(Duration.ofMillis(expirationTime))
                 .path(VALID_COOKIE_PATH)
                 .secure(true)
@@ -33,6 +34,7 @@ public class RefreshTokenCookieProvider {
     public ResponseCookie createLogoutCookie() {
         return ResponseCookie.from(REFRESH_TOKEN, LOGOUT_COOKIE_VALUE)
                 .sameSite("None")
+                .domain(".zipgo.pet")
                 .maxAge(LOGOUT_COOKIE_AGE)
                 .build();
     }
