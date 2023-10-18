@@ -53,6 +53,7 @@ const ButtonOuter = styled.div<ButtonStyleProps>`
     `
     z-index: 10;
     width: 100%;
+    max-width: ${theme.maxWidth.mobile};
     bottom: 0;
     display: flex;
     align-items: center;

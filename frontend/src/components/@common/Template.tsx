@@ -66,7 +66,7 @@ const Layout = styled.div`
 
   overflow-y: auto;
 
-  width: 100vw;
+  width: 100%;
   min-height: calc(var(--vh, 1vh) * 100);
 `;
 

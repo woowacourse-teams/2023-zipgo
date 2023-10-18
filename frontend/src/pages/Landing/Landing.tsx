@@ -35,7 +35,7 @@ const Landing = () => {
                 <br />
                 초보 집사들을 위해
               </BannerSubTitle>
-              <BannerTitle>집사의 고민</BannerTitle>
+              <BannerTitle>집사의고민</BannerTitle>
             </TitleContainer>
           </BannerText>
           <BannerImg src={ZipgoBannerPng} onClick={onTouchDog} alt="집사의고민 배너 이미지" />
@@ -61,10 +61,10 @@ const Layout = styled.div`
 const BannerSection = styled.section`
   display: flex;
   align-items: center;
+  justify-content: space-between;
 
-  width: 100vw;
-  height: 42rem;
-  margin-top: -8rem;
+  width: 100%;
+  height: 24rem;
   padding-top: 8rem;
 
   background: linear-gradient(45deg, #3e5e8e 0%, #6992c3 100%);
@@ -73,7 +73,6 @@ const BannerSection = styled.section`
 const BannerText = styled.div`
   display: flex;
   align-items: center;
-  justify-content: flex-end;
 
   width: 100%;
 
@@ -84,6 +83,8 @@ const TitleContainer = styled.div`
   display: flex;
   flex-direction: column;
   gap: 1.7rem;
+
+  padding-left: 4rem;
 `;
 
 const BannerSubTitle = styled.span`

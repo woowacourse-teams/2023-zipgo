@@ -54,7 +54,8 @@ ToastContext.displayName = 'Toast';
 
 export const useToast = () => useContext(ToastContext);
 
-const Portal = ({ children }: PropsWithChildren) => createPortal(children, document.body);
+const Portal = ({ children }: PropsWithChildren) =>
+  createPortal(children, document.getElementById('mobile') ?? document.body);
 
 const ToastProvider = (props: PropsWithChildren) => {
   const { children } = props;
@@ -173,15 +174,15 @@ export default ToastProvider;
 
 const ToastContainerWrapper = styled.div`
   position: fixed;
+  z-index: 101;
   bottom: 3.2rem;
-  left: 50%;
-  transform: translateX(-50%);
 
   display: flex;
   flex-direction: column;
   align-items: center;
 
   width: 100%;
+  max-width: ${({ theme }) => theme.maxWidth.mobile};
 
   transition: all 0.5s ease;
 `;

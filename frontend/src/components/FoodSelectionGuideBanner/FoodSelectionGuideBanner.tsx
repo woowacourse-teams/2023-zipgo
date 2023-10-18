@@ -10,43 +10,55 @@ const FoodSelectionGuideBanner = () => {
   if (!isOpen) return null;
 
   return (
-    <BannerWrapper>
-      <a
-        href="https://translucent-mallet-426.notion.site/dae305b85c8146399d7de6a0e74b773d?pvs=4"
-        target="blank"
-      >
-        <img src={WidthPetIcon} alt="" />
-        <span>
-          To. 초보집사
-          <br />
-          우리 아이 먹거리 고르는 꿀팁 보러오세요!
-        </span>
-      </a>
-      <button type="button" aria-label="닫기" onClick={closeBanner}>
-        <img src={CloseSquareIcon} alt="" />
-      </button>
-    </BannerWrapper>
+    <BannerProvider>
+      <BannerWrapper>
+        <a
+          href="https://translucent-mallet-426.notion.site/dae305b85c8146399d7de6a0e74b773d?pvs=4"
+          target="blank"
+        >
+          <img src={WidthPetIcon} alt="" />
+          <span>
+            To. 초보집사
+            <br />
+            우리 아이 먹거리 고르는 꿀팁 보러오세요!
+          </span>
+        </a>
+        <button type="button" aria-label="닫기" onClick={closeBanner}>
+          <img src={CloseSquareIcon} alt="" />
+        </button>
+      </BannerWrapper>
+    </BannerProvider>
   );
 };
 
 export default FoodSelectionGuideBanner;
 
-const BannerWrapper = styled.div`
-  user-select: none;
-
+const BannerProvider = styled.span`
   position: fixed;
   z-index: 100;
   bottom: 2rem;
-  left: 50%;
   transform-origin: center center;
-  transform: translateX(-50%);
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  width: 100%;
+  max-width: ${({ theme }) => theme.maxWidth.mobile};
+  padding: 0 1rem;
+`;
+
+const BannerWrapper = styled.div`
+  user-select: none;
+
+  position: relative;
 
   overflow: hidden;
   display: flex;
   align-items: center;
   justify-content: center;
 
-  width: 90vw;
+  width: 100%;
   height: 8rem;
 
   background-color: ${({ theme }) => theme.color.black};
@@ -82,8 +94,7 @@ const BannerWrapper = styled.div`
       height: 100px;
     }
 
-    /* stylelint-disable-next-line media-feature-range-notation */
-    @media (max-width: 380px) {
+    @media (width <= 380px) {
       font-size: 2.8rem;
     }
   }
@@ -127,6 +138,6 @@ const BannerWrapper = styled.div`
   }
 
   &:active {
-    transform: translateX(-50%) scale(0.95);
+    transform: scale(0.95);
   }
 `;
