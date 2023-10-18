@@ -196,12 +196,12 @@ const PetSizeContainer = styled.div`
 const ButtonContainer = styled.div`
   position: fixed;
   bottom: 4rem;
-  left: 0;
 
   display: flex;
   gap: 1.6rem;
 
   width: 100%;
+  max-width: ${({ theme }) => theme.maxWidth.mobile};
   padding: 0 2rem;
 `;
 

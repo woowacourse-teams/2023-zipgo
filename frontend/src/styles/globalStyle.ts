@@ -26,7 +26,7 @@ const globalStyle = css`
       height: 0;
     }
     /* stylelint-disable-next-line media-feature-range-notation */
-    @media (max-width: 380px) {
+    @media (max-width: 392px) {
       font-size: 50%;
     }
   }

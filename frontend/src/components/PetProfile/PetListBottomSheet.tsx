@@ -54,6 +54,7 @@ const Layout = styled.div`
   align-items: flex-start;
 
   width: 100%;
+  max-width: ${({ theme }) => theme.maxWidth.mobile};
   height: 57.4rem;
 
   background: ${({ theme }) => theme.color.grey200};
