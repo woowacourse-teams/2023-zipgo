@@ -23,6 +23,7 @@ public class RefreshTokenCookieProvider {
     public ResponseCookie createCookie(String refreshToken) {
         return ResponseCookie.from(REFRESH_TOKEN, refreshToken)
                 .maxAge(Duration.ofMillis(expirationTime))
+                .sameSite("None")
                 .path(VALID_COOKIE_PATH)
                 .secure(true)
                 .httpOnly(true)
@@ -31,6 +32,7 @@ public class RefreshTokenCookieProvider {
 
     public ResponseCookie createLogoutCookie() {
         return ResponseCookie.from(REFRESH_TOKEN, LOGOUT_COOKIE_VALUE)
+                .sameSite("None")
                 .maxAge(LOGOUT_COOKIE_AGE)
                 .build();
     }
