@@ -9,7 +9,7 @@ import StarRatingDisplay from '@/components/@common/StarRating/StarRatingDisplay
 import SuspendedImg from '@/components/@common/SuspendedImg/SuspendedImg';
 import { COMMENT_VISIBLE_LINE_LIMIT, REACTIONS } from '@/constants/review';
 import { useValidParams } from '@/hooks/@common/useValidParams';
-import { useAuth } from '@/hooks/auth';
+import { useCheckAuth } from '@/hooks/auth';
 import { useRemoveReviewMutation, useToggleHelpfulReactionMutation } from '@/hooks/query/review';
 import { routerPath } from '@/router/routes';
 import { StyledProps } from '@/types/common/utility';
@@ -19,7 +19,7 @@ import { zipgoLocalStorage } from '@/utils/localStorage';
 interface ReviewItemProps extends Review {}
 
 const ReviewItem = (reviewItemProps: ReviewItemProps) => {
-  const { isLoggedIn } = useAuth();
+  const { isLoggedIn } = useCheckAuth();
   const user = zipgoLocalStorage.getUserInfo();
 
   const {

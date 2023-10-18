@@ -2,10 +2,11 @@ import { Link } from 'react-router-dom';
 import { styled } from 'styled-components';
 
 import PetListBottomSheet from '@/components/PetProfile/PetListBottomSheet';
-import { useAuth } from '@/hooks/auth';
+import { useAuth, useCheckAuth } from '@/hooks/auth';
 
 const Header = () => {
-  const { isLoggedIn, logout } = useAuth();
+  const { logout } = useAuth();
+  const { isLoggedIn } = useCheckAuth();
 
   return (
     <HeaderContainer>
