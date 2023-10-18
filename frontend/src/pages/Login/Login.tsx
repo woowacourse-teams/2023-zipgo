@@ -18,7 +18,6 @@ const Login = () => {
     error_description: errorDescription,
   } = useValidQueryString(['code', 'error', 'error_description']);
   const { loginZipgo } = useAuth();
-  const isMutating = useIsMutating({ mutationKey: ['test'] });
 
   useEffect(() => {
     if (error) throw new Error(errorDescription);
