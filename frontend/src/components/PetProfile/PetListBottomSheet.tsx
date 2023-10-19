@@ -12,38 +12,26 @@ const PetListBottomSheet = () => (
       <Loading>
         <Dialog.BackDrop />
         <Dialog.Content asChild>
-          {({ openHandler }) => <PetListContainer toggleDialog={openHandler} />}
+          <ContentLayout>
+            <DialogHeader>어떤 아이 식품을 찾으세요?</DialogHeader>
+            <DialogContent>
+              <PetList />
+            </DialogContent>
+            <ButtonWrapper>
+              <Dialog.Close asChild>
+                <CloseButton type="button">닫기</CloseButton>
+              </Dialog.Close>
+            </ButtonWrapper>
+          </ContentLayout>
         </Dialog.Content>
       </Loading>
     </Dialog.Portal>
   </Dialog>
 );
 
-interface PetListContainerProps {
-  toggleDialog: VoidFunction;
-}
-
-const PetListContainer = (props: PetListContainerProps) => {
-  const { toggleDialog } = props;
-
-  return (
-    <Layout>
-      <DialogHeader>어떤 아이 식품을 찾으세요?</DialogHeader>
-      <DialogContent>
-        <PetList />
-      </DialogContent>
-      <ButtonWrapper>
-        <CloseButton type="button" onClick={toggleDialog}>
-          닫기
-        </CloseButton>
-      </ButtonWrapper>
-    </Layout>
-  );
-};
-
 export default PetListBottomSheet;
 
-const Layout = styled.div`
+const ContentLayout = styled.div`
   position: fixed;
   z-index: 1001;
   bottom: 0;
