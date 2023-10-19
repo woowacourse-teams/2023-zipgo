@@ -2,6 +2,7 @@ package zipgo.auth.presentation;
 
 import java.util.List;
 
+import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -16,6 +17,7 @@ import zipgo.auth.dto.AuthResponse;
 import zipgo.auth.dto.LoginResponse;
 import zipgo.auth.dto.TokenDto;
 import zipgo.auth.support.JwtProvider;
+import zipgo.auth.support.ZipgoTokenExtractor;
 import zipgo.member.application.MemberQueryService;
 import zipgo.member.domain.Member;
 import zipgo.pet.application.PetQueryService;
@@ -46,10 +48,9 @@ public class AuthController {
     }
 
     @GetMapping("/refresh")
-    public ResponseEntity<AccessTokenResponse> renewTokens(
-            @Auth AuthCredentials authCredentials
-    ) {
-        String accessToken = authServiceFacade.renewAccessTokenBy(authCredentials.refreshToken());
+    public ResponseEntity<AccessTokenResponse> renewTokens(HttpServletRequest request) {
+        String refreshToken = ZipgoTokenExtractor.extract(request);
+        String accessToken = authServiceFacade.renewAccessTokenBy(refreshToken);
         return ResponseEntity.ok(AccessTokenResponse.from(accessToken));
     }
 
