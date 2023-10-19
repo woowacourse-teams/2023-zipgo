@@ -5,6 +5,7 @@ import org.junit.jupiter.api.DisplayNameGenerator;
 import org.junit.jupiter.api.Test;
 import org.springframework.mock.web.MockHttpServletRequest;
 import zipgo.auth.exception.TokenInvalidException;
+import zipgo.auth.exception.TokenMissingException;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
@@ -24,18 +25,6 @@ class BearerTokenExtractorTest {
 
         // then
         assertThat(토큰).isEqualTo("a1.b2.c3");
-    }
-
-    @Test
-    void 헤더에서_Authorization_키를_추출할_수_없으면_예외가_발생한다() {
-        // given
-        var 요청 = new MockHttpServletRequest();
-        요청.addHeader("ZipgoTestHeader", "Bearer aaaa.bbbb.cccc");
-
-        // expect
-        assertThatThrownBy(() -> BearerTokenExtractor.extract(요청))
-                .isInstanceOf(TokenInvalidException.class)
-                .hasMessageContaining("잘못된 토큰입니다. 올바른 토큰으로 다시 시도해주세요.");
     }
 
     @Test
@@ -60,6 +49,29 @@ class BearerTokenExtractorTest {
         assertThatThrownBy(() -> BearerTokenExtractor.extract(요청))
                 .isInstanceOf(TokenInvalidException.class)
                 .hasMessageContaining("잘못된 토큰입니다. 올바른 토큰으로 다시 시도해주세요.");
+    }
+
+    @Test
+    void Bearer_null이면_예외가_발생한다() {
+        // given
+        var 요청 = new MockHttpServletRequest();
+        요청.addHeader("Authorization", "Bearer null");
+
+        // expect
+        assertThatThrownBy(() -> BearerTokenExtractor.extract(요청))
+                .isInstanceOf(TokenInvalidException.class)
+                .hasMessageContaining("잘못된 토큰입니다. 올바른 토큰으로 다시 시도해주세요.");
+    }
+
+    @Test
+    void 토큰이_없으면_MissingException이_발생한다() {
+        //given
+        var 요청 = new MockHttpServletRequest();
+
+        //expect
+        assertThatThrownBy(() -> BearerTokenExtractor.extract(요청))
+                .isInstanceOf(TokenMissingException.class)
+                .hasMessageContaining("토큰이 필요합니다.");
     }
 
 }

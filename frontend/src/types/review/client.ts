@@ -1,5 +1,7 @@
 import {
   ADVERSE_REACTIONS,
+  REVIEW_ALIGN_QUERY,
+  REVIEW_FILTER_QUERY_STRINGS,
   REVIEW_SUMMARY_KEYWORDS,
   STOOL_CONDITIONS,
   TASTE_PREFERENCES,
@@ -53,15 +55,12 @@ interface HelpfulReaction {
   reacted: boolean;
 }
 
-type AlignControlsMeta = {
-  id: number;
-  name: string;
-}[];
+type AlignControlsMeta = Record<typeof REVIEW_ALIGN_QUERY, { id: number; name: string }[]>;
 
-type FilterControlsMeta = {
-  id: number;
-  name: string;
-}[];
+type FilterControlsMeta = Record<
+  (typeof REVIEW_FILTER_QUERY_STRINGS)[number],
+  { id: number; name: string }[]
+>;
 
 type ChartInfo = {
   name: string;

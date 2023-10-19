@@ -2,10 +2,11 @@ import { Link } from 'react-router-dom';
 import { styled } from 'styled-components';
 
 import PetListBottomSheet from '@/components/PetProfile/PetListBottomSheet';
-import { useAuth } from '@/hooks/auth';
+import { useAuth, useCheckAuth } from '@/hooks/auth';
 
 const Header = () => {
-  const { isLoggedIn, logout } = useAuth();
+  const { logout } = useAuth();
+  const { isLoggedIn } = useCheckAuth();
 
   return (
     <HeaderContainer>
@@ -33,7 +34,7 @@ const HeaderContainer = styled.header`
   align-items: center;
   justify-content: space-between;
 
-  width: 100vw;
+  width: 100%;
   padding: 2rem;
 
   background: transparent;

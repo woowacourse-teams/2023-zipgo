@@ -23,7 +23,8 @@ const InputWrapper = styled.input<InputStyleProps>`
   height: 100%;
   padding: 1.2rem;
 
-  font-size: ${({ $fontSize }) => $fontSize || '1.4rem'};
+  font-size: ${({ $fontSize }) =>
+    ($fontSize && $fontSize < '1.6rem') || !$fontSize ? '16px' : $fontSize};
 
   border: none;
   outline: none;

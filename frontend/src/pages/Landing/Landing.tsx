@@ -1,26 +1,31 @@
+import { Suspense, useState } from 'react';
 import styled from 'styled-components';
 
 import ZipgoBannerPng from '@/assets/webp/landing_banner.webp';
 import Header from '@/components/@common/Header/Header';
 import Template from '@/components/@common/Template';
-import ToastContainer from '@/components/@common/Toast/ToastContainer';
 import FilterBottomSheet from '@/components/Food/FilterBottomSheet/FilterBottomSheet';
 import FoodList from '@/components/Food/FoodList/FoodList';
-import { useInfiniteFoodListScroll } from '@/hooks/food';
-import useToast from '@/hooks/toast/useToast';
+import FoodSelectionGuideBanner from '@/components/FoodSelectionGuideBanner/FoodSelectionGuideBanner';
+import { useToast } from '@/context/Toast/ToastContext';
 
 const Landing = () => {
-  const { foodList, hasNextPage, targetRef } = useInfiniteFoodListScroll();
-  const { toast, currentToast } = useToast();
+  const { toast } = useToast();
 
-  if (!foodList) return null;
+  const [dogTouchCount, setDogTouchCount] = useState<number>(1);
 
-  const onToast = () => {
-    toast.warning('강아지를 괴롭히지 마세요!');
+  const onTouchDog = () => {
+    if (dogTouchCount % 10 === 0) {
+      toast.warning('강아지를 깨우지 않게 조심하세요!');
+    } else {
+      toast.info(`강아지를 ${dogTouchCount}번 쓰다듬었어요.`);
+    }
+    setDogTouchCount(prev => prev + 1);
   };
 
   return (
     <Template staticHeader={Header}>
+      <FoodSelectionGuideBanner />
       <Layout>
         <BannerSection>
           <BannerText>
@@ -30,21 +35,16 @@ const Landing = () => {
                 <br />
                 초보 집사들을 위해
               </BannerSubTitle>
-              <BannerTitle>집사의 고민</BannerTitle>
+              <BannerTitle>집사의고민</BannerTitle>
             </TitleContainer>
           </BannerText>
-          <BannerImg src={ZipgoBannerPng} onClick={onToast} alt="집사의고민 배너 이미지" />
+          <BannerImg src={ZipgoBannerPng} onClick={onTouchDog} alt="집사의고민 배너 이미지" />
         </BannerSection>
         <ListSection>
           <FilterBottomSheet />
-          <FoodList foodListData={foodList} />
-          <ObserverTarget
-            ref={targetRef}
-            aria-label={hasNextPage ? '' : '모든 식품 목록을 불러왔습니다'}
-          />
+          <FoodList />
         </ListSection>
       </Layout>
-      <ToastContainer currentToast={currentToast} />
     </Template>
   );
 };
@@ -59,10 +59,10 @@ const Layout = styled.div`
 const BannerSection = styled.section`
   display: flex;
   align-items: center;
+  justify-content: space-between;
 
-  width: 100vw;
-  height: 42rem;
-  margin-top: -8rem;
+  width: 100%;
+  height: 24rem;
   padding-top: 8rem;
 
   background: linear-gradient(45deg, #3e5e8e 0%, #6992c3 100%);
@@ -71,7 +71,6 @@ const BannerSection = styled.section`
 const BannerText = styled.div`
   display: flex;
   align-items: center;
-  justify-content: flex-end;
 
   width: 100%;
 
@@ -82,6 +81,8 @@ const TitleContainer = styled.div`
   display: flex;
   flex-direction: column;
   gap: 1.7rem;
+
+  padding-left: 4rem;
 `;
 
 const BannerSubTitle = styled.span`
@@ -117,10 +118,4 @@ const BannerImg = styled.img`
 
 const ListSection = styled.section`
   padding: 2rem;
-`;
-
-const ObserverTarget = styled.p`
-  font-size: 1.4rem;
-  color: ${({ theme }) => theme.color.grey400};
-  text-align: center;
 `;

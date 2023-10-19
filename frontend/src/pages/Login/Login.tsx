@@ -10,6 +10,7 @@ import Template from '@/components/@common/Template';
 import { KAKAO_HREF } from '@/constants/auth';
 import { useAuth } from '@/hooks/auth';
 import useValidQueryString from '@/hooks/common/useValidQueryString';
+import { RuntimeError } from '@/utils/errors';
 
 const Login = () => {
   const {
@@ -18,10 +19,9 @@ const Login = () => {
     error_description: errorDescription,
   } = useValidQueryString(['code', 'error', 'error_description']);
   const { loginZipgo } = useAuth();
-  const isMutating = useIsMutating({ mutationKey: ['test'] });
 
   useEffect(() => {
-    if (error) throw new Error(errorDescription);
+    if (error) throw new RuntimeError({ code: 'KAKAO_LOGIN_ERROR' }, errorDescription);
 
     if (code) {
       loginZipgo({ code });

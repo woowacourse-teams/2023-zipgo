@@ -1,4 +1,4 @@
-import { keyframes } from 'styled-components';
+import { css, keyframes as styledKeyframes } from 'styled-components';
 
 // 색상 팔레트
 const color = {
@@ -19,6 +19,10 @@ const color = {
   grey700: '#333D4B',
   grey800: '#333D4B',
   black: '#1C1D20',
+} as const;
+
+const maxWidth = {
+  mobile: '49rem',
 } as const;
 
 // 폰트
@@ -53,17 +57,17 @@ const componentStyle = {
   backDrop: {
     position: 'fixed',
     top: 0,
-    left: 0,
 
-    width: '100vw',
+    width: '100%',
+    maxWidth: maxWidth.mobile,
     height: 'calc(var(--vh, 1vh) * 100)',
 
     background: 'rgba(0, 0, 0, 0.50)',
   },
 } as const;
 
-const animation = {
-  bottomSheetAppear: keyframes`
+const keyframes = {
+  bottomSheetAppear: styledKeyframes`
    from {
       transform: translateY(100%);
     }
@@ -72,14 +76,54 @@ const animation = {
       transform: translateY(0%);
     }
   `,
+
+  shiny: styledKeyframes`
+    0% {
+        transform: scale(0) rotate(45deg);
+        opacity: 0;
+    }
+
+    80% {
+      transform: scale(0) rotate(45deg);
+      opacity: 0.5;
+    }
+
+    81% {
+      transform: scale(4) rotate(45deg);
+      opacity: 1;
+    }
+
+    100% {
+      transform: scale(50) rotate(45deg);
+      opacity: 0;
+    }
+  `,
+
+  shimmer: styledKeyframes`
+    to {
+        background-position: 200% 0;
+      }
+  `,
+} as const;
+
+const animation = {
+  skeleton: css`
+    background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%);
+    background-size: 200% 100%;
+    border-radius: 8px;
+
+    animation: ${keyframes.shimmer} 1.5s infinite;
+  `,
 } as const;
 
 // 테마 객체
 const theme = {
   color,
+  maxWidth,
   font,
   shadow,
   componentStyle,
+  keyframes,
   animation,
 };
 

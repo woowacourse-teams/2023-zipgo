@@ -1,3 +1,6 @@
+export const REVIEW_ALIGN_QUERY = 'sortBy';
+export const REVIEW_FILTER_QUERY_STRINGS = ['ageGroups', 'breeds', 'petSizes'] as const;
+
 export const REVIEW_SUMMARY_KEYWORDS = {
   rating: '평점',
   tastePreference: '기호성',
@@ -12,7 +15,7 @@ export const REACTIONS = {
   NONE: '없어요',
 } as const;
 
-export const COMMENT_VISIABLE_LINE_LIMIT = 180;
+export const COMMENT_VISIBLE_LINE_LIMIT = 180;
 export const PROFILE_DEFAULT_IMG_URL =
   'https://github.com/woowacourse-teams/2023-zipgo/assets/24777828/936f3f87-8c5c-4b0f-acc4-f260f3311659';
 
@@ -52,3 +55,5 @@ export const COMMENT_LIMIT = 255;
 export const REVIEW_ERROR_MESSAGE = {
   INVALID_COMMENT: `리뷰는 ${COMMENT_LIMIT}자 이하로 작성해주세요!`,
 } as const;
+
+export const REVIEW_FORM_STEP = ['STAR_RATING', 'REVIEW_SUBMISSION'] as const;

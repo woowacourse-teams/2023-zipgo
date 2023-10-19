@@ -17,3 +17,5 @@ dist
 storybook-static
 
 .eslintcache
+
+*.pem

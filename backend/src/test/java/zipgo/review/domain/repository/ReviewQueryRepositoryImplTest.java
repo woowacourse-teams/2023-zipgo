@@ -1,21 +1,12 @@
 package zipgo.review.domain.repository;
 
-import java.time.LocalDateTime;
-import java.time.Year;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Random;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
-import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
-import org.springframework.context.annotation.Import;
 import org.springframework.transaction.annotation.Transactional;
 import zipgo.brand.domain.Brand;
 import zipgo.brand.domain.repository.BrandRepository;
-import zipgo.common.config.QueryDslTestConfig;
+import zipgo.common.repository.RepositoryTest;
 import zipgo.member.domain.Member;
 import zipgo.member.domain.fixture.MemberFixture;
 import zipgo.member.domain.repository.MemberRepository;
@@ -37,6 +28,13 @@ import zipgo.review.domain.repository.dto.FindReviewsQueryResponse;
 import zipgo.review.domain.repository.dto.ReviewHelpfulReaction;
 import zipgo.review.domain.type.AdverseReactionType;
 
+import java.time.LocalDateTime;
+import java.time.Year;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Random;
+
 import static java.util.Collections.emptyList;
 import static java.util.Collections.reverseOrder;
 import static org.assertj.core.api.Assertions.assertThat;
@@ -52,10 +50,7 @@ import static zipgo.review.domain.type.StoolCondition.SOFT_MOIST;
 import static zipgo.review.domain.type.TastePreference.EATS_VERY_WELL;
 import static zipgo.review.fixture.ReviewFixture.극찬_리뷰_생성;
 
-@Import(QueryDslTestConfig.class)
-@DataJpaTest(properties = {"spring.sql.init.mode=never"})
-@AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
-class ReviewQueryRepositoryImplTest {
+class ReviewQueryRepositoryImplTest extends RepositoryTest {
 
     @Autowired
     private ReviewQueryRepository reviewQueryRepository;

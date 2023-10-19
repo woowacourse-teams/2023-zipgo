@@ -1,15 +1,14 @@
 import { styled } from 'styled-components';
 
-import BottomDropIcon from '@/assets/svg/bottom_drop_icon.svg';
 import ZipgoLogo from '@/assets/svg/zipgo_logo_light.svg';
 import { usePetProfile } from '@/context/petProfile/PetProfileContext';
-import { useAuth } from '@/hooks/auth';
+import { useCheckAuth } from '@/hooks/auth';
 
 import { Dialog } from '../Dialog/Dialog';
 
 const UserProfile = () => {
   const { petProfile } = usePetProfile();
-  const { isLoggedIn } = useAuth();
+  const { isLoggedIn } = useCheckAuth();
 
   return isLoggedIn ? (
     <Dialog.Trigger asChild>
@@ -29,7 +28,6 @@ const UserProfile = () => {
         ) : (
           <RegisterPetText>여기를 눌러 반려견을 등록해주세요.</RegisterPetText>
         )}
-        <Chevron src={BottomDropIcon} alt="반려견 등록 화살표" />
       </UserInfoContainer>
     </Dialog.Trigger>
   ) : (
@@ -74,9 +72,4 @@ const RegisterPetText = styled.p`
 const Logo = styled.img`
   width: 11.3rem;
   height: 3.6rem;
-`;
-
-const Chevron = styled.img`
-  width: 1.2rem;
-  height: 0.6rem;
 `;

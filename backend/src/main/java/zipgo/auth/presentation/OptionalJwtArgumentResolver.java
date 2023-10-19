@@ -1,7 +1,8 @@
 package zipgo.auth.presentation;
 
-import jakarta.servlet.http.HttpServletRequest;
 import java.util.Objects;
+
+import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.core.MethodParameter;
 import org.springframework.stereotype.Component;
@@ -20,6 +21,8 @@ import static org.springframework.http.HttpHeaders.AUTHORIZATION;
 @Component
 @RequiredArgsConstructor
 public class OptionalJwtArgumentResolver implements HandlerMethodArgumentResolver {
+
+    private static final String ZIPGO_HEADER = "Refresh";
 
     private final JwtProvider jwtProvider;
 
@@ -41,8 +44,8 @@ public class OptionalJwtArgumentResolver implements HandlerMethodArgumentResolve
             return null;
         }
         try {
-            String token = BearerTokenExtractor.extract(Objects.requireNonNull(request));
-            String id = jwtProvider.getPayload(token);
+            String accessToken = BearerTokenExtractor.extract(Objects.requireNonNull(request));
+            String id = jwtProvider.getPayload(accessToken);
             return new AuthCredentials(Long.valueOf(id));
         } catch (TokenInvalidException e) {
             LoggingUtils.warn(e);

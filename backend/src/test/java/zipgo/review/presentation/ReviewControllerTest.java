@@ -1,11 +1,12 @@
 package zipgo.review.presentation;
 
-import com.epages.restdocs.apispec.ResourceSnippetDetails;
-import com.epages.restdocs.apispec.Schema;
-import io.restassured.response.Response;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
+
+import com.epages.restdocs.apispec.ResourceSnippetDetails;
+import com.epages.restdocs.apispec.Schema;
+import io.restassured.response.Response;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
@@ -325,9 +326,12 @@ public class ReviewControllerTest extends AcceptanceTest {
         @Test
         void 리뷰를_성공적으로_생성하면_201_반환() {
             // given
-            var token = jwtProvider.create("1");
+            var accessToken = jwtProvider.createAccessToken(1L);
+            var refreshToken = jwtProvider.createRefreshToken();
             var 리뷰_생성_요청 = 리뷰_생성_요청(식품.getId(), 반려동물.getId());
-            var 요청_준비 = given(spec).header("Authorization", "Bearer " + token)
+            var 요청_준비 = given(spec)
+                    .header("Authorization", "Bearer " + accessToken)
+                    .header("Refresh", "Zipgo " + refreshToken)
                     .body(리뷰_생성_요청)
                     .contentType(JSON).filter(리뷰_생성_API_문서_생성());
 
@@ -365,8 +369,11 @@ public class ReviewControllerTest extends AcceptanceTest {
         @Test
         void 없는_식품에_대해_리뷰를_생성하면_404_반환() {
             // given
-            var token = jwtProvider.create("1");
-            var 요청_준비 = given(spec).header("Authorization", "Bearer " + token)
+            var accessToken = jwtProvider.createAccessToken(1L);
+            var refreshToken = jwtProvider.createRefreshToken();
+            var 요청_준비 = given(spec)
+                    .header("Authorization", "Bearer " + accessToken)
+                    .header("Refresh", "Zipgo " + refreshToken)
                     .body(리뷰_생성_요청(잘못된_id, 반려동물.getId())).contentType(JSON)
                     .filter(API_예외응답_문서_생성());
 
@@ -396,8 +403,11 @@ public class ReviewControllerTest extends AcceptanceTest {
         @Test
         void 리뷰를_성공적으로_수정하면_204_반환() {
             // given
-            var token = jwtProvider.create("1");
-            var 요청_준비 = given(spec).header("Authorization", "Bearer " + token)
+            var accessToken = jwtProvider.createAccessToken(1L);
+            var refreshToken = jwtProvider.createRefreshToken();
+            var 요청_준비 = given(spec)
+                    .header("Authorization", "Bearer " + accessToken)
+                    .header("Refresh", "Zipgo " + refreshToken)
                     .body(리뷰_수정_요청()).contentType(JSON)
                     .filter(리뷰_수정_API_문서_생성());
 
@@ -424,8 +434,11 @@ public class ReviewControllerTest extends AcceptanceTest {
         @Test
         void 리뷰를_쓴_사람이_아닌_멤버가_리뷰를_수정하면_403_반환() {
             // given
-            var notOwnerToken = jwtProvider.create("2");
-            var 요청_준비 = given(spec).header("Authorization", "Bearer " + notOwnerToken)
+            var accessToken = jwtProvider.createAccessToken(2L);
+            var refreshToken = jwtProvider.createRefreshToken();
+            var 요청_준비 = given(spec)
+                    .header("Authorization", "Bearer " + accessToken)
+                    .header("Refresh", "Zipgo " + refreshToken)
                     .body(리뷰_수정_요청())
                     .contentType(JSON).filter(API_예외응답_문서_생성());
 
@@ -455,8 +468,11 @@ public class ReviewControllerTest extends AcceptanceTest {
         @Test
         void 리뷰를_성공적으로_삭제하면_204_반환() {
             // given
-            var token = jwtProvider.create("1");
-            var 요청_준비 = given(spec).header("Authorization", "Bearer " + token)
+            var accessToken = jwtProvider.createAccessToken(1L);
+            var refreshToken = jwtProvider.createAccessToken(1L);
+            var 요청_준비 = given(spec)
+                    .header("Authorization", "Bearer " + accessToken)
+                    .header("Refresh", "Zipgo " + refreshToken)
                     .body(리뷰_수정_요청()).contentType(JSON)
                     .filter(리뷰_삭제_API_문서_생성());
 
@@ -476,9 +492,11 @@ public class ReviewControllerTest extends AcceptanceTest {
         @Test
         void 리뷰를_쓴_사람이_아닌_멤버가_리뷰를_삭제하면_403_반환() {
             // given
-            var notOwnerToken = jwtProvider.create("2");
+            var accessToken = jwtProvider.createAccessToken(2L);
+            var refreshToken = jwtProvider.createAccessToken(2L);
             var 요청_준비 = given(spec)
-                    .header("Authorization", "Bearer " + notOwnerToken)
+                    .header("Authorization", "Bearer " + accessToken)
+                    .header("Refresh", "Zipgo " + refreshToken)
                     .contentType(JSON)
                     .filter(API_예외응답_문서_생성());
 
@@ -572,7 +590,7 @@ public class ReviewControllerTest extends AcceptanceTest {
                     queryParameters(parameterWithName("petFoodId").description("식품 id")),
                     responseFields(
                             fieldWithPath("rating.average").description("리뷰 총 평점").type(JsonFieldType.NUMBER),
-                            fieldWithPath("rating.rating[].rating").description("rating 이름").type(JsonFieldType.STRING),
+                            fieldWithPath("rating.rating[].name").description("rating 이름").type(JsonFieldType.STRING),
                             fieldWithPath("rating.rating[].percentage").description("rating 해당 백분율")
                                     .type(JsonFieldType.NUMBER),
                             fieldWithPath("tastePreference[].name").description("tastePreference 이름")
@@ -604,7 +622,8 @@ public class ReviewControllerTest extends AcceptanceTest {
         void 도움이돼요_추가_성공() {
             //given
             var 다른_회원 = memberRepository.save(Member.builder().email("도움이돼요_추가할_회원").name("회원명").build());
-            var 다른_회원의_JWT = jwtProvider.create(다른_회원.getId().toString());
+            var 다른_회원의_JWT = jwtProvider.createAccessToken(다른_회원.getId());
+            var 다른_회원의_리프레시_토큰 = jwtProvider.createRefreshToken();
 
             var 요청_준비 = given().spec(spec)
                     .contentType(JSON)
@@ -613,6 +632,7 @@ public class ReviewControllerTest extends AcceptanceTest {
             //when
             요청_준비.when()
                     .header(AUTHORIZATION, "Bearer " + 다른_회원의_JWT)
+                    .header("Refresh", "Zipgo " + 다른_회원의_리프레시_토큰)
                     .pathParam("reviewId", 리뷰.getId())
                     .post("/reviews/{reviewId}/helpful-reactions");
 
@@ -620,6 +640,7 @@ public class ReviewControllerTest extends AcceptanceTest {
             Response 조회_응답 = given().spec(spec)
                     .contentType(JSON)
                     .header(AUTHORIZATION, "Bearer " + 다른_회원의_JWT)
+                    .header("Refresh", "Zipgo " + 다른_회원의_리프레시_토큰)
                     .get("/reviews/{reviewId}", 리뷰.getId());
 
             조회_응답.then()
@@ -631,7 +652,8 @@ public class ReviewControllerTest extends AcceptanceTest {
         void 작성자가_도움이돼요를_추가하면_예외가_발생() {
             //given
             var 리뷰_작성자_id = 리뷰.getPet().getOwner().getId();
-            var 리뷰_작성자_JWT = jwtProvider.create(리뷰_작성자_id.toString());
+            var 리뷰_작성자_JWT = jwtProvider.createAccessToken(리뷰_작성자_id);
+            var 리뷰_작성자_리프레시_토큰 = jwtProvider.createRefreshToken();
 
             //when
             var 요청_준비 = given().spec(spec)
@@ -641,6 +663,7 @@ public class ReviewControllerTest extends AcceptanceTest {
             //when
             var 응답 = 요청_준비.when()
                     .header(AUTHORIZATION, "Bearer " + 리뷰_작성자_JWT)
+                    .header("Refresh", "Zipgo " + 리뷰_작성자_리프레시_토큰)
                     .pathParam("reviewId", 리뷰.getId())
                     .post("/reviews/{reviewId}/helpful-reactions");
 
@@ -655,7 +678,8 @@ public class ReviewControllerTest extends AcceptanceTest {
         void 이미_눌렀던_리뷰일_경우() {
             //given
             var 다른_회원 = memberRepository.save(Member.builder().email("도움이돼요_추가할_회원").name("회원명").build());
-            var 다른_회원의_JWT = jwtProvider.create(다른_회원.getId().toString());
+            var 다른_회원의_JWT = jwtProvider.createAccessToken(다른_회원.getId());
+            var 다른_회원의_리프레시 = jwtProvider.createRefreshToken();
 
             given().spec(spec).contentType(JSON)
                     .pathParam("reviewId", 리뷰.getId())
@@ -668,6 +692,7 @@ public class ReviewControllerTest extends AcceptanceTest {
             //when
             var 응답 = 요청_준비.when()
                     .header(AUTHORIZATION, "Bearer " + 다른_회원의_JWT)
+                    .header("Refresh", "Zipgo " + 다른_회원의_리프레시)
                     .pathParam("reviewId", 리뷰.getId())
                     .post("/reviews/{reviewId}/helpful-reactions");
 
@@ -700,7 +725,8 @@ public class ReviewControllerTest extends AcceptanceTest {
         void 도움이돼요_취소_성공() {
             //given
             var 다른_회원 = memberRepository.save(Member.builder().email("도움이돼요_추가할_회원").name("회원명").build());
-            var 다른_회원의_JWT = jwtProvider.create(다른_회원.getId().toString());
+            var 다른_회원의_JWT = jwtProvider.createAccessToken(다른_회원.getId());
+            var 다른_회원의_리프레시_토큰 = jwtProvider.createRefreshToken();
 
             given().spec(spec).contentType(JSON)
                     .pathParam("reviewId", 리뷰.getId())
@@ -713,6 +739,7 @@ public class ReviewControllerTest extends AcceptanceTest {
             //when
             var 응답 = 요청_준비.when()
                     .header(AUTHORIZATION, "Bearer " + 다른_회원의_JWT)
+                    .header("Refresh", "Zipgo " + 다른_회원의_리프레시_토큰)
                     .pathParam("reviewId", 리뷰.getId())
                     .delete("/reviews/{reviewId}/helpful-reactions");
 
@@ -725,7 +752,8 @@ public class ReviewControllerTest extends AcceptanceTest {
         void 누르지_않은_리뷰에서_취소() {
             //given
             var 다른_회원 = memberRepository.save(Member.builder().email("도움이돼요_추가할_회원").name("회원명").build());
-            var 다른_회원의_JWT = jwtProvider.create(다른_회원.getId().toString());
+            var 다른_회원의_JWT = jwtProvider.createAccessToken(다른_회원.getId());
+            var 다른_회원의_리프레시_토큰 = jwtProvider.createRefreshToken();
 
             var 요청_준비 = given().spec(spec)
                     .contentType(JSON)
@@ -734,6 +762,7 @@ public class ReviewControllerTest extends AcceptanceTest {
             //when
             var 응답 = 요청_준비.when()
                     .header(AUTHORIZATION, "Bearer " + 다른_회원의_JWT)
+                    .header("Refresh", "Zipgo " + 다른_회원의_리프레시_토큰)
                     .pathParam("reviewId", 리뷰.getId())
                     .delete("/reviews/{reviewId}/helpful-reactions");
 

@@ -1,10 +1,10 @@
 import { expect } from '@storybook/jest';
 import type { Meta, StoryObj } from '@storybook/react';
-import { screen, waitFor, within } from '@testing-library/dom';
-import userEvent from '@testing-library/user-event';
+import { screen, userEvent, waitFor, within } from '@storybook/testing-library';
 import React from 'react';
 
 import { COMMENT_LIMIT } from '../../../constants/review';
+import { useReviewForm } from '../../../hooks/review/useReviewForm';
 import ReviewForm from './ReviewForm';
 
 const meta = {
@@ -17,16 +17,32 @@ export default meta;
 type Story = StoryObj<typeof ReviewForm>;
 
 export const Basic: Story = {
-  args: {
-    petFoodId: 1,
-    rating: 5,
+  args: {},
+
+  render: args => {
+    const reviewData = useReviewForm({
+      petFoodId: 1,
+      rating: 5,
+      isEditMode: false,
+      reviewId: 1,
+    });
+
+    return <ReviewForm reviewData={reviewData} />;
   },
 };
 
 export const ValidForm: Story = {
-  args: {
-    petFoodId: 1,
-    rating: 5,
+  args: {},
+
+  render: args => {
+    const reviewData = useReviewForm({
+      petFoodId: 1,
+      rating: 5,
+      isEditMode: false,
+      reviewId: 1,
+    });
+
+    return <ReviewForm reviewData={reviewData} />;
   },
 
   play: async ({ canvasElement }) => {
@@ -39,7 +55,7 @@ export const ValidForm: Story = {
 
     const commentTextarea = canvas.getByRole('textbox');
     const validText = '저희집 에디가 너무 잘먹어요^^';
-    await userEvent.type(commentTextarea, validText, { delay: 100 });
+    await userEvent.type(commentTextarea, validText);
 
     const completeButton = canvas.getByText('작성 완료');
 
@@ -48,9 +64,17 @@ export const ValidForm: Story = {
 };
 
 export const InvalidForm: Story = {
-  args: {
-    petFoodId: 1,
-    rating: 5,
+  args: {},
+
+  render: args => {
+    const reviewData = useReviewForm({
+      petFoodId: 1,
+      rating: 5,
+      isEditMode: false,
+      reviewId: 1,
+    });
+
+    return <ReviewForm reviewData={reviewData} />;
   },
 
   play: async ({ canvasElement }) => {
@@ -63,7 +87,7 @@ export const InvalidForm: Story = {
 
     const commentTextarea = canvas.getByRole('textbox');
     const longText = new Array(COMMENT_LIMIT + 1).fill(1).join('');
-    await userEvent.type(commentTextarea, longText, { delay: 5 });
+    await userEvent.type(commentTextarea, longText);
 
     const completeButton = canvas.getByText('작성 완료');
 
@@ -72,9 +96,17 @@ export const InvalidForm: Story = {
 };
 
 export const SingleSelectionTestForTastePreference: Story = {
-  args: {
-    petFoodId: 1,
-    rating: 5,
+  args: {},
+
+  render: args => {
+    const reviewData = useReviewForm({
+      petFoodId: 1,
+      rating: 5,
+      isEditMode: false,
+      reviewId: 1,
+    });
+
+    return <ReviewForm reviewData={reviewData} />;
   },
 
   play: async ({ canvasElement }) => {
@@ -88,7 +120,7 @@ export const SingleSelectionTestForTastePreference: Story = {
     const tastePreferences = canvas.getAllByTestId('tastePreference');
     const checkedTastePreference = tastePreferences[1];
 
-    await userEvent.click(checkedTastePreference, { delay: 100 });
+    await userEvent.click(checkedTastePreference);
 
     expect(checkedTastePreference).toHaveAttribute('aria-checked', 'true');
 
@@ -101,9 +133,17 @@ export const SingleSelectionTestForTastePreference: Story = {
 };
 
 export const SingleSelectionTestForStoolCondition: Story = {
-  args: {
-    petFoodId: 1,
-    rating: 5,
+  args: {},
+
+  render: args => {
+    const reviewData = useReviewForm({
+      petFoodId: 1,
+      rating: 5,
+      isEditMode: false,
+      reviewId: 1,
+    });
+
+    return <ReviewForm reviewData={reviewData} />;
   },
 
   play: async ({ canvasElement }) => {
@@ -117,7 +157,7 @@ export const SingleSelectionTestForStoolCondition: Story = {
     const stoolConditions = canvas.getAllByTestId('stoolCondition');
     const checkedStoolCondition = stoolConditions[1];
 
-    await userEvent.click(checkedStoolCondition, { delay: 100 });
+    await userEvent.click(checkedStoolCondition);
 
     expect(checkedStoolCondition).toHaveAttribute('aria-checked', 'true');
 
@@ -130,9 +170,17 @@ export const SingleSelectionTestForStoolCondition: Story = {
 };
 
 export const MultipleSelectionTestForAdverseReaction: Story = {
-  args: {
-    petFoodId: 1,
-    rating: 5,
+  args: {},
+
+  render: args => {
+    const reviewData = useReviewForm({
+      petFoodId: 1,
+      rating: 5,
+      isEditMode: false,
+      reviewId: 1,
+    });
+
+    return <ReviewForm reviewData={reviewData} />;
   },
 
   play: async ({ canvasElement }) => {
@@ -145,8 +193,8 @@ export const MultipleSelectionTestForAdverseReaction: Story = {
 
     const adverseReactions = canvas.getAllByTestId('adverseReaction');
 
-    await userEvent.click(adverseReactions[1], { delay: 100 });
-    await userEvent.click(adverseReactions[2], { delay: 100 });
+    await userEvent.click(adverseReactions[1]);
+    await userEvent.click(adverseReactions[2]);
 
     const checkedAdverseReactions = [adverseReactions[1], adverseReactions[2]];
 
@@ -163,9 +211,17 @@ export const MultipleSelectionTestForAdverseReaction: Story = {
 };
 
 export const NoneButtonDeselectOthersTestForAdverseReaction: Story = {
-  args: {
-    petFoodId: 1,
-    rating: 5,
+  args: {},
+
+  render: args => {
+    const reviewData = useReviewForm({
+      petFoodId: 1,
+      rating: 5,
+      isEditMode: false,
+      reviewId: 1,
+    });
+
+    return <ReviewForm reviewData={reviewData} />;
   },
 
   play: async ({ canvasElement }) => {
@@ -179,8 +235,8 @@ export const NoneButtonDeselectOthersTestForAdverseReaction: Story = {
     const adverseReactions = canvas.getAllByTestId('adverseReaction');
     const noneAdverseReaction = adverseReactions[0];
 
-    await userEvent.click(adverseReactions[1], { delay: 100 });
-    await userEvent.click(noneAdverseReaction, { delay: 100 });
+    await userEvent.click(adverseReactions[1]);
+    await userEvent.click(noneAdverseReaction);
 
     adverseReactions.forEach(adverseReaction => {
       if (noneAdverseReaction === adverseReaction) {

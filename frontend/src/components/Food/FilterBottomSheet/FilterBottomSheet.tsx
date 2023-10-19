@@ -3,7 +3,7 @@ import styled, { css } from 'styled-components';
 
 import SettingsIcon from '@/assets/svg/settings_outline_icon.svg';
 import { Dialog } from '@/components/@common/Dialog/Dialog';
-import QueryBoundary from '@/components/@common/QueryBoundary';
+import Loading from '@/components/@common/Loading/Loading';
 import Tabs from '@/components/@common/Tabs/Tabs';
 import { FoodFilterProvider, useFoodFilterContext } from '@/context/food';
 import { useFoodListFilterMetaQuery } from '@/hooks/query/food';
@@ -12,6 +12,7 @@ import type { KeywordEn } from '@/types/food/client';
 import { translateKeyword } from '@/utils/food';
 import { getComputedStyleOfSC } from '@/utils/styled-components';
 
+import FilterSelectionDisplay from '../FilterSelectionDisplay/FilterSelectionDisplay';
 import BrandFilterList from './BrandFilterList/BrandFilterList';
 import FunctionalityFilterList from './FunctionalityFilterList/FunctionalityFilterList';
 import MainIngredientsFilterList from './MainIngredientsFilterList/MainIngredientsFilterList';
@@ -19,22 +20,25 @@ import NutritionStandardsFilterList from './NutritionStandardsFilterList/Nutriti
 
 const FilterBottomSheet = () => (
   <FoodFilterProvider>
-    <Dialog>
-      <Dialog.Trigger asChild>
-        <DialogTrigger type="button">
-          <FilterTriggerIcon src={SettingsIcon} alt="필터 버튼 아이콘" />
-          <span>필터</span>
-        </DialogTrigger>
-      </Dialog.Trigger>
-      <Dialog.Portal>
-        <QueryBoundary>
-          <Dialog.BackDrop />
-          <Dialog.Content asChild>
-            {({ openHandler }) => <KeywordContent toggleDialog={openHandler} />}
-          </Dialog.Content>
-        </QueryBoundary>
-      </Dialog.Portal>
-    </Dialog>
+    <FilterDialogAndFilterDisplayContainer>
+      <Dialog>
+        <Dialog.Trigger asChild>
+          <DialogTrigger type="button">
+            <FilterTriggerIcon src={SettingsIcon} alt="필터 버튼 아이콘" />
+            <span>필터</span>
+          </DialogTrigger>
+        </Dialog.Trigger>
+        <Dialog.Portal>
+          <Loading>
+            <Dialog.BackDrop />
+            <Dialog.Content asChild>
+              {({ openHandler }) => <KeywordContent toggleDialog={openHandler} />}
+            </Dialog.Content>
+          </Loading>
+        </Dialog.Portal>
+      </Dialog>
+      <FilterSelectionDisplay />
+    </FilterDialogAndFilterDisplayContainer>
   </FoodFilterProvider>
 );
 
@@ -117,6 +121,10 @@ const KeywordContent = (props: KeywordContentProps) => {
 
 export default FilterBottomSheet;
 
+const FilterDialogAndFilterDisplayContainer = styled.div`
+  display: flex;
+`;
+
 const Layout = styled.div`
   position: fixed;
   z-index: 1001;
@@ -124,16 +132,17 @@ const Layout = styled.div`
 
   display: flex;
   flex-direction: column;
-  flex-shrink: 0;
   align-items: flex-start;
 
-  width: 100vw;
+  width: 100%;
+  max-width: ${({ theme }) => theme.maxWidth.mobile};
   height: 57.4rem;
+  max-height: 85vh;
 
   background: ${({ theme }) => theme.color.grey200};
   border-radius: 20px 20px 0 0;
 
-  animation: ${({ theme }) => theme.animation.bottomSheetAppear} 0.5s cubic-bezier(0.2, 0.6, 0.3, 1);
+  animation: ${({ theme }) => theme.keyframes.bottomSheetAppear} 0.5s cubic-bezier(0.2, 0.6, 0.3, 1);
 `;
 
 const DialogTrigger = styled.button`
@@ -141,6 +150,7 @@ const DialogTrigger = styled.button`
   gap: 0.4rem;
   align-items: center;
 
+  width: 8.8rem;
   padding: 1rem 1.6rem;
 
   background-color: transparent;
@@ -174,6 +184,7 @@ const NavWrapper = styled.div`
 
 const NavList = styled.nav`
   display: flex;
+  flex-shrink: 0;
   gap: 2rem;
   align-items: center;
 

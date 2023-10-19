@@ -5,7 +5,7 @@ import { styled } from 'styled-components';
 
 import DialogProvider, { useDialogContext } from '@/context/Dialog/DialogContext';
 import { getValidProps, PropsWithRenderProps } from '@/utils/compound';
-import { composeEventHandlers } from '@/utils/dom';
+import { composeFunctions } from '@/utils/dom';
 
 export interface DialogProps {
   open?: boolean;
@@ -57,14 +57,14 @@ const Trigger = (props: PropsWithChildren<TriggerProps>) => {
     cloneElement(resolved.child, {
       ...restProps,
       ...triggerA11y,
-      onClick: composeEventHandlers(onClickProps, openHandler),
+      onClick: composeFunctions(onClickProps, openHandler),
     })
   ) : (
     <button
       {...restProps}
       {...triggerA11y}
       type="button"
-      onClick={composeEventHandlers(onClickProps, openHandler)}
+      onClick={composeFunctions(onClickProps, openHandler)}
     >
       {resolved.children || 'Trigger'}
     </button>
@@ -73,7 +73,10 @@ const Trigger = (props: PropsWithChildren<TriggerProps>) => {
   return trigger;
 };
 
-const Portal = ({ children, container = document.body }: PropsWithChildren<PortalProps>) => {
+const Portal = ({
+  children,
+  container = document.getElementById('mobile') ?? document.body,
+}: PropsWithChildren<PortalProps>) => {
   const { isOpened } = useDialogContext();
 
   return isOpened ? createPortal(children, container) : null;
@@ -93,13 +96,13 @@ const BackDrop = (props: PropsWithChildren<BackDropProps>) => {
     cloneElement(resolved.child, {
       ...restProps,
       ...backDropA11y,
-      onClick: composeEventHandlers(onClickProps, openHandler),
+      onClick: composeFunctions(onClickProps, openHandler),
     })
   ) : (
     <DefaultBackDrop
       {...restProps}
       {...backDropA11y}
-      onClick={composeEventHandlers(onClickProps, openHandler)}
+      onClick={composeFunctions(onClickProps, openHandler)}
       aria-hidden
     />
   );
@@ -156,14 +159,14 @@ const Close = (props: PropsWithChildren<CloseProps>) => {
     cloneElement(resolved.child, {
       ...restProps,
       ...closeA11y,
-      onClick: composeEventHandlers(onClickProps, openHandler),
+      onClick: composeFunctions(onClickProps, openHandler),
     })
   ) : (
     <button
       {...restProps}
       {...closeA11y}
       type="button"
-      onClick={composeEventHandlers(onClickProps, openHandler)}
+      onClick={composeFunctions(onClickProps, openHandler)}
     >
       {resolved.children || 'X'}
     </button>

@@ -37,9 +37,19 @@ const MainIngredientsFilterList = (props: MainIngredientsFilterListProps) => {
 export default MainIngredientsFilterList;
 
 const MainIngredientsFilterListLayout = styled.ul`
+  scrollbar-width: none;
+
+  overflow-y: scroll;
   display: flex;
   flex-wrap: wrap;
   gap: 0.8rem;
+
+  max-height: 30rem;
+
+  &::-webkit-scrollbar {
+    width: 0;
+    height: 0;
+  }
 `;
 
 const IngredientFilterItem = styled.li<{

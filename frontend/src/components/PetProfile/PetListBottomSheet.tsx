@@ -2,48 +2,36 @@ import { styled } from 'styled-components';
 
 import { Dialog } from '../@common/Dialog/Dialog';
 import UserProfile from '../@common/Header/UserProfile';
-import QueryBoundary from '../@common/QueryBoundary';
+import Loading from '../@common/Loading/Loading';
 import PetList from './PetList';
 
 const PetListBottomSheet = () => (
   <Dialog>
     <UserProfile />
     <Dialog.Portal>
-      <QueryBoundary>
+      <Loading>
         <Dialog.BackDrop />
         <Dialog.Content asChild>
-          {({ openHandler }) => <PetListContainer toggleDialog={openHandler} />}
+          <ContentLayout>
+            <DialogHeader>어떤 아이 식품을 찾으세요?</DialogHeader>
+            <DialogContent>
+              <PetList />
+            </DialogContent>
+            <ButtonWrapper>
+              <Dialog.Close asChild>
+                <CloseButton type="button">닫기</CloseButton>
+              </Dialog.Close>
+            </ButtonWrapper>
+          </ContentLayout>
         </Dialog.Content>
-      </QueryBoundary>
+      </Loading>
     </Dialog.Portal>
   </Dialog>
 );
 
-interface PetListContainerProps {
-  toggleDialog: VoidFunction;
-}
-
-const PetListContainer = (props: PetListContainerProps) => {
-  const { toggleDialog } = props;
-
-  return (
-    <Layout>
-      <DialogHeader>어떤 아이 식품을 찾으세요?</DialogHeader>
-      <DialogContent>
-        <PetList />
-      </DialogContent>
-      <ButtonWrapper>
-        <CloseButton type="button" onClick={toggleDialog}>
-          닫기
-        </CloseButton>
-      </ButtonWrapper>
-    </Layout>
-  );
-};
-
 export default PetListBottomSheet;
 
-const Layout = styled.div`
+const ContentLayout = styled.div`
   position: fixed;
   z-index: 1001;
   bottom: 0;
@@ -53,13 +41,14 @@ const Layout = styled.div`
   flex-shrink: 0;
   align-items: flex-start;
 
-  width: 100vw;
+  width: 100%;
+  max-width: ${({ theme }) => theme.maxWidth.mobile};
   height: 57.4rem;
 
   background: ${({ theme }) => theme.color.grey200};
   border-radius: 20px 20px 0 0;
 
-  animation: ${({ theme }) => theme.animation.bottomSheetAppear} 0.5s cubic-bezier(0.2, 0.6, 0.3, 1);
+  animation: ${({ theme }) => theme.keyframes.bottomSheetAppear} 0.5s cubic-bezier(0.2, 0.6, 0.3, 1);
 `;
 
 const DialogHeader = styled.div`

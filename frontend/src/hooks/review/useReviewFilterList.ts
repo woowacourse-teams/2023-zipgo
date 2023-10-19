@@ -1,33 +1,27 @@
 import { ChangeEvent, useEffect, useState } from 'react';
 
+import { REVIEW_FILTER_QUERY_STRINGS } from '@/constants/review';
+import { FilterControlsMeta } from '@/types/review/client';
+import { invariantOf } from '@/utils/invariantOf';
 import { parseCheckList } from '@/utils/parseCheckList';
 
 import useValidQueryString from '../common/useValidQueryString';
 
-type FilterMeta = {
-  id: number;
-  name: string;
-}[];
-
-interface MetaData {
-  petSizes: FilterMeta;
-  ageGroups: FilterMeta;
-  breeds: FilterMeta;
-}
-
-const initialFilterList: Record<keyof MetaData, Set<number>> = {
+const initialFilterList: Record<keyof FilterControlsMeta, Set<number>> = {
   petSizes: new Set(),
   ageGroups: new Set(),
   breeds: new Set(),
 };
 
 const useReviewFilterList = () => {
-  const { ageGroups, breeds, custom } = useValidQueryString(['ageGroups', 'breeds', 'custom']);
+  const filterListQueryString = useValidQueryString([...REVIEW_FILTER_QUERY_STRINGS, 'custom']);
   const [filterList, setFilterList] = useState(initialFilterList);
+
+  const { ageGroups, breeds, custom } = filterListQueryString;
 
   const parsedFilterList = parseCheckList(filterList);
 
-  const toggleFilter = (keyword: keyof MetaData, filterId: number) => {
+  const toggleFilter = (keyword: keyof FilterControlsMeta, filterId: number) => {
     const targetFilterList = structuredClone(filterList)[keyword];
     const selected = targetFilterList.has(filterId);
 
@@ -38,11 +32,11 @@ const useReviewFilterList = () => {
 
   const toggleCustomMode = () => {
     if (custom === 'on') {
-      setFilterList(prev => ({
+      setFilterList({
         petSizes: new Set(),
         ageGroups: new Set([Number(ageGroups)]),
         breeds: new Set([Number(breeds)]),
-      }));
+      });
     } else {
       resetFilterList();
     }
@@ -62,6 +56,19 @@ const useReviewFilterList = () => {
   useEffect(() => {
     toggleCustomMode();
   }, [custom]);
+
+  useEffect(() => {
+    const syncedFilterList = Object.entries(invariantOf(filterListQueryString)).reduce(
+      (newFilterList, [keyword, queryString]) => ({
+        ...newFilterList,
+        [keyword]: new Set(queryString?.split(',').map(Number)),
+      }),
+      initialFilterList,
+    );
+
+    setFilterList(syncedFilterList);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [Object.values(filterListQueryString).join()]);
 
   return { filterList, parsedFilterList, toggleFilter, onSelectBreed, resetFilterList };
 };

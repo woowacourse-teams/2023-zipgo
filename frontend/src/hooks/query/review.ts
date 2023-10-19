@@ -1,3 +1,4 @@
+/* eslint-disable no-param-reassign */
 /* eslint-disable indent */
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { useNavigate } from 'react-router-dom';
@@ -13,13 +14,16 @@ import {
   postReview,
   putReview,
 } from '@/apis/review';
+import { ONE_MINUTE } from '@/constants/time';
 import { routerPath } from '@/router/routes';
 import { Parameter } from '@/types/common/utility';
 import { GetReviewsRes } from '@/types/review/remote';
 
+import { FOOD_QUERY_KEY } from './food';
+
 const QUERY_KEY = {
   reviewItem: 'reviewItem',
-  reviewList: 'reviewList',
+  reviewList: (petFoodId: string) => ['reviewList', petFoodId, location.search],
   reviewSummary: 'reviewSummary',
   reviewListMeta: 'reviewListMeta',
 };
@@ -39,8 +43,9 @@ export const useReviewItemQuery = (payload: Parameter<typeof getReview>) => {
 
 export const useReviewListQuery = (payload: Parameter<typeof getReviews>) => {
   const { data, ...restQuery } = useQuery({
-    queryKey: [QUERY_KEY.reviewList, payload.petFoodId],
+    queryKey: QUERY_KEY.reviewList(payload.petFoodId),
     queryFn: () => getReviews(payload),
+    staleTime: ONE_MINUTE,
   });
 
   return {
@@ -56,7 +61,9 @@ export const useAddReviewMutation = () => {
   const { mutate: addReview, ...addReviewRestMutation } = useMutation({
     mutationFn: postReview,
     onSuccess: (_, { petFoodId }) => {
-      queryClient.invalidateQueries([QUERY_KEY.reviewList, petFoodId]);
+      queryClient.invalidateQueries(QUERY_KEY.reviewList(petFoodId));
+      queryClient.invalidateQueries([QUERY_KEY.reviewSummary]);
+      queryClient.invalidateQueries(FOOD_QUERY_KEY.foodDetail(petFoodId));
 
       alert('리뷰 작성이 완료되었습니다.');
 
@@ -74,7 +81,9 @@ export const useEditReviewMutation = () => {
   const { mutate: editReview, ...editReviewRestMutation } = useMutation({
     mutationFn: putReview,
     onSuccess: (_, { petFoodId }) => {
-      queryClient.invalidateQueries([QUERY_KEY.reviewList, petFoodId]);
+      queryClient.invalidateQueries(QUERY_KEY.reviewList(petFoodId));
+      queryClient.invalidateQueries([QUERY_KEY.reviewSummary]);
+      queryClient.invalidateQueries(FOOD_QUERY_KEY.foodDetail(petFoodId));
 
       alert('리뷰 수정이 완료되었습니다.');
 
@@ -91,7 +100,9 @@ export const useRemoveReviewMutation = () => {
   const { mutate: removeReview, ...removeReviewRestMutation } = useMutation({
     mutationFn: deleteReview,
     onSuccess: (_, { petFoodId }) => {
-      queryClient.invalidateQueries([QUERY_KEY.reviewList, petFoodId]);
+      queryClient.invalidateQueries(QUERY_KEY.reviewList(petFoodId));
+      queryClient.invalidateQueries([QUERY_KEY.reviewSummary]);
+      queryClient.invalidateQueries(FOOD_QUERY_KEY.foodDetail(petFoodId));
     },
   });
 
@@ -142,42 +153,38 @@ export const useToggleHelpfulReactionMutation = (reacted: boolean) => {
   const { mutate: toggleHelpfulReaction, ...restMutation } = useMutation({
     mutationFn: reacted ? deleteHelpfulReactions : postHelpfulReactions,
     onMutate: async ({ petFoodId, reviewId }) => {
-      await queryClient.cancelQueries({ queryKey: [QUERY_KEY.reviewList, petFoodId] });
+      await queryClient.cancelQueries({
+        queryKey: QUERY_KEY.reviewList(petFoodId),
+      });
 
-      const previousReviewList = queryClient.getQueryData<GetReviewsRes>([
-        QUERY_KEY.reviewList,
-        petFoodId,
-      ]);
-
-      queryClient.setQueryData(
-        [QUERY_KEY.reviewList, petFoodId],
-        (previousReviewList?: GetReviewsRes) =>
-          previousReviewList
-            ? {
-                ...previousReviewList,
-                reviews: previousReviewList.reviews.map(review => {
-                  if (review.id === reviewId) {
-                    const cloned = review;
-
-                    cloned.helpfulReaction.count += 1;
-                    cloned.helpfulReaction.reacted = !cloned.helpfulReaction.reacted;
-
-                    return cloned;
-                  }
-
-                  return review;
-                }),
-              }
-            : previousReviewList,
+      const previousReviewList = structuredClone(
+        queryClient.getQueryData<GetReviewsRes>(QUERY_KEY.reviewList(petFoodId)),
       );
+
+      if (previousReviewList) {
+        const updatedReviews = previousReviewList.reviews.map(review => {
+          if (review.id === reviewId) {
+            review.helpfulReaction.count += reacted ? -1 : 1;
+            review.helpfulReaction.reacted = !review.helpfulReaction.reacted;
+          }
+
+          return review;
+        });
+
+        Object.assign(previousReviewList, { reviews: updatedReviews });
+      }
+
+      queryClient.setQueryData(QUERY_KEY.reviewList(petFoodId), previousReviewList);
 
       return { previousReviewList };
     },
-    onError: (err, { petFoodId }, context) => {
-      queryClient.setQueryData([QUERY_KEY.reviewList, petFoodId], context?.previousReviewList);
+    onError: (error, { petFoodId }, context) => {
+      queryClient.setQueryData(QUERY_KEY.reviewList(petFoodId), context?.previousReviewList);
     },
     onSettled: (_, __, { petFoodId }) => {
-      queryClient.invalidateQueries({ queryKey: [QUERY_KEY.reviewList, petFoodId] });
+      queryClient.invalidateQueries({
+        queryKey: QUERY_KEY.reviewList(petFoodId),
+      });
     },
   });
 

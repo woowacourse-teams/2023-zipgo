@@ -1,20 +1,11 @@
-import { useEffect } from 'react';
-import { useOutletContext } from 'react-router-dom';
 import { styled } from 'styled-components';
 
 import PetProfileImageUploader from '@/components/PetProfile/PetProfileImageUploader';
-import { PET_PROFILE_ADDITION_STEP } from '@/constants/petProfile';
 import { usePetProfileAddition } from '@/hooks/petProfile/usePetProfileAddition';
-import { PetAdditionOutletContextProps } from '@/types/petProfile/client';
 import { getTopicParticle } from '@/utils/getTopicParticle';
 
 const PetProfileImageAddition = () => {
   const { petProfile, onSubmitPetProfile } = usePetProfileAddition();
-  const { updateCurrentStep } = useOutletContext<PetAdditionOutletContextProps>();
-
-  useEffect(() => {
-    updateCurrentStep(PET_PROFILE_ADDITION_STEP.IMAGE_FILE);
-  }, [updateCurrentStep]);
 
   return (
     <Container>
@@ -64,11 +55,12 @@ const Content = styled.div`
 const SubmitButton = styled.button`
   cursor: pointer;
 
-  position: fixed;
-  bottom: 4rem;
+  position: absolute;
+  bottom: 6rem;
   left: 2rem;
 
   width: calc(100% - 4rem);
+  max-width: ${({ theme }) => theme.maxWidth.mobile};
   height: 5.1rem;
 
   font-size: 1.6rem;

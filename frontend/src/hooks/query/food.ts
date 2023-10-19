@@ -3,9 +3,9 @@ import { useInfiniteQuery, useQuery } from '@tanstack/react-query';
 import { getFoodDetail, getFoodList, getFoodListFilterMeta } from '@/apis/food';
 import { Parameter } from '@/types/common/utility';
 
-const QUERY_KEY = {
+export const FOOD_QUERY_KEY = {
   foodList: 'foodList',
-  foodDetail: 'foodDetail',
+  foodDetail: (petFoodId: string) => ['foodDetail', petFoodId],
   petFoods: 'petFoods',
   foodListFilterMeta: 'foodListFilterMeta',
 };
@@ -14,9 +14,10 @@ const SIZE_PER_PAGE = 20;
 
 export const useFoodListInfiniteQuery = (payload: Parameter<typeof getFoodList>) => {
   const { data, ...restQuery } = useInfiniteQuery({
-    queryKey: [QUERY_KEY.petFoods],
+    queryKey: [FOOD_QUERY_KEY.petFoods, location.search],
     queryFn: ({ pageParam = { ...payload, size: String(SIZE_PER_PAGE) } }) =>
       getFoodList(pageParam),
+    suspense: false,
     getNextPageParam: (lastFoodListRes, allFoodListRes) => {
       const [lastFood] = lastFoodListRes.petFoods.slice(-1);
 
@@ -37,7 +38,7 @@ export const useFoodListInfiniteQuery = (payload: Parameter<typeof getFoodList>)
 
 export const useFoodDetailQuery = (payload: Parameter<typeof getFoodDetail>) => {
   const { data, ...restQuery } = useQuery({
-    queryKey: [`${QUERY_KEY.foodDetail}${payload.petFoodId}`],
+    queryKey: FOOD_QUERY_KEY.foodDetail(payload.petFoodId),
     queryFn: () => getFoodDetail(payload),
   });
 
@@ -49,7 +50,7 @@ export const useFoodDetailQuery = (payload: Parameter<typeof getFoodDetail>) => 
 
 export const useFoodListFilterMetaQuery = () => {
   const { data, ...restQuery } = useQuery({
-    queryKey: [QUERY_KEY.foodListFilterMeta],
+    queryKey: [FOOD_QUERY_KEY.foodListFilterMeta],
     queryFn: getFoodListFilterMeta,
   });
   return {

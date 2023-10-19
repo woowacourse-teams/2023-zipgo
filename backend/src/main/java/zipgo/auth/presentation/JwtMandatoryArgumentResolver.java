@@ -1,7 +1,8 @@
 package zipgo.auth.presentation;
 
-import jakarta.servlet.http.HttpServletRequest;
 import java.util.Objects;
+
+import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.core.MethodParameter;
 import org.springframework.stereotype.Component;
@@ -33,9 +34,9 @@ public class JwtMandatoryArgumentResolver implements HandlerMethodArgumentResolv
             WebDataBinderFactory binderFactory
     ) {
         HttpServletRequest request = webRequest.getNativeRequest(HttpServletRequest.class);
-        String token = BearerTokenExtractor.extract(Objects.requireNonNull(request));
-        String id = jwtProvider.getPayload(token);
+        String accessToken = BearerTokenExtractor.extract(Objects.requireNonNull(request));
 
+        String id = jwtProvider.getPayload(accessToken);
         return new AuthCredentials(Long.valueOf(id));
     }
 

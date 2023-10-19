@@ -4,7 +4,7 @@
   "scripts": {
     "type-check": "tsc --noEmit",
     "type-check:watch": "yarn type-check --watch",
-    "start:dev": "cross-env NODE_ENV=development MSW=on STRICT_MODE=on webpack serve --config config/webpack.dev.js",
+    "start:dev": "cross-env NODE_ENV=development MSW=on Local=on STRICT_MODE=on webpack serve --config config/webpack.dev.js",
     "start:prod": "yarn build:prod && serve -s dist",
     "start:sb": "storybook dev -p 6006",
     "build:prod": "cross-env NODE_ENV=production webpack --progress --config config/webpack.prod.js",
@@ -91,13 +91,15 @@
   },
   "dependencies": {
     "@tanstack/react-query": "^4.29.19",
+    "@tanstack/react-query-devtools": "^4.36.1",
     "axios": "^1.4.0",
     "browser-image-compression": "^2.0.2",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-router": "^6.14.2",
     "react-router-dom": "^6.14.1",
-    "styled-normalize": "^8.0.7"
+    "styled-normalize": "^8.0.7",
+    "zipgo-layout": "0.4.0"
   },
   "lint-staged": {
     "**/*.{ts,tsx}": [

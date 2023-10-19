@@ -7,8 +7,20 @@ import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { initialize, mswDecorator } from 'msw-storybook-addon';
 import { withRouter } from 'storybook-addon-react-router-v6';
 import handlers from '../src/mocks/handlers';
+import Loading from '../src/components/@common/Loading/Loading';
 
-initialize(); // msw-storybook-addon
+let options = {};
+
+if (location.hostname.includes('cloudfront')) {
+  options = {
+    serviceWorker: {
+      url: '/storybook/mockServiceWorker.js',
+    },
+  };
+}
+
+// Initialize MSW
+initialize(options);
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -85,9 +97,9 @@ const preview: Preview = {
       <QueryClientProvider client={queryClient}>
         <ThemeProvider theme={theme}>
           <GlobalStyle />
-          <Suspense fallback={<div>Loading...</div>}>
+          <Loading>
             <Story />
-          </Suspense>
+          </Loading>
         </ThemeProvider>
       </QueryClientProvider>
     ),

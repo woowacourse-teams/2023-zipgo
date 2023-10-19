@@ -2,6 +2,7 @@ package zipgo.petfood.infra.persist;
 
 import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.jpa.impl.JPAQueryFactory;
+import datadog.trace.api.Trace;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
@@ -26,6 +27,7 @@ public class PetFoodQueryRepositoryImpl implements PetFoodQueryRepository {
 
     private final JPAQueryFactory queryFactory;
 
+    @Trace(resourceName = "식품 페이징 조회 쿼리")
     public List<GetPetFoodQueryResponse> findPagingPetFoods(
             List<String> brandsName,
             List<String> standards,
@@ -103,6 +105,7 @@ public class PetFoodQueryRepositoryImpl implements PetFoodQueryRepository {
                 .functionality.name.in(functionalityList);
     }
 
+    @Trace(resourceName = "식품 페이징 조회 카운트 쿼리")
     @Override
     public Long findPetFoodsCount(
             List<String> brandsName,

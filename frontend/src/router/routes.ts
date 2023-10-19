@@ -12,6 +12,7 @@ const STATIC: Record<Uppercase<CamelToSnake<keyof typeof generateStaticPath>>, s
   PET_PROFILE_GENDER_ADDITION: '/pets/write/gender',
   PET_PROFILE_WEIGHT_ADDITION: '/pets/write/weight',
   PET_PROFILE_IMAGE_FILE_ADDITION: '/pets/write/imageFile',
+  EXCEPTION: '/*',
 };
 
 const DYNAMIC: Omit<
@@ -19,8 +20,7 @@ const DYNAMIC: Omit<
   'BASE_URL'
 > = {
   FOOD_DETAIL: '/pet-food/:petFoodId',
-  REVIEW_STAR_RATING: '/pet-food/:petFoodId/reviews/write',
-  REVIEW_ADDITION: '/pet-food/:petFoodId/reviews/write/detail',
+  REVIEW_ADDITION: '/pet-food/:petFoodId/reviews/write',
   PET_PROFILE_EDITION: '/pets/:petId/edit/',
 };
 
@@ -40,15 +40,14 @@ export const generateStaticPath = {
   petProfileGenderAddition: () => STATIC.PET_PROFILE_GENDER_ADDITION,
   petProfileWeightAddition: () => STATIC.PET_PROFILE_WEIGHT_ADDITION,
   petProfileImageFileAddition: () => STATIC.PET_PROFILE_IMAGE_FILE_ADDITION,
+  exception: () => STATIC.EXCEPTION,
 };
 
 export const generateDynamicPath = {
   baseUrl: () => location.pathname,
   foodDetail: ({ petFoodId }: PathParams<'petFoodId'>) => `/pet-food/${petFoodId}`,
-  reviewStarRating: ({ petFoodId }: PathParams<'petFoodId'>) =>
-    `/pet-food/${petFoodId}/reviews/write`,
   reviewAddition: ({ petFoodId }: PathParams<'petFoodId'>) =>
-    `/pet-food/${petFoodId}/reviews/write/detail`,
+    `/pet-food/${petFoodId}/reviews/write`,
   petProfileEdition: ({ petId }: PathParams<'petId'>) => `/pets/${petId}/edit`,
 };
 

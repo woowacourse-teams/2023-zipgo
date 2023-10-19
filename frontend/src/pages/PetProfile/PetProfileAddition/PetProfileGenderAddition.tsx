@@ -1,19 +1,18 @@
-import { useEffect } from 'react';
-import { useOutletContext } from 'react-router-dom';
 import { styled } from 'styled-components';
 
 import GenderRadioInput from '@/components/PetProfile/GenderRadioInput';
-import { GENDERS, PET_PROFILE_ADDITION_STEP } from '@/constants/petProfile';
+import { GENDERS } from '@/constants/petProfile';
 import { usePetProfileAddition } from '@/hooks/petProfile/usePetProfileAddition';
-import { PetAdditionOutletContextProps } from '@/types/petProfile/client';
 
-const PetProfileGenderAddition = () => {
+import { NextButton } from './PetProfileNameAddition';
+
+interface PetProfileGenderAdditionProps {
+  onNext: VoidFunction;
+}
+
+const PetProfileGenderAddition = (props: PetProfileGenderAdditionProps) => {
+  const { onNext } = props;
   const { petProfile, onChangeGender } = usePetProfileAddition();
-  const { updateCurrentStep } = useOutletContext<PetAdditionOutletContextProps>();
-
-  useEffect(() => {
-    updateCurrentStep(PET_PROFILE_ADDITION_STEP.GENDER);
-  }, []);
 
   return (
     <Container>
@@ -31,6 +30,9 @@ const PetProfileGenderAddition = () => {
           />
         ))}
       </GenderInputContainer>
+      <NextButton type="button" onClick={onNext}>
+        다음
+      </NextButton>
     </Container>
   );
 };

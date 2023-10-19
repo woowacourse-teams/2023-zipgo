@@ -2,8 +2,11 @@ name: Frontend Deploy to Dev
 
 on:
   push:
-    branches: [develop]
-    paths: frontend/**
+    branches:
+      - develop
+    paths:
+      - frontend/**
+      - .github/**
 
 jobs:
   build-dockerfile:
@@ -18,8 +21,24 @@ jobs:
         with:
           node-version: '18.x'
 
+      - name: Cache Yarn global cache
+        uses: actions/cache@v3
+        with:
+          path: '**/.yarn'
+          key: ${{ runner.os }}-yarn-${{ hashFiles('**/yarn.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-yarn-
+
+      - name: Cache Yarn project cache
+        uses: actions/cache@v3
+        with:
+          path: '**/.yarn/cache'
+          key: ${{ runner.os }}-yarn-project-${{ hashFiles('**/yarn.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-yarn-project-
+
       - name: Install dependencies
-        run: yarn
+        run: yarn install --immutable
 
       - name: Set up QEMU
         uses: docker/setup-qemu-action@v2

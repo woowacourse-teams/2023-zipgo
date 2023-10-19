@@ -1,6 +1,6 @@
 const paths = require('./paths');
 const webpackUtils = require('./webpackUtils');
-const { getClientEnvironment } = require('./env');
+const { getClientEnvironment, isDevelopment, isProduction, isLocal } = require('./env');
 
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const ForkTsCheckerWebpackPlugin = require('fork-ts-checker-webpack-plugin');
@@ -12,11 +12,9 @@ const PUBLIC_PATH = '/';
 
 const libListToCopy = ['axios'];
 
-const isDevelopment = process.env.NODE_ENV !== 'production';
-const isProduction = process.env.NODE_ENV === 'production';
-
 const env = getClientEnvironment(PUBLIC_PATH);
 
+/** @type {import('webpack').Configuration} */
 module.exports = {
   context: __dirname,
   entry: paths.appIndex,
@@ -61,7 +59,7 @@ module.exports = {
       hash: true,
       favicon: paths.appFavicon,
     }),
-    new DefinePlugin({ ...env.stringified, isDevelopment, isProduction }),
+    new DefinePlugin({ ...env.stringified, isDevelopment, isProduction, isLocal }),
     new ForkTsCheckerWebpackPlugin({
       typescript: {
         configFile: paths.appTsConfig,

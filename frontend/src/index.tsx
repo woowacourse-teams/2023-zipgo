@@ -1,44 +1,22 @@
-import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import React from 'react';
 import ReactDOM from 'react-dom/client';
 
-import LoadingSpinner from './components/@common/LoadingSpinner';
-import QueryBoundary from './components/@common/QueryBoundary';
 import { startWorker } from './mocks/worker';
 import Router from './router/Router';
-import { ErrorBoundaryValue } from './types/common/errorBoundary';
 
 startWorker();
 
-const queryClient = new QueryClient({
-  defaultOptions: {
-    queries: {
-      suspense: true,
-      retry: false,
-      useErrorBoundary: true,
-    },
-    mutations: {
-      useErrorBoundary: true,
-    },
-  },
-});
-
 const root = ReactDOM.createRoot(document.getElementById('root') as HTMLElement);
-
-const errorFallback = ({ reset }: ErrorBoundaryValue) => (
-  <button type="button" onClick={reset}>
-    retry
-  </button>
-);
 
 const strictMode = process.env.STRICT_MODE === 'on';
 
-const app = (
-  <QueryClientProvider client={queryClient}>
-    <QueryBoundary errorFallback={errorFallback}>
+/** @todo 개발 서버 config를 webpack.prod.js로 적용 */
+root.render(
+  strictMode ? (
+    <React.StrictMode>
       <Router />
-    </QueryBoundary>
-  </QueryClientProvider>
+    </React.StrictMode>
+  ) : (
+    <Router />
+  ),
 );
-
-root.render(strictMode ? <React.StrictMode>{app}</React.StrictMode> : app);

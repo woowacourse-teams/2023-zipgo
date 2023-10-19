@@ -1,12 +1,11 @@
 package zipgo.review.application;
 
-import java.util.List;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import zipgo.brand.domain.Brand;
 import zipgo.brand.domain.repository.BrandRepository;
-import zipgo.common.service.QueryServiceTest;
+import zipgo.common.service.ServiceTest;
 import zipgo.member.domain.Member;
 import zipgo.member.domain.repository.MemberRepository;
 import zipgo.pet.domain.Breed;
@@ -29,6 +28,8 @@ import zipgo.review.dto.response.type.RatingInfoResponse;
 import zipgo.review.dto.response.type.StoolConditionResponse;
 import zipgo.review.dto.response.type.TastePreferenceResponse;
 
+import java.util.List;
+
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertAll;
 import static zipgo.brand.domain.fixture.BrandFixture.아카나_식품_브랜드_생성;
@@ -46,7 +47,7 @@ import static zipgo.review.fixture.MemberFixture.무민;
 import static zipgo.review.fixture.ReviewFixture.극찬_리뷰_생성;
 import static zipgo.review.fixture.ReviewFixture.혹평_리뷰_생성;
 
-class ReviewQueryServiceTest extends QueryServiceTest {
+class ReviewQueryServiceTest extends ServiceTest {
 
     @Autowired
     private PetFoodRepository petFoodRepository;
@@ -204,7 +205,7 @@ class ReviewQueryServiceTest extends QueryServiceTest {
         public static void validateReviewsRatingSummary(GetReviewsSummaryResponse reviewsSummary) {
             assertAll(
                     () -> assertThat(reviewsSummary.rating().rating()).hasSize(5),
-                    () -> assertThat(reviewsSummary.rating().rating()).extracting(RatingInfoResponse::rating)
+                    () -> assertThat(reviewsSummary.rating().rating()).extracting(RatingInfoResponse::name)
                             .contains("1", "2", "3", "4", "5"),
                     () -> assertThat(reviewsSummary.rating().rating()).extracting(RatingInfoResponse::percentage)
                             .contains(0, 50)

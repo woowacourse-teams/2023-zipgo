@@ -1,20 +1,17 @@
-import { useNavigate } from 'react-router-dom';
 import { styled } from 'styled-components';
 
 import BackBtnIcon from '@/assets/svg/back_btn.svg';
 import Template from '@/components/@common/Template';
 import PetProfileEditionForm from '@/components/PetProfile/PetProfileEditionForm/PetProfileEditionForm';
-import { routerPath } from '@/router/routes';
+import useEasyNavigate from '@/hooks/@common/useEasyNavigate';
 
 const PetProfileEdition = () => {
-  const navigate = useNavigate();
-
-  const goBack = (): void => navigate(routerPath.back);
+  const { goBackSafely } = useEasyNavigate();
 
   return (
     <Template.WithoutHeader footer={false}>
       <StaticHeader>
-        <BackButtonWrapper type="button" onClick={goBack} aria-label="뒤로가기">
+        <BackButtonWrapper type="button" onClick={goBackSafely} aria-label="뒤로가기">
           <BackBtnImage src={BackBtnIcon} alt="뒤로가기 아이콘" />
         </BackButtonWrapper>
       </StaticHeader>

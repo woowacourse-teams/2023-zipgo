@@ -1,26 +1,59 @@
+import { Suspense } from 'react';
 import { styled } from 'styled-components';
 
-import { Food } from '@/types/food/client';
+import { useInfiniteFoodListScroll } from '@/hooks/food/useInfiniteFoodListScroll';
 
 import FoodItem from '../FoodItem/FoodItem';
 
-interface FoodListProps {
-  foodListData: Food[];
-}
+const FoodList = () => {
+  const { foodList, hasNextPage, targetRef, isLoading, isFetching } = useInfiniteFoodListScroll();
 
-const FoodList = (foodListProps: FoodListProps) => {
-  const { foodListData } = foodListProps;
+  if (!foodList) return <Skeleton />;
+
+  const hasResult = Boolean(foodList.length);
 
   return (
     <FoodListWrapper>
-      <FoodListContainer>
-        {foodListData.map(food => (
-          <FoodItem key={food.id} {...food} />
-        ))}
-      </FoodListContainer>
+      {hasResult ? (
+        <>
+          <FoodListContainer>
+            {foodList.map(food => (
+              <Suspense key={food.id} fallback={<FoodItem.Skeleton />}>
+                <FoodItem {...food} />
+              </Suspense>
+            ))}
+          </FoodListContainer>
+          {isFetching && <Skeleton />}
+        </>
+      ) : (
+        <NoResultContainer>
+          <NoResultText>
+            필터링 결과가 없어요. <br />
+            다른 옵션을 선택해주세요.
+          </NoResultText>
+        </NoResultContainer>
+      )}
+      <ObserverTarget
+        ref={targetRef}
+        aria-label={hasNextPage ? '' : '모든 식품 목록을 불러왔습니다'}
+      />
     </FoodListWrapper>
   );
 };
+
+const Skeleton = () => (
+  <FoodListWrapper>
+    <FoodListContainer>
+      {Array(6)
+        .fill('')
+        .map((_, i) => (
+          <FoodItem.Skeleton key={i} />
+        ))}
+    </FoodListContainer>
+  </FoodListWrapper>
+);
+
+FoodList.Skeleton = Skeleton;
 
 export default FoodList;
 
@@ -34,4 +67,30 @@ const FoodListContainer = styled.div`
   grid-template-columns: repeat(2, calc((100% - 2rem) / 2));
   place-items: center;
   justify-content: center;
+`;
+
+const NoResultContainer = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  height: 13rem;
+
+  background-color: ${({ theme }) => theme.color.grey200};
+  border-radius: 20px;
+`;
+
+const NoResultText = styled.h3`
+  font-family: Pretendard, sans-serif;
+  font-size: 1.2rem;
+  font-weight: 600;
+  line-height: 1.6rem;
+  color: ${({ theme }) => theme.color.grey400};
+  text-align: center;
+`;
+
+const ObserverTarget = styled.p`
+  font-size: 1.4rem;
+  color: ${({ theme }) => theme.color.grey400};
+  text-align: center;
 `;

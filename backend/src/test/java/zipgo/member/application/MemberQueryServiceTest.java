@@ -2,14 +2,14 @@ package zipgo.member.application;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import zipgo.common.service.QueryServiceTest;
+import zipgo.common.service.ServiceTest;
 import zipgo.member.domain.Member;
 import zipgo.member.domain.repository.MemberRepository;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static zipgo.member.domain.fixture.MemberFixture.식별자_없는_멤버;
 
-class MemberQueryServiceTest extends QueryServiceTest {
+class MemberQueryServiceTest extends ServiceTest {
 
     @Autowired
     private MemberRepository memberRepository;

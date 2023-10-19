@@ -59,7 +59,7 @@ const PetProfileEditionForm = () => {
             </div>
             <div>
               <InputLabel htmlFor="pet-age">나이 선택</InputLabel>
-              <PetAgeSelect id="pet-age" onChange={onChangeAge} initialAge={pet.age} />
+              <PetAgeSelect id="pet-age" onChange={onChangeAge} defaultAge={pet.age} />
               <ErrorCaption>{isValidAgeSelect ? '' : '나이를 선택해주세요!'} </ErrorCaption>
             </div>
             <div>
@@ -176,7 +176,7 @@ const Kg = styled.p`
   top: 1.2rem;
   right: 1.2rem;
 
-  font-size: 1.3rem;
+  font-size: 1.6rem;
   font-weight: 500;
   line-height: 1.7rem;
   color: ${({ theme }) => theme.color.grey600};
@@ -196,12 +196,12 @@ const PetSizeContainer = styled.div`
 const ButtonContainer = styled.div`
   position: fixed;
   bottom: 4rem;
-  left: 0;
 
   display: flex;
   gap: 1.6rem;
 
   width: 100%;
+  max-width: ${({ theme }) => theme.maxWidth.mobile};
   padding: 0 2rem;
 `;
 

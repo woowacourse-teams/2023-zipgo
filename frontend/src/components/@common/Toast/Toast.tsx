@@ -54,14 +54,14 @@ const fadeIn = keyframes`
   }
   to {
     opacity: 1;
-    transform: translateY(0%);
+    transform: translateY(-150%);
   }
 `;
 
 const fadeOut = keyframes`
   from {
     opacity: 1;
-    transform: translateY(0%);
+    transform: translateY(-150%);
   }
   to {
     opacity: 0;
@@ -90,7 +90,7 @@ const ToastWrapper = styled.div<ToastStyleProps & { $isShow: boolean }>`
   }};
   border-radius: 20px;
   box-shadow: 0 2px 8px 0
-    ${({ theme, $type }) => {
+    ${({ $type }) => {
       if ($type === 'success') {
         return 'rgb(62 94 142 / 50%);';
       }

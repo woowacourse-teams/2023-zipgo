@@ -6,18 +6,21 @@ import DogIcon from '@/assets/svg/dog_icon.svg';
 import ReactedIcon from '@/assets/svg/reacted_icon.svg';
 import UnReactedIcon from '@/assets/svg/un_reacted_icon.svg';
 import StarRatingDisplay from '@/components/@common/StarRating/StarRatingDisplay/StartRatingDisplay';
-import { COMMENT_VISIABLE_LINE_LIMIT, REACTIONS } from '@/constants/review';
+import SuspendedImg from '@/components/@common/SuspendedImg/SuspendedImg';
+import { getPetAge } from '@/components/PetProfile/PetItem';
+import { COMMENT_VISIBLE_LINE_LIMIT, REACTIONS } from '@/constants/review';
 import { useValidParams } from '@/hooks/@common/useValidParams';
-import { useAuth } from '@/hooks/auth';
+import { useCheckAuth } from '@/hooks/auth';
 import { useRemoveReviewMutation, useToggleHelpfulReactionMutation } from '@/hooks/query/review';
 import { routerPath } from '@/router/routes';
+import { StyledProps } from '@/types/common/utility';
 import { Review } from '@/types/review/client';
 import { zipgoLocalStorage } from '@/utils/localStorage';
 
 interface ReviewItemProps extends Review {}
 
 const ReviewItem = (reviewItemProps: ReviewItemProps) => {
-  const { isLoggedIn } = useAuth();
+  const { isLoggedIn } = useCheckAuth();
   const user = zipgoLocalStorage.getUserInfo();
 
   const {
@@ -52,7 +55,7 @@ const ReviewItem = (reviewItemProps: ReviewItemProps) => {
   const { toggleHelpfulReaction } = useToggleHelpfulReactionMutation(reacted);
 
   const onClickEditButton = () => {
-    navigate(routerPath.reviewStarRating({ petFoodId }), {
+    navigate(routerPath.reviewAddition({ petFoodId }), {
       state: {
         selectedRating: rating,
         isEditMode: true,
@@ -73,13 +76,11 @@ const ReviewItem = (reviewItemProps: ReviewItemProps) => {
     <Layout>
       <ReviewHeader>
         <ReviewImageAndNameContainer>
-          <ReviewerImageWrapper>
-            <ReviewerImage src={profileUrl || DogIcon} alt={`${petName} 프로필`} />
-          </ReviewerImageWrapper>
+          <ReviewerImage src={profileUrl || DogIcon} alt={`${petName} 프로필`} />
           <InfoContainer>
             <ReviewerName>{petName}</ReviewerName>
             <InfoDetail>
-              {breedName} / {writtenAge}살
+              {breedName} / {getPetAge(writtenAge)}
             </InfoDetail>
             <InfoDetail>
               {sizeName} / {writtenWeight}kg
@@ -117,8 +118,8 @@ const ReviewItem = (reviewItemProps: ReviewItemProps) => {
           <ReactionContent>{adverseReactions.join(', ') || REACTIONS.NONE}</ReactionContent>
         </Reaction>
       </Reactions>
-      <Comment isExpanded={isCommentExpanded}>{comment}</Comment>
-      {!isCommentExpanded && comment.length > COMMENT_VISIABLE_LINE_LIMIT && (
+      <Comment $isExpanded={isCommentExpanded}>{comment}</Comment>
+      {!isCommentExpanded && comment.length > COMMENT_VISIBLE_LINE_LIMIT && (
         <ShowMoreButton
           onClick={() => setIsCommentExpanded(prevIsExpanded => !prevIsExpanded)}
           type="button"
@@ -136,6 +137,22 @@ const ReviewItem = (reviewItemProps: ReviewItemProps) => {
     </Layout>
   );
 };
+
+const Skeleton = () => (
+  <Layout>
+    <ReviewHeader>
+      <ReviewImageAndNameContainer>
+        <ReviewerImage $skeleton />
+        <InfoContainer $skeleton />
+      </ReviewImageAndNameContainer>
+    </ReviewHeader>
+    <RatingContainer $skeleton />
+    <Reactions $skeleton />
+    <Comment $isExpanded={false} $skeleton />
+  </Layout>
+);
+
+ReviewItem.Skeleton = Skeleton;
 
 export default ReviewItem;
 
@@ -159,30 +176,20 @@ const ReviewHeader = styled.div`
 
 const ReviewImageAndNameContainer = styled.div`
   display: flex;
+  gap: 1rem;
   align-items: center;
 `;
 
-const ReviewerImageWrapper = styled.div`
-  position: relative;
+const ReviewerImage = styled(SuspendedImg)<StyledProps>`
+  flex-shrink: 0;
 
-  overflow: hidden;
-
+  box-sizing: border-box;
+  aspect-ratio: 1/1;
   width: 5rem;
-  height: 5rem;
-  margin-right: 0.8rem;
-
-  border-radius: 50%;
-`;
-
-const ReviewerImage = styled.img`
-  position: absolute;
-  top: 0;
-  left: 0;
-
-  width: 100%;
-  height: 100%;
 
   object-fit: cover;
+  ${({ theme, $skeleton }) => $skeleton && theme.animation.skeleton}
+  border-radius: 50%;
 `;
 
 const ReviewerName = styled.p`
@@ -207,12 +214,21 @@ const TextButton = styled.button`
   color: ${({ theme }) => theme.color.grey400};
 `;
 
-const RatingContainer = styled.div`
+const RatingContainer = styled.div<StyledProps>`
   display: flex;
   gap: 0.8rem;
   align-items: center;
 
+  height: 1.6rem;
   margin-bottom: 1.2rem;
+
+  ${({ theme, $skeleton }) =>
+    $skeleton &&
+    css`
+      width: 20rem;
+
+      ${theme.animation.skeleton}
+    `};
 `;
 
 const TimeStamp = styled.span`
@@ -220,14 +236,23 @@ const TimeStamp = styled.span`
   color: ${({ theme }) => theme.color.grey400};
 `;
 
-const Reactions = styled.ul`
+const Reactions = styled.ul<StyledProps>`
   all: unset;
 
   display: flex;
   flex-direction: column;
   gap: 0.4rem;
 
+  height: 5.7rem;
   margin-bottom: 1.6rem;
+
+  ${({ theme, $skeleton }) =>
+    $skeleton &&
+    css`
+      width: 15rem;
+
+      ${theme.animation.skeleton}
+    `};
 `;
 
 const Reaction = styled.li`
@@ -246,18 +271,19 @@ const ReactionContent = styled.span`
   color: ${({ theme }) => theme.color.grey700};
 `;
 
-const Comment = styled.p<{ isExpanded: boolean }>`
+const Comment = styled.p<StyledProps<{ isExpanded: boolean }>>`
   max-height: 10rem;
   margin-bottom: 0.4rem;
 
   font-size: 1.3rem;
   color: ${({ theme }) => theme.color.grey500};
 
-  ${({ isExpanded }) => {
-    if (isExpanded) {
+  ${({ $isExpanded }) => {
+    if ($isExpanded) {
       return css`
-        overflow: 'visible';
         display: block;
+
+        word-break: break-word;
       `;
     }
 
@@ -272,6 +298,14 @@ const Comment = styled.p<{ isExpanded: boolean }>`
       -webkit-line-clamp: 5;
     `;
   }};
+
+  ${({ theme, $skeleton }) =>
+    $skeleton &&
+    css`
+      height: 10rem;
+
+      ${theme.animation.skeleton}
+    `};
 `;
 
 const ShowMoreButton = styled.button`
@@ -335,8 +369,18 @@ const InfoDetail = styled.p`
   letter-spacing: -0.5px;
 `;
 
-const InfoContainer = styled.div`
+const InfoContainer = styled.div<StyledProps>`
   display: flex;
   flex-direction: column;
   gap: 0.2rem;
+
+  height: 5.5rem;
+
+  ${({ theme, $skeleton }) =>
+    $skeleton &&
+    css`
+      width: 7rem;
+
+      ${theme.animation.skeleton}
+    `}
 `;

@@ -2,6 +2,7 @@
 # port
 server:
   port: 8080
+  shutdown: graceful
 
 ---
 # database
@@ -40,7 +41,8 @@ oauth:
 # jwt
 jwt:
   secret-key: ${ZIPGO_SECRET_KEY}
-  expire-length: ${EXPIRE_LENGTH}
+  access-token-expiration-time: ${ACCESS_TOKEN_EXPIRATION_TIME}
+  refresh-token-expiration-time: ${REFRESH_TOKEN_EXPIRATION_TIME}
 
 ---
 # log

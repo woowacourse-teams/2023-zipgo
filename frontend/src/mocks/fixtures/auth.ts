@@ -2,6 +2,7 @@ import { LoginZipgoAuthRes } from '@/types/auth/remote';
 
 const loginZipgoAuth = (): LoginZipgoAuthRes => ({
   accessToken: 'accessToken',
+  refreshToken: 'refreshToken',
   authResponse: {
     id: 1,
     email: 'bebe@zipgo.pet',
