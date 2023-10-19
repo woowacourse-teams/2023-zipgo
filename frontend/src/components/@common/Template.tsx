@@ -67,7 +67,7 @@ const Layout = styled.div`
   overflow-y: auto;
 
   width: 100%;
-  min-height: calc(var(--vh, 1vh) * 100);
+  max-height: calc(var(--vh, 1vh) * 100);
 `;
 
 const Container = styled.div<
@@ -92,7 +92,7 @@ const Container = styled.div<
 
     if ($isFixedHeader === false) {
       return css`
-        min-height: calc((var(--vh, 1vh) * 100) - ${$headerHeight});
+        max-height: calc((var(--vh, 1vh) * 100) - ${$headerHeight});
       `;
     }
   }}
