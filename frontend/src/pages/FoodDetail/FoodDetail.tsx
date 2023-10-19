@@ -123,7 +123,7 @@ const FoodDetail = () => {
 export default FoodDetail;
 
 const FoodDetailWrapper = styled.div`
-  padding: 4rem 0 10rem;
+  padding: 4rem 0 16rem;
 `;
 
 const FoodProfileContainer = styled.div`
