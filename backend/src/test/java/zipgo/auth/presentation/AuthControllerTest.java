@@ -35,7 +35,6 @@ class AuthControllerTest extends AcceptanceTest {
         @Test
         void 엑세스_토큰을_갱신할_수_있다() {
             // given
-            var 엑세스_토큰 = jwtProvider.createAccessToken(1L);
             var 리프레시_토큰 = jwtProvider.createRefreshToken();
             refreshTokenRepository.save(new RefreshToken(1L, 리프레시_토큰));
 
@@ -44,7 +43,6 @@ class AuthControllerTest extends AcceptanceTest {
 
             // when
             var 응답 = 요청_준비.when()
-                    .header(AUTHORIZATION, "Bearer " + 엑세스_토큰)
                     .header("Refresh", "Zipgo " + 리프레시_토큰)
                     .get("/auth/refresh");
 
@@ -56,14 +54,12 @@ class AuthControllerTest extends AcceptanceTest {
         @Test
         void 실패하면_401_반환() {
             var 토큰_생성기 = 유효기간_만료된_jwtProvider_생성();
-            var 유효기간_만료된_엑세스_토큰 = 토큰_생성기.createAccessToken(1L);
             var 유효기간_만료된_리프레시_토큰 = 토큰_생성기.createRefreshToken();
             var 요청_준비 = given(spec)
                     .filter(토큰_갱신_실패_문서_생성());
 
             // when
             var 응답 = 요청_준비.when()
-                    .header(AUTHORIZATION, "Bearer " + 유효기간_만료된_엑세스_토큰)
                     .header("Refresh", "Zipgo " + 유효기간_만료된_리프레시_토큰)
                     .get("/auth/refresh");
 

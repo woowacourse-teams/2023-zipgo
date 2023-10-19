@@ -14,7 +14,6 @@ import zipgo.auth.dto.AuthCredentials;
 import zipgo.auth.exception.TokenInvalidException;
 import zipgo.auth.support.BearerTokenExtractor;
 import zipgo.auth.support.JwtProvider;
-import zipgo.auth.support.ZipgoTokenExtractor;
 import zipgo.common.logging.LoggingUtils;
 
 import static org.springframework.http.HttpHeaders.AUTHORIZATION;
@@ -44,14 +43,10 @@ public class OptionalJwtArgumentResolver implements HandlerMethodArgumentResolve
         if (request.getHeader(AUTHORIZATION) == null) {
             return null;
         }
-        if (request.getHeader(ZIPGO_HEADER) == null) {
-            return null;
-        }
         try {
             String accessToken = BearerTokenExtractor.extract(Objects.requireNonNull(request));
-            String refreshToken = ZipgoTokenExtractor.extract(Objects.requireNonNull(request));
             String id = jwtProvider.getPayload(accessToken);
-            return new AuthCredentials(Long.valueOf(id), refreshToken);
+            return new AuthCredentials(Long.valueOf(id));
         } catch (TokenInvalidException e) {
             LoggingUtils.warn(e);
             return null;
