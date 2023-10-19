@@ -18,19 +18,20 @@
 
 # Skills
 
-### Frontend
-<img src="https://github.com/woowacourse-teams/2023-zipgo/assets/24777828/88c52aaa-c830-4be4-8c72-7c14c669b1f3" alt="Frontend Tech Stacks" />
+### Frontend Tech Stack
+![Frontend Tech Stacks](https://github.com/woowacourse-teams/2023-zipgo/assets/24777828/4372f950-d29e-46a0-807c-79d78a7f6913)
 
-### Backend
-![Backend Tech Stacks](https://github.com/woowacourse-teams/2023-zipgo/assets/24777828/eea9f0d9-0437-4f36-9fd3-0aad32dfa712)
+### Backend Tech Stack
+![Backend Tech Stacks](https://github.com/woowacourse-teams/2023-zipgo/assets/24777828/a4643676-e669-43f5-9bb4-d2f4e92ed470)
 
 # Infra Structure
-![Zipgo Infra](https://github.com/woowacourse-teams/2023-zipgo/assets/24777828/65bd629f-2869-4cf0-8d8f-534521c218ca)
+![Zigo Infra](https://github.com/woowacourse-teams/2023-zipgo/assets/24777828/09847ae1-2aac-41a1-9302-4a2b49a284e0)
 
-### Frontend
+
+### Frontend Infra Structure
 ![image](https://github.com/woowacourse-teams/2023-zipgo/assets/24777828/eac9e8af-2df3-486a-9812-6a39ab36eb4e)
 
-### Backend
+### Backend Infra Structure
 ![image](https://github.com/woowacourse-teams/2023-zipgo/assets/24777828/c6b9ec96-1301-4088-98d1-1e1ec1d3b334)
 
 
