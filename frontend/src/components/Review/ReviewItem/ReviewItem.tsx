@@ -280,8 +280,9 @@ const Comment = styled.p<StyledProps<{ isExpanded: boolean }>>`
   ${({ $isExpanded }) => {
     if ($isExpanded) {
       return css`
-        overflow: 'visible';
         display: block;
+
+        word-break: break-word;
       `;
     }
 
