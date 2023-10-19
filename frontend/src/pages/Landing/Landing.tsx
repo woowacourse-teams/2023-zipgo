@@ -1,7 +1,8 @@
 import { useState } from 'react';
 import styled from 'styled-components';
 
-import ZipgoBannerPng from '@/assets/webp/landing_banner.webp';
+import ZipgoBanner from '@/assets/webp/landing_banner.webp';
+import ZipgoBannerAwake from '@/assets/webp/landing_banner_awake.webp';
 import Header from '@/components/@common/Header/Header';
 import Template from '@/components/@common/Template';
 import FilterBottomSheet from '@/components/Food/FilterBottomSheet/FilterBottomSheet';
@@ -16,8 +17,8 @@ let endTime: Date | undefined;
 
 const Landing = () => {
   const { toast } = useToast();
-
   const [dogTouchCount, setDogTouchCount] = useState<number>(1);
+  const isDogAwake = dogTouchCount > TARGET_NUMBER;
 
   const onTouchDog = () => {
     if (dogTouchCount === 1) {
@@ -50,7 +51,11 @@ const Landing = () => {
               <BannerTitle>집사의고민</BannerTitle>
             </TitleContainer>
           </BannerText>
-          <BannerImg src={ZipgoBannerPng} onClick={onTouchDog} alt="집사의고민 배너 이미지" />
+          <BannerImg
+            src={isDogAwake ? ZipgoBannerAwake : ZipgoBanner}
+            onClick={onTouchDog}
+            alt="집사의고민 배너 이미지"
+          />
         </BannerSection>
         <ListSection>
           <FilterBottomSheet />
