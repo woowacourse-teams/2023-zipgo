@@ -29,7 +29,7 @@ const ReviewFormFunnel = () => {
   const { selectedRating = 0, isEditMode = false, reviewId = -1 } = { ...location.state };
   const { petFoodId } = useValidParams(['petFoodId']);
   const reviewData = useReviewForm({
-    petFoodId: Number(petFoodId),
+    petFoodId,
     rating: selectedRating,
     isEditMode,
     reviewId,

@@ -5,7 +5,7 @@ import { SATISFACTION_MESSAGES } from '@/constants/review';
 import { useFoodDetailQuery } from '@/hooks/query/food';
 
 interface FoodInfoInReviewFormProps {
-  petFoodId: number;
+  petFoodId: string;
   rating: number;
 }
 
