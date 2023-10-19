@@ -19,6 +19,8 @@ import { routerPath } from '@/router/routes';
 import { Parameter } from '@/types/common/utility';
 import { GetReviewsRes } from '@/types/review/remote';
 
+import { FOOD_QUERY_KEY } from './food';
+
 const QUERY_KEY = {
   reviewItem: 'reviewItem',
   reviewList: (petFoodId: string) => ['reviewList', petFoodId, location.search],
@@ -61,6 +63,7 @@ export const useAddReviewMutation = () => {
     onSuccess: (_, { petFoodId }) => {
       queryClient.invalidateQueries(QUERY_KEY.reviewList(petFoodId));
       queryClient.invalidateQueries([QUERY_KEY.reviewSummary]);
+      queryClient.invalidateQueries(FOOD_QUERY_KEY.foodDetail(petFoodId));
 
       alert('리뷰 작성이 완료되었습니다.');
 
@@ -80,6 +83,7 @@ export const useEditReviewMutation = () => {
     onSuccess: (_, { petFoodId }) => {
       queryClient.invalidateQueries(QUERY_KEY.reviewList(petFoodId));
       queryClient.invalidateQueries([QUERY_KEY.reviewSummary]);
+      queryClient.invalidateQueries(FOOD_QUERY_KEY.foodDetail(petFoodId));
 
       alert('리뷰 수정이 완료되었습니다.');
 
@@ -98,6 +102,7 @@ export const useRemoveReviewMutation = () => {
     onSuccess: (_, { petFoodId }) => {
       queryClient.invalidateQueries(QUERY_KEY.reviewList(petFoodId));
       queryClient.invalidateQueries([QUERY_KEY.reviewSummary]);
+      queryClient.invalidateQueries(FOOD_QUERY_KEY.foodDetail(petFoodId));
     },
   });
 
