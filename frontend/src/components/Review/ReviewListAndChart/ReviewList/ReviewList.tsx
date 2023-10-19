@@ -76,6 +76,8 @@ ReviewList.Skeleton = Skeleton;
 export default ReviewList;
 
 const Layout = styled.ul`
+  margin-bottom: 10rem;
+
   & > li {
     border-bottom: 1px solid ${({ theme }) => theme.color.grey200};
   }
