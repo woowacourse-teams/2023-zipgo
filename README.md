@@ -1,14 +1,42 @@
-# 2023-zipgo
+<p align="center">
+  <img src="https://github.com/woowacourse-teams/2023-zipgo/assets/24777828/e7eefb82-4bbf-47cd-a6ef-dc756d97c77d" alt="집고 README 배너" />
+<p align="center">
+<img src="https://img.shields.io/badge/react-v18.2.0-9cf?logo=react" alt="react v18.2.0" />
+<img src="https://img.shields.io/badge/spring_boot-v3.1.1-green?logo=springboot” alt="spring-boot v3.1.1" />
+<img src="https://img.shields.io/badge/typescript-v5.1.6-blue?logo=typescript” alt="typescript v5.1.6"/>
+<img src="https://img.shields.io/badge/mysql-v8.0.34-blue?logo=mysql" alt="mysql v8.0.34"/>
+</p>
 
-## 멤버
+**초보 집사의 반려동물 식품 선택을 도와주는 서비스**, 집사의고민입니다.
 
-|                                         Frontend                                          |                                         Frontend                                          |                                         Frontend                                          |
-| :--------------------------------------------------------------------------------------: | :--------------------------------------------------------------------------------------: | :--------------------------------------------------------------------------------------: |
-| <img src="https://avatars.githubusercontent.com/u/24777828?v=4" width=100px alt="첵스"/> | <img src="https://avatars.githubusercontent.com/u/79056677?v=4" width=100px alt="노아이즈"/> | <img src="https://avatars.githubusercontent.com/u/72087183?v=4" width=100px alt="에디"/> |
-|                       [첵스](https://github.com/HyeryongChoi)                        |                       [노아이즈](https://github.com/n0eyes)                        |                       [에디](https://github.com/ksone02)                        
+전문가들의 사료 선택 기준은 무엇일까요?
+
+다양한 전문가들이 인정하는 [좋은 사료 선택 기준]([https://translucent-mallet-426.notion.site/dae305b85c8146399d7de6a0e74b773d](https://www.notion.so/dae305b85c8146399d7de6a0e74b773d?pvs=21)), **집사의 고민**에서 확인하세요!
+
+- [zipgo.pet](https://zipgo.pet)
+- [zipgo.wiki](https://github.com/woowacourse-teams/2023-zipgo/wiki)
+
+# Skills
+
+### Frontend
+<img src="https://github.com/woowacourse-teams/2023-zipgo/assets/24777828/88c52aaa-c830-4be4-8c72-7c14c669b1f3" alt="Frontend Tech Stacks" />
+
+### Backend
+![Backend Tech Stacks](https://github.com/woowacourse-teams/2023-zipgo/assets/24777828/eea9f0d9-0437-4f36-9fd3-0aad32dfa712)
+
+# Infra Structure
+![Zipgo Infra](https://github.com/woowacourse-teams/2023-zipgo/assets/24777828/65bd629f-2869-4cf0-8d8f-534521c218ca)
+
+### Frontend
+![image](https://github.com/woowacourse-teams/2023-zipgo/assets/24777828/eac9e8af-2df3-486a-9812-6a39ab36eb4e)
+
+### Backend
+![image](https://github.com/woowacourse-teams/2023-zipgo/assets/24777828/c6b9ec96-1301-4088-98d1-1e1ec1d3b334)
 
 
-|                                        Backend                                         |                                        Backend                                         |              Backend               |              Backend               |
-|:--------------------------------------------------------------------------------------:|:--------------------------------------------------------------------------------------:|:----------------------------------:| :----------------------------------:| 
-| <img src="https://avatars.githubusercontent.com/u/73161212?v=4" width=100px alt="가비"/> | <img src="https://avatars.githubusercontent.com/u/76938931?v=4" width=100px alt="무민"/> | <img src="https://avatars.githubusercontent.com/u/94087228?v=4" width=100px alt="베베"/> | <img src="https://avatars.githubusercontent.com/u/61582017?v=4" width=100px alt="로지"/> |
-|                            [가비](https://github.com/iamjooon2)                            |                            [무민](https://github.com/parkmuhyeun)                            |               [베베](https://github.com/wonyongChoi05)               |               [로지](https://github.com/kyY00n)  
+# Member
+
+|            [첵스](https://github.com/HyeryongChoi)             |            [노아이즈](https://github.com/n0eyes)             |             [에디](https://github.com/ksone02)             |             [가비](https://github.com/iamjooon2)             |              [무민](https://github.com/parkmuhyeun)               |             [베베](https://github.com/wonyongChoi05)             |             [로지](https://github.com/kyY00n)              |
+| :----------------------------------------------------------: | :----------------------------------------------------------: | :----------------------------------------------------------: | :----------------------------------------------------------: | :----------------------------------------------------------: | :----------------------------------------------------------: | :----------------------------------------------------------: |
+| <img src="https://avatars.githubusercontent.com/u/24777828?v=4" width=200px alt="첵스" /> | <img src="https://avatars.githubusercontent.com/u/79056677?v=4" width=200px alt="노아이즈" /> | <img src="https://avatars.githubusercontent.com/u/72087183?v=4" width=200px alt="에디" /> | <img src="https://avatars.githubusercontent.com/u/73161212?v=4" width=200px alt="가비" /> | <img src="https://avatars.githubusercontent.com/u/76938931?v=4" width=200px alt="무민" /> | <img src="https://avatars.githubusercontent.com/u/94087228?v=4" width=200px alt="베베"/> | <img src="https://avatars.githubusercontent.com/u/61582017?v=4" width=200px alt="로지" /> |
+|                           Frontend                         |                           Frontend                         |                             Frontend                           |                             Backend                           |                             Backend                           |                             Backend                           |                             Backend                           |
