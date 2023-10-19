@@ -28,12 +28,11 @@ const Landing = () => {
       toast.success(`${(+endTime - +startTime) / 1000}초 만에 강아지를 깨웠어요!`);
     } else if (TARGET_NUMBER - dogTouchCount === 10) {
       toast.warning('강아지를 깨우지 않게 조심하세요!');
-    } else {
+    } else if (dogTouchCount < TARGET_NUMBER) {
       toast.info(`강아지를 ${dogTouchCount}번 쓰다듬었어요.`);
     }
 
-    if (dogTouchCount === TARGET_NUMBER) setDogTouchCount(prev => 1);
-    else setDogTouchCount(prev => prev + 1);
+    if (dogTouchCount <= TARGET_NUMBER) setDogTouchCount(prev => prev + 1);
   };
 
   return (
