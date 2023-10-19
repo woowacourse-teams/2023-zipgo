@@ -167,6 +167,8 @@ const BrandIconInfo = styled.p`
 `;
 
 const StandardToolTip = styled.button`
+  position: relative;
+
   display: flex;
   gap: 0.8rem;
   align-items: center;

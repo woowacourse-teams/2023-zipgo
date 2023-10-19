@@ -1,3 +1,4 @@
+import { Suspense } from 'react';
 import { styled } from 'styled-components';
 
 import { useInfiniteFoodListScroll } from '@/hooks/food/useInfiniteFoodListScroll';
@@ -5,20 +6,25 @@ import { useInfiniteFoodListScroll } from '@/hooks/food/useInfiniteFoodListScrol
 import FoodItem from '../FoodItem/FoodItem';
 
 const FoodList = () => {
-  const { foodList, hasNextPage, targetRef } = useInfiniteFoodListScroll();
+  const { foodList, hasNextPage, targetRef, isLoading, isFetching } = useInfiniteFoodListScroll();
 
-  if (!foodList) return null;
+  if (!foodList) return <Skeleton />;
 
   const hasResult = Boolean(foodList.length);
 
   return (
     <FoodListWrapper>
       {hasResult ? (
-        <FoodListContainer>
-          {foodList.map(food => (
-            <FoodItem key={food.id} {...food} />
-          ))}
-        </FoodListContainer>
+        <>
+          <FoodListContainer>
+            {foodList.map(food => (
+              <Suspense key={food.id} fallback={<FoodItem.Skeleton />}>
+                <FoodItem {...food} />
+              </Suspense>
+            ))}
+          </FoodListContainer>
+          {isFetching && <Skeleton />}
+        </>
       ) : (
         <NoResultContainer>
           <NoResultText>
