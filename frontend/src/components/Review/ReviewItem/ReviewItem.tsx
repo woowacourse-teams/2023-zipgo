@@ -7,6 +7,7 @@ import ReactedIcon from '@/assets/svg/reacted_icon.svg';
 import UnReactedIcon from '@/assets/svg/un_reacted_icon.svg';
 import StarRatingDisplay from '@/components/@common/StarRating/StarRatingDisplay/StartRatingDisplay';
 import SuspendedImg from '@/components/@common/SuspendedImg/SuspendedImg';
+import { getPetAge } from '@/components/PetProfile/PetItem';
 import { COMMENT_VISIBLE_LINE_LIMIT, REACTIONS } from '@/constants/review';
 import { useValidParams } from '@/hooks/@common/useValidParams';
 import { useCheckAuth } from '@/hooks/auth';
@@ -79,7 +80,7 @@ const ReviewItem = (reviewItemProps: ReviewItemProps) => {
           <InfoContainer>
             <ReviewerName>{petName}</ReviewerName>
             <InfoDetail>
-              {breedName} / {writtenAge}살
+              {breedName} / {getPetAge(writtenAge)}
             </InfoDetail>
             <InfoDetail>
               {sizeName} / {writtenWeight}kg
