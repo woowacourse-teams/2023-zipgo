@@ -91,7 +91,7 @@ const Chart = (props: PropsWithChildren<ChartProps>) => {
     <ChartLayout>
       {chartInfo.map(({ name, percentage }) => (
         <Data key={name}>
-          <DataName>{name}</DataName>
+          <DataName $width={Number(name) ? 'initial' : '26%'}>{name}</DataName>
           <Bar>
             <BarBackground />
             <BarData percentage={percentage} />
@@ -120,10 +120,10 @@ const Data = styled.div`
   justify-content: space-between;
 `;
 
-const DataName = styled.div`
+const DataName = styled.div<{ $width?: number | string }>`
   overflow: hidden;
 
-  max-width: 28%;
+  width: ${({ $width = '26%' }) => (typeof $width === 'string' ? $width : `${$width}px`)};
 
   font-size: 1.2rem;
   font-weight: 500;
