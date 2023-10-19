@@ -2,6 +2,7 @@ import { PetProfile } from '../petProfile/client';
 
 interface Tokens {
   accessToken: string;
+  refreshToken: string;
 }
 
 interface User {

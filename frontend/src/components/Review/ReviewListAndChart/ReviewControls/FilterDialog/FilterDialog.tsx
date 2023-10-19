@@ -38,69 +38,71 @@ const FilterDialog = () => {
       <Dialog.Portal>
         <Dialog.BackDrop />
         <Dialog.Content asChild>
-          <DialogContentLayout>
-            <TopContainer>
-              <DialogTitle>리뷰 검색 필터</DialogTitle>
-              <Dialog.Close asChild>
-                <Close>𝖷</Close>
-              </Dialog.Close>
-            </TopContainer>
-            <FilterContainer>
-              <FilterSection>
-                <FilterTitle>크기</FilterTitle>
-                <FilterList>
-                  {metaData.petSizes.map(({ id, name }) => (
-                    <FilterItem
-                      role="checkbox"
-                      key={id}
-                      aria-checked={petSizes.has(id)}
-                      $selected={petSizes.has(id)}
-                      onClick={() => toggleFilter('petSizes', id)}
-                    >
-                      {name}
-                    </FilterItem>
-                  ))}
-                </FilterList>
-              </FilterSection>
-              <FilterSection>
-                <FilterTitle>나이대</FilterTitle>
-                <FilterList>
-                  {metaData.ageGroups.map(({ id, name }) => (
-                    <FilterItem
-                      role="checkbox"
-                      key={id}
-                      aria-checked={ageGroups.has(id)}
-                      $selected={ageGroups.has(id)}
-                      onClick={() => toggleFilter('ageGroups', id)}
-                    >
-                      {name}
-                    </FilterItem>
-                  ))}
-                </FilterList>
-              </FilterSection>
-              <FilterSection>
-                <FilterTitle>견종</FilterTitle>
-                <Select onChange={onSelectBreed}>
-                  <option value={-1} selected={breeds.has(-1)}>
-                    선택 안 함
-                  </option>
-                  {metaData.breeds.map(({ id, name }) => (
-                    <option key={id} value={id} selected={breeds.has(id)}>
-                      {name}
+          <DialogPositionSupporter>
+            <DialogContentLayout>
+              <TopContainer>
+                <DialogTitle>리뷰 검색 필터</DialogTitle>
+                <Dialog.Close asChild>
+                  <Close>𝖷</Close>
+                </Dialog.Close>
+              </TopContainer>
+              <FilterContainer>
+                <FilterSection>
+                  <FilterTitle>크기</FilterTitle>
+                  <FilterList>
+                    {metaData.petSizes.map(({ id, name }) => (
+                      <FilterItem
+                        role="checkbox"
+                        key={id}
+                        aria-checked={petSizes.has(id)}
+                        $selected={petSizes.has(id)}
+                        onClick={() => toggleFilter('petSizes', id)}
+                      >
+                        {name}
+                      </FilterItem>
+                    ))}
+                  </FilterList>
+                </FilterSection>
+                <FilterSection>
+                  <FilterTitle>나이대</FilterTitle>
+                  <FilterList>
+                    {metaData.ageGroups.map(({ id, name }) => (
+                      <FilterItem
+                        role="checkbox"
+                        key={id}
+                        aria-checked={ageGroups.has(id)}
+                        $selected={ageGroups.has(id)}
+                        onClick={() => toggleFilter('ageGroups', id)}
+                      >
+                        {name}
+                      </FilterItem>
+                    ))}
+                  </FilterList>
+                </FilterSection>
+                <FilterSection>
+                  <FilterTitle>견종</FilterTitle>
+                  <Select onChange={onSelectBreed}>
+                    <option value={-1} selected={breeds.has(-1)}>
+                      선택 안 함
                     </option>
-                  ))}
-                </Select>
-              </FilterSection>
-            </FilterContainer>
-            <ButtonContainer>
-              <ResetButton type="button" onClick={resetFilterList}>
-                초기화
-              </ResetButton>
-              <Dialog.Close asChild onClick={confirm}>
-                <ConfirmButton type="button">적용하기 ＞</ConfirmButton>
-              </Dialog.Close>
-            </ButtonContainer>
-          </DialogContentLayout>
+                    {metaData.breeds.map(({ id, name }) => (
+                      <option key={id} value={id} selected={breeds.has(id)}>
+                        {name}
+                      </option>
+                    ))}
+                  </Select>
+                </FilterSection>
+              </FilterContainer>
+              <ButtonContainer>
+                <ResetButton type="button" onClick={resetFilterList}>
+                  초기화
+                </ResetButton>
+                <Dialog.Close asChild onClick={confirm}>
+                  <ConfirmButton type="button">적용하기 ＞</ConfirmButton>
+                </Dialog.Close>
+              </ButtonContainer>
+            </DialogContentLayout>
+          </DialogPositionSupporter>
         </Dialog.Content>
       </Dialog.Portal>
     </Dialog>
@@ -149,13 +151,21 @@ const TriggerIcon = styled.img`
   height: 1.4rem;
 `;
 
-const DialogContentLayout = styled.div`
+const DialogPositionSupporter = styled.div`
   position: fixed;
   z-index: 1001;
   top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
+  transform: translateY(-50%);
 
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  width: 100%;
+  max-width: ${({ theme }) => theme.maxWidth.mobile};
+`;
+
+const DialogContentLayout = styled.div`
   display: flex;
   flex-direction: column;
   gap: 2rem;

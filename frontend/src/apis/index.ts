@@ -33,11 +33,11 @@ client.interceptors.response.use(
 
     if (APIError.isAuthError(error) && config?.headers.Authorization) {
       try {
-        const { accessToken } = await refreshZipgoAuth();
+        const tokens = await refreshZipgoAuth();
 
-        zipgoLocalStorage.setTokens({ accessToken });
+        zipgoLocalStorage.setTokens(tokens);
 
-        config.headers.Authorization = `Bearer ${accessToken}`;
+        config.headers.Authorization = `Bearer ${tokens.accessToken}`;
 
         return client(config);
       } catch (error) {

@@ -23,7 +23,7 @@ export const REVIEW_ACTION_TYPES = {
 } as const;
 
 export type ReviewSetAction =
-  | { type: 'setPetFoodId'; petFoodId: number }
+  | { type: 'setPetFoodId'; petFoodId: string }
   | { type: 'setRating'; rating: number }
   | { type: 'setComment'; comment: string }
   | { type: 'setTastePreference'; tastePreference: TastePreference }
@@ -87,7 +87,7 @@ const reducer = (state: PostReviewReq, action: ReviewSetAction): PostReviewReq =
 };
 
 interface UseReviewFormProps {
-  petFoodId: number;
+  petFoodId: string;
   rating: number;
   isEditMode: boolean;
   reviewId: number;
