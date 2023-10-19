@@ -1,4 +1,4 @@
-import { ChangeEvent, useState } from 'react';
+import { ChangeEvent, useEffect, useState } from 'react';
 
 import {
   AGE_GROUP,
@@ -32,6 +32,10 @@ export const usePetProfileEdition = () => {
   const [isValidAgeSelect, setIsValidAgeSelect] = useState(true);
   const [isValidWeightInput, setIsValidWeightInput] = useState(true);
   const isValidForm = isValidNameInput && isValidAgeSelect && isValidWeightInput;
+
+  useEffect(() => {
+    setPet(petItem);
+  }, [petItem]);
 
   const onChangeName = (e: ChangeEvent<HTMLInputElement>) => {
     const petName = e.target.value;

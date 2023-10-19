@@ -13,11 +13,15 @@ import {
 } from '@/types/petProfile/remote';
 import { zipgoLocalStorage } from '@/utils/localStorage';
 
-const QUERY_KEY = { breedList: 'breedList', petItem: 'petItem', petList: 'petList' };
+const PET_PROFILE_QUERY_KEY = {
+  breedList: 'breedList',
+  petItem: (petId: number) => ['petItem', petId],
+  petList: 'petList',
+};
 
 export const useBreedListQuery = () => {
   const { data, ...restQuery } = useQuery({
-    queryKey: [QUERY_KEY.breedList],
+    queryKey: [PET_PROFILE_QUERY_KEY.breedList],
     queryFn: () => getBreeds(),
   });
 
@@ -29,22 +33,19 @@ export const useBreedListQuery = () => {
 
 export const usePetItemQuery = (payload: Parameter<typeof getPet>) => {
   const { data, ...restQuery } = useQuery({
-    queryKey: [QUERY_KEY.petItem],
+    queryKey: PET_PROFILE_QUERY_KEY.petItem(payload.petId),
     queryFn: () => getPet(payload),
   });
-  const queryClient = useQueryClient();
-  const resetPetItemQuery = () => queryClient.removeQueries([QUERY_KEY.petItem]);
 
   return {
     petItem: data,
     ...restQuery,
-    resetPetItemQuery,
   };
 };
 
 export const usePetListQuery = () => {
   const { data, ...restQuery } = useQuery({
-    queryKey: [QUERY_KEY.petList],
+    queryKey: [PET_PROFILE_QUERY_KEY.petList],
     queryFn: () => getPets(),
   });
 
@@ -86,7 +87,7 @@ export const useAddPetMutation = () => {
 };
 
 export const useEditPetMutation = () => {
-  const { resetPetItemQuery } = usePetItemQuery({ petId: 0 });
+  const queryClient = useQueryClient();
   const { petProfile: petProfileInHeader, updatePetProfile: updatePetProfileInHeader } =
     usePetProfile();
 
@@ -100,7 +101,8 @@ export const useEditPetMutation = () => {
     onSuccess: (putPetRes, newPetProfile, context) => {
       if (newPetProfile.id === petProfileInHeader?.id) updatePetProfileInHeader(newPetProfile);
 
-      resetPetItemQuery();
+      queryClient.invalidateQueries([PET_PROFILE_QUERY_KEY.petList]);
+      queryClient.invalidateQueries(PET_PROFILE_QUERY_KEY.petItem(newPetProfile.id));
 
       alert('반려동물 정보 수정이 완료되었습니다.');
     },
@@ -113,8 +115,9 @@ export const useEditPetMutation = () => {
 };
 
 export const useRemovePetMutation = () => {
+  const queryClient = useQueryClient();
   const { refetch: refetchPetList } = usePetListQuery();
-  const { resetPetItemQuery } = usePetItemQuery({ petId: 0 });
+
   const {
     petProfile: petProfileInHeader,
     updatePetProfile: updatePetProfileInHeader,
@@ -141,7 +144,8 @@ export const useRemovePetMutation = () => {
         if (!newestPet) resetPetProfileInHeader();
       }
 
-      resetPetItemQuery();
+      queryClient.invalidateQueries([PET_PROFILE_QUERY_KEY.petList]);
+      queryClient.invalidateQueries(PET_PROFILE_QUERY_KEY.petItem(deletePetReq.petId));
 
       alert('반려동물 정보를 삭제했습니다.');
     },
