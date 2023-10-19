@@ -123,7 +123,7 @@ const FoodDetail = () => {
 export default FoodDetail;
 
 const FoodDetailWrapper = styled.div`
-  padding: 4rem 0 10rem;
+  padding: 4rem 0 12rem;
 `;
 
 const FoodProfileContainer = styled.div`
@@ -167,6 +167,8 @@ const BrandIconInfo = styled.p`
 `;
 
 const StandardToolTip = styled.button`
+  position: relative;
+
   display: flex;
   gap: 0.8rem;
   align-items: center;

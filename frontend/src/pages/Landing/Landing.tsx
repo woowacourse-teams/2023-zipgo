@@ -42,9 +42,7 @@ const Landing = () => {
         </BannerSection>
         <ListSection>
           <FilterBottomSheet />
-          <Suspense fallback={<FoodList.Skeleton />}>
-            <FoodList />
-          </Suspense>
+          <FoodList />
         </ListSection>
       </Layout>
     </Template>

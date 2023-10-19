@@ -17,6 +17,7 @@ export const useFoodListInfiniteQuery = (payload: Parameter<typeof getFoodList>)
     queryKey: [QUERY_KEY.petFoods, Object.values(payload).join()],
     queryFn: ({ pageParam = { ...payload, size: String(SIZE_PER_PAGE) } }) =>
       getFoodList(pageParam),
+    suspense: false,
     getNextPageParam: (lastFoodListRes, allFoodListRes) => {
       const [lastFood] = lastFoodListRes.petFoods.slice(-1);
 
