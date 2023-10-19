@@ -18,7 +18,7 @@ let endTime: Date | undefined;
 const Landing = () => {
   const { toast } = useToast();
   const [dogTouchCount, setDogTouchCount] = useState<number>(1);
-  const isDogAwake = dogTouchCount >= TARGET_NUMBER;
+  const isDogAwake = dogTouchCount > TARGET_NUMBER;
 
   const onTouchDog = () => {
     if (dogTouchCount === 1) {
