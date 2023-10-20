@@ -4,7 +4,7 @@ import { usePetProfile } from '@/context/petProfile/PetProfileContext';
 import { generateQueryString } from '@/router/routes';
 
 import useEasyNavigate from '../@common/useEasyNavigate';
-import useValidQueryString from '../common/useValidQueryString';
+import useValidQueryString from '../@common/useValidQueryString';
 
 export const useCustomReview = () => {
   const { replaceQueryString } = useEasyNavigate();

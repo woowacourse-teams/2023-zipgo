@@ -4,7 +4,7 @@ import { styled } from 'styled-components';
 import CameraIcon from '@/assets/svg/camera_icon.svg';
 import DefaultDogIcon from '@/assets/svg/dog_icon.svg';
 import { usePetAdditionContext } from '@/context/petProfile/PetAdditionContext';
-import { useImageUpload } from '@/hooks/common/useImageUpload';
+import { useImageUpload } from '@/hooks/@common/useImageUpload';
 
 const PetProfileImageUploader = () => {
   const { petProfile, updatePetProfile } = usePetAdditionContext();

@@ -2,7 +2,7 @@ import { useEffect } from 'react';
 import { styled } from 'styled-components';
 
 import CameraIcon from '@/assets/svg/camera_icon.svg';
-import { useImageUpload } from '@/hooks/common/useImageUpload';
+import { useImageUpload } from '@/hooks/@common/useImageUpload';
 import { PetProfile } from '@/types/petProfile/client';
 
 import { getGenderImage, getPetAge } from './PetItem';

@@ -5,7 +5,7 @@ import { FilterControlsMeta } from '@/types/review/client';
 import { invariantOf } from '@/utils/invariantOf';
 import { parseCheckList } from '@/utils/parseCheckList';
 
-import useValidQueryString from '../common/useValidQueryString';
+import useValidQueryString from '../@common/useValidQueryString';
 
 const initialFilterList: Record<keyof FilterControlsMeta, Set<number>> = {
   petSizes: new Set(),

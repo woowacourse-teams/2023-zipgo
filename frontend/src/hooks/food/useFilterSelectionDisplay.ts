@@ -3,7 +3,7 @@ import { generateQueryString } from '@/router/routes';
 import { KeywordEn } from '@/types/food/client';
 
 import useEasyNavigate from '../@common/useEasyNavigate';
-import useValidQueryString from '../common/useValidQueryString';
+import useValidQueryString from '../@common/useValidQueryString';
 
 export const useFilterSelectionDisplay = () => {
   const { replaceQueryString } = useEasyNavigate();
