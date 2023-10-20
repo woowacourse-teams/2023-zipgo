@@ -1,7 +1,8 @@
-import { Suspense, useState } from 'react';
+import { useState } from 'react';
 import styled from 'styled-components';
 
-import ZipgoBannerPng from '@/assets/webp/landing_banner.webp';
+import ZipgoBanner from '@/assets/webp/landing_banner.webp';
+import ZipgoBannerAwake from '@/assets/webp/landing_banner_awake.webp';
 import Header from '@/components/@common/Header/Header';
 import Template from '@/components/@common/Template';
 import FilterBottomSheet from '@/components/Food/FilterBottomSheet/FilterBottomSheet';
@@ -9,18 +10,30 @@ import FoodList from '@/components/Food/FoodList/FoodList';
 import FoodSelectionGuideBanner from '@/components/FoodSelectionGuideBanner/FoodSelectionGuideBanner';
 import { useToast } from '@/context/Toast/ToastContext';
 
+const TARGET_NUMBER = 100;
+
+let startTime: Date | undefined;
+let endTime: Date | undefined;
+
 const Landing = () => {
   const { toast } = useToast();
-
   const [dogTouchCount, setDogTouchCount] = useState<number>(1);
+  const isDogAwake = dogTouchCount > TARGET_NUMBER;
 
   const onTouchDog = () => {
-    if (dogTouchCount % 10 === 0) {
+    if (dogTouchCount === 1) {
+      startTime = new Date();
+      toast.info(`강아지를 ${dogTouchCount}번 쓰다듬었어요.`);
+    } else if (dogTouchCount === TARGET_NUMBER && startTime) {
+      endTime = new Date();
+      toast.success(`${(+endTime - +startTime) / 1000}초 만에 강아지를 깨웠어요!`);
+    } else if (TARGET_NUMBER - dogTouchCount === 10) {
       toast.warning('강아지를 깨우지 않게 조심하세요!');
-    } else {
+    } else if (dogTouchCount < TARGET_NUMBER) {
       toast.info(`강아지를 ${dogTouchCount}번 쓰다듬었어요.`);
     }
-    setDogTouchCount(prev => prev + 1);
+
+    if (dogTouchCount <= TARGET_NUMBER) setDogTouchCount(prev => prev + 1);
   };
 
   return (
@@ -38,7 +51,11 @@ const Landing = () => {
               <BannerTitle>집사의고민</BannerTitle>
             </TitleContainer>
           </BannerText>
-          <BannerImg src={ZipgoBannerPng} onClick={onTouchDog} alt="집사의고민 배너 이미지" />
+          <BannerImg
+            src={isDogAwake ? ZipgoBannerAwake : ZipgoBanner}
+            onClick={onTouchDog}
+            alt="집사의고민 배너 이미지"
+          />
         </BannerSection>
         <ListSection>
           <FilterBottomSheet />
