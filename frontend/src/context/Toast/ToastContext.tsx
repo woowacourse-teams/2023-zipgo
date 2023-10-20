@@ -3,11 +3,13 @@ import {
   PropsWithChildren,
   useCallback,
   useContext,
+  useEffect,
   useMemo,
   useRef,
   useState,
 } from 'react';
 import { createPortal } from 'react-dom';
+import { useLocation } from 'react-router-dom';
 import { styled } from 'styled-components';
 
 import ToastWarningIcon from '@/assets/svg/toast_warning_icon.svg';
@@ -60,6 +62,8 @@ const Portal = ({ children }: PropsWithChildren) =>
 const ToastProvider = (props: PropsWithChildren) => {
   const { children } = props;
 
+  const location = useLocation();
+
   const [toastStates, setToastStates] = useState<ToastInterface[]>([]);
   const currentToast = useRef<ToastInterface[]>([]);
 
@@ -88,6 +92,13 @@ const ToastProvider = (props: PropsWithChildren) => {
 
     setToastStates(currentToast.current);
     timers.current.delete(toastId);
+  };
+
+  const deleteAllToast = () => {
+    currentToast.current = [];
+
+    setToastStates(currentToast.current);
+    timers.current = new Map();
   };
 
   const generateToastId = (): ToastId => toastId.current;
@@ -149,6 +160,8 @@ const ToastProvider = (props: PropsWithChildren) => {
     }),
     [toast, toastStates],
   );
+
+  useEffect(deleteAllToast, [location.key]);
 
   return (
     <ToastContext.Provider value={memoizedValue}>
