@@ -54,14 +54,14 @@ const fadeIn = keyframes`
   }
   to {
     opacity: 1;
-    transform: translateY(-150%);
+    transform: translateY(0%);
   }
 `;
 
 const fadeOut = keyframes`
   from {
     opacity: 1;
-    transform: translateY(-150%);
+    transform: translateY(-0%);
   }
   to {
     opacity: 0;
