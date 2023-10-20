@@ -1,7 +1,7 @@
 import { useCallback, useEffect, useRef } from 'react';
 
 import { KEYWORD_EN } from '@/constants/food';
-import useValidQueryString from '@/hooks/common/useValidQueryString';
+import useValidQueryString from '@/hooks/@common/useValidQueryString';
 import { useFoodListInfiniteQuery } from '@/hooks/query/food';
 import type { KeywordEn } from '@/types/food/client';
 

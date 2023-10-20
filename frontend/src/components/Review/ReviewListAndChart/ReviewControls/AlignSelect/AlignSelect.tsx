@@ -3,7 +3,7 @@ import styled, { css } from 'styled-components';
 
 import { REVIEW_ALIGN_QUERY } from '@/constants/review';
 import useEasyNavigate from '@/hooks/@common/useEasyNavigate';
-import useValidQueryString from '@/hooks/common/useValidQueryString';
+import useValidQueryString from '@/hooks/@common/useValidQueryString';
 import { useReviewListAlignMeta } from '@/hooks/query/review';
 import { generateQueryString } from '@/router/routes';
 import { StyledProps } from '@/types/common/utility';

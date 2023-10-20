@@ -8,8 +8,8 @@ import ZipgoLogo from '@/assets/svg/zipgo_logo_dark.svg';
 import ZipgoBanner from '@/assets/webp/landing_banner.webp';
 import Template from '@/components/@common/Template';
 import { KAKAO_HREF } from '@/constants/auth';
+import useValidQueryString from '@/hooks/@common/useValidQueryString';
 import { useAuth } from '@/hooks/auth';
-import useValidQueryString from '@/hooks/common/useValidQueryString';
 import { RuntimeError } from '@/utils/errors';
 
 const Login = () => {
