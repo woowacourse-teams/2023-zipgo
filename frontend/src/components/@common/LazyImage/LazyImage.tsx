@@ -1,27 +1,33 @@
-import { ComponentPropsWithoutRef, useEffect, useRef } from 'react';
+import { ComponentPropsWithoutRef, ForwardedRef, forwardRef, memo, useCallback } from 'react';
 
 import { useIntersectionObserver } from '@/hooks/@common/useIntersectionObserver';
 
-interface LazyImageProps extends ComponentPropsWithoutRef<'img'> {
-  src: string;
-}
+const LazyImage = forwardRef(
+  (props: ComponentPropsWithoutRef<'img'>, ref: ForwardedRef<HTMLImageElement>) => {
+    const { src, ...restProps } = props;
 
-const LazyImage = (props: LazyImageProps) => {
-  const { src, ...restProps } = props;
+    const { targetRef, isIntersected } = useIntersectionObserver<HTMLImageElement>({
+      observerOptions: { threshold: 0.1 },
+    });
 
-  const { targetRef, isIntersected } = useIntersectionObserver<HTMLImageElement>({
-    observerOptions: { threshold: 0.1 },
-  });
+    const callbackRef = useCallback((instance: HTMLImageElement | null) => {
+      targetRef.current = instance;
 
-  useEffect(() => {
-    if (!targetRef.current) return;
+      if (!ref) return;
 
-    if ('loading' in HTMLImageElement.prototype || isIntersected) {
-      targetRef.current.src = String(targetRef.current.dataset.src);
+      // eslint-disable-next-line no-param-reassign
+      typeof ref === 'function' ? ref(instance) : (ref.current = instance);
+    }, []);
+
+    if (isIntersected && targetRef.current && !targetRef.current.src && src) {
+      targetRef.current.src = src;
     }
-  }, [isIntersected]);
 
-  return <img alt="" {...restProps} loading="lazy" ref={targetRef} data-src={src} />;
-};
+    // eslint-disable-next-line jsx-a11y/alt-text
+    return <img {...restProps} loading="lazy" ref={callbackRef} />;
+  },
+);
 
-export default LazyImage;
+LazyImage.displayName = 'LazyImage';
+
+export default memo(LazyImage);
