@@ -3,7 +3,7 @@ import { ComponentPropsWithoutRef, memo } from 'react';
 
 import { useIntersectionObserver } from '@/hooks/@common/useIntersectionObserver';
 
-import LazyImage from '../LazyImage/LazyImage';
+import LazyImg from '../LazyImg/LazyImg';
 
 interface SuspendedImgProps extends ComponentPropsWithoutRef<'img'> {
   staleTime?: number;
@@ -34,7 +34,7 @@ const SuspendedImg = (props: SuspendedImgProps) => {
   });
 
   if (lazy) {
-    return <LazyImage src={src} ref={targetRef} {...restProps} />;
+    return <LazyImg src={src} ref={targetRef} {...restProps} />;
   }
   // eslint-disable-next-line jsx-a11y/alt-text
   return <img src={src} {...restProps} />;

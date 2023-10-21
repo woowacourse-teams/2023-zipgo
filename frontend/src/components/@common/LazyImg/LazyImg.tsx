@@ -2,7 +2,7 @@ import { ComponentPropsWithoutRef, ForwardedRef, forwardRef, memo, useCallback }
 
 import { useIntersectionObserver } from '@/hooks/@common/useIntersectionObserver';
 
-const LazyImage = forwardRef(
+const LazyImg = forwardRef(
   (props: ComponentPropsWithoutRef<'img'>, ref: ForwardedRef<HTMLImageElement>) => {
     const { src, ...restProps } = props;
 
@@ -28,6 +28,6 @@ const LazyImage = forwardRef(
   },
 );
 
-LazyImage.displayName = 'LazyImage';
+LazyImg.displayName = 'LazyImg';
 
-export default memo(LazyImage);
+export default memo(LazyImg);
