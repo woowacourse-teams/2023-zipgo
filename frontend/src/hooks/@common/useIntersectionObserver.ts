@@ -1,4 +1,4 @@
-import { MutableRefObject, useCallback, useEffect, useRef, useState } from 'react';
+import { MutableRefObject, useCallback, useEffect, useMemo, useRef, useState } from 'react';
 
 interface UseIntersectionObserverOptions<T extends HTMLElement> {
   ref?: MutableRefObject<T | null>;
@@ -8,7 +8,7 @@ interface UseIntersectionObserverOptions<T extends HTMLElement> {
 export const useIntersectionObserver = <T extends HTMLElement>(
   options?: UseIntersectionObserverOptions<T>,
 ) => {
-  const localRef = useRef<T>(null);
+  const localRef: MutableRefObject<T | null> = useRef<T>(null);
 
   const observerRef = useRef<IntersectionObserver | null>(null);
 
