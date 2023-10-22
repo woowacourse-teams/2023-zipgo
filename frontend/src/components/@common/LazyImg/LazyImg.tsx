@@ -24,7 +24,7 @@ const LazyImg = forwardRef(
     }
 
     // eslint-disable-next-line jsx-a11y/alt-text
-    return <img {...restProps} loading="lazy" ref={callbackRef} />;
+    return <img {...restProps} ref={callbackRef} />;
   },
 );
 
