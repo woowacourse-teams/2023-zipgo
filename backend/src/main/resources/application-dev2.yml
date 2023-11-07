@@ -8,10 +8,16 @@ server:
 # database
 spring:
   datasource:
-    driver-class-name: net.sf.log4jdbc.sql.jdbcapi.DriverSpy
-    url: ${JDBC_URL}
-    username: ${DB_USERNAME}
-    password: ${DB_PASSWORD}
+    source:
+      driver-class-name: net.sf.log4jdbc.sql.jdbcapi.DriverSpy
+      url: ${SOURCE_URL}
+      username: ${DB_USERNAME}
+      password: ${DB_PASSWORD}
+    replica:
+      driver-class-name: net.sf.log4jdbc.sql.jdbcapi.DriverSpy
+      url: ${REPLICA_URL}
+      username: ${DB_USERNAME}
+      password: ${DB_PASSWORD}
 
 ---
 # jpa
