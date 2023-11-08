@@ -18,6 +18,7 @@ import zipgo.admin.application.AdminQueryService;
 import zipgo.admin.application.AdminService;
 import zipgo.admin.dto.BrandCreateRequest;
 import zipgo.admin.dto.BrandSelectResponse;
+import zipgo.admin.dto.BreedCreateRequest;
 import zipgo.admin.dto.FunctionalityCreateRequest;
 import zipgo.admin.dto.FunctionalitySelectResponse;
 import zipgo.admin.dto.PetFoodCreateRequest;
@@ -125,6 +126,14 @@ public class AdminController {
     public ResponseEntity<Void> deletePetFood(@PathVariable Long petFoodId) {
         adminService.deletePetFood(petFoodId);
         return ResponseEntity.noContent().build();
+    }
+
+    @PostMapping("/breeds")
+    public ResponseEntity<Long> createBreeds(
+            @RequestBody BreedCreateRequest breedCreateRequest
+    ) {
+        Long breedId = adminService.createBreed(breedCreateRequest.petSizeId(), breedCreateRequest.breedName());
+        return ResponseEntity.created(URI.create("/breeds/" + breedId)).build();
     }
 
 }
