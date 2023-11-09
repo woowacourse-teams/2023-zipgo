@@ -116,7 +116,7 @@ public class ReviewQueryService {
     }
 
     private List<Metadata> findAllBreeds() {
-        Breeds breeds = Breeds.from(breedRepository.findAll());
+        Breeds breeds = Breeds.from(breedRepository.findAllBreeds());
         return breeds.getOrderedBreeds().stream()
                 .map(breed -> new Metadata(breed.getId(), breed.getName()))
                 .toList();

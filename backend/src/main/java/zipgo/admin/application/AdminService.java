@@ -2,6 +2,7 @@ package zipgo.admin.application;
 
 import java.util.List;
 import lombok.RequiredArgsConstructor;
+import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import zipgo.admin.dto.BrandCreateRequest;
@@ -11,6 +12,10 @@ import zipgo.admin.dto.PetFoodUpdateRequest;
 import zipgo.admin.dto.PrimaryIngredientCreateRequest;
 import zipgo.brand.domain.Brand;
 import zipgo.brand.domain.repository.BrandRepository;
+import zipgo.pet.domain.Breed;
+import zipgo.pet.domain.PetSize;
+import zipgo.pet.domain.repository.BreedRepository;
+import zipgo.pet.domain.repository.PetSizeRepository;
 import zipgo.petfood.domain.Functionality;
 import zipgo.petfood.domain.PetFood;
 import zipgo.petfood.domain.PetFoodFunctionality;
@@ -31,6 +36,8 @@ public class AdminService {
     private final FunctionalityRepository functionalityRepository;
     private final PrimaryIngredientRepository primaryIngredientRepository;
     private final PetFoodRepository petFoodRepository;
+    private final BreedRepository breedRepository;
+    private final PetSizeRepository petSizeRepository;
 
     public Long createBrand(BrandCreateRequest request, String imageUrl) {
         Brand brand = request.toEntity(imageUrl);
@@ -149,4 +156,10 @@ public class AdminService {
         petFoodRepository.deleteById(petFoodId);
     }
 
+    @CacheEvict(cacheNames = "breeds", key = "'allBreeds'")
+    public Long createBreed(Long petSizeId, String breedName) {
+        PetSize petSize = petSizeRepository.getReferenceById(petSizeId);
+        Breed breed = breedRepository.save(Breed.builder().name(breedName).petSize(petSize).build());
+        return breed.getId();
+    }
 }
