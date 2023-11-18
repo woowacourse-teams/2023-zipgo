@@ -5,32 +5,51 @@ import CameraIcon from '@/assets/svg/camera_icon.svg';
 import { useImageUpload } from '@/hooks/@common/useImageUpload';
 import { PetProfile } from '@/types/petProfile/client';
 
+import LoadingSpinner from '../@common/LoadingSpinner/LoadingSpinner';
 import { getGenderImage, getPetAge } from './PetItem';
 
 interface PetInfoInFormProps {
   petItem: PetProfile;
   onChangeImage: (imageUrl: string) => void;
+  updateIsProcessingImage: (isProcessing: boolean) => void;
 }
 
 const PetInfoInForm = (petInfoInFormProps: PetInfoInFormProps) => {
-  const { petItem, onChangeImage } = petInfoInFormProps;
-  const { previewImage, imageUrl, uploadImage } = useImageUpload();
+  const { petItem, onChangeImage, updateIsProcessingImage } = petInfoInFormProps;
+  const {
+    imageUrl,
+    previewImage,
+    compressionPercentage,
+    isImageBeingCompressed,
+    isImageBeingUploaded,
+    uploadCompressedImage,
+  } = useImageUpload();
 
   useEffect(() => {
     if (imageUrl) onChangeImage(imageUrl);
   }, [imageUrl]);
 
+  useEffect(() => {
+    updateIsProcessingImage(isImageBeingCompressed || isImageBeingUploaded);
+  }, [isImageBeingCompressed, isImageBeingUploaded, updateIsProcessingImage]);
+
   return (
     <PetInfoContainer>
       <PetImageAndDetail>
         <ImageUploadLabel>
-          <input type="file" accept="image/*" onChange={uploadImage} />
+          <input type="file" accept="image/*" onChange={uploadCompressedImage} />
           <PetImageWrapper>
+            {isImageBeingCompressed && (
+              <ProgressTracker>
+                <p>이미지 압축 중({compressionPercentage}%)</p>
+              </ProgressTracker>
+            )}
             <PetImage src={previewImage || petItem.imageUrl} alt={petItem.name} />
           </PetImageWrapper>
           <CameraIconWrapper>
             <CameraImage src={CameraIcon} alt="" />
           </CameraIconWrapper>
+          {isImageBeingUploaded && <LoadingSpinner />}
         </ImageUploadLabel>
         <div>
           <GenderAndName>
@@ -68,7 +87,6 @@ const ImageUploadLabel = styled.label`
   height: 10rem;
 
   background-color: ${({ theme }) => theme.color.grey200};
-  border: 1px solid ${({ theme }) => theme.color.grey300};
   border-radius: 50%;
 
   & > input {
@@ -78,6 +96,7 @@ const ImageUploadLabel = styled.label`
 
 const CameraIconWrapper = styled.div`
   position: absolute;
+  z-index: 200;
   right: 0;
   bottom: 0;
 
@@ -142,7 +161,31 @@ const PetImageWrapper = styled.div`
   height: 10rem;
 
   background-color: ${({ theme }) => theme.color.white};
+  border: 1px solid ${({ theme }) => theme.color.grey300};
   border-radius: 50%;
+`;
+
+const ProgressTracker = styled.div`
+  position: absolute;
+  z-index: 100;
+  top: 0;
+  left: 0;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  width: inherit;
+  height: inherit;
+
+  opacity: 0.7;
+  background-color: ${({ theme }) => theme.color.grey200};
+
+  & > p {
+    font-size: 1.2rem;
+
+    opacity: 1;
+  }
 `;
 
 const PetImage = styled.img`

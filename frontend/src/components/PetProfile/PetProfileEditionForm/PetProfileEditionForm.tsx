@@ -19,6 +19,8 @@ const PetProfileEditionForm = () => {
     isValidNameInput,
     isValidAgeSelect,
     isValidWeightInput,
+    isProcessingImage,
+    updateIsProcessingImage,
     onChangeName,
     onChangeAge,
     onChangeWeight,
@@ -37,6 +39,7 @@ const PetProfileEditionForm = () => {
               <PetInfoInForm
                 petItem={{ ...pet, weight: Number(pet.weight) }}
                 onChangeImage={onChangeImage}
+                updateIsProcessingImage={updateIsProcessingImage}
               />
             </PetInfoWrapper>
 
@@ -108,7 +111,7 @@ const PetProfileEditionForm = () => {
               type="button"
               $isEditButton
               onClick={onSubmitNewPetProfile}
-              disabled={!isValidForm}
+              disabled={!isValidForm || isProcessingImage}
             >
               <EditIconImage src={EditIconLight} alt="" />
               수정
