@@ -1,8 +1,5 @@
 package zipgo.common.config;
 
-import java.util.Arrays;
-import java.util.List;
-
 import com.github.benmanes.caffeine.cache.Cache;
 import com.github.benmanes.caffeine.cache.Caffeine;
 import org.springframework.cache.CacheManager;
@@ -12,6 +9,10 @@ import org.springframework.cache.support.SimpleCacheManager;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import zipgo.common.cache.CacheType;
+
+import java.util.Arrays;
+import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 @EnableCaching
 @Configuration
@@ -33,6 +34,7 @@ public class CacheConfig {
     private Cache<Object, Object> cache(CacheType cacheType) {
         return Caffeine.newBuilder()
                 .maximumSize(cacheType.getMaxSize())
+                .expireAfterWrite(cacheType.getExpireTime(), TimeUnit.SECONDS)
                 .build();
     }
 
