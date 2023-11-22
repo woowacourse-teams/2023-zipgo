@@ -28,6 +28,7 @@ export const usePetProfileEdition = () => {
   const { removePetMutation } = useRemovePetMutation();
 
   const [pet, setPet] = useState<PetInput | undefined>(petItem);
+  const [isProcessingImage, setIsProcessingImage] = useState(false);
   const [isValidNameInput, setIsValidNameInput] = useState(true);
   const [isValidAgeSelect, setIsValidAgeSelect] = useState(true);
   const [isValidWeightInput, setIsValidWeightInput] = useState(true);
@@ -36,6 +37,8 @@ export const usePetProfileEdition = () => {
   useEffect(() => {
     setPet(petItem);
   }, [petItem]);
+
+  const updateIsProcessingImage = (isProcessing: boolean) => setIsProcessingImage(isProcessing);
 
   const onChangeName = (e: ChangeEvent<HTMLInputElement>) => {
     const petName = e.target.value;
@@ -125,6 +128,8 @@ export const usePetProfileEdition = () => {
     isValidNameInput,
     isValidAgeSelect,
     isValidWeightInput,
+    isProcessingImage,
+    updateIsProcessingImage,
     onChangeName,
     onChangeAge,
     onChangeWeight,

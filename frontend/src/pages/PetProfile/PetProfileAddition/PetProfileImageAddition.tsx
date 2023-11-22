@@ -5,16 +5,16 @@ import { usePetProfileAddition } from '@/hooks/petProfile/usePetProfileAddition'
 import { getTopicParticle } from '@/utils/getTopicParticle';
 
 const PetProfileImageAddition = () => {
-  const { petProfile, onSubmitPetProfile } = usePetProfileAddition();
+  const { petProfile, isValidInput, setIsValidInput, onSubmitPetProfile } = usePetProfileAddition();
 
   return (
     <Container>
       <PetName>{petProfile.name}</PetName>
       <Title>{`${getTopicParticle(petProfile.name)} 어떤 모습인가요?`}</Title>
       <Content>
-        <PetProfileImageUploader />
+        <PetProfileImageUploader updateIsValid={setIsValidInput} />
       </Content>
-      <SubmitButton type="button" onClick={onSubmitPetProfile}>
+      <SubmitButton type="button" disabled={!isValidInput} onClick={onSubmitPetProfile}>
         등록하기
       </SubmitButton>
     </Container>

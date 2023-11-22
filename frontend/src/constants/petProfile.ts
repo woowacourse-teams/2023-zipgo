@@ -32,7 +32,7 @@ export const PET_ERROR_MESSAGE = {
   INVALID_WEIGHT: '몸무게는 0kg초과, 100kg이하 소수점 첫째짜리까지 입력이 가능합니다.',
 } as const;
 
-export const PET_PROFILE_IMAGE_MAX_SIZE = 200;
+export const PET_PROFILE_IMAGE_MAX_SIZE = 1000;
 export const PET_PROFILE_IMAGE_COMPRESSION_OPTION: Options = {
   maxSizeMB: 1,
   maxWidthOrHeight: PET_PROFILE_IMAGE_MAX_SIZE,
