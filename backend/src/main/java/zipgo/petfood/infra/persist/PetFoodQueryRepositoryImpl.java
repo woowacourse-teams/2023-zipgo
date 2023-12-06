@@ -16,7 +16,6 @@ import java.util.Optional;
 
 import static zipgo.brand.domain.QBrand.brand;
 import static zipgo.petfood.domain.QPetFood.petFood;
-import static zipgo.petfood.domain.QPetFoodFunctionality.petFoodFunctionality;
 import static zipgo.petfood.domain.QPetFoodPrimaryIngredient.petFoodPrimaryIngredient;
 import static zipgo.petfood.domain.QPrimaryIngredient.primaryIngredient;
 
@@ -45,8 +44,6 @@ public class PetFoodQueryRepositoryImpl implements PetFoodQueryRepository {
                 )
                 .from(petFood)
                 .innerJoin(petFood.brand, brand)
-                .innerJoin(petFood.petFoodPrimaryIngredients, petFoodPrimaryIngredient)
-                .innerJoin(petFood.petFoodFunctionalities, petFoodFunctionality)
                 .where(
                         isLessThan(lastPetFoodId),
                         isContainBrand(brandsName),
@@ -55,7 +52,6 @@ public class PetFoodQueryRepositoryImpl implements PetFoodQueryRepository {
                         isContainFunctionalities(functionalityList)
                 )
                 .orderBy(petFood.id.desc())
-                .groupBy(petFood.id)
                 .limit(size)
                 .fetch();
     }
@@ -117,8 +113,6 @@ public class PetFoodQueryRepositoryImpl implements PetFoodQueryRepository {
                 .select(petFood.id.countDistinct())
                 .from(petFood)
                 .join(petFood.brand, brand)
-                .join(petFood.petFoodPrimaryIngredients, petFoodPrimaryIngredient)
-                .join(petFood.petFoodFunctionalities, petFoodFunctionality)
                 .where(
                         isContainBrand(brandsName),
                         isMeetStandardCondition(standards),
