@@ -54,6 +54,7 @@ public class AdminService {
         return primaryIngredientRepository.save(primaryIngredient).getId();
     }
 
+    @CacheEvict(cacheNames = "petFoods", keyGenerator = "customKeyGenerator")
     public Long createPetFood(PetFoodCreateRequest request, String imageUrl) {
         Brand brand = brandRepository.getById(request.brandId());
         PetFood petFood = request.toEntity(brand, imageUrl);
