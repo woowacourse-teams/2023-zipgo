@@ -1,10 +1,13 @@
 package zipgo.petfood.application;
 
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.CacheManager;
 import zipgo.brand.domain.Brand;
 import zipgo.brand.domain.repository.BrandRepository;
+import zipgo.common.cache.CacheType;
 import zipgo.common.service.ServiceTest;
 import zipgo.petfood.domain.Functionality;
 import zipgo.petfood.domain.PetFood;
@@ -23,6 +26,7 @@ import zipgo.petfood.dto.response.PetFoodResponse;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.Objects;
 
 import static java.util.Collections.EMPTY_LIST;
 import static org.assertj.core.api.Assertions.assertThat;
@@ -50,7 +54,14 @@ import static zipgo.petfood.dto.response.FilterResponse.PrimaryIngredientRespons
 
 class PetFoodQueryServiceTest extends ServiceTest {
 
-    private static final int size = 20;
+    private static final int SIZE = 20;
+    private static final String CACHE_KEY_DELIMITER = "_";
+    private static final FilterRequest EMPTY_FILTER_REQUEST = FilterRequest.of(
+            EMPTY_LIST,
+            EMPTY_LIST,
+            EMPTY_LIST,
+            EMPTY_LIST
+    );
 
     @Autowired
     private PetFoodQueryService petFoodQueryService;
@@ -66,6 +77,14 @@ class PetFoodQueryServiceTest extends ServiceTest {
 
     @Autowired
     private FunctionalityRepository functionalityRepository;
+
+    @Autowired
+    private CacheManager cacheManager;
+
+    @BeforeEach
+    void setUp() {
+        Objects.requireNonNull(cacheManager.getCache(CacheType.PET_FOODS.getName())).clear();
+    }
 
     @Nested
     class 필터_조회 {
@@ -99,7 +118,7 @@ class PetFoodQueryServiceTest extends ServiceTest {
                             EMPTY_LIST
                     ),
                     lastPetFoodId,
-                    size
+                    SIZE
             );
 
             //then
@@ -143,7 +162,7 @@ class PetFoodQueryServiceTest extends ServiceTest {
                             EMPTY_LIST
                     ),
                     lastPetFoodId,
-                    size
+                    SIZE
             );
 
             // then
@@ -183,7 +202,7 @@ class PetFoodQueryServiceTest extends ServiceTest {
                             EMPTY_LIST
                     ),
                     lastPetFoodId,
-                    size
+                    SIZE
             );
 
             // then
@@ -226,7 +245,7 @@ class PetFoodQueryServiceTest extends ServiceTest {
                             EMPTY_LIST
                     ),
                     lastPetFoodId,
-                    size
+                    SIZE
             );
 
             // then
@@ -266,7 +285,7 @@ class PetFoodQueryServiceTest extends ServiceTest {
                             List.of("튼튼")
                     ),
                     lastPetFoodId,
-                    size
+                    SIZE
             );
 
             // then
@@ -307,7 +326,7 @@ class PetFoodQueryServiceTest extends ServiceTest {
                             List.of("튼튼")
                     ),
                     lastPetFoodId,
-                    size
+                    SIZE
             );
 
             // then
@@ -340,14 +359,9 @@ class PetFoodQueryServiceTest extends ServiceTest {
 
             // when
             GetPetFoodsResponse petFoodsResponse = petFoodQueryService.getPetFoodsByFilters(
-                    FilterRequest.of(
-                            EMPTY_LIST,
-                            EMPTY_LIST,
-                            EMPTY_LIST,
-                            EMPTY_LIST
-                    ),
+                    EMPTY_FILTER_REQUEST,
                     lastPetFoodId,
-                    size
+                    SIZE
             );
 
             // then
@@ -373,14 +387,9 @@ class PetFoodQueryServiceTest extends ServiceTest {
 
             // when
             GetPetFoodsResponse petFoodsResponse = petFoodQueryService.getPetFoodsByFilters(
-                    FilterRequest.of(
-                            EMPTY_LIST,
-                            EMPTY_LIST,
-                            EMPTY_LIST,
-                            EMPTY_LIST
-                    ),
+                    EMPTY_FILTER_REQUEST,
                     유럽_영양기준_만족_식품.getId() - 1,
-                    size
+                    SIZE
             );
 
             // then
@@ -401,14 +410,9 @@ class PetFoodQueryServiceTest extends ServiceTest {
 
             // when
             GetPetFoodsResponse petFoodsResponse = petFoodQueryService.getPetFoodsByFilters(
-                    FilterRequest.of(
-                            EMPTY_LIST,
-                            EMPTY_LIST,
-                            EMPTY_LIST,
-                            EMPTY_LIST
-                    ),
+                    EMPTY_FILTER_REQUEST,
                     null,
-                    size
+                    SIZE
             );
 
             // then
@@ -433,6 +437,44 @@ class PetFoodQueryServiceTest extends ServiceTest {
             return true;
         }
 
+        @Test
+        void 로컬_캐시가_있으면_로컬_캐시에서_데이터를_조회한다() {
+            //given
+            PetFood 모든_영양기준_만족_식품 = 모든_영양기준_만족_식품(brandRepository.save(아카나_식품_브랜드_생성()));
+            식품_기능성_추가(모든_영양기준_만족_식품, functionalityRepository.save(기능성_튼튼()));
+            식품_주원료_추가(모든_영양기준_만족_식품, primaryIngredientRepository.save(주원료_소고기()));
+            petFoodRepository.save(모든_영양기준_만족_식품);
+
+            // when
+            GetPetFoodsResponse petFoodsResponse = petFoodQueryService.getPetFoodsByFilters(
+                    EMPTY_FILTER_REQUEST,
+                    null,
+                    SIZE
+            );
+
+            // then
+            assertThat(petFoodsResponse).isEqualTo(getCachedPetFoodsResponse());
+        }
+
+        private GetPetFoodsResponse getCachedPetFoodsResponse() {
+            String key = FilterRequest.of(EMPTY_LIST, EMPTY_LIST, EMPTY_LIST, EMPTY_LIST)
+                    + CACHE_KEY_DELIMITER + null + CACHE_KEY_DELIMITER + SIZE;
+            return Objects.requireNonNull(cacheManager.getCache(CacheType.PET_FOODS.getName()))
+                    .get(key, GetPetFoodsResponse.class);
+        }
+
+        @Test
+        void 로컬_캐시가_없으면_로컬_캐시에서_데이터를_조회하지_못한다() {
+            //given
+            PetFood 모든_영양기준_만족_식품 = 모든_영양기준_만족_식품(brandRepository.save(아카나_식품_브랜드_생성()));
+            식품_기능성_추가(모든_영양기준_만족_식품, functionalityRepository.save(기능성_튼튼()));
+            식품_주원료_추가(모든_영양기준_만족_식품, primaryIngredientRepository.save(주원료_소고기()));
+            petFoodRepository.save(모든_영양기준_만족_식품);
+
+            // then
+            final GetPetFoodsResponse cachedPetFoodsResponse = getCachedPetFoodsResponse();
+            assertThat(cachedPetFoodsResponse).isNull();
+        }
     }
 
     @Nested
