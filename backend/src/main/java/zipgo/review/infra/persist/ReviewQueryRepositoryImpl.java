@@ -24,6 +24,7 @@ import static java.util.Collections.emptyList;
 import static zipgo.pet.domain.QBreed.breed;
 import static zipgo.pet.domain.QPet.pet;
 import static zipgo.pet.domain.QPetSize.petSize;
+import static zipgo.review.application.SortBy.*;
 import static zipgo.review.domain.QAdverseReaction.adverseReaction;
 import static zipgo.review.domain.QHelpfulReaction.helpfulReaction;
 import static zipgo.review.domain.QReview.review;
@@ -126,16 +127,16 @@ public class ReviewQueryRepositoryImpl implements ReviewQueryRepository {
     }
 
     private OrderSpecifier getSorter(SortBy sortBy) {
-        if (sortBy == SortBy.RECENT) {
+        if (sortBy == RECENT) {
             return review.id.desc();
         }
-        if (sortBy == SortBy.RAGING_DESC) {
+        if (sortBy == RAGING_DESC) {
             return review.rating.desc();
         }
-        if (sortBy == SortBy.RATING_ASC) {
+        if (sortBy == RATING_ASC) {
             return review.rating.asc();
         }
-        if (sortBy == SortBy.HELPFUL) {
+        if (sortBy == HELPFUL) {
             return review.helpfulReactions.size().desc();
         }
         return review.id.desc();

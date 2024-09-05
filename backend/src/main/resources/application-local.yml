@@ -6,8 +6,6 @@ server:
 ---
 # database
 spring:
-  config:
-    import: classpath:/env.properties
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
     url: ${JDBC_URL}

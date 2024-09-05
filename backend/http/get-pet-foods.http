@@ -5,7 +5,4 @@ Content-Type: application/json
 
 ###
 
-GET http://localhost:8080/pet-foods/filters
-
-
-
+GET http://localhost:8081/pets/breeds
