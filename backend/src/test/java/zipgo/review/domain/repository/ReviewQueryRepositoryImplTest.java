@@ -1,5 +1,11 @@
 package zipgo.review.domain.repository;
 
+import java.time.LocalDateTime;
+import java.time.Year;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Random;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,13 +33,6 @@ import zipgo.review.domain.repository.dto.FindReviewsFilterRequest;
 import zipgo.review.domain.repository.dto.FindReviewsQueryResponse;
 import zipgo.review.domain.repository.dto.ReviewHelpfulReaction;
 import zipgo.review.domain.type.AdverseReactionType;
-
-import java.time.LocalDateTime;
-import java.time.Year;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Random;
 
 import static java.util.Collections.emptyList;
 import static java.util.Collections.reverseOrder;
@@ -427,7 +426,7 @@ class ReviewQueryRepositoryImplTest extends RepositoryTest {
             //given
             PetFood 식품 = 식품_만들기();
             랜덤_리뷰_생성(식품);
-            나이대_리뷰_생성(식품, 2023);
+            나이대_리뷰_생성(식품, Year.now().getValue());
 
             //when
             var 요청 = FindReviewsFilterRequest.builder()
