@@ -7,6 +7,7 @@ build/
 
 **/src/main/resources/static/docs/
 src/main/resources/env.properties
+env*.properties
 
 ### STS ###
 .apt_generated
