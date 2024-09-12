@@ -26,7 +26,6 @@ jobs:
         run: ./gradlew build
       - name: check jar file
         run: ls -l build/libs
-      - uses: actions/checkout@v3
       - name: Build Image
         run: docker build .
       - name: Configure AWS credentials
