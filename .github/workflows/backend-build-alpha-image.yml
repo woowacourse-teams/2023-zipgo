@@ -33,6 +33,10 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
+      - name: Build Image
+        run: |
+          pwd
+          docker build .
       - name: Configure AWS credentials
         uses: aws-actions/configure-aws-credentials@v4 # More information on this action can be found below in the 'AWS Credentials' section
         with:
@@ -41,9 +45,6 @@ jobs:
 
       - name: Amazon ECR "Login" Action for GitHub Actions
         uses: aws-actions/amazon-ecr-login@v2.0.1
-            
-      - name: Build Image
-        run: docker build .
 
       - name: push ECR
         env:
