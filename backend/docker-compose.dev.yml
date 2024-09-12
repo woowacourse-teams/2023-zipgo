@@ -2,7 +2,7 @@ version: '3'
 
 services:
   mysql:
-    container_name: zipgo
+    container_name: zipgo-mysql
     image: mysql/mysql-server
     environment:
       MYSQL_DATABASE: zipgo-mysql
@@ -10,9 +10,14 @@ services:
       MYSQL_ROOT_PASSWORD: root
       TZ: 'Asia/Seoul'
     ports:
-      - 13306:3306
+      - "13306:3306"
     command:
       - "mysqld"
       - "--character-set-server=utf8mb4"
       - "--collation-server=utf8mb4_unicode_ci"
-
+  springboot:
+    container_name: zipgo-backend
+    build: .
+    env_file: "env.dev.properties"
+    ports:
+      - "8080:8080"
