@@ -26,6 +26,7 @@ jobs:
         - name: Build with Gradle
           run: ./gradlew build
   push-image:
+    needs: build
     defaults:
       run:
         working-directory: backend
