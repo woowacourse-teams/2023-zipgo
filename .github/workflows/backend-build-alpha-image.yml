@@ -25,9 +25,7 @@ jobs:
         uses: aws-actions/amazon-ecr-login@v2.0.1
             
       - name: Build Image
-        run: |
-          cd backend
-          docker build .
+        run: docker build .
 
       - name: push ECR
         env:
