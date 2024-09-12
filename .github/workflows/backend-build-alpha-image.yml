@@ -35,6 +35,7 @@ jobs:
           aws-region: ap-northeast-2
 
       - name: Amazon ECR "Login" Action for GitHub Actions
+        id: login-ecr
         uses: aws-actions/amazon-ecr-login@v2.0.1
 
       - name: push ECR
