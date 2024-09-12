@@ -24,12 +24,14 @@ jobs:
         uses: aws-actions/amazon-ecr-login@v2.0.1
             
       - name: Build Image
-        run: docker build .
+        run: |
+          cd backend
+          docker build .
 
       - name: push ECR
         env:
           REGISTRY: ${{ steps.login-ecr.outputs.registry }}
-          REPOSITORY: my-ecr-repo
+          REPOSITORY: zipgo/alpha-backend
           IMAGE_TAG: ${{ github.sha }}
         run: |
           docker build -t $REGISTRY/$REPOSITORY:$IMAGE_TAG .
