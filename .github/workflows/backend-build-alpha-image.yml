@@ -1,8 +1,7 @@
 name: Build Alpha Image
 
 on:
-  # push:
-  pull_request:
+  push:
     branches: [ develop ]
     paths: backend/**
 permissions:
@@ -29,7 +28,7 @@ jobs:
       - name: Build Image
         run: docker build .
       - name: Configure AWS credentials
-        uses: aws-actions/configure-aws-credentials@v4 # More information on this action can be found below in the 'AWS Credentials' section
+        uses: aws-actions/configure-aws-credentials@v4
         with:
           role-to-assume: arn:aws:iam::791335373803:role/AWSPushImageToECR
           aws-region: ap-northeast-2
