@@ -3,8 +3,7 @@ name: Frontend Deploy to Dev
 on:
   push:
   pull_request:
-    branches:
-      - develop
+    branches: [main, develop]
     paths:
       - frontend/**
       - .github/**
