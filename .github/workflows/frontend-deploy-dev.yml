@@ -1,14 +1,19 @@
 name: Frontend Deploy to Dev
 
 on:
-  pull_request:
+  push:
     branches:
-      - main
       - develop
     paths:
-      - 'frontend/**'
-      - '.github/**'
-
+      - frontend/**
+      - .github/**
+  pull_request:
+    branches:
+      - develop
+    paths:
+      - frontend/**
+      - .github/**
+      
 jobs:
   build-dockerfile:
     defaults:
