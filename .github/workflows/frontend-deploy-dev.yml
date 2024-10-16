@@ -4,6 +4,7 @@ on:
   push:
     branches:
       - develop
+      - feat/alpha-env
     paths:
       - frontend/**
       - .github/**
@@ -13,7 +14,7 @@ on:
     paths:
       - frontend/**
       - .github/**
-      
+
 jobs:
   build-dockerfile:
     defaults:
