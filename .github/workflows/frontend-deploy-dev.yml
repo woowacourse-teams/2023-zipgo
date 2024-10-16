@@ -8,12 +8,6 @@ on:
     paths:
       - frontend/**
       - .github/**
-  pull_request:
-    branches:
-      - develop
-    paths:
-      - frontend/**
-      - .github/**
 
 jobs:
   build-dockerfile:
