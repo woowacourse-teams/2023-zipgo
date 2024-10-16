@@ -51,9 +51,10 @@ jobs:
           aws ecr get-login-password --region ${{ secrets.AWS_REGION }} | docker login --username AWS --password-stdin ${{ secrets.ECR_LOGIN_PASSWORD }}
       - name: CD on EC2
         uses: zip-go/aws-ssm-action@v1.0.0
-        instanceName: ${{ secrets.ALPHA_INSTANCE_NAME }}
-        workingDirectory: ${{ secrets.ALPHA_WORKING_DIRECTORY }}
-        command: |
-          rm .env
-          echo IMAGE_TAG=${{ github.sha }} > .env
-          docker compose restart zipgo-backend
+        with:
+          instanceName: ${{ secrets.ALPHA_INSTANCE_NAME }}
+          workingDirectory: ${{ secrets.ALPHA_WORKING_DIRECTORY }}
+          commands: |
+            rm .env
+            echo IMAGE_TAG=${{ github.sha }} > .env
+            docker compose restart zipgo-backend

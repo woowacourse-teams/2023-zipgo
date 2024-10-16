@@ -71,7 +71,8 @@ jobs:
           aws-region: ${{ secrets.AWS_REGION }}
       - name: CD on EC2
         uses: zip-go/aws-ssm-action@v1.0.0
-        instanceName: ${{ secrets.ALPHA_INSTANCE_NAME }}
-        workingDirectory: ${{ secrets.ALPHA_WORKING_DIRECTORY }}
-        command: |
-          docker compose restart zipgo-frontend
+        with:
+          instanceName: ${{ secrets.ALPHA_INSTANCE_NAME }}
+          workingDirectory: ${{ secrets.ALPHA_WORKING_DIRECTORY }}
+          commands: |
+            docker compose restart zipgo-frontend
