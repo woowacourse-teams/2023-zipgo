@@ -2,6 +2,7 @@ package zipgo.petfood.application;
 
 import datadog.trace.api.Trace;
 import lombok.RequiredArgsConstructor;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import zipgo.brand.domain.Brand;
@@ -31,6 +32,7 @@ public class PetFoodQueryService {
     private final FunctionalityRepository functionalityRepository;
     private final PrimaryIngredientRepository primaryIngredientRepository;
 
+    @Cacheable(cacheNames = "petFoods", keyGenerator = "customKeyGenerator")
     public GetPetFoodsResponse getPetFoodsByFilters(FilterRequest filterDto, Long lastPetFoodId, int size) {
         return GetPetFoodsResponse.from(
                 getPetFoodsCount(filterDto),
