@@ -8,7 +8,8 @@ on:
     paths:
       - frontend/**
       - .github/**
-
+permissions:
+  id-token: write
 jobs:
   build-dockerfile:
     defaults:
@@ -76,3 +77,4 @@ jobs:
           workingDirectory: ${{ secrets.ALPHA_WORKING_DIRECTORY }}
           commands: |
             docker compose restart zipgo-frontend
+            echo "Succeeded: $GITHUB_SHA" > result.txt
